@@ -30,6 +30,7 @@ class Login extends Component{
 
     componentWillMount(){
         localStorage.removeItem("nombre_empresa")
+         localStorage.removeItem("razonSocial")
         localStorage.removeItem("correo")
         localStorage.removeItem("telefono")       
         localStorage.removeItem("id")
@@ -69,13 +70,13 @@ class Login extends Component{
                  console.log( 'este es el response',response)
                 if(response.data.data.login.message=="login exitoso"){
                     localStorage.setItem("id",response.data.data.login.id)
-                    localStorage.setItem("nombre_admin",response.data.data.login.nombre)
-                    localStorage.setItem("nombre_empresa",response.data.data.login.razon_social)
-                    localStorage.setItem("correo",response.data.data.login.correo)
-                    localStorage.setItem("telefono",response.data.data.login.telefono)                  
+                    localStorage.setItem("nombre",response.data.data.login.nombre)
+                    localStorage.setItem("razonSocial",response.data.data.login.razon_social)
+                    localStorage.setItem("telefono",response.data.data.login.telefono)  
+                    localStorage.setItem("correo",response.data.data.login.correo)                                    
                     localStorage.setItem("Token",response.data.data.login.token)
 
-                    alert(`Bievenido ${response.data.data.login.empresa} `)
+                    alert(`Bievenido ${response.data.data.login.nombre} `)
                     this.props.history.push("/home")
 
                 }

@@ -15,7 +15,7 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import { CardBody, Label,Form,Row,Alert} from 'reactstrap';
 import { FormGroup } from '@material-ui/core';
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios'
 
 
@@ -23,23 +23,59 @@ class registrarEmpleado extends Component{
     constructor(props){
             super(props)
             this.state ={
-                nombre:"",
-                empresa:"",
-                correo:"",
-                Telefono1:"",
-                ext1:"",
+                nombre_cliente:"",
+                empresa:"",               
+                telefono1:"",          
                 telefono2:"",
-                ext2:"",
+                correo:"",
                 nota: "",
 
 
             }
         }
+        onChangeInput =(e)=>{
+            console.log("eventoonChange" , e)
+            const {id,value} = e.target;
+            this.setState({
+                [id]:value
+            })
+        }   
+        onSubmitBtn = (e)=>{
+            e.preventDefault();  
+            const API='http://localhost:4000/graphql'   
+            axios({
+                url:API,
+                method:'post',
+                data:{
+                    query:`
+                    mutation{
+                        directorio(data:"${[this.state.nombre_cliente,this.state.empresa,this.state.telefono1,this.state.telefono2,this.state.correo]}"){             
+                     
+                        message
+                         } 
+                    }
+                    `
+                }   
+                 })
+               .then(response=>{
+                      console.log( 'este es el response',response)
+                  //  if(response.data.data.signup.message==="registro exitoso"){
+    
+                    this.props.history.push("/")
+           
+                   // }else{
+                   //   console.log(response.data.data.signup.message)
+               //  }
+    
+    
+                })
+             .catch(err=>{
+                      console.log('error',err.response)
+                  })  
+        }
     render(){
         return(
-            <React.Fragment>               
-                
-              
+            <React.Fragment>  
                  
             <Paper elevation={3} variant="outlined" style={{height:600, width:350, marginLeft:100, marginRight:30, marginTop:50}}>
           {/* //    <Card style={{marginLeft:70,marginTop:20}}> */}
@@ -47,14 +83,18 @@ class registrarEmpleado extends Component{
                   <center> <strong><h6>Registrar contacto</h6></strong></center>  
                     </Alert>  
                   
-                 <Form style={{marginLeft:70,marginTop:20}}>  {/* <Form onSubmit={this.onSubmitBtn}>            */}
+                 <Form style={{marginLeft:70,marginTop:20}} onSubmit={this.onSubmitBtn} >  {/* <Form onSubmit={this.onSubmitBtn}>            */}
                    
                     
                     <FormControl>
-                    <Label >Nombre:</Label>
+                    <Label for="nombre">Nombre:</Label>
                     <Input
-                    id="input-with-icon-adornment"
+                    id="nombre_cliente"
+                    type="text"
+                    name="nombre_cliente"
                     placeholder="Nombre"
+                    onChange={this.onChangeInput} 
+                    value={this.state.pass}
                     startAdornment={
                         <InputAdornment position="start">    
                         <AccountCircle/>                 
@@ -64,10 +104,14 @@ class registrarEmpleado extends Component{
                     </FormControl>               
                     <br></br> 
                     <FormControl  >
-                    <Label >Empresa:</Label>
+                    <Label for="empresa" >Empresa:</Label>
                     <Input
-                    id="input-with-icon-adornment"
+                    id="empresa"
+                    type="text"
+                    name="empresa"
                     placeholder="Empresa"
+                    onChange={this.onChangeInput} 
+                    value={this.state.pass}
                     startAdornment={
                         <InputAdornment position="start">    
                         <LocationCityIcon/>                 
@@ -77,10 +121,14 @@ class registrarEmpleado extends Component{
                     </FormControl>               
                     <br></br>
                     <FormControl >
-                    <Label >Correo:</Label>
+                    <Label  for ="correo">Correo:</Label>
                     <Input
-                    id="input-with-icon-adornment"
+                    id="correo"
+                    type="email"
+                    name="correo"                   
                     placeholder="Correo"
+                    onChange={this.onChangeInput} 
+                    value={this.state.pass}                
                     startAdornment={
                         <InputAdornment position="start">
                         <MailOutlineIcon/>  
@@ -90,10 +138,14 @@ class registrarEmpleado extends Component{
                     </FormControl> 
                     <br></br>
                     <FormControl >
-                    <Label >Telefono 1:</Label>
+                    <Label  for= "telefono1">Telefono 1:</Label>
                     <Input
-                    id="input-with-icon-adornment"
+                    id="telefono1"
+                    type="text"
+                    name="telefono1"
                     placeholder="Telefono1"
+                    onChange={this.onChangeInput} 
+                    value={this.state.pass}
                     startAdornment={
                         <InputAdornment position="start">
                         <PhoneIcon/>                  
@@ -101,7 +153,44 @@ class registrarEmpleado extends Component{
                     }
                     />  
 
+                    {/* <FormControl >
+                    <Label >Ext.</Label>
+                    <Input
+                    id="input-with-icon-adornment"
+                    placeholder="Telefono2"
+                    onChange={this.onChangeInput} 
+                    value={this.state.pass}
+                    startAdornment={
+                        <InputAdornment position="start">
+                        <PhoneIcon/>                 
+                        </InputAdornment>
+                    }
+                    />        
+                    </FormControl> 
+                    <br></br> */}
+
+
+                    </FormControl> 
+                    <br></br>
                     <FormControl >
+                    <Label  for="telefono2">telefono 2:</Label>
+                    <Input
+                    id="telefono2"
+                    type="text"
+                    name="telefono2"
+                    placeholder="Telefono2"
+                    onChange={this.onChangeInput} 
+                    value={this.state.pass}
+                    startAdornment={
+                        <InputAdornment position="start">
+                        <PhoneIcon/>                 
+                        </InputAdornment>
+                    }
+                    />        
+                    </FormControl> 
+                    <br></br>
+
+                    {/* <FormControl >
                     <Label >Ext.</Label>
                     <Input
                     id="input-with-icon-adornment"
@@ -111,43 +200,14 @@ class registrarEmpleado extends Component{
                         <PhoneIcon/>                 
                         </InputAdornment>
                     }
-                    />        
+                    />         
                     </FormControl> 
-                    <br></br>
-
-
-                    </FormControl> 
-                    <br></br>
-                    <FormControl >
-                    <Label >telefono 2:</Label>
-                    <Input
-                    id="input-with-icon-adornment"
-                    placeholder="Telefono2"
-                    startAdornment={
-                        <InputAdornment position="start">
-                        <PhoneIcon/>                 
-                        </InputAdornment>
-                    }
-                    />        
-                    </FormControl> 
-                    <br></br>
-
-                    <FormControl >
-                    <Label >Ext.</Label>
-                    <Input
-                    id="input-with-icon-adornment"
-                    placeholder="Telefono2"
-                    startAdornment={
-                        <InputAdornment position="start">
-                        <PhoneIcon/>                 
-                        </InputAdornment>
-                    }
-                    />        
-                    </FormControl> 
-                    <br></br>
+                    <br></br>*/}
 
                     <TextField
-                    id="outlined-full-width"
+                    id="nota"
+                    type="text"
+                    name="nombre"
                     label="Nota"                    
                     placeholder="notas"                    
                     fullWidth
@@ -157,7 +217,7 @@ class registrarEmpleado extends Component{
                     }}
                     variant="outlined"
                     />
-                    <Button variant="contained" color="primary" style={{marginLeft:30}} >Guardar</Button>                
+                    <Button variant="contained" color="primary" style={{marginLeft:30}} type="submit" >Guardar</Button>                
 
                  </Form>              
              </Paper>                   

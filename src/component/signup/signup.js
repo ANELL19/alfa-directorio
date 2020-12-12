@@ -22,7 +22,7 @@ class Signup extends Component{
         super(props)
         this.state ={
             nombre:"",
-            razon_social:"", 
+            razonSocial:"", 
             telefono:"",
             correo:"",
             contrasena:"",          
@@ -51,7 +51,7 @@ regresar(){
             data:{
                 query:`
                 mutation{
-                    signup(data:"${[this.state.nombre,this.state.razon_social,this.state.telefono,this.state.correo,this.state.contrasena]}"){             
+                    signup(data:"${[this.state.nombre,this.state.razonSocial,this.state.telefono,this.state.correo,this.state.contrasena]}"){             
                  
                     message
                      } 
@@ -82,19 +82,19 @@ regresar(){
             <Paper elevation={3} variant="outlined" style={{height:550, width:350, marginLeft:100, marginRight:30, marginTop:50}}>
           {/* //    <Card style={{marginLeft:70,marginTop:20}}> */}
                
-                 <Form style={{marginLeft:70,marginTop:20}}> 
+                 <Form style={{marginLeft:70,marginTop:20}}  onSubmit={this.onSubmitBtn}> 
                  <h3>Crea tu cuenta.</h3>
                 <br></br> 
                                 
                  {/* <Form onSubmit={this.onSubmitBtn}>            */}
                  <FormControl  >
-                    <Label for="empresa">nombre admin</Label>
+                    <Label for="nombre">nombre admin</Label>
                     <Input
                     id="nombre"
                     type="text"
                     name="nombres"
                     onChange={this.onChangeInput}
-                    value={this.state.empresa}
+                    value={this.state.pass}
                     startAdornment={
                         <InputAdornment position="start">    
                         <LocationCityIcon/>                 
@@ -106,13 +106,13 @@ regresar(){
                     
                     
                     <FormControl  >
-                    <Label for="empresa">Empresa</Label>
+                    <Label for="razonSocial">razon_social</Label>
                     <Input
                     id="razonSocial"
                     type="text"
-                    name="razon_social"
+                    name="razonSocial"
                     onChange={this.onChangeInput}
-                    value={this.state.empresa}
+                    value={this.state.pass}
                     startAdornment={
                         <InputAdornment position="start">    
                         <LocationCityIcon/>                 
@@ -129,7 +129,7 @@ regresar(){
                     type="email"
                     name="correo"
                     onChange={this.onChangeInput}
-                    value={this.state.correo}
+                    value={this.state.pass}
                     startAdornment={
                         <InputAdornment position="start">
                         <MailOutlineIcon/>  
@@ -146,7 +146,7 @@ regresar(){
                     type="text"
                     name="telefono"
                     onChange={this.onChangeInput}
-                    value={this.state.telefono}
+                    value={this.state.pass}
                     startAdornment={
                         <InputAdornment position="start">
                         <PhoneIcon/>                  
@@ -157,11 +157,11 @@ regresar(){
                     <br></br><br></br>
 
                     <FormControl >
-                    <Label for= "password" >Contraseña</Label>
+                    <Label for= "contrasena" >Contraseña</Label>
                     <Input
-                    id="pass"
+                    id="contrana"
                     type="password"
-                    name="password"
+                    name="contrasena"
                     onChange={this.onChangeInput}
                     value={this.state.pass}
                     startAdornment={

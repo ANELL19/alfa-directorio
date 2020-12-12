@@ -80,6 +80,33 @@ class SheetJSApp extends React.Component {
 		this.handleFile = this.handleFile.bind(this);
 		this.exportFile = this.exportFile.bind(this);
 	};
+	onSubmitBtn = (e)=>{
+        e.preventDefault();  
+        const API='http://localhost:4000/graphql'   
+        axios({
+            url:API,
+            method:'post',
+            data:{
+                query:`
+                mutation{
+                    directorio(data:"${[this.state.nombre_cliente,this.state.empresa,this.state.telefono1,this.state.telefono2,this.state.correo]}"){             
+                 
+					message
+					
+                     } 
+                }
+                `
+            }   
+             })
+           .then(response=>{
+                  console.log( 'este es el response',response)
+                this.props.history.push("/")       
+              
+            })
+         .catch(err=>{
+                  console.log('error',err.response)
+              })  
+    }
 
   
 
@@ -178,7 +205,7 @@ class SheetJSApp extends React.Component {
 				<div className="row"><div className="col-xs-12">
 					<DataInput handleFile={this.handleFile} />
                     <MDBCol className=" text-center mt-2 pt-2 " >
-                    <MDBBtn className="boton" disabled={!this.state.data.length}  color="info" type="submit" onClick={this.handleSubmit } >Cargar </MDBBtn>
+                    <MDBBtn className="boton" disabled={!this.state.data.length}  color="info" type="submit" onClick={this.onSubmitBtn} >Cargar </MDBBtn>
 					
 					</MDBCol> 		
 				</div> </div>
