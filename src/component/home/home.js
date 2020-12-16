@@ -7,7 +7,6 @@ import { Button as Boton, Modal, ModalBody} from 'reactstrap';
 import {MDBRow,  MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter ,MDBContainer, MDBBtn} from 'mdbreact';
 //import '../Home/index.css'
 import { DialogUtility } from '@syncfusion/ej2-popups';
-import { API} from '../utils/http'
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -80,35 +79,41 @@ class SheetJSApp extends React.Component {
 		this.handleFile = this.handleFile.bind(this);
 		this.exportFile = this.exportFile.bind(this);
 	};
+	
+
 	onSubmitBtn = (e)=>{
         e.preventDefault();  
-        const API='http://localhost:4000/graphql'   
-        axios({
-            url:API,
-            method:'post',
-            data:{
-                query:`
-                mutation{
-                    directorio(data:"${[this.state.nombre_cliente,this.state.empresa,this.state.telefono1,this.state.telefono2,this.state.correo]}"){             
-                 
+		const API='http://localhost:4000/graphql'  
+		 console.log("datos " , this.state.data)
+		 for(var i = 0; i< this.state.data.length; i++ ){
+			 var estado = this.state.data[i]
+			const query = `
+			mutation{
+				directorio(data:["${estado}"]){
 					message
-					
-                     } 
-                }
-                `
-            }   
-             })
-           .then(response=>{
-                  console.log( 'este es el response',response)
-                this.props.history.push("/")       
-              
-            })
-         .catch(err=>{
-                  console.log('error',err.response)
-              })  
+				}
+			}
+			
+			
+			`
+			axios({
+				url:API,
+				method:'post',
+				data:{
+					query,
+					variables: {
+						data:`${estado}`
+					}
+				}
+			}).then(datos=>{
+				console.log("datos" ,datos)
+			}).catch(err=>{
+				console.log("err" , err.response)
+			})
+		 }
+
     }
 
-  
 
 	handleFile(file) {
 		const reader = new FileReader();
@@ -148,6 +153,7 @@ class SheetJSApp extends React.Component {
 
 	
 		this.state.message.map(rows =>{
+			console.log("rows",rows)
 			if(rows === 'correo existente'){
 			
 				this.setState({empleadoNoRegistrado:this.state.empleadoNoExitoso})

@@ -1,23 +1,19 @@
-import React, { Component } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import FormControl from '@material-ui/core/FormControl';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-//import AccountCircle from '@material-ui/icons/AccountCircle';
-import MailOutlineIcon from '@material-ui/icons/MailOutline';
-import LockOpenIcon from '@material-ui/icons/LockOpen';
-import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
-import { CardBody, Label,Form} from 'reactstrap';
-import { FormGroup } from '@material-ui/core';
+
 import axios from 'axios'
+import React,{Component} from 'react'
+import '@fortawesome/fontawesome-free/css/all.min.css'; import
+'bootstrap-css-only/css/bootstrap.min.css'; import
+'mdbreact/dist/css/mdb.css';
 
+import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn} from 'mdbreact';
 
- 
+import { lighten, makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import { Box } from '@material-ui/core';
 
+import {
+    Card, CardImg, Row,
+     Button, Form, FormGroup, Label, Input,NavItem, NavLink,CardHeader} from 'reactstrap';
 
 class Login extends Component{
     constructor(props){
@@ -29,15 +25,14 @@ class Login extends Component{
     }
 
     componentWillMount(){
-        localStorage.removeItem("nombre_empresa")
-         localStorage.removeItem("razonSocial")
-        localStorage.removeItem("correo")
-        localStorage.removeItem("telefono")       
         localStorage.removeItem("id")
-
-
+        localStorage.removeItem("nombre")
+        localStorage.removeItem("razon_social")
+        localStorage.removeItem("telefono")
+        localStorage.removeItem("correo")
     }
 
+    
     onChangeInput =(e)=>{
         console.log("eventoonChange" , e)
         const {id,value} = e.target;
@@ -56,28 +51,28 @@ class Login extends Component{
                 query{
                    login(data:"${[this.state.user,this.state.pass]}"){
                     message
+                       id
                        nombre
                        razon_social
                        telefono
-                       correo                       
-                       contrasena 
+                       correo
+                       contrasena
                        token
                    } 
                 }
                 `
             }   
              }).then(response=>{
-                 console.log( 'este es el response',response)
+                 console.log( 'este es el response',response.data.data)
                 if(response.data.data.login.message=="login exitoso"){
                     localStorage.setItem("id",response.data.data.login.id)
                     localStorage.setItem("nombre",response.data.data.login.nombre)
-                    localStorage.setItem("razonSocial",response.data.data.login.razon_social)
-                    localStorage.setItem("telefono",response.data.data.login.telefono)  
-                    localStorage.setItem("correo",response.data.data.login.correo)                                    
+                    localStorage.setItem("razon_social",response.data.data.login.razon_social)
+                    localStorage.setItem("telefono",response.data.data.login.telefono)
+                    localStorage.setItem("correo",response.data.data.login.correo)
                     localStorage.setItem("Token",response.data.data.login.token)
-
-                    alert(`Bievenido ${response.data.data.login.nombre} `)
-                    this.props.history.push("/home")
+                    alert(`Bievenido ${response.data.data.login.nombre}`)
+                    this.props.history.push("/prueba")
 
                 }
                 else{
@@ -87,73 +82,58 @@ class Login extends Component{
              .catch(err=>{
                  console.log('error',err.response)
              })
+    }     
 
-
-    //     if(this.state.user=="jesus" && this.state.pass=='123' ){
-    //         this.props.history.push("/dashboard")
-
-    //     }  
-    //         console.log(this.state.user,this.state.pass)
-  
-    }
-     
-    render(){
+     render(){
         return(
-   <React.Fragment>  
-    
-    <Paper elevation={3} variant="outlined" style={{height:390, width:350, marginLeft:100, marginRight:30, marginTop:100}}>
-     
-         
-       
-        <CardBody style={{marginLeft:70,marginTop:20}}>
-        <h4> ¡Bienvenidos!</h4>
-        <br></br>
-        
-         <Form onSubmit={this.onSubmitBtn}>           
-         <FormControl  >
-        <Label  for="User">Correo</Label>
-        <Input
-          id="User"
-          name="User"
-          type="email"
-          onChange={this.onChangeInput} 
-          value={this.state.User}
-          startAdornment={
-            <InputAdornment position="start">
-              <MailOutlineIcon/>                 
-            </InputAdornment>
-          }
-        />        
-         </FormControl>
-        
-
-         <br></br><br></br>
-
-         
-         <FormControl >
-        <Label  for="Password">Contraseña</Label>
-        <Input
-          id="pass"
-          name="password"
-          type="password"
+<React.Fragment>
+ <Paper elevation={3}  style={{width:350, height:450, display:"center", justifyContent:"stretch",marginLeft:400,marginTop:30,marginBottom:100}}>
+ <MDBRow >
+      
+  <MDBCol style={{marginLeft:50, marginTop:20,marginRight:50}} > 
+  <Form onSubmit={this.onSubmitBtn}  >
+  <p className="h5 text-center mb-4">¡Bienvenido!</p>
+    <br></br>  
+  <div className="grey-text">
+          <MDBInput 
+          label="correo" 
+          icon="envelope"              
+          type="text"
+          name="user"
+          id="user"
           onChange={this.onChangeInput}
-          value={this.state.pass}
-          startAdornment={
-            <InputAdornment position="start">
-              <LockOpenIcon/>                  
-            </InputAdornment>
-          }
-        />        
-         </FormControl> 
-          <br></br><br></br>
-         <Button color="primary" style={{marginLeft:30}}  type="submit">Iniciar sesión</Button>
-      <h8>¿No tienes una cuenta? <a href="/signup">Registrate</a></h8>
-        </Form>
-        </CardBody>    
-        
+          value={this.state.user}
+         
+          />
+         
+          <MDBInput 
+          label="contraseña"
+          icon="lock"        
+          type="password"
+          name="password" 
+          id="pass"
+          placeholder="password"
+          onChange={this.onChangeInput}
+          value={this.state.pass}/>
+                
+                </div>
+       
+        <div className="text-center">
+  <MDBBtn color="primary" type="submit">Iniciar sesión</MDBBtn>
+  </div>
+ 
+  <Row style={{padding:15}}>
+  ¿No tienes una cuenta?  &nbsp; <a href="/signup">Registrate</a>
+  </Row>
+  </Form>
+  </MDBCol >  
+  </MDBRow>
+
+      </Paper>
+ </React.Fragment>
      
-      </Paper >      
-    </React.Fragment>   
-           )
+
+        )
     }
-}export default Login
+}
+export default Login
