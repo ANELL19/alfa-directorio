@@ -9,7 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import { Box } from '@material-ui/core';
 import {Card, CardImg, Row,Button, Form, FormGroup, Label, Input,NavItem, NavLink,CardHeader} from 'reactstrap';
 
-class Login extends Component{
+class LoginAdmin extends Component{
     constructor(props){
         super(props)
         this.state ={
@@ -75,7 +75,7 @@ class Login extends Component{
                     localStorage.setItem("statusCorreo",response.data.data.login.statusCorreo)
                     localStorage.setItem("Token",response.data.data.login.token)
                     alert(`Bievenido ${response.data.data.login.nombre}`)
-                    this.props.history.push("/prueba")
+                    this.props.history.push("/home_admin")
 
                 }
                 else if(response.data.data.login.message=="usuario y contraseña incorrecto"){
@@ -103,11 +103,12 @@ class Login extends Component{
           <MDBInput 
           label="correo" 
           icon="envelope"              
-          type="text"
+          type="email"
           name="user"
           id="user"
           onChange={this.onChangeInput}
           value={this.state.user}
+          required
          
           />
          
@@ -119,7 +120,8 @@ class Login extends Component{
           id="pass"
           placeholder="password"
           onChange={this.onChangeInput}
-          value={this.state.pass}/>
+          value={this.state.pass}
+          required/>
                 
                 </div>
        
@@ -127,9 +129,9 @@ class Login extends Component{
   <MDBBtn color="primary" type="submit">Iniciar sesión</MDBBtn>
   </div>
  
-  <Row style={{padding:15}}>
+  {/* <Row style={{padding:15}}>
   ¿No tienes una cuenta?  &nbsp; <a href="/signup">Registrate</a>
-  </Row>
+  </Row> */}
   </Form>
   </MDBCol >  
   </MDBRow>
@@ -141,4 +143,4 @@ class Login extends Component{
         )
     }
 }
-export default Login
+export default LoginAdmin

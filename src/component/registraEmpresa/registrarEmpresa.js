@@ -144,7 +144,7 @@ render(){
          
         </div>
         <div className="text-center">
-          <MDBBtn color="primary"  type="submit">Register</MDBBtn>
+          <MDBBtn color="info"  type="submit">Register</MDBBtn>
         </div>
       </Form>
     </MDBCol>

@@ -92,9 +92,7 @@ class SheetJSApp extends React.Component {
 				directorio(data:["${estado}"]){
 					message
 				}
-			}
-			
-			
+			}			
 			`
 			axios({
 				url:API,

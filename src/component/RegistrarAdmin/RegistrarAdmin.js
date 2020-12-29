@@ -1,0 +1,181 @@
+import React, {Component} from 'react'
+import Paper from '@material-ui/core/Paper';
+import { CardBody, Label,Form,Row,Col,Alert} from 'reactstrap';
+import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBInput } from 'mdbreact';
+import axios from 'axios'
+
+class RegistrarAdmin extends Component{
+    constructor(props){
+        super(props)
+        this.state ={
+            nombre:"",
+            apellidos:"",
+            razonSocial:"", 
+            RFC:"",
+            telefono:"",
+            correo:"",
+            contrasena:"",  
+            statusCorreo:""        
+        } 
+        this.regresar = this.regresar.bind(this)     
+    }   
+    
+
+regresar(){
+    this.props.history.push("/home_admin")
+ } 
+
+    onChangeInput =(e)=>{
+        console.log("eventoonChange" , e)
+        const {id,value} = e.target;
+        this.setState({
+            [id]:value
+        })
+    }   
+    onSubmitBtn = (e)=>{
+
+        console.log("contraseña" , this.state.contrasena)
+        e.preventDefault();  
+        const API='http://localhost:4000/graphql'   
+        axios({
+            url:API,
+            method:'post',
+            data:{
+                query:`
+                mutation{
+
+                    signup(data:"${[this.state.nombre,this.state.apellidos,this.state.razonSocial, this.state.RFC,this.state.telefono,this.state.correo, this.state.statusCorreo,this.state.contrasena]}"){             
+                 
+                    message
+                     } 
+                }
+                `
+            }   
+             })
+           .then(response=>{
+              //  if(response.data.data.signup.message==="registro exitoso"){
+                alert("registro exitoso")
+                this.props.history.push("/home_admin")
+       
+               // }else{
+               //   console.log(response.data.data.signup.message)
+           //  }
+
+
+            })
+         .catch(err=>{
+                  console.log('error',err.response)
+              })  
+    }
+render(){
+    return(
+        <React.Fragment>
+        <Paper elevation={3}  style={{width:550, height:600, display:"center", justifyContent:"stretch",marginLeft:400,marginTop:30,marginBottom:100}}>
+        <MDBContainer>
+<MDBRow>
+<MDBCol style={{marginLeft:25,marginRight:15,marginTop:20}}>
+  <Form  onSubmit={this.onSubmitBtn}>
+  <Alert color="primary"> <a  style={{marginTop:20,marginLeft:120}}>Registrar Administradores</a></Alert>
+    {/* <p className="h5 text-center mb-4">Registrar administradores</p> */}
+    
+    <div className="grey-text">
+    <Row >  
+      <MDBInput 
+        label="Nombre (s)" 
+        icon="user"	
+        id="nombre"
+        type="text"
+        name="nombres"
+        onChange={this.onChangeInput}
+        value={this.state.pass}
+        required
+       />
+      <MDBInput 
+        label="apellidos" 
+        icon="user"	
+        id="apellidos"
+        type="text"
+        name="apellidos"
+        onChange={this.onChangeInput}
+        value={this.state.pass}
+        required
+       />
+      <MDBInput label="Razon Social"
+        icon="city"				
+        id="razonSocial"
+        type="text"
+        name="razonSocial"			
+        onChange={this.onChangeInput}
+        value={this.state.pass} 
+        required
+       />        
+      <MDBInput 
+        label="RFC" 
+        icon="user"	
+        id="RFC"
+        type="text"
+        name="RFC"
+        onChange={this.onChangeInput}
+        value={this.state.pass}
+        required
+      />       
+      <MDBInput 
+        label="Teléfono" 
+        icon="phone"		 
+        id="telefono"
+        type="text"
+        name="telefono"
+        onChange={this.onChangeInput}
+        value={this.state.pass}	
+        required	 
+      />     	 
+      <MDBInput 
+        label="Correo" 
+        icon="envelope"
+        id="correo"
+        type="email"
+        name="correo"
+        onChange={this.onChangeInput}
+        value={this.state.pass}
+        required
+      />
+      <MDBInput 
+        label="Contraseña"
+        icon="lock" 		
+        id="contrasena"
+        type="password"
+        name="contrasena"
+        onChange={this.onChangeInput}
+        value={this.state.pass}
+        validate 
+        required
+      />
+
+          {/* <MDBInput label="status correo"
+        icon="lock" 		
+        id="statusCorreo"
+        type="text"
+        name="statusCorreo"
+        onChange={this.onChangeInput}
+        value={this.state.pass}
+        validate 
+        required/> */}
+      </Row >
+      </div>
+      
+        
+          <div className="text-center">
+            <MDBBtn  outline color="info"   type="submit"> Guardar</MDBBtn>
+            <MDBBtn outline color="danger"   onClick={this.regresar} type="submit">Cancelar</MDBBtn>
+              </div>
+    
+  </Form>
+</MDBCol>
+</MDBRow>
+</MDBContainer>
+</Paper>
+</React.Fragment>
+    )
+}
+
+}export default RegistrarAdmin
