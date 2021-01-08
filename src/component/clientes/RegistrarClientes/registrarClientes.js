@@ -1,0 +1,211 @@
+import React , { useState } from 'react'
+import XLSX from 'xlsx'
+import {MDBCol} from "mdbreact";
+import axios from 'axios';
+import { Alert } from 'reactstrap';
+import { Button as Boton, Modal, ModalBody,ModalHeader} from 'reactstrap';
+import {MDBRow,  MDBModal, MDBModalBody, MDBModalFooter ,MDBContainer, MDBBtn} from 'mdbreact';
+//import '../Home/index.css'
+import { DialogUtility } from '@syncfusion/ej2-popups';
+// import MiniDrawer from '../adminGeneral/Sidebar'
+//import Navbar from '../adminGeneral/navbar'
+import {Paper,Grid,	Button,	RadioGroup,	FormLabel,MenuItem,FormControl,	FormControlLabel  } from '@material-ui/core';
+
+
+  import { Form, Field } from 'react-final-form';
+
+  import { TextField, Radio, Select } from 'final-form-material-ui';
+
+
+  //modal
+  const ModalPrueba = (props) => {
+	const {
+	  buttonLabel,
+	  className
+	} = props;
+  
+	const [modal, setModal] = useState(false);
+  
+	const toggle = () => setModal(!modal);
+
+	const handleToggle = () => setModal(!modal);
+	return (
+	<React.Fragment>
+	  <div>
+		<Boton size="small" className="text-white"  color="default-color" onClick={toggle}  >{buttonLabel} Cargar Empleados</Boton>
+		<Modal isOpen={modal} toggle={toggle} className={className} tabindex="-1" >
+		<ModalHeader toggle={toggle}>Cargar Empleados</ModalHeader>
+		  <ModalBody>
+		  <SheetJSApp/> 
+		    
+			Si aún no tiene el formato legible para su BD descárgela <a href="http://www.google.com">aquí.</a>
+         </ModalBody>
+		   {/* <MDBCol >
+		 <MDBBtn color="danger" onClick={handleToggle}>Cerrar</MDBBtn>
+         </MDBCol>  */}
+		</Modal>
+	  </div>
+
+	  </React.Fragment>	
+	);
+  }
+
+
+
+class SheetJSApp extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+		data: [],
+		message:[],
+		modal: false,
+		spinner:false,
+		
+		};
+		this.handleFile = this.handleFile.bind(this);
+		this.exportFile = this.exportFile.bind(this);
+	};
+	
+
+	onSubmitBtn = (e)=>{
+        e.preventDefault();  
+		const API='http://localhost:4000/graphql'  
+		 console.log("datos " , this.state.data)
+		 for(var i = 1; i< this.state.data.length; i++ ){
+			 var estado = this.state.data[i]
+			const query = `
+			mutation{
+				insertClientes(data:["${estado}"]){
+					message
+					
+					
+				}
+			}			
+			`
+			axios({
+				url:API,
+				method:'post',
+				data:{
+					query,
+					variables: {
+						data:`${estado}`
+					}
+				}
+			}).then(datos=>{
+				console.log("datos" ,datos)
+			}).catch(err=>{
+				console.log("err" , err.response)
+			})
+		 }
+
+    }
+
+	handleFile(file) {
+		const reader = new FileReader();
+		const rABS = !!reader.readAsBinaryString;
+		reader.onload = (e) => {
+
+			const bstr = e.target.result;
+
+			const wb = XLSX.read(bstr, { type: rABS ? 'binary' : 'array' });
+
+			const wsname = wb.SheetNames[0];
+			const ws = wb.Sheets[wsname];
+
+			const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
+            this.setState({ data: data });
+		};
+		if (rABS) reader.readAsBinaryString(file); else reader.readAsArrayBuffer(file);
+	};
+
+	exportFile() {
+		const ws = XLSX.utils.aoa_to_sheet(this.state.data);
+		const wb = XLSX.utils.book_new();
+		XLSX.utils.book_append_sheet(wb, ws, "SheetJS");
+        XLSX.writeFile(wb, "sheetjs.xlsx")
+
+	};
+	toggle = () => {
+		this.setState({
+		  modal: !this.state.modal
+		});
+	  }
+	render() {
+
+		
+
+		return (
+			
+				<React.Fragment>
+					
+			 	<DragDropFile handleFile={this.handleFile}>	
+				<div className="row"><div className="col-xs-12">
+					<DataInput handleFile={this.handleFile} />
+                    <MDBCol className=" text-center mt-2 pt-2 " >
+                    <MDBBtn className="boton" disabled={!this.state.data.length}  color="info" type="submit" onClick={this.onSubmitBtn} >Cargar </MDBBtn>
+					
+					</MDBCol> 		
+				</div> </div>
+			</DragDropFile>	
+			</React.Fragment>
+		
+		);
+	};
+};
+
+
+class DragDropFile extends React.Component {
+	constructor(props) {
+		super(props);
+		this.onDrop = this.onDrop.bind(this);
+
+	};
+	suppress(evt) { evt.stopPropagation(); evt.preventDefault(); };
+	onDrop(evt) {
+		evt.stopPropagation(); evt.preventDefault();
+		const files = evt.dataTransfer.files;
+		if (files && files[0]) this.props.handleFile(files[0]);
+	};
+	render() {
+		return (
+
+
+			<div onDrop={this.onDrop} onDragEnter={this.suppress} onDragOver={this.suppress}>
+				{this.props.children}
+			</div>
+
+		);
+	};
+};
+
+class DataInput extends React.Component {
+
+	constructor(props) {
+		super(props);
+		this.handleChange = this.handleChange.bind(this);
+	};
+	handleChange(e) {
+		const files = e.target.files;
+		if (files && files[0]) this.props.handleFile(files[0]);
+	};
+
+	render() {
+		return (
+
+			<form > 
+				
+				<div className="form-group">
+					<Alert color="primary">Por favor seleccione su base de datos, Puede cargar archivos ("xlsx","csv")</Alert> 
+				    <input type="file" className="form-control" id="file" accept={SheetJSFT} onChange={this.handleChange} />
+				</div>
+                </form>
+		);
+	};
+}
+
+const SheetJSFT = [
+	"xlsx", "xlsb", "xlsm", "xls", "xml", "csv", "txt", "ods", "fods", "uos", "sylk", "dif", "dbf", "prn", "qpw", "123", "wb*", "wq*", "html", "htm"
+].map(function (x) { return "." + x; }).join(",");
+
+
+export default ModalPrueba

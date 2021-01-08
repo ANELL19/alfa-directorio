@@ -8,9 +8,9 @@ class Signup extends Component{
     constructor(props){
         super(props)
         this.state ={
-            nombre:"",
-            razonSocial:"", 
-            telefono:"",
+            nombre_cliente:"",
+            nombreEmpresa:"", 
+           
             correo:"",
             contrasena:"",          
         } 
@@ -27,6 +27,7 @@ regresar(){
         const {id,value} = e.target;
         this.setState({
             [id]:value
+            
         })
     }   
     onSubmitBtn = (e)=>{
@@ -38,7 +39,7 @@ regresar(){
             data:{
                 query:`
                 mutation{
-                    signup(data:"${[this.state.nombre,this.state.razonSocial,this.state.telefono,this.state.correo,this.state.contrasena]}"){             
+                   loginClientes(data:"${[this.state.nombre_cliente, this.state.nombreEmpresa,this.state.correo,this.state.contrasena]}"){             
                  
                     message
                      } 
@@ -73,7 +74,7 @@ render(){
     <p className="h5 text-center mb-4">Sign up</p>
     <div className="grey-text">
       <MDBInput 
-        label="Nombre" 
+        label="Nombre cliente" 
         icon="user"	
         id="nombre"
         type="text"
@@ -82,11 +83,11 @@ render(){
         value={this.state.pass}
         required
          />
-      <MDBInput label="Razon Social"
+      <MDBInput label="nombre empresa"
         icon="city"				
-        id="razonSocial"
+        id="nombreEmpresa"
         type="text"
-        name="razonSocial"			
+        name="nombreEmpresa"			
         onChange={this.onChangeInput}
         value={this.state.pass} 
         required
@@ -101,15 +102,7 @@ render(){
       value={this.state.pass}
       required
      />
-      <MDBInput 
-      label="Teléfono" 
-      icon="phone"		 
-      id="telefono"
-      type="text"
-      name="telefono"
-      onChange={this.onChangeInput}
-      value={this.state.pass}		 
-     />		 
+     	 
       <MDBInput label="Contraseña"
         icon="lock" 		
         id="contrana"
