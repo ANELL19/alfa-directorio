@@ -5,19 +5,8 @@ import axios from 'axios';
 import { Alert } from 'reactstrap';
 import { Button as Boton, Modal, ModalBody,ModalHeader} from 'reactstrap';
 import {MDBRow,  MDBModal, MDBModalBody, MDBModalFooter ,MDBContainer, MDBBtn} from 'mdbreact';
-//import '../Home/index.css'
-import { DialogUtility } from '@syncfusion/ej2-popups';
-// import MiniDrawer from '../adminGeneral/Sidebar'
-//import Navbar from '../adminGeneral/navbar'
-import {Paper,Grid,	Button,	RadioGroup,	FormLabel,MenuItem,FormControl,	FormControlLabel  } from '@material-ui/core';
 
-
-  import { Form, Field } from 'react-final-form';
-
-  import { TextField, Radio, Select } from 'final-form-material-ui';
-
-
-  //modal
+//modal
   const ModalPrueba = (props) => {
 	const {
 	  buttonLabel,
@@ -37,21 +26,13 @@ import {Paper,Grid,	Button,	RadioGroup,	FormLabel,MenuItem,FormControl,	FormCont
 		<ModalHeader toggle={toggle}>Cargar Empleados</ModalHeader>
 		  <ModalBody>
 		  <SheetJSApp/> 
-		    
-			Si aún no tiene el formato legible para su BD descárgela <a href="http://www.google.com">aquí.</a>
+		  	Si aún no tiene el formato legible para su BD descárgela <a href="http://www.google.com">aquí.</a>
          </ModalBody>
-		   {/* <MDBCol >
-		 <MDBBtn color="danger" onClick={handleToggle}>Cerrar</MDBBtn>
-         </MDBCol>  */}
 		</Modal>
 	  </div>
-
 	  </React.Fragment>	
 	);
   }
-
-
-
 class SheetJSApp extends React.Component {
 	constructor(props) {
 		super(props);
@@ -60,15 +41,13 @@ class SheetJSApp extends React.Component {
 		message:[],
 		modal: false,
 		spinner:false,
-		
 		};
 		this.handleFile = this.handleFile.bind(this);
 		this.exportFile = this.exportFile.bind(this);
 	};
-	
 
 	onSubmitBtn = (e)=>{
-        e.preventDefault();  
+         e.preventDefault();  
 		const API='http://localhost:4000/graphql'  
 		 console.log("datos " , this.state.data)
 		 for(var i = 1; i< this.state.data.length; i++ ){
@@ -77,8 +56,6 @@ class SheetJSApp extends React.Component {
 			mutation{
 				insertClientes(data:["${estado}"]){
 					message
-					
-					
 				}
 			}			
 			`
@@ -131,28 +108,22 @@ class SheetJSApp extends React.Component {
 		});
 	  }
 	render() {
-
-		
-
-		return (
-			
-				<React.Fragment>
-					
+		return (			
+				<React.Fragment>					
 			 	<DragDropFile handleFile={this.handleFile}>	
-				<div className="row"><div className="col-xs-12">
+				<div className="row">
+					<div className="col-xs-12">
 					<DataInput handleFile={this.handleFile} />
                     <MDBCol className=" text-center mt-2 pt-2 " >
-                    <MDBBtn className="boton" disabled={!this.state.data.length}  color="info" type="submit" onClick={this.onSubmitBtn} >Cargar </MDBBtn>
-					
+                    <MDBBtn className="boton" disabled={!this.state.data.length}  color="info" type="submit" onClick={this.onSubmitBtn} >Cargar </MDBBtn>					
 					</MDBCol> 		
-				</div> </div>
+				    </div> 
+				</div>
 			</DragDropFile>	
-			</React.Fragment>
-		
+			</React.Fragment>		
 		);
 	};
 };
-
 
 class DragDropFile extends React.Component {
 	constructor(props) {
@@ -168,18 +139,14 @@ class DragDropFile extends React.Component {
 	};
 	render() {
 		return (
-
-
 			<div onDrop={this.onDrop} onDragEnter={this.suppress} onDragOver={this.suppress}>
 				{this.props.children}
 			</div>
-
 		);
 	};
 };
 
 class DataInput extends React.Component {
-
 	constructor(props) {
 		super(props);
 		this.handleChange = this.handleChange.bind(this);
@@ -191,9 +158,7 @@ class DataInput extends React.Component {
 
 	render() {
 		return (
-
 			<form > 
-				
 				<div className="form-group">
 					<Alert color="primary">Por favor seleccione su base de datos, Puede cargar archivos ("xlsx","csv")</Alert> 
 				    <input type="file" className="form-control" id="file" accept={SheetJSFT} onChange={this.handleChange} />

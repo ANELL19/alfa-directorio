@@ -6,8 +6,7 @@ class HomeAdmin extends Component{
   constructor(props){
     super(props)
     this.state = {
-        elNombre:'',
-        larazonSocial:'',
+         larazonSocial:'',
         }
     } 
 

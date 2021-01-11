@@ -12,11 +12,9 @@ class Navbar extends Component {
             isOpen: false,
             modal:false,
         }
-
-    }
-
-
-    render(){
+          }
+    
+ render(){
         console.log("props" , this.props.data)
         return(
             <MDBNavbar color="default-color" dark expand="md">
@@ -47,7 +45,7 @@ class Navbar extends Component {
                         <MDBIcon icon="user" />
                       </MDBDropdownToggle>
                       <MDBDropdownMenu className="dropdown-default">
-                        <MDBDropdownItem href="/">Salir</MDBDropdownItem>                        
+                        <MDBDropdownItem  href="/">Salir</MDBDropdownItem>                        
                       </MDBDropdownMenu>
                     </MDBDropdown>
                   </MDBNavItem>

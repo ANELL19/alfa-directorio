@@ -18,13 +18,8 @@ class panelRegisterClientes extends Component{
             nombreEmpresa:"",
             telefono:"",
             correo:"",
-            contrasena:"",
-
-
-
+            contrasena:""
         }
-    
-
     this.regresar = this.regresar.bind(this)     
 }   
 
@@ -33,15 +28,13 @@ regresar(){
 this.props.history.push("/home_admin")
 } 
     onChangeInput =(e)=>{
-        console.log("eventoonChange" , e)
+        // console.log("eventoonChange" , e)
         const {id,value} = e.target;
         this.setState({
             [id]:value
         })
     }   
     onSubmitBtn = (e)=>{
-
-        console.log("contraseña" , this.state.contrasena)
         e.preventDefault();  
         const API='http://localhost:4000/graphql'   
         axios({
@@ -50,9 +43,7 @@ this.props.history.push("/home_admin")
             data:{
                 query:`
                 mutation{
-
                     insertClientes(data:"${[this.state.nombre_cliente.toUpperCase(),this.state.apellidos_cliente,this.state.curp,this.state.rfc,this.state.nombreEmpresa,this.state.telefono,this.state.correo,this.state.contrasena]}"){             
-                 
                     message
                      } 
                 }
@@ -83,112 +74,99 @@ this.props.history.push("/home_admin")
     <MDBRow>
     <MDBCol style={{marginLeft:25,marginRight:15,marginTop:20}}>
       <Form  onSubmit={this.onSubmitBtn}>
-      <Alert color="primary"> <a  style={{marginTop:20,marginLeft:120}}>Registro individial clientes</a></Alert>
-    {/* <p className="h5 text-center mb-4">Registrar administradores</p> */}
-    
-               
+        <Alert color="primary"> 
+            <a  style={{marginTop:20,marginLeft:120}}>
+            Registro individial clientes
+            </a>
+        </Alert>     
         <div className="grey-text">
-        <Row >  
-          <MDBInput 
-            label="Nombre (s)" 
-            icon="user"	
-            id="nombre_cliente"
-            type="text"
-            name="nombre_cliente"
-            onChange={this.onChangeInput}
-            value={this.state.pass}
-            required
-           />
-          <MDBInput 
-            label="apellidos" 
-            icon="user"	
-            id="apellidos_cliente"
-            type="text"
-            name="apellidos_cliente"
-            onChange={this.onChangeInput}
-            value={this.state.pass}
-            required
-           />
-            <MDBInput 
-            label="CURP" 
-            icon="user"	
-            id="curp"
-            type="text"
-            name="curp"
-            onChange={this.onChangeInput}
-            value={this.state.pass}
-            required
-           />
-            <MDBInput 
-            label="RFC" 
-            icon="user"	
-            id="rfc"
-            type="text"
-            name="rfc"
-            onChange={this.onChangeInput}
-            value={this.state.pass}
-            required
-          /> 
-          <MDBInput label="nombre empresa"
-            icon="city"				
-            id="nombreEmpresa"
-            type="text"
-            name="nombreEmpresa"			
-            onChange={this.onChangeInput}
-            value={this.state.pass} 
-            required
-           />        
-               
-          <MDBInput 
-            label="Teléfono" 
-            icon="phone"		 
-            id="telefono"
-            type="text"
-            name="telefono"
-            onChange={this.onChangeInput}
-            value={this.state.pass}	
-            required	 
-          />     	 
-          <MDBInput 
-            label="Correo" 
-            icon="envelope"
-            id="correo"
-            type="email"
-            name="correo"
-            onChange={this.onChangeInput}
-            value={this.state.pass}
-            required
-          />
-          <MDBInput 
-            label="Contraseña"
-            icon="lock" 		
-            id="contrasena"
-            type="password"
-            name="contrasena"
-            onChange={this.onChangeInput}
-            value={this.state.pass}
-            validate 
-            required
-          />
-    
-              {/* <MDBInput label="status correo"
-            icon="lock" 		
-            id="statusCorreo"
-            type="text"
-            name="statusCorreo"
-            onChange={this.onChangeInput}
-            value={this.state.pass}
-            validate 
-            required/> */}
+            <Row >  
+                <MDBInput 
+                    label="Nombre (s)" 
+                    icon="user"	
+                    id="nombre_cliente"
+                    type="text"
+                    name="nombre_cliente"
+                    onChange={this.onChangeInput}
+                    value={this.state.pass}
+                    required
+                />
+                <MDBInput 
+                    label="apellidos" 
+                    icon="user"	
+                    id="apellidos_cliente"
+                    type="text"
+                    name="apellidos_cliente"
+                    onChange={this.onChangeInput}
+                    value={this.state.pass}
+                    required
+                />
+                <MDBInput 
+                    label="CURP" 
+                    icon="user"	
+                    id="curp"
+                    type="text"
+                    name="curp"
+                    onChange={this.onChangeInput}
+                    value={this.state.pass}
+                    required
+                />
+                <MDBInput 
+                    label="RFC" 
+                    icon="user"	
+                    id="rfc"
+                    type="text"
+                    name="rfc"
+                    onChange={this.onChangeInput}
+                    value={this.state.pass}
+                    required
+                /> 
+                <MDBInput label="nombre empresa"
+                    icon="city"				
+                    id="nombreEmpresa"
+                    type="text"
+                    name="nombreEmpresa"			
+                    onChange={this.onChangeInput}
+                    value={this.state.pass} 
+                    required
+                />     
+                <MDBInput 
+                    label="Teléfono" 
+                    icon="phone"		 
+                    id="telefono"
+                    type="text"
+                    name="telefono"
+                    onChange={this.onChangeInput}
+                    value={this.state.pass}	
+                    required	 
+                />     	 
+                <MDBInput 
+                    label="Correo" 
+                    icon="envelope"
+                    id="correo"
+                    type="email"
+                    name="correo"
+                    onChange={this.onChangeInput}
+                    value={this.state.pass}
+                    required
+                />
+                <MDBInput 
+                    label="Contraseña"
+                    icon="lock" 		
+                    id="contrasena"
+                    type="password"
+                    name="contrasena"
+                    onChange={this.onChangeInput}
+                    value={this.state.pass}
+                    validate 
+                    required
+                />
           </Row >
           </div>
-          
-            
               <div className="text-center">
                 <MDBBtn  outline color="info"   type="submit"> Guardar</MDBBtn>
-
                 <MDBBtn outline color="danger"   onClick ={this.regresar} type="submit">Cancelar</MDBBtn>
-                  </div>
+              </div>
         
       </Form>
     </MDBCol>

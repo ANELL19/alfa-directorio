@@ -315,7 +315,7 @@
 //              <td width="12%">id</td>
 //               <td width="14%">Nombre</td>
 //               <td width="14%">Apellido P</td>
-//               <td width="14%">apellido M</td>
+//               <td width="14%">apellido M</td>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
 //               <td width="12%">C.P.</td>
 //               <td width="14%">Telefono</td>
 //               <td width="18%">Correo</td>
