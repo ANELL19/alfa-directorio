@@ -2,6 +2,7 @@ import React , { useState } from 'react'
 import XLSX from 'xlsx'
 import {MDBCol} from "mdbreact";
 import axios from 'axios';
+import { DialogUtility } from '@syncfusion/ej2-popups';
 import { Alert } from 'reactstrap';
 import { Button as Boton, Modal, ModalBody,ModalHeader} from 'reactstrap';
 import {MDBRow,  MDBModal, MDBModalBody, MDBModalFooter ,MDBContainer, MDBBtn} from 'mdbreact';
@@ -21,9 +22,9 @@ import {MDBRow,  MDBModal, MDBModalBody, MDBModalFooter ,MDBContainer, MDBBtn} f
 	return (
 	<React.Fragment>
 	  <div>
-		<Boton size="small" className="text-white"  color="default-color" onClick={toggle}  >{buttonLabel} Cargar Empleados</Boton>
+		<Boton size="small" className="text-white"  color="default-color" onClick={toggle}  >{buttonLabel} Cargar Clientes</Boton>
 		<Modal isOpen={modal} toggle={toggle} className={className} tabindex="-1" >
-		<ModalHeader toggle={toggle}>Cargar Empleados</ModalHeader>
+		<ModalHeader toggle={toggle}>Cargar Clientes</ModalHeader>
 		  <ModalBody>
 		  <SheetJSApp/> 
 		  	Si aún no tiene el formato legible para su BD descárgela <a href="http://www.google.com">aquí.</a>
@@ -44,13 +45,20 @@ class SheetJSApp extends React.Component {
 		};
 		this.handleFile = this.handleFile.bind(this);
 		this.exportFile = this.exportFile.bind(this);
+		this.onSubmitBtn = this.onSubmitBtn.bind(this)
 	};
 
-	onSubmitBtn = (e)=>{
+	onSubmitBtn = async (e)=>{
          e.preventDefault();  
 		const API='http://localhost:4000/graphql'  
-		 console.log("datos " , this.state.data)
+		 console.log(" datos " , this.state.data)
+		 let increment = 0;
+		 let message  = [];
 		 for(var i = 1; i< this.state.data.length; i++ ){
+			 if(i == this.state.data.length-1){
+				 increment = 1
+			 }
+
 			 var estado = this.state.data[i]
 			const query = `
 			mutation{
@@ -59,7 +67,7 @@ class SheetJSApp extends React.Component {
 				}
 			}			
 			`
-			axios({
+			await axios({
 				url:API,
 				method:'post',
 				data:{
@@ -69,10 +77,29 @@ class SheetJSApp extends React.Component {
 					}
 				}
 			}).then(datos=>{
-				console.log("datos" ,datos)
+				message.push(datos.data.data.insertClientes.message);
+				console.log("mensaje" , message)
 			}).catch(err=>{
 				console.log("err" , err.response)
 			})
+			if(increment == 1 && message[0] == "registro exitoso") {
+				DialogUtility.alert({
+					animationSettings: { effect: 'Zoom' },           
+					content: "Registro exitoso,  espere un momento por favor ...",
+					title: 'Aviso!',
+					position: "fixed"
+				});
+				setTimeout(()=>{
+					window.location.reload()
+				},3000)		
+			}else if(message[0] == undefined){
+				DialogUtility.alert({
+					animationSettings: { effect: 'Zoom' },           
+					content: "Estimado usuario, hay un problema con el registro de su base de datos, por favor reviselo nuevamente.",
+					title: 'Aviso!',
+					position: "fixed"
+				});
+			}
 		 }
 
     }

@@ -25,7 +25,7 @@ class panelRegisterClientes extends Component{
 
 
 regresar(){
-this.props.history.push("/home_admin")
+// this.props.history.push("/home_admin")
 } 
     onChangeInput =(e)=>{
         // console.log("eventoonChange" , e)
@@ -54,7 +54,7 @@ this.props.history.push("/home_admin")
               //  if(response.data.data.signup.message==="registro exitoso"){
                 alert("registro exitoso")
                
-                this.props.history.push("/")
+                // this.props.history.push("/")
        
                // }else{
                //   console.log(response.data.data.signup.message)

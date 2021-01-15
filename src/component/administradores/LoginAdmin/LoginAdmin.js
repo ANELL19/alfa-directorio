@@ -1,11 +1,14 @@
 import axios from 'axios'
 import React,{Component} from 'react'
-import '@fortawesome/fontawesome-free/css/all.min.css'; import
-'bootstrap-css-only/css/bootstrap.min.css'; import
-'mdbreact/dist/css/mdb.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+ import'bootstrap-css-only/css/bootstrap.min.css'; 
+import'mdbreact/dist/css/mdb.css';
 import {  MDBRow, MDBCol, MDBInput, MDBBtn} from 'mdbreact';
 import Paper from '@material-ui/core/Paper';
 import { DialogUtility } from '@syncfusion/ej2-popups';
+
+// import '../../node_modules/@syncfusion/ej2-base/styles/material.css';
+// import '../../node_modules/@syncfusion/ej2-react-buttons/styles/material.css';
 import {Form} from 'reactstrap';
 
 class LoginAdmin extends Component{
@@ -24,7 +27,8 @@ class LoginAdmin extends Component{
         localStorage.removeItem("RFC")
         localStorage.removeItem("telefono")
         localStorage.removeItem("correo")
-        localStorage.removeItem("statusCorreo")
+        localStorage.removeItem("Token")
+
     }
     onChangeInput =(e)=>{
         const {id,value} = e.target;
@@ -66,23 +70,25 @@ class LoginAdmin extends Component{
                     localStorage.setItem("statusCorreo",response.data.data.login.statusCorreo)                
                     localStorage.setItem("Token",response.data.data.login.token)
                     // alert(`Bievenido ${response.data.data.login.nombre}`)
-                    // DialogUtility.alert({
-                    //     title: 'Alert Dialog',
-                    //     content: "This is an Alert Dialog!",
-                    // });
-                    DialogUtility.alert('This is an Alert Dialog!');
+                    DialogUtility.alert({
+                        title:'Bienvenido' ,
+                        content: "inicio de sesión exitoso!",
+                    });
+                   
                     this.props.history.push("/homeadmin")
                 }
                 else if(response.data.data.login.message=="usuario y contraseña incorrecto"){
-                     alert("usuario y contraseña incorrectos")
-                    // DialogUtility.alert({
-                    //     title: 'Alert Dialog',
-                    //     content: "This is an Alert Dialog!",
+                    // alert("usuario y contraseña incorrectos")
+                    DialogUtility.alert({
+                        title: 'usuario y contraseña incorrectos'
                        
-                    // });
+                    });
                     
                 }else {
-                    alert("Algo salio mal, por favor vuelva a intentarlo")
+                  //  alert("Algo salio mal, por favor vuelva a intentarlo")
+                    DialogUtility.alert({
+                        title: 'Algo salio mal, por favor vuelva a intentarlo'                       
+                    });
                 }
              })
              .catch(err=>{

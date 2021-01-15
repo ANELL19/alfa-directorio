@@ -1,6 +1,7 @@
 
 import React, { Component } from "react"
 import NavbarDashboard from './NavbarDashboard'
+import Tabla from './tableAdmin'
 
 class HomeAdmin extends Component{
   constructor(props){
@@ -18,6 +19,8 @@ class HomeAdmin extends Component{
         return(
             <React.Fragment>
              <NavbarDashboard data={rs}/>
+             <Tabla/>
+             
         </React.Fragment>
 
         )

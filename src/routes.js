@@ -9,7 +9,6 @@ import homeadmin from './component/administradores/home-admin/home-admin'
 import LoginClientes from './component/clientes/LoginClientes/LoginClientes'
 import RegistrarClientes from './component/clientes/RegistrarClientes/registrarClientes'
 import panelRegisterClientes from './component/clientes/panelRegisterClientes/panelRegisterClientes'
-
 import checkToken  from '../src/component/resolvers/checkToken'
 
 class App extends Component{
@@ -26,10 +25,11 @@ render(){
         <Route exact path ="/signup" component ={Signup}/> 
         <Route exact path = "/loginClientes" component ={LoginClientes}/> 
         <PrivateRoute exact path = "/registrarClientes" component ={RegistrarClientes}/>  
-        <Route exact path = "/clientes" component ={panelRegisterClientes}/> 
+        <PrivateRoute exact path = "/clientes" component ={panelRegisterClientes}/> 
         <Route exact path= "/" component= {LoginAdmin}/>
         <PrivateRoute exact path= "/registraradmin" component= {RegistrarAdmin}/>
         <PrivateRoute exact path= "/homeadmin" component= {homeadmin}/>
+        
     </main>
        </Switch>          
        </Router>
