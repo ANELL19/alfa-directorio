@@ -2,20 +2,21 @@ import React, {Component} from 'react'
 import Paper from '@material-ui/core/Paper';
 import { CardBody, Label,Form,Row,Col,Alert} from 'reactstrap';
 import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBInput } from 'mdbreact';
+import { DialogUtility } from '@syncfusion/ej2-popups';
 import axios from 'axios'
 
-class RegistrarAdmin extends Component{
+class signupAdmin extends Component{
     constructor(props){
         super(props)
         this.state ={
             nombre:"",
-            apellidos:"",
+            apellido:"",
             razonSocial:"", 
             RFC:"",
             telefono:"",
             correo:"",
             contrasena:"",  
-            statusCorreo:""        
+                
         } 
         this.regresar = this.regresar.bind(this)     
     }   
@@ -32,16 +33,17 @@ class RegistrarAdmin extends Component{
         })
     }   
     onSubmitBtn = (e)=>{
-      console.log("contraseña" , this.state.contrasena)
+     // console.log("contraseña" , this.state.contrasena)
         e.preventDefault();  
         const API='http://localhost:4000/graphql'   
+
         axios({
             url:API,
             method:'post',
             data:{
                 query:`
                 mutation{
-                    signup(data:"${[this.state.nombre,this.state.apellidos,this.state.razonSocial, this.state.RFC,this.state.telefono,this.state.correo, this.state.statusCorreo,this.state.contrasena]}"){             
+                    signupAdminGeneral(data:"${[this.state.nombre,this.state.apellido,this.state.razonSocial, this.state.RFC,this.state.telefono,this.state.correo,this.state.contrasena]}"){             
                  
                     message
                      } 
@@ -51,7 +53,10 @@ class RegistrarAdmin extends Component{
              })
            .then(response=>{
               //  if(response.data.data.signup.message==="registro exitoso"){
-                alert("registro exitoso")
+              DialogUtility.alert({
+                  title:'Registro exitoso' ,
+                  
+              });
                 this.props.history.push("/home_admin")
         })
          .catch(err=>{
@@ -68,7 +73,7 @@ render(){
             <Form  onSubmit={this.onSubmitBtn}>
             <Alert color="primary">
               <a  style={{marginTop:20,marginLeft:120}}>
-                Registrar Administradores
+                Registrar Administrador General
               </a>
             </Alert>     
               <div className="grey-text">
@@ -158,4 +163,4 @@ render(){
     )
 }
 
-}export default RegistrarAdmin
+}export default signupAdmin
