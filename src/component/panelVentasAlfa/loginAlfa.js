@@ -23,6 +23,8 @@ class LoginAdminGener extends Component{
         localStorage.removeItem("idadminGral")
         localStorage.removeItem("nombre")
         localStorage.removeItem("apellidos")
+        localStorage.removeItem("fk_paquetes")
+        localStorage.removeItem("paquetesdeAdmonGral")
         localStorage.removeItem("Token")
 
     }
@@ -47,17 +49,20 @@ class LoginAdminGener extends Component{
                        nombre  
                        apellido                                           
                        token
+                       fk_paquetes
                    } 
                 }
                 `
             }   
              }).then(response=>{
-                //  console.log( 'este es el response',response.data.data.login.message)
+                 console.log( 'este es el response',response)
                 if(response.data.data.loginAdminGeneral.message=="login exitoso"){                    
                     localStorage.setItem("idadminGral",response.data.data.loginAdminGeneral.id_adminG)                    
                     localStorage.setItem("nombre",response.data.data.loginAdminGeneral.nombre)                                    
                     localStorage.setItem("Token",response.data.data.loginAdminGeneral.token)
                     // alert(`Bievenido ${response.data.data.login.nombre}`)
+                    localStorage.setItem("fk_paquetes",response.data.data.loginAdminGeneral.fk_paquetes)
+
                     DialogUtility.alert({
                         title:'Bienvenido' ,
                         content: "inicio de sesión exitoso!",

@@ -5,15 +5,12 @@ import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBInput } from 'mdbreact';
 import { DialogUtility } from '@syncfusion/ej2-popups';
 import axios from 'axios'
 
-class signupAdmin extends Component{
+class signupAdminAlfa extends Component{
     constructor(props){
         super(props)
         this.state ={
             nombre:"",
-            apellido:"",
-            razonSocial:"", 
-            RFC:"",
-            telefono:"",
+            apellido:"",      
             correo:"",
             contrasena:"",  
                 
@@ -43,7 +40,7 @@ class signupAdmin extends Component{
             data:{
                 query:`
                 mutation{
-                    signupAdminGeneral(data:"${[this.state.nombre,this.state.apellido,this.state.razonSocial, this.state.RFC,this.state.telefono,this.state.correo,this.state.contrasena]}"){             
+                    signupAdminGeneral(data:"${[this.state.nombre,this.state.apellido,this.state.correo,this.state.contrasena]}"){             
                  
                     message
                      } 
@@ -57,7 +54,7 @@ class signupAdmin extends Component{
                   title:'Registro exitoso' ,
                   
               });
-                this.props.history.push("/home_admin")
+               // this.props.history.push("/home_admin")
         })
          .catch(err=>{
                   console.log('error',err.response)
@@ -98,35 +95,7 @@ render(){
                   value={this.state.pass}
                   required
                 />
-                <MDBInput label="Razon Social"
-                  icon="city"				
-                  id="razonSocial"
-                  type="text"
-                  name="razonSocial"			
-                  onChange={this.onChangeInput}
-                  value={this.state.pass} 
-                  required
-                />        
-                <MDBInput 
-                  label="RFC" 
-                  icon="user"	
-                  id="RFC"
-                  type="text"
-                  name="RFC"
-                  onChange={this.onChangeInput}
-                  value={this.state.pass}
-                  required
-                />       
-                <MDBInput 
-                  label="Teléfono" 
-                  icon="phone"		 
-                  id="telefono"
-                  type="text"
-                  name="telefono"
-                  onChange={this.onChangeInput}
-                  value={this.state.pass}	
-                  required	 
-                />     	 
+                  	 
                 <MDBInput 
                   label="Correo" 
                   icon="envelope"
@@ -163,4 +132,4 @@ render(){
     )
 }
 
-}export default signupAdmin
+}export default signupAdminAlfa

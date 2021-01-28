@@ -13,7 +13,7 @@ import {MDBRow,  MDBModal, MDBModalBody, MDBModalFooter ,MDBContainer, MDBBtn} f
 	  buttonLabel,
 	  className
 	} = props;
-  
+	
 	const [modal, setModal] = useState(false);
   
 	const toggle = () => setModal(!modal);

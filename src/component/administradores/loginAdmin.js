@@ -75,7 +75,7 @@ class LoginAdmin extends Component{
                         content: "inicio de sesión exitoso!",
                     });
                    
-                    this.props.history.push("/homeadmin")
+                    this.props.history.push("/dasboardAdmin")
                 }
                 else if(response.data.data.login.message=="usuario y contraseña incorrecto"){
                     // alert("usuario y contraseña incorrectos")

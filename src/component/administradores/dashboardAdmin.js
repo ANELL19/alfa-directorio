@@ -1,9 +1,8 @@
-
 import React, { Component } from "react"
 import NavbarDashboard from './NavbarDashboard'
-import Tabla from './tableAdmin'
+import tablasAdmin from './tablasAdmin'
 
-class HomeAdmin extends Component{
+class dashboardAdmin extends Component{
   constructor(props){
     super(props)
     this.state = {
@@ -19,12 +18,11 @@ class HomeAdmin extends Component{
         return(
             <React.Fragment>
              <NavbarDashboard data={rs}/>
-             <Tabla/>
+             {/* <TablasAdmin/> */}
+             <tablasAdmin/>
              
         </React.Fragment>
 
         )
     }
-} export default HomeAdmin
-
-
+} export default dashboardAdmin

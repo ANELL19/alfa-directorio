@@ -5,25 +5,25 @@ import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBInput } from 'mdbreact';
 import { DialogUtility } from '@syncfusion/ej2-popups';
 import axios from 'axios'
 
-class signupAdmin extends Component{
+class signupAdminG extends Component{
     constructor(props){
         super(props)
         this.state ={
             nombre:"",
-            apellidos:"",
+            apellido:"",
             razonSocial:"", 
             RFC:"",
             telefono:"",
             correo:"",
             contrasena:"",  
-            statusCorreo:""        
+                
         } 
         this.regresar = this.regresar.bind(this)     
     }   
     
 
     regresar(){
-        this.props.history.push("/dashbordAdminGral")
+        this.props.history.push("/home_admin")
     } 
     onChangeInput =(e)=>{
         console.log("eventoonChange" , e)
@@ -33,17 +33,17 @@ class signupAdmin extends Component{
         })
     }   
     onSubmitBtn = (e)=>{
-      console.log("contraseña" , this.state.contrasena)
+     // console.log("contraseña" , this.state.contrasena)
         e.preventDefault();  
         const API='http://localhost:4000/graphql'   
-        const idAdminGral  = localStorage.getItem("idadminGral")
+
         axios({
             url:API,
             method:'post',
             data:{
                 query:`
                 mutation{
-                    signup(data:"${[this.state.nombre,this.state.apellidos,this.state.razonSocial, this.state.RFC,this.state.telefono,this.state.correo,this.state.contrasena,idAdminGral]}"){             
+                    signupAdminGeneral(data:"${[this.state.nombre,this.state.apellido,this.state.razonSocial, this.state.RFC,this.state.telefono,this.state.correo,this.state.contrasena]}"){             
                  
                     message
                      } 
@@ -53,11 +53,12 @@ class signupAdmin extends Component{
              })
            .then(response=>{
               //  if(response.data.data.signup.message==="registro exitoso"){
-                DialogUtility.alert({
+              DialogUtility.alert({
                   title:'Registro exitoso' ,
-              });                
-                window.location.reload();
-              })
+                  
+              });
+                this.props.history.push("/home_admin")
+        })
          .catch(err=>{
                   console.log('error',err.response)
               })  
@@ -72,7 +73,7 @@ render(){
             <Form  onSubmit={this.onSubmitBtn}>
             <Alert color="primary">
               <a  style={{marginTop:20,marginLeft:120}}>
-                Registrar Administradores
+                Registrar Administrador General
               </a>
             </Alert>     
               <div className="grey-text">
@@ -162,4 +163,4 @@ render(){
     )
 }
 
-}export default signupAdmin
+}export default signupAdminG

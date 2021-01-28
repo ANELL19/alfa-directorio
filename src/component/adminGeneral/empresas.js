@@ -15,7 +15,7 @@ class Empresas extends Component{
     this.state = {
         tablas:[],
         modal1:false,
-        modal:false,
+        // modal:false,
          
         }
         this.toggle = this.toggle.bind(this)
@@ -28,9 +28,11 @@ class Empresas extends Component{
     }
 
     componentWillMount(){
+      let dataTabla=[]
+      console.log("dataTabla",dataTabla)
         const idAdminGral = localStorage.getItem("idadminGral")
+        
         console.log("id" ,idAdminGral )
-
         const API= 'http://localhost:4000/graphql' 
         axios({
             url:API,
@@ -45,18 +47,23 @@ class Empresas extends Component{
                       razonSocial
                       rfc
                       telefono
-                      correo
-
-                    
+                      correo                    
                     } 
                 }
                 `
             }           
              })
            .then(datos => {
-              this.setState({tablas:datos.data.data.getTablaAdmin})
-                console.log("que hay en la tabla" , datos)
-                console.log("algo",this.state.tablas)
+            dataTabla.push(datos.data.data.getTablaAdmin)
+              this.setState({tablas:dataTabla})
+              console.log("datos",datos)
+              // localStorage.setItem("id_admin",datos.data.data.getTablaAdmin.id_admin)                    
+              // localStorage.setItem("nombre",datos.data.data.getTablaAdmin.nombre)
+              // localStorage.setItem("razonSocial",datos.data.data.getTablaAdmin.razonSocial)
+              // localStorage.setItem("telefono",datos.data.data.getTablaAdmin.telefono)
+              // localStorage.setItem("correo",datos.data.data.getTablaAdmin.correo)
+              //   console.log("que hay en la tabla" , datos)
+              //  console.log("algo",this.state.tablas)
             })
             .catch(err=>{
                console.log('error' ,err.response)
@@ -77,36 +84,59 @@ class Empresas extends Component{
     }
     render(){
       let modal; 
+      let data;
         const columns = ["id", "Nombre", "Apellidos","RFC","Nombre Empresa","Teléfono","Correo","Detalles"];
-        const data = this.state.tablas.map(rows=>{
-          let boton = <MDBBtn size="sm" onClick={(e)=>this.modal(rows.id_admin)}> datos cliente </MDBBtn>
-          // modal=<MDBContainer>
-          // <MDBModal size="lg"  isOpen={this.state.modal1} >
-          //   <MDBModalHeader>Información cliente</MDBModalHeader>
-          //   <font   size="1" face="arial">
-          // <MDBModalBody>
-          //   {rows.id_admin}
-          //    </MDBModalBody>  
-          //   </font>
-          //   <MDBModalFooter>
-          //     <MDBBtn color="secondary" size="sm" onClick={(e)=>this.setState({modal1:false})}>Cerrrar</MDBBtn>
-          //   </MDBModalFooter>
-          // </MDBModal>
-          // </MDBContainer>
-          modal = <div>
-           <Modal size="lg" isOpen={this.state.modal} toggle={this.toggle} style={{width:2000, height:1000}}>
-               <ModalHeader toggle={e=>this.toggle(false)} >Empleados </ModalHeader>
+       
+        if(this.state.dataTabla){
+
+          data = this.state.dataTabla.map(rows=>{
+
+           // let boton = <MDBBtn size="sm" onClick={(e)=>this.modal(rows.id_admin)}> datos cliente </MDBBtn>
+            // modal=<MDBContainer>
+            // <MDBModal size="lg"  isOpen={this.state.modal1} >
+            //   <MDBModalHeader>Información cliente</MDBModalHeader>
+            //   <font   size="1" face="arial">
+            //   <MDBModalBody>
+            //   {rows.id_admin}     
+  
               
-              
-               <ModalFooter>
-               <Button color="secondary" onClick={e=>this.toggle(false)}>Cancel</Button> 
-               </ModalFooter>
-           </Modal>
-          </div>   
-               console.log("esta es rows",rows)
-                 return([rows.id_admin,rows.nombre, rows.apellidos, rows.rfc, rows.razonSocial, rows.telefono, rows.correo,boton])
+            //    </MDBModalBody>  
+            //   </font>
+            //   <MDBModalFooter>
+            //     <MDBBtn color="secondary" size="sm" onClick={(e)=>this.setState({modal1:false})}>Cerrrar</MDBBtn>
+            //   </MDBModalFooter>
+            // </MDBModal>
+            // </MDBContainer>
+             
+                 console.log("esta es rows",rows)
+                   return([rows.id_admin,rows.nombre, rows.apellidos, rows.rfc, rows.razonSocial, rows.telefono, rows.correo])
+
+           
+          })
+        }
+        // const data = this.state.tablas.map(rows=>{
+     
+        //   let boton = <MDBBtn size="sm" onClick={(e)=>this.modal(rows.id_admin)}> datos cliente </MDBBtn>
+        //   modal=<MDBContainer>
+        //   <MDBModal size="lg"  isOpen={this.state.modal1} >
+        //     <MDBModalHeader>Información cliente</MDBModalHeader>
+        //     <font   size="1" face="arial">
+        //     <MDBModalBody>
+        //     {rows.id_admin}     
+
+            
+        //      </MDBModalBody>  
+        //     </font>
+        //     <MDBModalFooter>
+        //       <MDBBtn color="secondary" size="sm" onClick={(e)=>this.setState({modal1:false})}>Cerrrar</MDBBtn>
+        //     </MDBModalFooter>
+        //   </MDBModal>
+        //   </MDBContainer>
+           
+        //        console.log("esta es rows",rows)
+        //          return([rows.id_admin,rows.nombre, rows.apellidos, rows.rfc, rows.razonSocial, rows.telefono, rows.correo,boton])
                 
-                })
+        //         })
                   
         const options={ 
             filterType:"drowpdawn",
@@ -160,6 +190,7 @@ class Empresas extends Component{
                   columns={columns} 
                   options={options} 
                 />
+                {modal}
                 </div>
         </React.Fragment>
 
