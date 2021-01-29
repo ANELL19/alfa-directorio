@@ -11,7 +11,7 @@ import { DialogUtility } from '@syncfusion/ej2-popups';
 // import '../../node_modules/@syncfusion/ej2-react-buttons/styles/material.css';
 import {Form} from 'reactstrap';
 
-class LoginAdminGener extends Component{
+class loginAlfa extends Component{
     constructor(props){
         super(props)
         this.state ={
@@ -20,11 +20,10 @@ class LoginAdminGener extends Component{
         }
     }
      componentWillMount(){
-        localStorage.removeItem("idadminGral")
+        localStorage.removeItem("id")
         localStorage.removeItem("nombre")
-        localStorage.removeItem("apellidos")
-        localStorage.removeItem("fk_paquetes")
-        localStorage.removeItem("paquetesdeAdmonGral")
+        localStorage.removeItem("apellido")
+        localStorage.removeItem("correo")
         localStorage.removeItem("Token")
 
     }
@@ -43,34 +42,37 @@ class LoginAdminGener extends Component{
             data:{
                 query:`
                 query{
-                    loginAdminGeneral(data:"${[this.state.user,this.state.pass]}"){
+                    loginAdminAlfa(data:"${[this.state.user,this.state.pass]}"){
                        message
-                       id_adminG
+                       id
                        nombre  
-                       apellido                                           
+                       apellido   
+                       correo                                        
                        token
-                       fk_paquetes
+                       
                    } 
                 }
                 `
             }   
              }).then(response=>{
                  console.log( 'este es el response',response)
-                if(response.data.data.loginAdminGeneral.message=="login exitoso"){                    
-                    localStorage.setItem("idadminGral",response.data.data.loginAdminGeneral.id_adminG)                    
-                    localStorage.setItem("nombre",response.data.data.loginAdminGeneral.nombre)                                    
-                    localStorage.setItem("Token",response.data.data.loginAdminGeneral.token)
+                if(response.data.data.loginAdminAlfa.message=="login exitoso"){                    
+                    localStorage.setItem("id",response.data.data.loginAdminAlfa.id)                    
+                    localStorage.setItem("nombre",response.data.data.loginAdminAlfa.nombre)   
+                    localStorage.setItem("apellido",response.data.data.loginAdminAlfa.apellido) 
+                    localStorage.setItem("correo",response.data.data.loginAdminAlfa.correo)                                
+                    localStorage.setItem("Token",response.data.data.loginAdminAlfa.token)
                     // alert(`Bievenido ${response.data.data.login.nombre}`)
-                    localStorage.setItem("fk_paquetes",response.data.data.loginAdminGeneral.fk_paquetes)
+                    // localStorage.setItem("fk_paquetes",response.data.data.loginAdminGeneral.fk_paquetes)
 
                     DialogUtility.alert({
                         title:'Bienvenido' ,
                         content: "inicio de sesión exitoso!",
                     });
                    
-                    this.props.history.push("/dashbordAdminGral")
+                    this.props.history.push("/navbar")
                 }
-                else if(response.data.data.loginAdminGeneral.message=="usuario y contraseña incorrecto"){
+                else if(response.data.data.loginAdminAlfa.message=="usuario y contraseña incorrecto"){
                     // alert("usuario y contraseña incorrectos")
                     DialogUtility.alert({
                         title: 'usuario y contraseña incorrectos'
@@ -131,4 +133,4 @@ class LoginAdminGener extends Component{
         )
     }
 }
-export default LoginAdminGener
+export default loginAlfa

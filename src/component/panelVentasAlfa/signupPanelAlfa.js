@@ -40,7 +40,7 @@ class signupAdminAlfa extends Component{
             data:{
                 query:`
                 mutation{
-                    signupAdminGeneral(data:"${[this.state.nombre,this.state.apellido,this.state.correo,this.state.contrasena]}"){             
+                    signupAlfa(data:"${[this.state.nombre,this.state.apellido,this.state.correo,this.state.contrasena]}"){             
                  
                     message
                      } 
@@ -54,11 +54,12 @@ class signupAdminAlfa extends Component{
                   title:'Registro exitoso' ,
                   
               });
+              window.location.reload();
                // this.props.history.push("/home_admin")
         })
          .catch(err=>{
                   console.log('error',err.response)
-              })  
+              })   
     }
 render(){
     return(
@@ -70,7 +71,7 @@ render(){
             <Form  onSubmit={this.onSubmitBtn}>
             <Alert color="primary">
               <a  style={{marginTop:20,marginLeft:120}}>
-                Registrar Administrador General
+                Registrar Administrador panel alfa
               </a>
             </Alert>     
               <div className="grey-text">
@@ -86,11 +87,11 @@ render(){
                   required
                 />
                 <MDBInput 
-                  label="apellidos" 
+                  label="apellido" 
                   icon="user"	
-                  id="apellidos"
+                  id="apellido"
                   type="text"
-                  name="apellidos"
+                  name="apellido"
                   onChange={this.onChangeInput}
                   value={this.state.pass}
                   required
@@ -120,8 +121,8 @@ render(){
                 </Row >
                 </div>
                     <div className="text-center">
-                      <MDBBtn  outline color="info"   type="submit"> Guardar</MDBBtn>
-                      <MDBBtn outline color="danger"   onClick={this.regresar} type="submit">Cancelar</MDBBtn>
+                      <MDBBtn   color="default"   type="submit"> Guardar</MDBBtn>
+                      <MDBBtn  color="danger"   onClick={this.regresar} type="submit">Cancelar</MDBBtn>
                     </div>    
             </Form>
           </MDBCol>

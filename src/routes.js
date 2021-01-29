@@ -17,15 +17,13 @@ import LoginClientes from './component/clientes/LoginClientes'
 import RegistrarClientes from './component/administradores/registrarClientes'
 import checkToken  from '../src/component/resolvers/checkToken'
 import checkTokenVentasAlfa from '../src/component/resolvers/checkTokenVentasAlfa'
-
+import navbar from './component/panelVentasAlfa/NavbarDashboard'
 import loginAlfa from './component/panelVentasAlfa/loginAlfa'
-import dasboardAlfa from './component/panelVentasAlfa/dahboardAlfa'
-import navbarAlfa from './component/panelVentasAlfa/navbarAlfa'
-import signupPanelAlfa from './component/panelVentasAlfa/signupPanelAlfa'
+import dahboardAlfa from './component/panelVentasAlfa/dahboardAlfa'
+import signupAdminAlfa from './component/panelVentasAlfa/signupPanelAlfa'
 import signupAdminG from './component/panelVentasAlfa/signupAdminG'
 import company from '../src/component/adminGeneral/empresas'
-
-// import PageNotFound from './component/PageNotFound/PageNotFound';
+ import PageNotFound from './component/PageNotFound/PageNotFound';
 
 
 class App extends Component{
@@ -55,14 +53,13 @@ render(){
         <PrivateRoute exact path = "/navbarAdminGral" component={navbarAdminGral}/>
         <PrivateRoute exact path = "/companyAdminGral" component={company}/>
 
-        <PrivateRoute exact path = "/loginAlfa" component={loginAlfa}/>
-        <PrivateRoute exact path = "/dasboardAlfa" component={dasboardAlfa}/>
-        <PrivateRoute exact path = "/navbarAlfa" component={navbarAlfa}/>
+        <Route exact path = "/loginAlfa" component={loginAlfa}/>
+        <Route exact path = "/dahboardAlfa" component={dahboardAlfa}/>
+         <PrivateRoute exact path = "/navbar" component={navbar}/> 
         <PrivateRoute exact path = "/signupAdminG" component={signupAdminG}/>
-        <PrivateRoute exact path = "/signupPanelAlfa" component={signupPanelAlfa}/>
-        <PrivateRoute exact path = "/signupPanelAlfa" component={signupPanelAlfa}/>
-
-       {/* <Route component={PageNotFound}/> */}
+        <PrivateRoute exact path = "/signupAdminAlfa" component={signupAdminAlfa}/>
+   
+        <Route component={PageNotFound}/> 
 
 
 

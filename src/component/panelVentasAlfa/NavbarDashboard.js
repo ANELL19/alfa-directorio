@@ -24,22 +24,19 @@ class Navbar extends Component {
                
                 <MDBNavbarNav left>
                   <MDBNavItem>
-                    <MDBNavLink className="waves-effect waves-light" to="/signupadmin">
-                    Registrar empresa
+                    <MDBNavLink className="waves-effect waves-light" to="/signupAdminG">
+                    Registrar administrador
                     </MDBNavLink>
                   </MDBNavItem>
                   <MDBNavItem>
-                    <MDBNavLink className="waves-effect waves-light" to="/companyAdminGral">
-                      Mis empresas  
+                    <MDBNavLink className="waves-effect waves-light" to="#">
+                      Mis administradores 
                     </MDBNavLink>
                   </MDBNavItem>
                   <MDBNavItem>
-                    <MDBNavLink className="waves-effect waves-light" to="/loginAdmin">
-                      Iniciar sesión  
-                    </MDBNavLink>
                   </MDBNavItem>
                   <MDBNavItem>
-                    <MDBNavLink className="waves-effect waves-light" to="/">
+                    <MDBNavLink className="waves-effect waves-light" to="/loginAlfa">
                      Salir
                     </MDBNavLink>
                   </MDBNavItem>

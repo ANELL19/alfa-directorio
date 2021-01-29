@@ -80,7 +80,7 @@ class signupAdmin extends Component{
                       data:{
                           query:`
                          query{
-                          pruebaUser(data:"${[this.state.nombre.toUpperCase(),this.state.apellidos.toUpperCase(),this.state.razonSocial.toUpperCase(), this.state.RFC.toUpperCase(),this.state.telefono.toUpperCase(),this.state.correo.toUpperCase(),this.state.contrasena,idAdminGral]}"){             
+                          signupAdmin(data:"${[this.state.nombre.toUpperCase(),this.state.apellidos.toUpperCase(),this.state.razonSocial.toUpperCase(), this.state.RFC.toUpperCase(),this.state.telefono.toUpperCase(),this.state.correo.toUpperCase(),this.state.contrasena,idAdminGral]}"){             
                                 
                                 message
 
@@ -90,12 +90,12 @@ class signupAdmin extends Component{
                       }   
                        })
                      .then(response=>{
-                       if(response.data.data.pruebaUser.message == "el registro en signup fue exitoso"){
+                       if(response.data.data.signupAdmin.message == "el registro en signup fue exitoso"){
                         DialogUtility.alert({
                           title:'Aviso!' ,
                           content:"La empresa se ha registrado exitosamente"
                         }); 
-                       }else if (response.data.data.pruebaUser.message =="ya se encuentra registrado"){
+                       }else if (response.data.data.signupAdmin.message =="ya se encuentra registrado"){
                         DialogUtility.alert({
                           title:'Aviso!' ,
                           content:"Estimado usuario, el RFC que ha proporcionado ya se encuentra registrado, verifique sus datos e intentelo nuevamente"

@@ -4,6 +4,8 @@ import { CardBody, Label,Form,Row,Col,Alert} from 'reactstrap';
 import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBInput } from 'mdbreact';
 import { DialogUtility } from '@syncfusion/ej2-popups';
 import axios from 'axios'
+import {  FormGroup, Input } from 'reactstrap';
+import { DesktopWindows } from '@material-ui/icons';
 
 class signupAdminG extends Component{
     constructor(props){
@@ -16,22 +18,86 @@ class signupAdminG extends Component{
             telefono:"",
             correo:"",
             contrasena:"",  
+            fk_paquetes:"",
+            open:false,
+            success:false
                 
         } 
         this.regresar = this.regresar.bind(this)     
     }   
+    componentWillMount(){
+      this.validate();
+    }
+    validate= async()=>{
+       
+       await this.setState({nombre:localStorage.getItem("nombre")})
+       await this.setState({apellido:localStorage.getItem("apellido")})
+       await this.setState({razonSocial:localStorage.getItem("razonSocial")})
+       await this.setState({RFC:localStorage.getItem("RFC")})
+       await this.setState({telefono:localStorage.getItem("telefono")})
+       await this.setState({correo:localStorage.getItem("correo")})
+       localStorage.removeItem("nombre")
+       localStorage.removeItem("apellido")
+       localStorage.removeItem("razonSocial")
+       localStorage.removeItem("RFC")
+       localStorage.removeItem("telefono")
+       localStorage.removeItem("correo")
+       localStorage.removeItem("contraseña")
+       localStorage.removeItem("fk_paquetes")
+    }
     
 
     regresar(){
         this.props.history.push("/home_admin")
     } 
     onChangeInput =(e)=>{
-        console.log("eventoonChange" , e)
+     //   console.log("eventoonChange" , e)
         const {id,value} = e.target;
         this.setState({
             [id]:value
         })
-    }   
+               
+       // this.setState({ [e.target.name]: e.target.value });
+
+       if(this.state.nombre && this.state.apellido && this.state.RFC && this.state.razonSocial && this.state.telefono && this.state.correo && this.state.contrasena && this.state.fk_paquetes !="Ya seleccionado"){
+        function ValidateEmail(sEmail) {
+            var reEmail = /^(?:[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+\.)*[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+@(?:(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9\-](?!\.)){0,61}[a-zA-Z0-9]?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9\-](?!$)){0,61}[a-zA-Z0-9]?)|(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\]))$/;
+          
+            if(!sEmail.match(reEmail)) {
+              return false;
+            }
+          
+            return true;
+          
+          }
+          if(this.state.rfc.length >= 12 && this.state.rfc.length < 14){
+            if(ValidateEmail(this.state.correo)===true){
+                if(this.state.contrasena.length >= 8){
+                    if(this.state.nombre.length > 2 && this.state.apellido.length > 2 && this.state.razonSocial.length > 2 && this.state.telefono.length >= 8 ){
+                        this.setState({success:true});
+                    }else{
+                        alert("Alguno de los datos ingresados no cumple con los requisitos")
+                    }
+                }else{
+                    alert("Su contraseña debe contener al menos 8 caracteres")
+                }
+            }else{
+                alert("El correo electrónico no cumple los requisitos")
+            }
+          }else{
+              alert("El RFC no es válido ")
+          }
+         
+      }else{
+        this.setState({open:true});
+      }
+    }
+     handleClose = (e) =>{
+       this.setState({open:false})
+     }  
+     handleSuccess= ()=>{
+       this.setState({success:false})
+     }
     onSubmitBtn = (e)=>{
      // console.log("contraseña" , this.state.contrasena)
         e.preventDefault();  
@@ -43,7 +109,7 @@ class signupAdminG extends Component{
             data:{
                 query:`
                 mutation{
-                    signupAdminGeneral(data:"${[this.state.nombre,this.state.apellido,this.state.razonSocial, this.state.RFC,this.state.telefono,this.state.correo,this.state.contrasena]}"){             
+                    signupAdminGeneral(data:"${[this.state.nombre.toUpperCase(),this.state.apellido.toUpperCase(),this.state.razonSocial.toUpperCase(), this.state.RFC.toUpperCase(),this.state.telefono.toUpperCase(),this.state.correo.toUpperCase(),this.state.contrasena,this.state.fk_paquetes]}"){             
                  
                     message
                      } 
@@ -57,7 +123,9 @@ class signupAdminG extends Component{
                   title:'Registro exitoso' ,
                   
               });
-                this.props.history.push("/home_admin")
+            //  Windows.location.reload();
+                //this.props.history.push("/home_admin")
+              
         })
          .catch(err=>{
                   console.log('error',err.response)
@@ -73,7 +141,7 @@ render(){
             <Form  onSubmit={this.onSubmitBtn}>
             <Alert color="primary">
               <a  style={{marginTop:20,marginLeft:120}}>
-                Registrar Administrador General
+                Administrador de ventas
               </a>
             </Alert>     
               <div className="grey-text">
@@ -91,9 +159,9 @@ render(){
                 <MDBInput 
                   label="apellidos" 
                   icon="user"	
-                  id="apellidos"
+                  id="apellido"
                   type="text"
-                  name="apellidos"
+                  name="apellido"
                   onChange={this.onChangeInput}
                   value={this.state.pass}
                   required
@@ -148,6 +216,43 @@ render(){
                   validate 
                   required
                 />
+                <br></br>
+                 {/* <FormGroup>
+                    <Label for="exampleSelect">Seleccione un paquete</Label>
+                    <Input
+                     type="select"
+                     name="fk_paquetes"
+                     id="fk_paquetes" 
+                     onChange={this.onChangeInput} 
+                     value={this.state.fk_paquetes}
+                    //  validate 
+                     required>
+                       
+                      <option value="1">1 empresa </option>
+                      <option value="2">3 empresas</option> 
+                      <option value="3">5 empresas</option>
+                      <option value="4">10 empresas</option>
+                      <option value="5">20 empresas</option>
+                    </Input>
+                  </FormGroup> */}
+                  <div>
+                   <select 
+                   className="browser-default custom-select"
+                   type="select"
+                   name="fk_paquetes"
+                   id="fk_paquetes" 
+                   onChange={this.onChangeInput} 
+                   value={this.state.fk_paquetes}
+                  //  validate 
+                   required >
+          <option>Seleccione su paquete</option>
+          <option value="1">1 empresa</option>
+          <option value="2">3 empresas</option>
+          <option value="3">5 empresas</option>
+          <option value="4">10 empresas</option>
+          <option value="5">20 empresas</option>
+        </select>
+        </div>
                 </Row >
                 </div>
                     <div className="text-center">
