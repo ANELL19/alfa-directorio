@@ -70,7 +70,7 @@ class loginAlfa extends Component{
                         content: "inicio de sesión exitoso!",
                     });
                    
-                    this.props.history.push("/navbar")
+                    this.props.history.push("/dahboardAlfa")
                 }
                 else if(response.data.data.loginAdminAlfa.message=="usuario y contraseña incorrecto"){
                     // alert("usuario y contraseña incorrectos")
