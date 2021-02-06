@@ -3,8 +3,7 @@ import React, { Component } from "react"
 import NavbarDashboard from './navbarDashboard'
 import MUIDataTable from "mui-datatables";
 import {MDBContainer,MDBBtn, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter} from 'mdbreact'
-import { Button, Table,Modal, ModalHeader, ModalBody, ModalFooter
-   } from 'reactstrap';
+import { Button, Table,Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 
 import axios from 'axios'
 
@@ -14,14 +13,12 @@ class Empresas extends Component{
     super(props)
     this.state = {
         datos:[],
-        modal1:false,
-        // modal:false,
-         
+        modal:false,
+        detallesEmpresas:[]
+        // modal:false,         
         }
-       
+   //    this.cerrar= this.cerrar.bind(this)
     } 
-   
-
     componentWillMount(){        
         const idAdminGral = localStorage.getItem("idadminGral")        
         const API= 'http://localhost:4000/graphql' 
@@ -47,34 +44,63 @@ class Empresas extends Component{
              })
            .then(response => {
              let array= [];
-            array.push(response.data.data.getTablaAdmin)
+            array.push(response.data.data.getTablaAdmin)           
               this.setState({datos:array})
-              console.log("datos",response)
+              // console.log("correo",response.data.data.getTablaAdmin.correo)
+              // localStorage.setItem("correo empresa",response.data.data.getTablaAdmin.correo)
+               console.log("datos",response)
                          
             })
             .catch(err=>{
                console.log('error' ,err.response)
             })
     }
+    // consultarCorreoAdmin(id){
+    //   const API='http://localhost:4000/graphql'
+    //   axios({
+    //     url:API,
+    //     method:'post',
+    //     data:{
+    //       query:`
+    //       query{
+    //           getAdminGral(data:"${[id]}"){             
+    //             id_adminG
+    //             nombre
+    //             apellido
+    //             razonSocial
+    //             rfc
+    //             telefono
+    //             correo     
+    //             empresas
+    //            } 
+    //       }
+    //       `
+    //     }
+    //   })
+    //   .then(response=>{
+    //     let array=[];
+    //     array.push(response.data.data.getAdminGral[0])
+    //     this.setState()
+    //   })
+    // }
+
+   
 
      
     render(){
-      let data;
-      let modal; 
-      let boton;      
+     // let data;
+      // let modal; 
+      // let boton;      
    
         const columns = ["id", "Nombre", "Apellidos","RFC","Nombre Empresa","Teléfono","Correo"];
        
-         if(this.state.datos[0]){
-
-          data = this.state.datos[0].map(rows=>{           
-           
-            
-                   return([rows.id_admin,rows.nombre, rows.apellidos, rows.rfc, rows.razonSocial, rows.telefono, rows.correo])
-
-           
+      //   if(this.state.datos[0]){
+           console.log("estado",this.state.datos)
+ 
+           let data = this.state.datos[0].map(rows=>{               
+        return([rows.id_admin,rows.nombre, rows.apellidos, rows.rfc, rows.razonSocial, rows.telefono, rows.correo])
           })
-         }
+        // }
         // const data = this.state.tablas.map(rows=>{
      
         //   let boton = <MDBBtn size="sm" onClick={(e)=>this.modal(rows.id_admin)}> datos cliente </MDBBtn>
@@ -151,10 +177,9 @@ class Empresas extends Component{
                   columns={columns} 
                   options={options} 
                 />
-                {modal}
+                {/* {modal} */}
                 </div>
         </React.Fragment>
-
         )
     }
 } export default Empresas

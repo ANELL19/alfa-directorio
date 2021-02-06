@@ -50,5 +50,3 @@ class HomeAdmin extends Component{
         )
     }
 } export default HomeAdmin
-
-

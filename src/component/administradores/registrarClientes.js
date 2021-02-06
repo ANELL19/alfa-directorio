@@ -50,7 +50,8 @@ class SheetJSApp extends React.Component {
 
 	onSubmitBtn = async (e)=>{
          e.preventDefault();  
-		const API='http://localhost:4000/graphql'  
+		const API='http://localhost:4000/graphql' 
+		const id_admin= localStorage.getItem("id_admin") 
 		 console.log(" datos " , this.state.data)
 		 let increment = 0;
 		 let message  = [];
@@ -62,7 +63,7 @@ class SheetJSApp extends React.Component {
 			 var estado = this.state.data[i]
 			const query = `
 			mutation{
-				insertClientes(data:["${estado}"]){
+				insertClientes(data:["${estado},${id_admin}"]){
 					message
 				}
 			}			

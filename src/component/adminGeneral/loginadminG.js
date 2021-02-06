@@ -3,17 +3,11 @@ import React,{Component} from 'react'
 import '@fortawesome/fontawesome-free/css/all.min.css';
  import'bootstrap-css-only/css/bootstrap.min.css'; 
 import'mdbreact/dist/css/mdb.css';
-//import {  MDBRow, MDBCol, MDBInput, MDBBtn} from 'mdbreact';
 import Paper from '@material-ui/core/Paper';
 import { DialogUtility } from '@syncfusion/ej2-popups';
 import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBInput } from 'mdbreact';
 import Grid from '@material-ui/core/Grid';
 import "./index.css"
-
-
-
-// import '../../node_modules/@syncfusion/ej2-base/styles/material.css';
-// import '../../node_modules/@syncfusion/ej2-react-buttons/styles/material.css';
 import {Form} from 'reactstrap';
 
 class LoginAdminGener extends Component{
@@ -27,7 +21,10 @@ class LoginAdminGener extends Component{
      componentWillMount(){
         localStorage.removeItem("idadminGral")
         localStorage.removeItem("nombre")
-        localStorage.removeItem("apellidos")
+        localStorage.removeItem("apellido")
+        localStorage.removeItem("razonSocial")
+        localStorage.removeItem("rfc")
+        // localStorage.removeItem("telefono")       
         localStorage.removeItem("fk_paquetes")
         localStorage.removeItem("paquetesdeAdmonGral")
         localStorage.removeItem("Token")
@@ -49,21 +46,29 @@ class LoginAdminGener extends Component{
                 query:`
                 query{
                     loginAdminGeneral(data:"${[this.state.user,this.state.pass]}"){
-                       message
+                        message
                        id_adminG
                        nombre  
-                       apellido                                           
+                       apellido   
+                       razonSocial 
+                       rfc                                                                        
                        token
-                       fk_paquetes
+                       fk_paquetes  
                    } 
                 }
                 `
             }   
              }).then(response=>{
                  console.log( 'este es el response',response)
+                console.log("")
                 if(response.data.data.loginAdminGeneral.message=="login exitoso"){                    
                     localStorage.setItem("idadminGral",response.data.data.loginAdminGeneral.id_adminG)                    
-                    localStorage.setItem("nombre",response.data.data.loginAdminGeneral.nombre)                                    
+                    localStorage.setItem("nombre",response.data.data.loginAdminGeneral.nombre)   
+                    localStorage.setItem("apellido",response.data.data.loginAdminGeneral.apellido)
+                    localStorage.setItem("razonSocial",response.data.data.loginAdminGeneral.razonSocial)
+                    localStorage.setItem("rfc",response.data.data.loginAdminGeneral.rfc)
+                    // localStorage.setItem("telefono",response.data.data.LoginAdminGeneral.telefono)
+                   // localStorage.setItem("correo",response.data.data.loginAdminGeneral.correo)                                 
                     localStorage.setItem("Token",response.data.data.loginAdminGeneral.token)
                     // alert(`Bievenido ${response.data.data.login.nombre}`)
                     localStorage.setItem("fk_paquetes",response.data.data.loginAdminGeneral.fk_paquetes)
@@ -96,25 +101,33 @@ class LoginAdminGener extends Component{
      render(){
          return(
         <React.Fragment>
-            {/* <Paper elevation={3} style= {{width:350, height:400,marginLeft:750,marginTop:80}}>
-        <MDBRow >            
-            <MDBCol style={{marginLeft:50, marginTop:20,marginRight:50}} > 
-                <Form onSubmit={this.onSubmitBtn}  >
-                    <p className="h5 text-center mb-4">¡Bienvenido!</p>
-                        <br></br>  
-                    <div className="grey-text">
-                      <MDBInput 
-                            label="correo" 
-                            icon="envelope"              
+           <Grid justify="center"  alignItems="center">
+
+            <Paper elevation={3} style= {{width:350, height:400,marginLeft:750,marginTop:80}}>
+                <MDBRow>
+                    <MDBCol style={{marginLeft:50, marginTop:20,marginRight:50}}>
+                    <Form onSubmit={this.onSubmitBtn}  >
+                        <p className="h5 text-center mb-4">Bienvenido </p>
+                        <div className="grey-text">
+                        <MDBInput 
+                            icon="user" 
+                            group type="email" 
+                            validate error="wrong"
+                            success="right"
+                            label="correo"                          
                             type="email"
                             name="user"
                             id="user"
                             onChange={this.onChangeInput}
                             value={this.state.user}
-                            required                            
-                            />                            
-                      <MDBInput 
-                            label="contraseña"
+                            required   />
+                        
+                        <MDBInput
+                        label="Your password"
+                        icon="lock" 
+                        group type="password" 
+                        validate
+                        label="contraseña"
                             icon="lock"        
                             type="password"
                             name="password" 
@@ -122,70 +135,17 @@ class LoginAdminGener extends Component{
                             placeholder="password"
                             onChange={this.onChangeInput}
                             value={this.state.pass}
-                            required
-                            />                                    
-                            </div>                
-                       <div className="text-center">
-                        <MDBBtn color="primary" type="submit">Iniciar sesión</MDBBtn>
-                       </div>
-                </Form>
-            </MDBCol >  
-        </MDBRow>
-            </Paper>   */}
-            
-
-    
-                <Grid justify="center"
-  alignItems="center">
-
-            <Paper elevation={3} style= {{width:350, height:400,marginLeft:750,marginTop:80}}>
-  <MDBRow>
-    <MDBCol style={{marginLeft:50, marginTop:20,marginRight:50}}>
-    <Form onSubmit={this.onSubmitBtn}  >
-        <p className="h5 text-center mb-4">Bienvenido </p>
-        <div className="grey-text">
-          <MDBInput 
-            icon="user" 
-            group type="email" 
-            validate error="wrong"
-            success="right"
-            label="correo"                          
-            type="email"
-            name="user"
-            id="user"
-            onChange={this.onChangeInput}
-            value={this.state.user}
-            required   />
-          
-          <MDBInput
-           label="Your password"
-          icon="lock" 
-          group type="password" 
-          validate
-          label="contraseña"
-            icon="lock"        
-            type="password"
-            name="password" 
-            id="pass"
-            placeholder="password"
-            onChange={this.onChangeInput}
-            value={this.state.pass}
-            required />
-        </div>
-        <div className="text-center">
-          <MDBBtn outline color="success" type="submit">Iniciar sesión</MDBBtn>
-        </div>
-      </ Form  >
-    </MDBCol>
-  </MDBRow>
-  </Paper>
-  </Grid>
-
-
-
-
+                            required />
+                        </div>
+                        <div className="text-center">
+                        <MDBBtn outline color="success" type="submit">Iniciar sesión</MDBBtn>
+                        </div>
+                    </ Form  >
+                    </MDBCol>
+                </MDBRow>
+                </Paper>
+                </Grid>
         </React.Fragment>
         )
     }
-}
-export default LoginAdminGener
+}export default LoginAdminGener

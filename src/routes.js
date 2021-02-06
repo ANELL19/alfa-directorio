@@ -16,7 +16,8 @@ import dasboardAdmin from './component/administradores/dashboardAdmin'
 import LoginClientes from './component/clientes/LoginClientes'
 import RegistrarClientes from './component/administradores/registrarClientes'
 import checkToken  from '../src/component/resolvers/checkToken'
-import checkTokenVentasAlfa from '../src/component/resolvers/checkTokenVentasAlfa'
+import checkTokenAlfa from '../src/component/resolvers/checkTokenVentasAlfa'
+import navbarAdmin from './component/administradores/NavbarAdmin'
 import navbarAlfa from './component/panelVentasAlfa/NavbarDashboard'
 import loginAlfa from './component/panelVentasAlfa/loginAlfa'
 import dahboardAlfa from './component/panelVentasAlfa/dahboardAlfa'
@@ -29,18 +30,23 @@ import company from '../src/component/adminGeneral/empresas'
 class App extends Component{
 
 render(){
+  // const PrivateRoute = ({component:Component,...rest})=>(
+  //   <Route {...rest  } render={(props) => checkToken() === true ? <Component {...props}/> : <Redirect to="/"/>}/>
+  //     )
+
   const PrivateRoute = ({component:Component,...rest})=>(
     <Route {...rest  } render={(props)=> checkToken() === true ? <Component {...props}/> : <Redirect to="/"/>} />
       )
-  // conts PrivateRoutePanelAlfa = ({component:Component,...rest})=>(
-  //   <Route {...rest  } render={(props)=> checkTokenVentasAlfa() === true ? <Component {...props}/> : <Redirect to="/"/>} />
+
+  // const PrivateRouteAlfa = ({component:Component,...rest})=>(
+  //   <Route {...rest  } render={(props)=> (checkTokenAlfa() === true ? <Component {...props}/> : <Redirect to="/Alfa"/>)}/>
   // )  
   return(
 
     <Router>
     <Switch>
     <main>
-        
+        <Route exact path= "/navbarAdmin " component={navbarAdmin }/>
         <Route exact path = "/loginClientes" component ={LoginClientes}/> 
         <PrivateRoute exact path = "/registrarClientes" component ={RegistrarClientes}/>         
         <Route exact path= "/loginAdmin" component= {LoginAdmin}/>
@@ -57,13 +63,8 @@ render(){
         <Route exact path = "/dahboardAlfa" component={dahboardAlfa}/>
          <PrivateRoute exact path = "/navbarAlfa" component={navbarAlfa}/> 
         <PrivateRoute exact path = "/signupAdminG" component={signupAdminG}/>
-        <PrivateRoute exact path = "/signupAdminAlfa" component={signupAdminAlfa}/>
-   
+        <Route exact path = "/signupAdminAlfa" component={signupAdminAlfa}/>
         <Route component={PageNotFound}/> 
-
-
-
-
         
     </main>
        </Switch>          

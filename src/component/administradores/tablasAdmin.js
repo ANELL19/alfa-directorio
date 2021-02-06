@@ -5,16 +5,12 @@ import {MDBContainer,MDBBtn, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFoo
 import { Button,Table, ModalBody} from 'reactstrap';
 import axios from 'axios'
 
-
-
 class Tablas extends Component{
   constructor(props){
     super(props)
     this.state={
       tablas:[],      
-      modal1:false,
-
-     
+      modal1:false,     
       }
       this.toggle =this.toggle.bind(this)      
   }
@@ -151,11 +147,8 @@ class Tablas extends Component{
           
          return([rows.id_cliente,rows.nombre_cliente, rows.apellidos_cliente, rows.curp, rows.rfc, rows.nombreEmpresa, rows.telefono, rows.correo,botones])
         
-        })
-          
-         
-        
-           const options={ 
+        })      
+      const options={ 
         filterType:"drowpdawn",
         responsive: "stacked",
         textLabels:{

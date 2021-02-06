@@ -19,9 +19,8 @@ class signupAdmin extends Component{
             statusCorreo:""        
         } 
         this.regresar = this.regresar.bind(this)     
-    }   
+    } 
     
-
     regresar(){
         this.props.history.push("/dashbordAdminGral")
     } 
@@ -67,24 +66,17 @@ class signupAdmin extends Component{
     
                console.log("empresasRegistradas",empresasRegistradas,"empresasAutorizadas",empresasAutorizadas)
                
-               if(empresasRegistradas < empresasAutorizadas){   
-
-               
-                  const idAdminGral  = localStorage.getItem("idadminGral")
-                       
-                                             
-                  
-                  axios({
+               if(empresasRegistradas < empresasAutorizadas){                  
+                  const idAdminGral  = localStorage.getItem("idadminGral")                  
+                   axios({
                       url:API,
                       method:'post',
                       data:{
                           query:`
                          query{
                           signupAdmin(data:"${[this.state.nombre.toUpperCase(),this.state.apellidos.toUpperCase(),this.state.razonSocial.toUpperCase(), this.state.RFC.toUpperCase(),this.state.telefono.toUpperCase(),this.state.correo.toUpperCase(),this.state.contrasena,idAdminGral]}"){             
-                                
                                 message
-
-                               } 
+                              } 
                           }
                           `
                       }   
@@ -106,18 +98,12 @@ class signupAdmin extends Component{
                           content:"Algo salió mal"
                         }); 
                        }
-                      // console.log("data signup",response.data.data.pruebaUser.apellidos)
-                      // console.log("data signup",response.data.data.pruebaUser.razonSocial)
-                      // console.log("data signup",response.data.data.pruebaUser.rfc)
-
-                                         
-                          // window.location.reload();
+                     
                         })
                         
                    .catch(err=>{
                             console.log('error',err.response)
-                        })  
-                        
+                        }) 
                  } 
                  else  {
                   DialogUtility.alert({
@@ -227,7 +213,6 @@ render(){
           </MDBContainer>
           </Paper>
           </React.Fragment>
-    )
-}
-
-}export default signupAdmin
+        )
+    }
+ }export default signupAdmin

@@ -15,7 +15,8 @@ class Navbar extends Component {
     
  render(){
         return(
-            <MDBNavbar color="default-color" dark expand="md">
+          <React.Fragment>
+            <MDBNavbar color="info-color" >
               <MDBNavbarBrand>
 
               </MDBNavbarBrand>
@@ -23,20 +24,11 @@ class Navbar extends Component {
               <MDBCollapse id="navbarCollapse3" isOpen={this.state.isOpen} navbar>
                
                 <MDBNavbarNav left>
+                  <MDBNavItem active>
+                    <MDBNavLink  to="/signupAdminG">  Registrar Administradores </MDBNavLink>
+                  </MDBNavItem>                 
                   <MDBNavItem>
-                    <MDBNavLink className="waves-effect waves-light" to="/signupAdminG">
-                    Registrar administrador
-                    </MDBNavLink>
-                  </MDBNavItem>
-                  <MDBNavItem>
-                    <MDBNavLink className="waves-effect waves-light" to="#">
-                      Mis administradores 
-                    </MDBNavLink>
-                  </MDBNavItem>
-                  <MDBNavItem>
-                  </MDBNavItem>
-                  <MDBNavItem>
-                    <MDBNavLink className="waves-effect waves-light" to="/loginAlfa">
+                    <MDBNavLink  to="/loginAlfa">
                      Salir
                     </MDBNavLink>
                   </MDBNavItem>
@@ -44,6 +36,7 @@ class Navbar extends Component {
                 </MDBNavbarNav>
               </MDBCollapse>
             </MDBNavbar>
+            </React.Fragment>
         )
     }
 }

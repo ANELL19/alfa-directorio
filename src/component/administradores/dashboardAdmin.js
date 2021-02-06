@@ -1,6 +1,6 @@
 import React, { Component } from "react"
-import NavbarDashboard from './NavbarDashboard'
-import tablasAdmin from './tablasAdmin'
+ import NavbarAdmin from './NavbarAdmin'
+ import TablasAdmin from './tablasAdmin'
 
 class dashboardAdmin extends Component{
   constructor(props){
@@ -17,12 +17,9 @@ class dashboardAdmin extends Component{
        const rs = localStorage.getItem("razonSocial");     
         return(
             <React.Fragment>
-             <NavbarDashboard data={rs}/>
-             {/* <TablasAdmin/> */}
-             <tablasAdmin/>
-             
-        </React.Fragment>
-
+                <NavbarAdmin data={rs}/> 
+                <TablasAdmin/>               
+            </React.Fragment>
         )
     }
 } export default dashboardAdmin

@@ -6,9 +6,6 @@ import'mdbreact/dist/css/mdb.css';
 import {  MDBRow, MDBCol, MDBInput, MDBBtn} from 'mdbreact';
 import Paper from '@material-ui/core/Paper';
 import { DialogUtility } from '@syncfusion/ej2-popups';
-
-// import '../../node_modules/@syncfusion/ej2-base/styles/material.css';
-// import '../../node_modules/@syncfusion/ej2-react-buttons/styles/material.css';
 import {Form} from 'reactstrap';
 
 class LoginAdmin extends Component{
@@ -27,6 +24,7 @@ class LoginAdmin extends Component{
         localStorage.removeItem("RFC")
         localStorage.removeItem("telefono")
         localStorage.removeItem("correo")
+        localStorage.removeItem("statusCorreo")
         localStorage.removeItem("Token")
 
     }
@@ -67,7 +65,7 @@ class LoginAdmin extends Component{
                     localStorage.setItem("razonSocial",response.data.data.login.razonSocial)
                     localStorage.setItem("telefono",response.data.data.login.telefono)
                     localStorage.setItem("correo",response.data.data.login.correo)
-                    localStorage.setItem("statusCorreo",response.data.data.login.statusCorreo)                
+                  //  localStorage.setItem("statusCorreo",response.data.data.login.statusCorreo)                
                     localStorage.setItem("Token",response.data.data.login.token)
                     // alert(`Bievenido ${response.data.data.login.nombre}`)
                     DialogUtility.alert({
