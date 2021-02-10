@@ -87,6 +87,7 @@ class dashboardAlfa extends Component{
 
          let array = [];
          array.push(response.data.data.getAdminGral[0])
+         console.log("algo",array)
          this.setState({detallesAdminGral:array})
         this.setState({
           modal: !this.state.modal

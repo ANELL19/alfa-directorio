@@ -7,7 +7,7 @@ import dashboardAdminGral from './component/adminGeneral/dahboardAdminG'
 import navbarAdminGral from '../src/component/adminGeneral/navbarDashboard'
 import signupAdmin from './component/adminGeneral/signupAdmin'
 import validation from '../src/component/adminGeneral/validation'
-
+import checkTokenAdmin from '../src/component/resolvers/checkTokenAdmin'
 
 
 import LoginAdmin from './component/administradores/loginAdmin'
@@ -25,14 +25,14 @@ import signupAdminAlfa from './component/panelVentasAlfa/signupPanelAlfa'
 import signupAdminG from './component/panelVentasAlfa/signupAdminG'
 import company from '../src/component/adminGeneral/empresas'
  import PageNotFound from './component/PageNotFound/PageNotFound';
-
+import modalLoginAdmin from './component/adminGeneral/modal'
 
 class App extends Component{
 
 render(){
-  // const PrivateRoute = ({component:Component,...rest})=>(
-  //   <Route {...rest  } render={(props) => checkToken() === true ? <Component {...props}/> : <Redirect to="/"/>}/>
-  //     )
+  const PrivateRouteAdmin = ({component:Component,...rest})=>(
+    <Route {...rest  } render={(props) => checkTokenAdmin() === true ? <Component {...props}/> : <Redirect to="/loginAdmin"/>}/>
+      )
 
   const PrivateRoute = ({component:Component,...rest})=>(
     <Route {...rest  } render={(props)=> checkToken() === true ? <Component {...props}/> : <Redirect to="/"/>} />
@@ -46,25 +46,29 @@ render(){
     <Router>
     <Switch>
     <main>
-        <Route exact path= "/navbarAdmin " component={navbarAdmin }/>
-        <Route exact path = "/loginClientes" component ={LoginClientes}/> 
-        <PrivateRoute exact path = "/registrarClientes" component ={RegistrarClientes}/>         
+        <PrivateRouteAdmin exact path= "/navbarAdmin " component={navbarAdmin }/>
+        <PrivateRouteAdmin exact path = "/registrarClientes" component ={RegistrarClientes}/>         
         <Route exact path= "/loginAdmin" component= {LoginAdmin}/>
-        <PrivateRoute exact path= "/signupadmin" component= {signupAdmin}/>
-        <PrivateRoute exact path= "/dasboardAdmin" component= {dasboardAdmin}/>
-        <Route exact path= "/" component= {LoginAdminG}/>
-        <PrivateRoute exact path= "/tablasAdmin" component={TablasAdmin}/> 
+        <PrivateRouteAdmin exact path= "/dasboardAdmin" component= {dasboardAdmin}/>
+        <PrivateRouteAdmin exact path= "/tablasAdmin" component={TablasAdmin}/> 
         
         <PrivateRoute exact path = "/dashbordAdminGral" component={dashboardAdminGral}/>
         <PrivateRoute exact path = "/navbarAdminGral" component={navbarAdminGral}/>
         <PrivateRoute exact path = "/companyAdminGral" component={company}/>
+        <PrivateRoute exact path = "/modalLoginAdmin" component={modalLoginAdmin}/>
+        <PrivateRoute exact path= "/signupadmin" component= {signupAdmin}/>
+        <Route exact path= "/" component= {LoginAdminG}/>
 
+        
         <Route exact path = "/loginAlfa" component={loginAlfa}/>
         <Route exact path = "/dahboardAlfa" component={dahboardAlfa}/>
          <PrivateRoute exact path = "/navbarAlfa" component={navbarAlfa}/> 
         <PrivateRoute exact path = "/signupAdminG" component={signupAdminG}/>
         <Route exact path = "/signupAdminAlfa" component={signupAdminAlfa}/>
         <Route component={PageNotFound}/> 
+
+        <Route exact path = "/loginClientes" component ={LoginClientes}/> 
+
         
     </main>
        </Switch>          
