@@ -6,9 +6,6 @@ import'mdbreact/dist/css/mdb.css';
 import {  MDBRow, MDBCol, MDBInput, MDBBtn} from 'mdbreact';
 import Paper from '@material-ui/core/Paper';
 import { DialogUtility } from '@syncfusion/ej2-popups';
-
-// import '../../node_modules/@syncfusion/ej2-base/styles/material.css';
-// import '../../node_modules/@syncfusion/ej2-react-buttons/styles/material.css';
 import {Form} from 'reactstrap';
 
 class loginAlfa extends Component{
@@ -55,13 +52,13 @@ class loginAlfa extends Component{
                 `
             }   
              }).then(response=>{
-                 console.log( 'este es el response',response)
+             console.log( 'este es el response',response)
                 if(response.data.data.loginAdminAlfa.message=="login exitoso"){                    
                     localStorage.setItem("id",response.data.data.loginAdminAlfa.id)                    
                     localStorage.setItem("nombre",response.data.data.loginAdminAlfa.nombre)   
                     localStorage.setItem("apellido",response.data.data.loginAdminAlfa.apellido) 
                     localStorage.setItem("correo",response.data.data.loginAdminAlfa.correo)                                
-                    localStorage.setItem("Token",response.data.data.loginAdminAlfa.token)
+                    localStorage.setItem("TokenVentasAlfa",response.data.data.loginAdminAlfa.token)
                     // alert(`Bievenido ${response.data.data.login.nombre}`)
                     // localStorage.setItem("fk_paquetes",response.data.data.loginAdminGeneral.fk_paquetes)
 

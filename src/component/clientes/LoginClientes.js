@@ -64,7 +64,7 @@ class LoginClientes extends Component{
                     localStorage.setItem("nombre_cliente",response.data.data.login.nombre_cliente)
                     localStorage.setItem("apellidos_cliente",response.data.data.login.apellidos_cliente)
                     localStorage.setItem("nombreEmpresa",response.data.data.login.nombreEmpresa)
-                    // localStorage.setItem("Token",response.data.data.login.token)
+                   // localStorage.setItem("TokenClient",response.data.data.login.token)
                     alert(`Bievenido ${response.data.data.login.nombre}`)
                     this.props.history.push("/")
 

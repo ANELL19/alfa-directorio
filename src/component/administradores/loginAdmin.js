@@ -3,7 +3,7 @@ import React,{Component} from 'react'
 import '@fortawesome/fontawesome-free/css/all.min.css';
  import'bootstrap-css-only/css/bootstrap.min.css'; 
 import'mdbreact/dist/css/mdb.css';
-import {  MDBRow, MDBCol, MDBInput, MDBBtn} from 'mdbreact';
+import {  MDBAlert,MDBRow, MDBCol, MDBInput, MDBBtn} from 'mdbreact';
 import Paper from '@material-ui/core/Paper';
 import { DialogUtility } from '@syncfusion/ej2-popups';
 import {Form} from 'reactstrap';
@@ -66,7 +66,7 @@ class LoginAdmin extends Component{
                     localStorage.setItem("telefono",response.data.data.login.telefono)
                     localStorage.setItem("correo",response.data.data.login.correo)
                   //  localStorage.setItem("statusCorreo",response.data.data.login.statusCorreo)                
-                    localStorage.setItem("Token",response.data.data.login.token)
+                    localStorage.setItem("TokenAdmin",response.data.data.login.token)
                     // alert(`Bievenido ${response.data.data.login.nombre}`)
                     DialogUtility.alert({
                         title:'Bienvenido' ,
@@ -99,9 +99,12 @@ class LoginAdmin extends Component{
             <Paper elevation={3} style= {{width:350, height:400,marginLeft:750,marginTop:80}}>
         <MDBRow >            
             <MDBCol style={{marginLeft:50, marginTop:20,marginRight:50}} > 
-                <Form onSubmit={this.onSubmitBtn}  >
-                    <p className="h5 text-center mb-4">¡Bienvenido!</p>
-                        <br></br>  
+                <Form onSubmit={this.onSubmitBtn}  >           
+      
+                    <p className="h5 text-center mb-4">¡Bienvenido Administrador!</p>
+                   
+                        <br></br>
+
                     <div className="grey-text">
                       <MDBInput 
                             label="correo" 

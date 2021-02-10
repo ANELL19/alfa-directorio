@@ -107,7 +107,7 @@ class LoginAdminGener extends Component{
                 <MDBRow>
                     <MDBCol style={{marginLeft:50, marginTop:20,marginRight:50}}>
                     <Form onSubmit={this.onSubmitBtn}  >
-                        <p className="h5 text-center mb-4">Bienvenido </p>
+                        <p className="h5 text-center mb-4">Bienvenido Administrador General </p>
                         <div className="grey-text">
                         <MDBInput 
                             icon="user" 
