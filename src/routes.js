@@ -26,7 +26,6 @@ import dahboardAlfa from './component/panelVentasAlfa/dahboardAlfa'
 import signupAdminAlfa from './component/panelVentasAlfa/signupPanelAlfa'
 import signupAdminG from './component/panelVentasAlfa/signupAdminG'
 import company from '../src/component/adminGeneral/empresas'
-// import PageNotFound from './component/PageNotFound/PageNotFound';
 
 
 class App extends Component{
@@ -55,7 +54,9 @@ render(){
         <PrivateRouteAlfa exact path = "/dahboardAlfa" component={dahboardAlfa}/>
         <PrivateRouteAlfa exact path = "/navbarAlfa" component={navbarAlfa}/> 
         <PrivateRouteAlfa exact path = "/signupAdminG" component={signupAdminG}/>
-        <PrivateRouteAlfa exact path = "/signupAdminAlfa" component={signupAdminAlfa}/>        
+        <PrivateRouteAlfa exact path = "/signupAdminAlfa" component={signupAdminAlfa}/> 
+        
+      
         
         <Route  exact path= "/" component= {LoginAdminG}/> 
         <PrivateRoute exact path = "/dashbordAdminGral" component={dashboardAdminGral}/>
@@ -69,10 +70,9 @@ render(){
         <PrivateRouteAdmin exact path= "/navbarAdmin " component={navbarAdmin }/>
         <PrivateRouteAdmin exact path = "/registrarClientes" component ={RegistrarClientes}/>         
         <PrivateRouteAdmin exact path= "/tablasAdmin" component={TablasAdmin}/> 
-
         
-     {/* <Route  component={PageNotFound}/>   */}
-
+        
+     
 
         <Route exact path = "/LoginClientes" component ={LoginClientes}/> 
         {/* <PrivateRouteClient/> */}
