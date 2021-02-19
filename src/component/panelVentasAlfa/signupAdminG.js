@@ -1,12 +1,12 @@
 import React, {Component} from 'react'
 import Paper from '@material-ui/core/Paper';
 import { CardBody, Label,Form,Row,Col,Alert} from 'reactstrap';
-import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBInput,MDBCard, MDBCardBody, MDBCardHeader } from 'mdbreact';
+import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBInput,MDBCard,MDBAlert, MDBCardBody, MDBCardHeader } from 'mdbreact';
 import { DialogUtility } from '@syncfusion/ej2-popups';
 import axios from 'axios'
 import {  FormGroup, Input } from 'reactstrap';
 import { DesktopWindows } from '@material-ui/icons';
-import NavbarDashboard from './NavbarDashboard'
+import Navbar from './navbar'
 class signupAdminG extends Component{
     constructor(props){
         super(props)
@@ -136,13 +136,18 @@ class signupAdminG extends Component{
 render(){
     return(
         <React.Fragment>
-          <NavbarDashboard/>
+          <Navbar/>
           <div style={{marginTop:"2%"}}>
           <MDBCol md="10">
           <MDBCard narrow style={{width:"80%",heigth:"60%"}}  >
-                            <MDBCardHeader className="view view-cascade gradient-card-header blue-gradient d-flex justify-content-between align-items-center py-3 mx-5 mb-4">
+                            {/* <MDBCardHeader className="view view-cascade gradient-card-header blue-gradient d-flex justify-content-between align-items-center py-3 mx-5 mb-4">
                             <h6 className="mt-2"><strong>Datos del cliente</strong></h6>
-                            </MDBCardHeader>
+                            </MDBCardHeader> */}
+                               <MDBAlert color="primary"  className="h5 text-center mb-4" >
+       
+      
+                               <strong>Datos del cliente</strong>
+       </MDBAlert>
                             <MDBCardBody>
                             <Form onSubmit={this.onSubmitBtn}>   
 
@@ -154,11 +159,11 @@ render(){
 electrónico</h6></p>
 <br /> */}
 
-        <label htmlFor="nombre" className="grey-text">
+        <label htmlFor="nombre" >
          Nombre (s):
         </label>
         <input 
-            icon="user"	
+          
             id="nombre"
             type="text"
             name="nombres"
@@ -169,7 +174,7 @@ electrónico</h6></p>
            </MDBCol>
            <MDBCol md="3" className="mb-3"> 
 
-        <label htmlFor="defaultFormLoginPasswordEx" className="grey-text">
+        <label htmlFor="defaultFormLoginPasswordEx" >
          Apellidos:
         </label>
         <input  
@@ -185,7 +190,7 @@ electrónico</h6></p>
               <MDBCol md="3" className="mb-3"> 
 
        
-        <label htmlFor="defaultFormLoginPasswordEx" className="grey-text">
+        <label htmlFor="defaultFormLoginPasswordEx" >
          Razon social:
         </label>
         <input 
@@ -200,7 +205,7 @@ electrónico</h6></p>
            
            </MDBCol>
            <MDBCol md="3" className="mb-3">   
-        <label htmlFor="defaultFormLoginPasswordEx" className="grey-text">
+        <label htmlFor="defaultFormLoginPasswordEx" >
          RFC:
         </label>
         <input            
@@ -217,7 +222,7 @@ electrónico</h6></p>
 
         <MDBRow>
         <MDBCol md="3" className="mb-3">    
-        <label htmlFor="defaultFormLoginPasswordEx" className="grey-text">
+        <label htmlFor="defaultFormLoginPasswordEx" >
          Telefono:
         </label>
         <input 
@@ -232,7 +237,7 @@ electrónico</h6></p>
         />
         </MDBCol>
         <MDBCol md="3" className="mb-3">   
-        <label htmlFor="defaultFormLoginEmailEx" className="grey-text">
+        <label htmlFor="defaultFormLoginEmailEx" >
          Correo:
         </label>
         <input   
@@ -246,7 +251,7 @@ electrónico</h6></p>
             className="form-control" />
             </MDBCol>
             <MDBCol md="3" className="mb-3">   
-        <label htmlFor="defaultFormLoginPasswordEx" className="grey-text">
+        <label htmlFor="defaultFormLoginPasswordEx" >
          Contraseña:
         </label>
         <input
@@ -286,10 +291,10 @@ electrónico</h6></p>
          <MDBCol md="3" className="mb-3"></ MDBCol>
           
         <MDBCol md="3" className="mb-3">      
-          <MDBBtn  outline color="info"   type="submit"> Guardar</MDBBtn>
+          <MDBBtn   color="info"   type="submit"> Guardar</MDBBtn>
           </MDBCol>
           <MDBCol md="3" className="mb-3"> 
-          <MDBBtn outline color="danger"   onClick={this.regresar} type="submit">Cancelar</MDBBtn>
+          <MDBBtn  color="secondary"   onClick={this.regresar} type="submit">Cancelar</MDBBtn>
            </MDBCol>
          
         </MDBRow>

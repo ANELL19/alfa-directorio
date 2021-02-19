@@ -3,10 +3,10 @@ import React,{Component} from 'react'
 import '@fortawesome/fontawesome-free/css/all.min.css';
  import'bootstrap-css-only/css/bootstrap.min.css'; 
 import'mdbreact/dist/css/mdb.css';
-import {  MDBRow, MDBCol, MDBInput, MDBBtn} from 'mdbreact';
+import {  MDBRow, MDBCol, MDBInput, MDBBtn,MDBAlert} from 'mdbreact';
 import Paper from '@material-ui/core/Paper';
 import { DialogUtility } from '@syncfusion/ej2-popups';
-import {Form} from 'reactstrap';
+import {Form,FormGroup,Label,Col,Input} from 'reactstrap';
 
 class loginAlfa extends Component{
     constructor(props){
@@ -21,7 +21,7 @@ class loginAlfa extends Component{
         localStorage.removeItem("nombre")
         localStorage.removeItem("apellido")
         localStorage.removeItem("correo")
-        localStorage.removeItem("Token")
+        localStorage.removeItem("TokenVentasAlfa")
 
     }
     onChangeInput =(e)=>{
@@ -90,38 +90,53 @@ class loginAlfa extends Component{
      render(){
          return(
         <React.Fragment>
-            <Paper elevation={3} style= {{width:350, height:400,marginLeft:750,marginTop:80}}>
+            <Paper elevation={3} style= {{width:450, height:350,marginLeft:700,marginTop:80}}>
         <MDBRow >            
-            <MDBCol style={{marginLeft:50, marginTop:20,marginRight:50}} > 
+            <MDBCol style={{marginLeft:20, marginTop:20,marginRight:20}}> 
                 <Form onSubmit={this.onSubmitBtn}  >
-                    <p className="h5 text-center mb-4">¡Bienvenido!</p>
-                        <br></br>  
-                    <div className="grey-text">
-                      <MDBInput 
-                            label="correo" 
-                            icon="envelope"              
-                            type="email"
-                            name="user"
-                            id="user"
-                            onChange={this.onChangeInput}
-                            value={this.state.user}
-                            required                            
-                            />                            
-                      <MDBInput 
-                            label="contraseña"
-                            icon="lock"        
-                            type="password"
-                            name="password" 
-                            id="pass"
-                            placeholder="password"
-                            onChange={this.onChangeInput}
-                            value={this.state.pass}
-                            required
-                            />                                    
-                            </div>                
-                       <div className="text-center">
-                        <MDBBtn color="primary" type="submit">Iniciar sesión</MDBBtn>
-                       </div>
+                <MDBAlert color="primary"  className="h5 text-center mb-4" >
+       
+      
+                    <strong>Administrador Alfa</strong>
+                    </MDBAlert>
+                       <br></br>  
+               
+
+                <FormGroup row>
+                    <Label for="correo" sm={3} size="lg">Correo</Label>
+                        <Col sm={9}>
+                        <Input 
+                                type="email"
+                                name="user"
+                                id="user" 
+                                placeholder="example@.com" 
+                                bsSize="lg" 
+                                onChange={this.onChangeInput}                           
+                                value={this.state.user}
+                                required  
+                            />
+                        </Col>
+                </FormGroup>
+                    
+                <FormGroup row>
+                    <Label for="contraseña" sm={3} size="lg">Contraseña</Label>
+                        <Col sm={9}>
+                        <Input 
+                                type="password" 
+                                name="password" 
+                                id="pass" 
+                                placeholder="contraseña" 
+                                bsSize="lg" 
+                                onChange={this.onChangeInput}
+                                value={this.state.pass}
+                                required 
+                        />
+                        </Col>
+                </FormGroup>
+                            <div className="text-center">
+                                <MDBBtn color="info" type="submit">Iniciar sesión</MDBBtn>
+                            </div>
+
                 </Form>
             </MDBCol >  
         </MDBRow>

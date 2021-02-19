@@ -2,6 +2,8 @@ import React,{Component} from 'react';
 import {BrowserRouter as Router , Switch ,Route, Redirect} from 'react-router-dom'
 
 import './App.css';
+import index from './component/PageNotFound/depuracionbd'
+
 import checkTokenAdmin from '../src/component/resolvers/checkTokenAdmin'
 import checkToken  from '../src/component/resolvers/checkToken'
 import checkTokenAlfa from '../src/component/resolvers/checkTokenVentasAlfa'
@@ -20,14 +22,13 @@ import dasboardAdmin from './component/administradores/dashboardAdmin'
 import LoginClientes from './component/clientes/LoginClientes'
 import RegistrarClientes from './component/administradores/registrarClientes'
 import navbarAdmin from './component/administradores/NavbarAdmin'
-import navbarAlfa from './component/panelVentasAlfa/NavbarDashboard'
+import Navbar from './component/panelVentasAlfa/navbar'
 import loginAlfa from './component/panelVentasAlfa/loginAlfa'
 import dahboardAlfa from './component/panelVentasAlfa/dahboardAlfa'
 import signupAdminAlfa from './component/panelVentasAlfa/signupPanelAlfa'
 import signupAdminG from './component/panelVentasAlfa/signupAdminG'
 import company from '../src/component/adminGeneral/empresas'
-
-
+import modalAlfa from './component/panelVentasAlfa/modalAlfa'
 class App extends Component{
 
 render(){
@@ -50,13 +51,16 @@ render(){
     <Router>
     <Switch>
       <main>
+
+        <Route  exact path = "/index" component={index}/>
+
         <Route exact path = "/loginAlfa" component={loginAlfa}/>
         <PrivateRouteAlfa exact path = "/dahboardAlfa" component={dahboardAlfa}/>
-        <PrivateRouteAlfa exact path = "/navbarAlfa" component={navbarAlfa}/> 
+        <PrivateRouteAlfa exact path = "/navbar" component={Navbar}/> 
         <PrivateRouteAlfa exact path = "/signupAdminG" component={signupAdminG}/>
         <PrivateRouteAlfa exact path = "/signupAdminAlfa" component={signupAdminAlfa}/> 
-        
-      
+        <PrivateRouteAlfa exact path = "/modal" component={modalAlfa}/> 
+       
         
         <Route  exact path= "/" component= {LoginAdminG}/> 
         <PrivateRoute exact path = "/dashbordAdminGral" component={dashboardAdminGral}/>

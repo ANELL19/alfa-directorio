@@ -24,7 +24,8 @@ class LoginAdminGener extends Component{
         localStorage.removeItem("apellido")
         localStorage.removeItem("razonSocial")
         localStorage.removeItem("rfc")
-        // localStorage.removeItem("telefono")       
+        // localStorage.removeItem("telefono")     
+        localStorage.removeItem("correo")  
         localStorage.removeItem("fk_paquetes")
         localStorage.removeItem("paquetesdeAdmonGral")
         localStorage.removeItem("Token")
@@ -51,7 +52,8 @@ class LoginAdminGener extends Component{
                        nombre  
                        apellido   
                        razonSocial 
-                       rfc                                                                        
+                       rfc 
+                       correo                                                                       
                        token
                        fk_paquetes  
                    } 
@@ -68,7 +70,7 @@ class LoginAdminGener extends Component{
                     localStorage.setItem("razonSocial",response.data.data.loginAdminGeneral.razonSocial)
                     localStorage.setItem("rfc",response.data.data.loginAdminGeneral.rfc)
                     // localStorage.setItem("telefono",response.data.data.LoginAdminGeneral.telefono)
-                   // localStorage.setItem("correo",response.data.data.loginAdminGeneral.correo)                                 
+                    localStorage.setItem("correo",response.data.data.loginAdminGeneral.correo)                                 
                     localStorage.setItem("Token",response.data.data.loginAdminGeneral.token)
                     // alert(`Bievenido ${response.data.data.login.nombre}`)
                     localStorage.setItem("fk_paquetes",response.data.data.loginAdminGeneral.fk_paquetes)

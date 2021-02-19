@@ -8,9 +8,6 @@ import {  MDBRow, MDBCol, MDBInput } from 'mdbreact';
 import { CardBody, Label,Form,Row,Col,Alert} from 'reactstrap';
 import modalLoginAdmin from './modal'
 import { DialogUtility } from '@syncfusion/ej2-popups';
-
-
-
 import axios from 'axios'
 
 
@@ -152,22 +149,24 @@ class Empresas extends Component{
                         });
                        
                         this.props.history.push("/dasboardAdmin")
-                    }
-                    else if(response.data.data.loginModalAdmin.message=="usuario y contraseña incorrecto"){
+                    }else 
+                    //  (response.data.data.loginModalAdmin.message=="usuario y contraseña incorrecto")
+                     {
                         // alert("usuario y contraseña incorrectos")
                         DialogUtility.alert({
-                            title: 'usuario y contraseña incorrectos'
-                           
+                            title: ' contraseña incorrectos',
+                            position: "fixed"
+          
                         });
-                        
-                    }else {
-                      //  alert("Algo salio mal, por favor vuelva a intentarlo")
-                        DialogUtility.alert({
-                            title: 'Algo salio mal, por favor vuelva a intentarlo'                       
-                        });
+                      
                     }
-                 })
-                 .catch(err=>{
+                    // else {
+                    //   //  alert("Algo salio mal, por favor vuelva a intentarlo")
+                    //     DialogUtility.alert({
+                    //         title: 'Algo salio mal, por favor vuelva a intentarlo'                       
+                    //     });
+                    // }
+                 }).catch(err=>{
                      console.log('error',err.response)
                  })
               
@@ -198,62 +197,53 @@ class Empresas extends Component{
        //    console.log("estado",this.state.datos) 
             data = this.state.datos.map(rows=>{
               boton = <div><MDBBtn size="sm"  onClick={(e)=>this.modal(rows)}>información</MDBBtn></div> 
-        //      modal= <MDBContainer>
-        //         <MDBBtn onClick={this.toggle}>Modal</MDBBtn> 
-        //       <MDBModal size="lg" isOpen={this.state.modal12} >
-        //         <MDBModalHeader >información</MDBModalHeader>
-        //         <font   size="1" face="arial">
-        //         <MDBModalBody>
+          
+          modal= <MDBContainer>
+              
+              <MDBModal  isOpen={this.state.modal12} >
+                <MDBModalHeader >Iniciar sesión</MDBModalHeader>
+                <font   size="1" face="arial">
+                <MDBModalBody>
 
-        //         <MDBRow >            
-        //     <MDBCol > 
-        //         <Form onSubmit={this.onSubmitBtn}  >
-        //             <p className="h5 text-center mb-4">¡Bienvenido!</p>
-        //                 <br></br>  
-        //             <div className="grey-text">
-                                               
-        //               <MDBInput 
-        //                     label="contraseña"
-        //                     icon="lock"        
-        //                     type="password"
-        //                     name="password" 
-        //                     id="pass"
-        //                     placeholder="password"
-        //                     onChange={this.onChangeInput}
-        //                     value={this.state.pass}
-        //                     required
-        //                     />                                    
-        //                     </div>                
-        //                <div className="text-center">
-        //                 <MDBBtn color="primary" type="submit">Iniciar sesión</MDBBtn>
-        //                </div>
-        //         </Form>
-        //     </MDBCol >  
-        // </MDBRow>
+                <MDBRow >            
+            <MDBCol > 
+                <Form onSubmit={this.onSubmitBtn}  >
+                    <p className="h5 text-center mb-4">Correo Administrador {this.state.correoAdmin}</p>
+                        <br></br>
+                        
+                    <div className="grey-text" style={{marginRight:10, marginLeft:100}}>
+                    <MDBCol  md="9">                 
+                      <MDBInput 
+                            label="contraseña"
+                            icon="lock"        
+                            type="password"
+                            name="password" 
+                            id="pass"
+                            placeholder="password"
+                            onChange={this.onChangeInput}
+                            value={this.state.pass}
+                            required
+                            />   
+                             </MDBCol >                                  
+                            </div> 
+                                          
+                       <div className="text-center">
+                        <MDBBtn color="primary" size="sm" type="submit">Iniciar sesión</MDBBtn>
+                        <MDBBtn color="secondary" size="sm" onClick={(e) => this.setState({modal12:false})}>Cerrrar</MDBBtn>
+                       </div>
+                </Form>
+            </MDBCol >  
+        </MDBRow>
                      
-        //         </MDBModalBody> 
-        //         </font>
-        //         <MDBModalFooter>
-        //           <MDBBtn color="secondary" size="sm" onClick={(e) => this.setState({modal12:false})}>Cerrrar</MDBBtn>
-        //         </MDBModalFooter>
-        //       </MDBModal>
-        //     </MDBContainer>
-
-
-//*********************************
-modal=<MDBContainer>
-<MDBBtn onClick={this.toggle}>Modal</MDBBtn>
-<MDBModal size="lg" isOpen={this.state.modal12}>
-  <MDBModalHeader toggle={this.toggle}>MDBModal title</MDBModalHeader>
-  <MDBModalBody>
-    (...)
-  </MDBModalBody>
-  <MDBModalFooter>
-    <MDBBtn color="secondary" onClick={this.toggle}>Close</MDBBtn>
-    <MDBBtn color="primary" type="submit">iniciar sesion</MDBBtn>
-  </MDBModalFooter>
-</MDBModal>
-</MDBContainer>        
+                </MDBModalBody> 
+                </font>
+                <MDBModalFooter>
+                  {/* <MDBBtn color="secondary" size="sm" onClick={(e) => this.setState({modal12:false})}>Cerrrar</MDBBtn> */}
+                </MDBModalFooter>
+              </MDBModal>
+            </MDBContainer>
+          
+     
             
             return([rows.id_admin,rows.nombre, rows.apellidos, rows.rfc, rows.razonSocial, rows.telefono, rows.correo,boton])
           })
@@ -309,8 +299,7 @@ modal=<MDBContainer>
                   columns={columns} 
                   options={options} 
                 />
-      {modal}
-      
+             {modal}      
                 </div>
         </React.Fragment>
         )

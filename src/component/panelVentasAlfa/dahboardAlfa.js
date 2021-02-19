@@ -1,11 +1,11 @@
 import React, { Component } from "react"
-import Navbar from './NavbarDashboard'
+
 import { MDBBtn} from 'mdbreact';
 // import { Button, Modal,ModalHeader,ModalTitle,ModalBody } from 'react-bootstrap';
 
 import { MDBContainer, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter } from 'mdbreact';
 
-
+import Navbar from './navbar'
 import MUIDataTable from "mui-datatables";
 
 // import tablasAdmin from './tablasAdmin'
@@ -120,7 +120,8 @@ class dashboardAlfa extends Component{
       
       if(this.state.datos[0]){
          data = this.state.datos[0].map(rows=>{
-          boton = <div><MDBBtn size="md" color="primary" onClick={e=> this.consultarAdminG(rows.fk_adminG)}>Detalles</MDBBtn></div>
+
+          boton = <div><MDBBtn size="md" color="info" onClick={e=> this.consultarAdminG(rows.fk_adminG)}>Detalles</MDBBtn></div>
                 return([rows.idVentas,rows.fk_adminG, rows.fk_paquete, rows.fechaVenta,boton])
   
         } )
@@ -198,6 +199,7 @@ class dashboardAlfa extends Component{
         return(
             <React.Fragment>
              <Navbar/>
+             
              <div  style={{width:1200,marginLeft:"6%",marginTop:"2%",marginBottom:"2%"}} >
                {/* <MuiThemeProvider theme= {this.getMuiTheme()}> */}
                 <MUIDataTable  
