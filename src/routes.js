@@ -8,6 +8,7 @@ import checkTokenAdmin from '../src/component/resolvers/checkTokenAdmin'
 import checkToken  from '../src/component/resolvers/checkToken'
 import checkTokenAlfa from '../src/component/resolvers/checkTokenVentasAlfa'
 import checkTokenClient from '../src/component/resolvers/checkTokenclient'
+import checkTokenSigPanelAlfa from '../src/component/resolvers/checkTokenSigPanelAlfa'
 
 import LoginAdminG from './component/adminGeneral/loginadminG'
 import dashboardAdminGral from './component/adminGeneral/dahboardAdminG'
@@ -28,7 +29,8 @@ import dahboardAlfa from './component/panelVentasAlfa/dahboardAlfa'
 import signupAdminAlfa from './component/panelVentasAlfa/signupPanelAlfa'
 import signupAdminG from './component/panelVentasAlfa/signupAdminG'
 import company from '../src/component/adminGeneral/empresas'
-import modalAlfa from './component/panelVentasAlfa/modalAlfa'
+
+
 class App extends Component{
 
 render(){
@@ -45,7 +47,13 @@ render(){
   )  
   // const PrivateRouteClient = ({component:Component,...rest})=>(
   //   <Route {...rest  } render={(props)=> checkTokenClient() === true ? <Component {...props}/> : <Redirect to="/loginClient"/>}/>
-  // )  
+  // ) 
+
+  const PrivateRoutePanelAlfa = ({component:Component,...rest})=>(
+    <Route {...rest  } render={(props)=> checkTokenSigPanelAlfa() === true ? <Component {...props}/> : <Redirect to= "/signupAdminAlfa" />}/>
+  )  
+ 
+
   return(
 
     <Router>
@@ -58,8 +66,9 @@ render(){
         <PrivateRouteAlfa exact path = "/dahboardAlfa" component={dahboardAlfa}/>
         <PrivateRouteAlfa exact path = "/navbar" component={Navbar}/> 
         <PrivateRouteAlfa exact path = "/signupAdminG" component={signupAdminG}/>
-        <PrivateRouteAlfa exact path = "/signupAdminAlfa" component={signupAdminAlfa}/> 
-        <PrivateRouteAlfa exact path = "/modal" component={modalAlfa}/> 
+      
+        <PrivateRoutePanelAlfa exact path = "/signupAdminAlfa" component={signupAdminAlfa}/> 
+        
        
         
         <Route  exact path= "/" component= {LoginAdminG}/> 

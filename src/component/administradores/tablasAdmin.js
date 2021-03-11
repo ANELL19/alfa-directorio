@@ -2,15 +2,17 @@ import React,{Component} from 'react'
 import MUIDataTable from "mui-datatables";
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import {MDBContainer,MDBBtn, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter} from 'mdbreact'
-import { Button,Table, ModalBody} from 'reactstrap';
+import { Button,Table, ModalBody,} from 'reactstrap';
 import axios from 'axios'
-
 class Tablas extends Component{
+
   constructor(props){
     super(props)
     this.state={
       tablas:[],      
-      modal1:false,     
+      modal1:false,  
+      datos:[],
+      
       }
       this.toggle =this.toggle.bind(this)      
   }
@@ -39,10 +41,12 @@ class Tablas extends Component{
     }
     })
     
-  componentWillMount(){
-  
+  async componentWillMount(){
+    let array =  []
+    let arrayApi =  []
+ 
     const API='http://localhost:4000/graphql'   
-      axios({
+      await axios({
             url:API,
             method:'post',
             data:{
@@ -65,13 +69,25 @@ class Tablas extends Component{
             }           
              })
            .then(datos => {
+             array.push(datos.data.data.getTablaClientes)
               this.setState({tablas:datos.data.data.getTablaClientes})
-                console.log("que hay en la tabla" , datos)
             })
             .catch(err=>{
                console.log('error' ,err.response)
             })
+
+            array[0].map(rows=>{
+             axios.get(`https://app.verify-email.org/api/v1/9jlbAMI8dE2tv7eZtXUYdTcFPaimm9kByGiABuz9FPQpro0FlX/verify/${rows.correo}`)
+            .then(res => {
+              arrayApi.push([res.data.email,res.data.status_description])
+              this.setState({datos:arrayApi})
+            })
+            }) 
+
+    
     }
+
+  
     modal(datosCliente){
      
       this.setState({modal1:true})
@@ -86,6 +102,15 @@ class Tablas extends Component{
     }
           
     render(){
+     
+
+
+
+
+
+//*********************
+
+  console.log("estado" ,this.state.datos)
     let modal;
     const columns = ["id", "Nombre", "Apellidos", "CURP","RFC","Nombre Empresa","Teléfono","Correo","Información", "fk_admin"];
      const data = this.state.tablas.map((rows,i)=>{
@@ -101,38 +126,38 @@ class Tablas extends Component{
             {rows.id_cliente, rows.nombre_cliente,rows.telefono, rows.correo}      */}
 
             
-   <ModalBody>
+              <ModalBody>
 
-    <Table small responsive>
- <thead>
-  <tr>
- <td >id</td>
- <td >Nombre</td>
- <td >Apellido</td>
- <td >xxxx</td>
- <td >ccc</td>
- <td >Direccion</td>
- <td >CP</td>
- </tr>
-  </thead>
- {/* {this.state.tablas.map(rows=>{ 
- return( */}
+                <Table small responsive>
+            <thead>
+              <tr>
+            <td >id</td>
+            <td >Nombre</td>
+            <td >Apellido</td>
+            <td >xxxx</td>
+            <td >ccc</td>
+            <td >Direccion</td>
+            <td >CP</td>
+            </tr>
+              </thead>
+            {/* {this.state.tablas.map(rows=>{ 
+            return( */}
 
- <tbody>
- <tr> 
- <td  key={rows.id_cliente}>{rows.id_cliente}</td>
- <td >{rows.nombre_cliente}</td>
- <td width="5%">{rows.apellidos_cliente}</td>
- <td width="5%">{rows.nombreEmpresa}</td>
- <td width="5%">{}</td>
- <td width="5%">{}</td>
- <td width="5%">{}</td>
- </tr>
- </tbody>
- {/* )
- })} */}
- </Table>
- </ModalBody>      
+            <tbody>
+            <tr> 
+            <td  key={rows.id_cliente}>{rows.id_cliente}</td>
+            <td >{rows.nombre_cliente}</td>
+            <td width="5%">{rows.apellidos_cliente}</td>
+            <td width="5%">{rows.nombreEmpresa}</td>
+            <td width="5%">{}</td>
+            <td width="5%">{}</td>
+            <td width="5%">{}</td>
+            </tr>
+            </tbody>
+            {/* )
+            })} */}
+            </Table>
+            </ModalBody>      
 
 
              {/* </MDBModalBody>  */}

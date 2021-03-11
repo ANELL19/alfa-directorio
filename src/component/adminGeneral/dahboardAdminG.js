@@ -8,6 +8,7 @@ class HomeAdmin extends Component{
     super(props)
     this.state = {
          larazonSocial:'',
+         
         }
     } 
     componentWillMount(){
@@ -27,7 +28,7 @@ class HomeAdmin extends Component{
             `
         }   
          }).then(response=>{
-            console.log(response)
+            console.log("response-DASH",response)
             localStorage.setItem("paquetesdeAdmonGral",response.data.data.getPaquetes.empresas)
          })
          .catch(err=>{

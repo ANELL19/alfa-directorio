@@ -25,30 +25,41 @@ class signupAdminG extends Component{
         } 
         this.regresar = this.regresar.bind(this)     
     }   
-    componentWillMount(){
-      this.validate();
+    componentWillUnmount(){
+      localStorage.removeItem("nombre")
+      localStorage.removeItem("apellido")
+      localStorage.removeItem("razonSocial")
+      localStorage.removeItem("RFC")
+      localStorage.removeItem("telefono")
+      localStorage.removeItem("correo")
+      localStorage.removeItem("contraseña")
+      localStorage.removeItem("fk_paquetes")
+
     }
-    validate= async()=>{
+    // componentWillMount(){
+    //   this.validate();
+    // }
+    // validate= async()=>{
        
-       await this.setState({nombre:localStorage.getItem("nombre")})
-       await this.setState({apellido:localStorage.getItem("apellido")})
-       await this.setState({razonSocial:localStorage.getItem("razonSocial")})
-       await this.setState({RFC:localStorage.getItem("RFC")})
-       await this.setState({telefono:localStorage.getItem("telefono")})
-       await this.setState({correo:localStorage.getItem("correo")})
-       localStorage.removeItem("nombre")
-       localStorage.removeItem("apellido")
-       localStorage.removeItem("razonSocial")
-       localStorage.removeItem("RFC")
-       localStorage.removeItem("telefono")
-       localStorage.removeItem("correo")
-       localStorage.removeItem("contraseña")
-       localStorage.removeItem("fk_paquetes")
-    }
+    //    await this.setState({nombre:localStorage.getItem("nombre")})
+    //    await this.setState({apellido:localStorage.getItem("apellido")})
+    //    await this.setState({razonSocial:localStorage.getItem("razonSocial")})
+    //    await this.setState({RFC:localStorage.getItem("RFC")})
+    //    await this.setState({telefono:localStorage.getItem("telefono")})
+    //    await this.setState({correo:localStorage.getItem("correo")})
+    //    localStorage.removeItem("nombre")
+    //    localStorage.removeItem("apellido")
+    //    localStorage.removeItem("razonSocial")
+    //    localStorage.removeItem("RFC")
+    //    localStorage.removeItem("telefono")
+    //    localStorage.removeItem("correo")
+    //    localStorage.removeItem("contraseña")
+    //    localStorage.removeItem("fk_paquetes")
+    // }
     
 
     regresar(){
-        this.props.history.push("/dashboardAlfa")
+        this.props.history.push("/dahboardAlfa")
     } 
     onChangeInput =(e)=>{
      //   console.log("eventoonChange" , e)

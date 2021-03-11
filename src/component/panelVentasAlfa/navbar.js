@@ -1,3 +1,6 @@
+
+
+
 import React, {Component}from 'react'
 import { MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavItem, MDBNavLink, MDBNavbarToggler, MDBCollapse, MDBDropdown,
 MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem, MDBIcon } from "mdbreact";
@@ -17,37 +20,34 @@ class NavbarAlfa extends Component {
             modal:false,            
             user:"",
             pass:"",
-            correo:""
+            correoAlfa:''
+            
         }
        this.toggle=this.toggle.bind(this)     
           }
-          
-          
-          //  toggle (parametro){
-          //     this.setState({modal:parametro})
-          //     // console.log("parametro",parametro)
-          //    }
-            
+                    
           toggle = () => {
             this.setState({
               modal: !this.state.modal
             });
           }
              onChangeInput =(e)=>{
-              console.log("eventoonChange" , e) 
+              // console.log("eventoonChange" , e) 
               const {id,value} = e.target;
               this.setState({
                   [id]:value
               })
-          }
-         
-
+          }  
+                  
+          
           onSubmitBtn =(e)=>{        
             e.preventDefault();
             const API='http://localhost:4000/graphql'   
-              
+          let correo = this.state.correoAlfa;
            const  contraseña = this.state.pass;
-            const correo = localStorage.getItem("correo") 
+           const correoAlfa = localStorage.getItem("correoAlfa") 
+           console.log("correoAlfa",correoAlfa)
+           console.log("state",this.state.correoAlfa)
         console.log("correo" , correo , "pass", this.state.pass)
                 axios ({
                     url:API,
@@ -56,36 +56,31 @@ class NavbarAlfa extends Component {
                         query:`
                         query{
                           loginModalAlfa(data:"${[correo,contraseña]}"){
-                            message
+                           message
                            correo                                         
-                            token
+                           token
                         } 
                      }
                      `
                  }   
                   }).then(response=>{
-               //  console.log( 'este es el response',response.data.data.login.message)
-                     if(response.data.data.loginModalAlfa.message=="login exitoso"){                    
-                        //  localStorage.setItem("id_admin",response.data.data.loginModalAlfa.id_admin)                    
-                        //  localStorage.setItem("nombre",response.data.data.loginModalAlfa.nombre)
-                        //  localStorage.setItem("razonSocial",response.data.data.loginModalAlfa.razonSocial)
-                        //  localStorage.setItem("telefono",response.data.data.loginModalAlfa.telefono)
-                          localStorage.setItem("correoAlfa",response.data.data.loginModalAlfa.correo)                            
-                         localStorage.setItem("TokenVentasAlfa",response.data.data.loginModalAlfa.token)
-                         // alert(`Bievenido ${response.data.data.login.nombre}`)
-                        //  this.props.history.push("/signupAdminAlfa")
+                console.log( 'este es el response',response.data.data.loginModalAlfa)
+                     if(response.data.data.loginModalAlfa.message=="login exitoso"){ 
+                      localStorage.setItem("TokenVentasAlfa",response.data.data.loginModalAlfa.token)
                          DialogUtility.alert({
                              title:'Bienvenido' ,
-                             content: "inicio de sesión exitoso!",
-                         });
+                             content: "contraseña exitosa!",
+                             position: "fixed"
+                         });                        
+                         this.props.history.push("/signupAdminAlfa")
                         
-                          this.props.history.push("/signupAdminAlfa")
+                         
                      }else 
                      //  (response.data.data.loginModalAdmin.message=="usuario y contraseña incorrecto")
                       {
                          // alert("usuario y contraseña incorrectos")
                          DialogUtility.alert({
-                             title: ' contraseña incorrectos',
+                             title: ' contraseña incorrecta',
                              position: "fixed"
            
                          });
@@ -100,24 +95,21 @@ class NavbarAlfa extends Component {
                   }).catch(err=>{
                       console.log('error',err.response)
                   })
-               
+                  
              }
              
-               
-               
-    
+             
+            
  render(){
    const  correo =localStorage.getItem("correo") 
 // console.log("algo",correoAlfa)
 
-// const boton= <div><MDBBtn size="sm" onClick={this.toggle}>información</MDBBtn></div> 
+ const boton= <div><MDBBtn size="sm" onClick={this.toggle}>información</MDBBtn></div> 
           
-   let modal;
-  modal=
-  <div>
+   let modal= <div>
      <MDBContainer>
-      {/* <MDBBtn onClick={this.toggle}>Modal</MDBBtn> */}
-      <MDBModal isOpen={this.state.modal} toggle={this.toggle}>
+      <MDBBtn onClick={this.toggle}>Registar Administrado de Alfa </MDBBtn>       
+       <MDBModal isOpen={this.state.modal} toggle={this.toggle} > 
         <MDBModalHeader toggle={this.toggle}>Correo Administrador</MDBModalHeader>
         <MDBModalBody>
         <MDBModalBody>
@@ -135,7 +127,7 @@ class NavbarAlfa extends Component {
                                 name="password" 
                                 id="pass" 
                                 placeholder="contraseña" 
-                                bsSize="lg" 
+                                Size="lg" 
                                 onChange={this.onChangeInput}
                                 value={this.state.pass}
                                 required 
@@ -160,32 +152,26 @@ class NavbarAlfa extends Component {
 
         return(
           <React.Fragment>
+            
             <MDBNavbar color="info-color" dark expand="md" >
               <MDBNavbarBrand>
+               
                
               </MDBNavbarBrand>
               <MDBNavbarToggler onClick={this.toggleCollapse} />
               <MDBCollapse id="navbarCollapse3" isOpen={this.state.isOpen} navbar>
-               
+              
                 <MDBNavbarNav right>
                   <MDBNavItem active>
                     <MDBNavLink  to="/signupAdminG">  Registrar Administradores </MDBNavLink>
                   </MDBNavItem>   
                   <MDBNavItem active>
                   {/* <MDBNavLink >  Registrar alfa </MDBNavLink>                    */}
-                  
-                  </MDBNavItem>   
-                
-
-                 {modal} 
-            
-                      
-                  <MDBNavItem>
-                    <MDBNavLink  to="/loginAlfa">
+                  <MDBNavLink  to="/loginAlfa">
                      Salir
                     </MDBNavLink>
-                  </MDBNavItem>
-                  
+                     </MDBNavItem>                
+                     {modal} 
                 </MDBNavbarNav>
               </MDBCollapse>
             </MDBNavbar>

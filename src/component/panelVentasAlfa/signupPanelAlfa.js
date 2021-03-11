@@ -19,9 +19,15 @@ class signupAdminAlfa extends Component{
     }   
     
 
+    // regresar(){
+    //     this.props.history.push("/home_admin")
+    // } 
+
+    
     regresar(){
-        this.props.history.push("/home_admin")
+        this.props.history.push("/loginAlfa")
     } 
+
     onChangeInput =(e)=>{
         console.log("eventoonChange" , e)
         const {id,value} = e.target;

@@ -96,15 +96,17 @@ class LoginAdmin extends Component{
      render(){
          return(
         <React.Fragment>
-            <Paper elevation={3} style= {{width:350, height:400,marginLeft:750,marginTop:80}}>
+            <Paper elevation={3} style= {{width:400, height:350,marginLeft:700,marginTop:80}}>
         <MDBRow >            
-            <MDBCol style={{marginLeft:50, marginTop:20,marginRight:50}} > 
-                <Form onSubmit={this.onSubmitBtn}  >           
+            <MDBCol style={{marginLeft:20, marginTop:20,marginRight:20}} > 
+                <Form onSubmit={this.onSubmitBtn}  >   
+                <MDBAlert color="primary" className="h5 text-center md-4">
+                   <strong>Bienvenido Administrador </strong> 
+                    </MDBAlert>        
       
-                    <p className="h5 text-center mb-4">¡Bienvenido Administrador!</p>
+                    {/* <p className="h5 text-center mb-4">¡Bienvenido Administrador!</p> */}
                    
-                        <br></br>
-
+        <MDBCol md="11" style={{marginLeft:10, marginRight:20, marginTop:40}}>
                     <div className="grey-text">
                       <MDBInput 
                             label="correo" 
@@ -131,6 +133,7 @@ class LoginAdmin extends Component{
                        <div className="text-center">
                         <MDBBtn color="primary" type="submit">Iniciar sesión</MDBBtn>
                        </div>
+                       </MDBCol>
                 </Form>
             </MDBCol >  
         </MDBRow>

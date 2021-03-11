@@ -5,7 +5,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import'mdbreact/dist/css/mdb.css';
 import Paper from '@material-ui/core/Paper';
 import { DialogUtility } from '@syncfusion/ej2-popups';
-import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBInput } from 'mdbreact';
+import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBInput ,MDBAlert} from 'mdbreact';
 import Grid from '@material-ui/core/Grid';
 import "./index.css"
 import {Form} from 'reactstrap';
@@ -105,11 +105,15 @@ class LoginAdminGener extends Component{
         <React.Fragment>
            <Grid justify="center"  alignItems="center">
 
-            <Paper elevation={3} style= {{width:350, height:400,marginLeft:750,marginTop:80}}>
+            <Paper elevation={3} style= {{width:400, height:350,marginLeft:700,marginTop:80}}>
                 <MDBRow>
-                    <MDBCol style={{marginLeft:50, marginTop:20,marginRight:50}}>
+                    <MDBCol style={{marginLeft:20, marginTop:20,marginRight:20}}>
                     <Form onSubmit={this.onSubmitBtn}  >
-                        <p className="h5 text-center mb-4">Bienvenido Administrador General </p>
+                        <MDBAlert color = "primary" className= "h5 text-center mb-4">
+                            <strong> Bienvenido Administrador General</strong>
+                        </MDBAlert>
+                        {/* <p className="h5 text-center mb-4">Bienvenido Administrador General </p> */}
+                        <MDBCol md="11" style={{marginLeft:10, marginRight:15}}>
                         <div className="grey-text">
                         <MDBInput 
                             icon="user" 
@@ -139,9 +143,11 @@ class LoginAdminGener extends Component{
                             value={this.state.pass}
                             required />
                         </div>
+                        
                         <div className="text-center">
-                        <MDBBtn outline color="success" type="submit">Iniciar sesión</MDBBtn>
+                        <MDBBtn  color="primary" type="submit">Iniciar sesión</MDBBtn>
                         </div>
+                        </MDBCol>
                     </ Form  >
                     </MDBCol>
                 </MDBRow>

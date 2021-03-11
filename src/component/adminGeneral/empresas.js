@@ -15,6 +15,8 @@ class Empresas extends Component{
   constructor(props){
     super(props)
     this.state = {
+      larazonSocial:'',
+      consulta:[],
         datos:[],       
         detallesEmpresas:[],
         correoAdmin:'',
@@ -25,51 +27,22 @@ class Empresas extends Component{
         pass:""
                 
         }
-    //  this.toggle=this.toggle.bind(this)
-    // console.log("algo",this.state.datos.correo)
-  
-    }
     
-
-    // toggle (parametro){
-    //   this.setState({modal:parametro})
-    // }
+    }
     abrirModal=()=>{
       this.setState({modal:this.state.modal})
     } 
     
-    onChangeInput =(e)=>{
-        const {id,value} = e.target;
+    onChangeInput =(e)=>{     
+        const {id,value} = e.target; 
         this.setState({
-            [id]:value
+            [id]:value            
         })
     }
-    componentDidMount(){
-      localStorage.removeItem("id_admin")
-      localStorage.removeItem("nombre")
-      localStorage.removeItem("apellidos")
-      localStorage.removeItem("razonSocial")
-      localStorage.removeItem("RFC")
-      localStorage.removeItem("telefono")
-      localStorage.removeItem("correo")
-      localStorage.removeItem("statusCorreo")
-      localStorage.removeItem("Token")
-
-    }
-   
+  
     componentWillMount(){  
-      // localStorage.removeItem("idadminGral")
-      // localStorage.removeItem("nombre")
-      // localStorage.removeItem("apellido")
-      // localStorage.removeItem("razonSocial")
-      // localStorage.removeItem("rfc")
-      // // localStorage.removeItem("telefono")       
-      // localStorage.removeItem("fk_paquetes")
-      // localStorage.removeItem("paquetesdeAdmonGral")
-     // localStorage.removeItem("Token")
-    
-        const idAdminGral = localStorage.getItem("idadminGral")        
-        const API= 'http://localhost:4000/graphql'  
+     const idAdminGral = localStorage.getItem("idadminGral")   
+     const API= 'http://localhost:4000/graphql'  
          axios ({
             url:API,
             method:'post',
@@ -96,13 +69,9 @@ class Empresas extends Component{
               array.map(response.data.data.getTablaAdmin)
               console.log("algo",array)
             })
-            .catch(err=>{
-            //   console.log('error' ,err.response)
+            .catch(err=>{          
             })
-         //   reader.readAsText(e.target.files[0])
-            this.setState({button:true})
-            //  console.log("algo",this.state.datos)
-              
+             this.setState({button:true})              
           }
 
           
@@ -159,17 +128,20 @@ class Empresas extends Component{
           
                         });
                       
-                    }
-                    // else {
-                    //   //  alert("Algo salio mal, por favor vuelva a intentarlo")
-                    //     DialogUtility.alert({
-                    //         title: 'Algo salio mal, por favor vuelva a intentarlo'                       
-                    //     });
-                    // }
+                    }                   
                  }).catch(err=>{
                      console.log('error',err.response)
-                 })
-              
+                 })              
+                 localStorage.removeItem("idadminGral")
+                 localStorage.removeItem("nombre")
+                 localStorage.removeItem("apellido")
+                 localStorage.removeItem("razonSocial")
+                 localStorage.removeItem("rfc")
+                 // localStorage.removeItem("telefono")     
+                 localStorage.removeItem("correo")  
+                 localStorage.removeItem("fk_paquetes")
+                 localStorage.removeItem("paquetesdeAdmonGral")
+                 localStorage.removeItem("Token")
             }
             modal(dataEmpresas){
               console.log("dataEmpresas" , dataEmpresas)
@@ -196,7 +168,7 @@ class Empresas extends Component{
         
        //    console.log("estado",this.state.datos) 
             data = this.state.datos.map(rows=>{
-              boton = <div><MDBBtn size="sm"  onClick={(e)=>this.modal(rows)}>información</MDBBtn></div> 
+              boton = <div><MDBBtn color= "info" size="sm"  onClick={(e)=>this.modal(rows)}>información</MDBBtn></div> 
           
           modal= <MDBContainer>
               
@@ -222,13 +194,13 @@ class Empresas extends Component{
                             placeholder="password"
                             onChange={this.onChangeInput}
                             value={this.state.pass}
-                            required
+                            required 
                             />   
                              </MDBCol >                                  
                             </div> 
                                           
                        <div className="text-center">
-                        <MDBBtn color="primary" size="sm" type="submit">Iniciar sesión</MDBBtn>
+                        <MDBBtn color="primary" size="sm" type="submit"   >Iniciar sesión</MDBBtn>
                         <MDBBtn color="secondary" size="sm" onClick={(e) => this.setState({modal12:false})}>Cerrrar</MDBBtn>
                        </div>
                 </Form>
@@ -287,7 +259,7 @@ class Empresas extends Component{
           }
             
           } ;
-       const rs = localStorage.getItem("razonSocial");  
+       const rs = localStorage.getItem("razonSocial");        
     
         return(
             <React.Fragment>
