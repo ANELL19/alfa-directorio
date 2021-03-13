@@ -1,7 +1,7 @@
 import React, {Component}from 'react'
 import RegistroClientes from './registrarClientes'
 import { MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavItem, MDBNavLink, MDBNavbarToggler, MDBCollapse, MDBDropdown,
-MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem, MDBIcon } from "mdbreact";
+MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem, MDBIcon, MDBBtn } from "mdbreact";
 import {NavItem} from 'reactstrap'; 
 
 class NavbarAdmin extends Component {
@@ -17,14 +17,14 @@ class NavbarAdmin extends Component {
         console.log("props" , this.props.data)
         return(
      <React.Fragment>
-         <MDBNavbar color="default-color" dark expand="md">
+         <MDBNavbar color="info-color" dark expand="md">
           <MDBNavbarBrand>
           <strong className="white-text"> {this.props.data} </strong>
           </MDBNavbarBrand>
           &nbsp;
           <MDBNavbarToggler onClick={this.toggleCollapse} />
           <MDBCollapse id="navbarCollapse3" isOpen={this.state.isOpen} navbar>
-            <MDBNavbarNav left>
+            <MDBNavbarNav justify>
               &nbsp;
               <MDBNavItem active>
               <RegistroClientes/>
@@ -34,7 +34,8 @@ class NavbarAdmin extends Component {
               </MDBNavItem> */}
               &nbsp;
               <MDBNavItem >
-                <MDBNavLink to="/loginAdmin">salir</MDBNavLink>
+              
+                <MDBBtn color="info" href="/loginAdmin" > <MDBIcon icon="door-open" size="lg" /> Salir</MDBBtn>
               </MDBNavItem>                        
             </MDBNavbarNav>
              </MDBCollapse>

@@ -1,14 +1,8 @@
-#apppage .view {
+#apppage1 {
     min-height: 100vh;
-    background-image: url("https://images.pexels.com/photos/3828355/pexels-photo-3828355.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
-    background-repeat: no-repeat;
-    background-attachment: fixed; 
-    background-size: 100% 100%;
+    background-image: url("https://images.pexels.com/photos/1422286/pexels-photo-1422286.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+    background-repeat: no-repeat;   
+    background-size:cover;
+    background-position: center center;
   }
 
-  .card {
-    height: 30rem;
-    width:20rem;
-    padding: 2%;
-    margin-left: 10rem;
-  }

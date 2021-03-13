@@ -3,10 +3,12 @@ import React,{Component} from 'react'
 import '@fortawesome/fontawesome-free/css/all.min.css';
  import'bootstrap-css-only/css/bootstrap.min.css'; 
 import'mdbreact/dist/css/mdb.css';
-import {  MDBAlert,MDBRow, MDBCol, MDBInput, MDBBtn} from 'mdbreact';
+import {  MDBAlert,MDBRow, MDBCol, MDBInput, MDBBtn, MDBView} from 'mdbreact';
+import {Form,FormGroup,Label,Col,Input} from 'reactstrap';
 import Paper from '@material-ui/core/Paper';
 import { DialogUtility } from '@syncfusion/ej2-popups';
-import {Form} from 'reactstrap';
+import index from "./index.css"
+// import {Form} from 'reactstrap';
 
 class LoginAdmin extends Component{
     constructor(props){
@@ -95,50 +97,111 @@ class LoginAdmin extends Component{
     }
      render(){
          return(
-        <React.Fragment>
-            <Paper elevation={3} style= {{width:400, height:350,marginLeft:700,marginTop:80}}>
-        <MDBRow >            
-            <MDBCol style={{marginLeft:20, marginTop:20,marginRight:20}} > 
-                <Form onSubmit={this.onSubmitBtn}  >   
-                <MDBAlert color="primary" className="h5 text-center md-4">
-                   <strong>Bienvenido Administrador </strong> 
-                    </MDBAlert>        
+        // <React.Fragment>
+        //     <div id="apppage">
+        //     <MDBView>
+        //     <Paper elevation={3} style= {{width:400, height:350,marginLeft:1200,marginTop:100}}>
+        // <MDBRow >            
+        //     <MDBCol style={{marginLeft:20, marginTop:20,marginRight:20}} > 
+        //         <Form onSubmit={this.onSubmitBtn}  >   
+        //         <MDBAlert color="primary" className="h5 text-center md-4">
+        //            <strong>Bienvenido Administrador </strong> 
+        //             </MDBAlert>        
       
-                    {/* <p className="h5 text-center mb-4">¡Bienvenido Administrador!</p> */}
+        //             {/* <p className="h5 text-center mb-4">¡Bienvenido Administrador!</p> */}
                    
-        <MDBCol md="11" style={{marginLeft:10, marginRight:20, marginTop:40}}>
-                    <div className="grey-text">
-                      <MDBInput 
-                            label="correo" 
-                            icon="envelope"              
+        // <MDBCol md="11" style={{marginLeft:10, marginRight:20, marginTop:40}}>
+        //             <div className="grey-text">
+        //               <MDBInput 
+        //                     label="correo" 
+        //                     icon="envelope"              
+        //                     type="email"
+        //                     name="user"
+        //                     id="user"
+        //                     onChange={this.onChangeInput}
+        //                     value={this.state.user}
+        //                     required                            
+        //                     />                            
+        //               <MDBInput 
+        //                     label="contraseña"
+        //                     icon="lock"        
+        //                     type="password"
+        //                     name="password" 
+        //                     id="pass"
+        //                     placeholder="password"
+        //                     onChange={this.onChangeInput}
+        //                     value={this.state.pass}
+        //                     required
+        //                     />                                    
+        //                     </div>                
+        //                <div className="text-center">
+        //                 <MDBBtn color="primary" type="submit">Iniciar sesión</MDBBtn>
+        //                </div>
+        //                </MDBCol>
+        //         </Form>
+        //     </MDBCol >  
+        // </MDBRow>
+        //     </Paper>   
+        //     </MDBView>  
+        //     </div>     
+       // </React.Fragment>
+        <React.Fragment>
+        <div id="apppage">
+        <MDBView>
+        <Paper elevation={3} style= {{width:500, height:350,marginLeft:1200,marginTop:120}}>
+    <MDBRow >            
+        <MDBCol style={{marginLeft:20, marginTop:30,marginRight:20}}> 
+            <Form onSubmit={this.onSubmitBtn}  >
+            <MDBAlert color="primary"  className="h5 text-center mb-4" >
+   
+  
+                <strong>Bienvenido Administrador</strong>
+                </MDBAlert>
+                   <br></br>  
+           
+
+            <FormGroup row>
+                <Label for="correo" sm={3} size="lg">Correo:</Label>
+                    <Col sm={9}>
+                    <Input 
                             type="email"
                             name="user"
-                            id="user"
-                            onChange={this.onChangeInput}
+                            id="user" 
+                            placeholder="example@.com" 
+                            bsSize="lg" 
+                            onChange={this.onChangeInput}                           
                             value={this.state.user}
-                            required                            
-                            />                            
-                      <MDBInput 
-                            label="contraseña"
-                            icon="lock"        
-                            type="password"
+                            required  
+                        />
+                    </Col>
+            </FormGroup>
+                
+            <FormGroup row>
+                <Label for="contraseña" sm={3} size="lg">Contraseña:</Label>
+                    <Col sm={9}>
+                    <Input 
+                            type="password" 
                             name="password" 
-                            id="pass"
-                            placeholder="password"
+                            id="pass" 
+                            placeholder="contraseña" 
+                            bsSize="lg" 
                             onChange={this.onChangeInput}
                             value={this.state.pass}
-                            required
-                            />                                    
-                            </div>                
-                       <div className="text-center">
-                        <MDBBtn color="primary" type="submit">Iniciar sesión</MDBBtn>
-                       </div>
-                       </MDBCol>
-                </Form>
-            </MDBCol >  
-        </MDBRow>
-            </Paper>          
-        </React.Fragment>
+                            required 
+                    />
+                    </Col>
+            </FormGroup>
+                        <div className="text-center">
+                            <MDBBtn color="info" type="submit">Iniciar sesión</MDBBtn>
+                        </div>
+
+            </Form>
+        </MDBCol >  
+    </MDBRow>
+        </Paper> 
+        </MDBView>  
+        </div>       
+    </React.Fragment>
         )
     }
 }

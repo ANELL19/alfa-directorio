@@ -3,10 +3,11 @@ import React,{Component} from 'react'
 import '@fortawesome/fontawesome-free/css/all.min.css';
  import'bootstrap-css-only/css/bootstrap.min.css'; 
 import'mdbreact/dist/css/mdb.css';
-import {  MDBRow, MDBCol, MDBInput, MDBBtn,MDBAlert} from 'mdbreact';
+import {  MDBRow, MDBCol, MDBInput, MDBBtn,MDBAlert, MDBView} from 'mdbreact';
 import Paper from '@material-ui/core/Paper';
 import { DialogUtility } from '@syncfusion/ej2-popups';
 import {Form,FormGroup,Label,Col,Input} from 'reactstrap';
+import index from "./index.css"
 
 class loginAlfa extends Component{
     constructor(props){
@@ -90,9 +91,11 @@ class loginAlfa extends Component{
      render(){
          return(
         <React.Fragment>
-            <Paper elevation={3} style= {{width:450, height:350,marginLeft:700,marginTop:80}}>
+            <div id="apppages">
+            <MDBView>
+            <Paper elevation={3} style= {{width:500, height:350,marginLeft:200,marginTop:120}}>
         <MDBRow >            
-            <MDBCol style={{marginLeft:20, marginTop:20,marginRight:20}}> 
+            <MDBCol style={{marginLeft:20, marginTop:30,marginRight:20}}> 
                 <Form onSubmit={this.onSubmitBtn}  >
                 <MDBAlert color="primary"  className="h5 text-center mb-4" >
        
@@ -140,7 +143,9 @@ class loginAlfa extends Component{
                 </Form>
             </MDBCol >  
         </MDBRow>
-            </Paper>          
+            </Paper> 
+            </MDBView>  
+            </div>       
         </React.Fragment>
         )
     }

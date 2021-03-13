@@ -1,0 +1,9 @@
+#apppage {
+    min-height: 100vh;
+    /* background-image: url("https://images.pexels.com/photos/273238/pexels-photo-273238.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"); */
+    background-image: url("https://images.pexels.com/photos/269323/pexels-photo-269323.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+    
+    background-repeat: no-repeat;   
+    background-size:cover;
+    background-position: center center;
+  }

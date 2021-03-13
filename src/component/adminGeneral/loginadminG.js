@@ -5,9 +5,9 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import'mdbreact/dist/css/mdb.css';
 import Paper from '@material-ui/core/Paper';
 import { DialogUtility } from '@syncfusion/ej2-popups';
-import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBInput ,MDBAlert} from 'mdbreact';
+import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBInput ,MDBAlert,MDBView, MDBMask} from 'mdbreact';
 import Grid from '@material-ui/core/Grid';
-import "./index.css"
+import  index from "./index.css";
 import {Form} from 'reactstrap';
 
 class LoginAdminGener extends Component{
@@ -103,9 +103,13 @@ class LoginAdminGener extends Component{
      render(){
          return(
         <React.Fragment>
+            <div id="apppage1">
+            <MDBView>
+               
+                  
            <Grid justify="center"  alignItems="center">
 
-            <Paper elevation={3} style= {{width:400, height:350,marginLeft:700,marginTop:80}}>
+            <Paper elevation={3} style= {{width:400, height:350,marginLeft:1100,marginTop:150}}>
                 <MDBRow>
                     <MDBCol style={{marginLeft:20, marginTop:20,marginRight:20}}>
                     <Form onSubmit={this.onSubmitBtn}  >
@@ -153,6 +157,10 @@ class LoginAdminGener extends Component{
                 </MDBRow>
                 </Paper>
                 </Grid>
+                
+                
+               </MDBView>
+                </div>
         </React.Fragment>
         )
     }
