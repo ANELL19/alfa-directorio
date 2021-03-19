@@ -9,7 +9,8 @@ class NavbarDashboard extends Component {
         this.state = {
             isOpen: false,
             modal:false,
-        }        
+        }  
+      
           }
     
  render(){

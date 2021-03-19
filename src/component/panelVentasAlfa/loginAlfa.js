@@ -3,7 +3,7 @@ import React,{Component} from 'react'
 import '@fortawesome/fontawesome-free/css/all.min.css';
  import'bootstrap-css-only/css/bootstrap.min.css'; 
 import'mdbreact/dist/css/mdb.css';
-import {  MDBRow, MDBCol, MDBInput, MDBBtn,MDBAlert, MDBView} from 'mdbreact';
+import {  MDBRow, MDBCol, MDBInput, MDBBtn,MDBAlert, MDBCard,MDBCardBody, MDBView} from 'mdbreact';
 import Paper from '@material-ui/core/Paper';
 import { DialogUtility } from '@syncfusion/ej2-popups';
 import {Form,FormGroup,Label,Col,Input} from 'reactstrap';
@@ -88,64 +88,84 @@ class loginAlfa extends Component{
                  console.log('error',err)
              })
     }
+
      render(){
          return(
         <React.Fragment>
-            <div id="apppages">
-            <MDBView>
-            <Paper elevation={3} style= {{width:500, height:350,marginLeft:200,marginTop:120}}>
-        <MDBRow >            
-            <MDBCol style={{marginLeft:20, marginTop:30,marginRight:20}}> 
-                <Form onSubmit={this.onSubmitBtn}  >
-                <MDBAlert color="primary"  className="h5 text-center mb-4" >
-       
+<div id="apppages"  >
+    <MDBView>
+<div style={{marginTop:"10%", marginLeft:"10%"}} >
+
+          <MDBCol md="5">
+          <MDBCard  style={{width:"82%",heigth:"50%"}}  >
+         
+                              
+        <MDBCardBody >
+        <MDBAlert color="primary"  className="h5 text-center mb-4" >
+         <strong>Administrador Alfa</strong>
+        </MDBAlert>
+            
+        <Form onSubmit={this.onSubmitBtn}>   
       
-                    <strong>Administrador Alfa</strong>
-                    </MDBAlert>
-                       <br></br>  
-               
+        <FormGroup row >
 
-                <FormGroup row>
-                    <Label for="correo" sm={3} size="lg">Correo</Label>
-                        <Col sm={9}>
-                        <Input 
-                                type="email"
-                                name="user"
-                                id="user" 
-                                placeholder="example@.com" 
-                                bsSize="lg" 
-                                onChange={this.onChangeInput}                           
-                                value={this.state.user}
-                                required  
-                            />
-                        </Col>
-                </FormGroup>
+        
+        <Label for="correo" sm={3} size="lg" >
+         Correo:
+        </Label>
+        <Col sm={8}>
+        <Input   
+            
+            id="user"
+            type="email"
+            name="user"
+            onChange={this.onChangeInput}
+            value={this.state.user}
+            required
+            className="form-control" 
+            placeholder="example@.com"
+            bsSize="lg"       
+            />
+             </Col>
+            
+            </FormGroup>
+            <FormGroup row>
+          
+        <Label for="contraseña"  sm={3} size="lg">
+         Contraseña:
+        </Label>
+        <Col sm={8}>
+        <Input            		
+            id="pass"
+            type="password"
+            name="contrasena"
+            onChange={this.onChangeInput}
+            value={this.state.pass}
+            validate 
+            required 
+            bsSize="lg" 
+            className="form-control"
+            placeholder="contraseña"
+              />
+              </Col>
+              
+              </FormGroup >
+             
+        
+        <br></br>
+         <div className="text-center">
+                       <MDBBtn   color="info"  type="submit"> iniciar sesión</MDBBtn>                     
+          </div>            
+          </Form> 
+          </MDBCardBody>
+          
+                    </MDBCard>
+                    </MDBCol>
                     
-                <FormGroup row>
-                    <Label for="contraseña" sm={3} size="lg">Contraseña</Label>
-                        <Col sm={9}>
-                        <Input 
-                                type="password" 
-                                name="password" 
-                                id="pass" 
-                                placeholder="contraseña" 
-                                bsSize="lg" 
-                                onChange={this.onChangeInput}
-                                value={this.state.pass}
-                                required 
-                        />
-                        </Col>
-                </FormGroup>
-                            <div className="text-center">
-                                <MDBBtn color="info" type="submit">Iniciar sesión</MDBBtn>
-                            </div>
-
-                </Form>
-            </MDBCol >  
-        </MDBRow>
-            </Paper> 
-            </MDBView>  
-            </div>       
+          </div>
+          </MDBView>
+          </div>
+       
         </React.Fragment>
         )
     }

@@ -1,4 +1,3 @@
-
 import React, { Component } from "react"
 import NavbarDashboard from './navbarDashboard'
 import MUIDataTable from "mui-datatables";
@@ -136,8 +135,7 @@ class Empresas extends Component{
                  localStorage.removeItem("nombre")
                  localStorage.removeItem("apellido")
                  localStorage.removeItem("razonSocial")
-                 localStorage.removeItem("rfc")
-                 // localStorage.removeItem("telefono")     
+                 localStorage.removeItem("rfc")                     
                  localStorage.removeItem("correo")  
                  localStorage.removeItem("fk_paquetes")
                  localStorage.removeItem("paquetesdeAdmonGral")

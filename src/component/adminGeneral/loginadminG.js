@@ -5,10 +5,11 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import'mdbreact/dist/css/mdb.css';
 import Paper from '@material-ui/core/Paper';
 import { DialogUtility } from '@syncfusion/ej2-popups';
-import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBInput ,MDBAlert,MDBView, MDBMask} from 'mdbreact';
+import { MDBContainer, MDBRow, MDBCol, MDBCardBody,MDBCard, MDBBtn, MDBInput ,MDBAlert,MDBView, MDBMask} from 'mdbreact';
 import Grid from '@material-ui/core/Grid';
+import {Form,FormGroup,Label,Col,Input} from 'reactstrap';
 import  index from "./index.css";
-import {Form} from 'reactstrap';
+
 
 class LoginAdminGener extends Component{
     constructor(props){
@@ -100,68 +101,65 @@ class LoginAdminGener extends Component{
                  console.log('error',err)
              })
     }
-     render(){
-         return(
-        <React.Fragment>
-            <div id="apppage1">
-            <MDBView>
-               
-                  
-           <Grid justify="center"  alignItems="center">
 
-            <Paper elevation={3} style= {{width:400, height:350,marginLeft:1100,marginTop:150}}>
-                <MDBRow>
-                    <MDBCol style={{marginLeft:20, marginTop:20,marginRight:20}}>
-                    <Form onSubmit={this.onSubmitBtn}  >
-                        <MDBAlert color = "primary" className= "h5 text-center mb-4">
-                            <strong> Bienvenido Administrador General</strong>
-                        </MDBAlert>
-                        {/* <p className="h5 text-center mb-4">Bienvenido Administrador General </p> */}
-                        <MDBCol md="11" style={{marginLeft:10, marginRight:15}}>
-                        <div className="grey-text">
-                        <MDBInput 
-                            icon="user" 
-                            group type="email" 
-                            validate error="wrong"
-                            success="right"
-                            label="correo"                          
-                            type="email"
-                            name="user"
-                            id="user"
-                            onChange={this.onChangeInput}
-                            value={this.state.user}
-                            required   />
-                        
-                        <MDBInput
-                        label="Your password"
-                        icon="lock" 
-                        group type="password" 
-                        validate
-                        label="contraseña"
-                            icon="lock"        
-                            type="password"
-                            name="password" 
-                            id="pass"
-                            placeholder="password"
-                            onChange={this.onChangeInput}
-                            value={this.state.pass}
-                            required />
-                        </div>
-                        
-                        <div className="text-center">
-                        <MDBBtn  color="primary" type="submit">Iniciar sesión</MDBBtn>
-                        </div>
-                        </MDBCol>
-                    </ Form  >
-                    </MDBCol>
-                </MDBRow>
-                </Paper>
-                </Grid>
+
+        render(){
+        return(
+        <React.Fragment>
+            <div id="apppage1"  >
+        <MDBView>
+        <div style={{marginTop:"10%", marginLeft:"20%" , marginRight:"15%"}} >
+
+                <MDBCol md="5">
+                <MDBCard  style={{width:"80%",heigth:"40%", marginLeft:"100%"}}  >
                 
-                
-               </MDBView>
+                                    
+            <MDBCardBody >
+            <MDBAlert color="primary"  className="h5 text-center mb-4" >
+                <strong>Administrador Alfa</strong>
+            </MDBAlert>       
+            <Form onSubmit={this.onSubmitBtn}>       
+            <MDBInput  
+                    label="correo"            
+                icon="user"
+                id="user"
+                type="email"
+                name="user"
+                onChange={this.onChangeInput}
+                value={this.state.user}
+                required
+                className="form-control" 
+                placeholder="example@.com"                 
+                />
+                <MDBInput  
+                    label="contraseña"  
+                icon="lock"        		
+                id="pass"
+                type="password"
+                name="contrasena"
+                onChange={this.onChangeInput}
+                value={this.state.pass}
+                validate 
+                required              
+                className="form-control"
+                placeholder="contraseña"
+                />          
+            
+                <div className="text-center">
+                            <MDBBtn   color="info"  type="submit"> iniciar sesión</MDBBtn>                     
+                </div>            
+                </Form> 
+                </MDBCardBody>          
+                </MDBCard>
+                </MDBCol>
+                        
                 </div>
+                </MDBView>
+                </div>
+            
+
         </React.Fragment>
         )
-    }
-}export default LoginAdminGener
+        }
+        }export default LoginAdminGener
+
