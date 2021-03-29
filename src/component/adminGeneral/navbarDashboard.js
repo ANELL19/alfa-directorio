@@ -17,8 +17,8 @@ class NavbarDashboard extends Component {
         console.log("props" , this.props.data)
         return(
          <MDBNavbar color="info-color"  dark expand="md">
-          <MDBNavbarBrand>
-          <strong className="white-text"> {this.props.data} </strong>
+          <MDBNavbarBrand >
+          <strong className="white-text" > {this.props.data} </strong>
           </MDBNavbarBrand>
           &nbsp;
           <MDBNavbarToggler onClick={this.toggleCollapse} />

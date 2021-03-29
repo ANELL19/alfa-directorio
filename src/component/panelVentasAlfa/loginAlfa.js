@@ -46,8 +46,7 @@ class loginAlfa extends Component{
                        nombre  
                        apellido   
                        correo                                        
-                       token
-                       
+                       token                       
                    } 
                 }
                 `
@@ -60,28 +59,21 @@ class loginAlfa extends Component{
                     localStorage.setItem("apellido",response.data.data.loginAdminAlfa.apellido) 
                     localStorage.setItem("correo",response.data.data.loginAdminAlfa.correo)                                
                     localStorage.setItem("TokenVentasAlfa",response.data.data.loginAdminAlfa.token)
-                    // alert(`Bievenido ${response.data.data.login.nombre}`)
-                    // localStorage.setItem("fk_paquetes",response.data.data.loginAdminGeneral.fk_paquetes)
-
+                 
                     DialogUtility.alert({
                         title:'Bienvenido' ,
                         content: "inicio de sesión exitoso!",
-                    });
-                   
+                    });                   
                     this.props.history.push("/dahboardAlfa")
                 }
-                else if(response.data.data.loginAdminAlfa.message=="usuario y contraseña incorrecto"){
-                    // alert("usuario y contraseña incorrectos")
+                else if(response.data.data.loginAdminAlfa.message=="usuario y contraseña incorrecto"){                   
                     DialogUtility.alert({
-                        title: 'usuario y contraseña incorrectos'
-                       
-                    });
-                    
+                        title: 'usuario y contraseña incorrectos'                       
+                    });                    
                 }else {
-                  //  alert("Algo salio mal, por favor vuelva a intentarlo")
                     DialogUtility.alert({
                         title: 'Algo salio mal, por favor vuelva a intentarlo'                       
-                    });
+                    });                
                 }
              })
              .catch(err=>{
@@ -147,18 +139,14 @@ class loginAlfa extends Component{
             className="form-control"
             placeholder="contraseña"
               />
-              </Col>
-              
-              </FormGroup >
-             
-        
-        <br></br>
+              </Col>                           
+              </FormGroup >         
+          <br></br>
          <div className="text-center">
-                       <MDBBtn   color="info"  type="submit"> iniciar sesión</MDBBtn>                     
+             <MDBBtn   color="info"  type="submit"> iniciar sesión</MDBBtn>                     
           </div>            
           </Form> 
           </MDBCardBody>
-          
                     </MDBCard>
                     </MDBCol>
                     

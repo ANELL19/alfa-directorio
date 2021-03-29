@@ -40,6 +40,7 @@ class Empresas extends Component{
     }
   
     componentWillMount(){  
+      localStorage.removeItem("correoAdministrador")
      const idAdminGral = localStorage.getItem("idadminGral")   
      const API= 'http://localhost:4000/graphql'  
          axios ({
@@ -122,7 +123,7 @@ class Empresas extends Component{
                      {
                         // alert("usuario y contraseña incorrectos")
                         DialogUtility.alert({
-                            title: ' contraseña incorrectos',
+                            title: ' contraseña incorrecta',
                             position: "fixed"
           
                         });

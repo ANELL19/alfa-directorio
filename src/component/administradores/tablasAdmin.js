@@ -233,9 +233,7 @@ if(this.state.cards==false){
     
     const columns = ["id", "Nombre", "Apellidos", "CURP","RFC","Nombre Empresa","Teléfono","Correo","Información"];
      const data = this.state.tablas.map((rows,i)=>{
-    //   console.log("esta es rows",rows)
-      
-        
+        //   console.log("esta es rows",rows)   
         // if(this.state.tablas){
         //   modal=<MDBContainer>
         //   <MDBModal  color="info" size="lg"  isOpen={this.state.modal1} >

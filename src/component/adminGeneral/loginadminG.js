@@ -30,6 +30,7 @@ class LoginAdminGener extends Component{
         localStorage.removeItem("fk_paquetes")
         localStorage.removeItem("paquetesdeAdmonGral")
         localStorage.removeItem("Token")
+        localStorage.removeItem("correoAdministrador")
 
     }
     onChangeInput =(e)=>{
@@ -53,7 +54,7 @@ class LoginAdminGener extends Component{
                        nombre  
                        apellido   
                        razonSocial 
-                       rfc 
+                        rfc 
                        correo                                                                       
                        token
                        fk_paquetes  
