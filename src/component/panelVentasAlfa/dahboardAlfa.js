@@ -1,15 +1,10 @@
 import React, { Component } from "react"
-
 import { MDBBtn} from 'mdbreact';
-// import { Button, Modal,ModalHeader,ModalTitle,ModalBody } from 'react-bootstrap';
-
 import { MDBContainer, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter } from 'mdbreact';
-
 import Navbar from './navbar'
 import MUIDataTable from "mui-datatables";
-
-// import tablasAdmin from './tablasAdmin'
 import axios from 'axios'
+
 class dashboardAlfa extends Component{
   constructor(props){
     super(props)
@@ -17,8 +12,6 @@ class dashboardAlfa extends Component{
           datos:[],
           modal: false,
           detallesAdminGral:[]
-
-
         }
         this.cerrar = this.cerrar.bind(this)
     } 
@@ -45,16 +38,12 @@ class dashboardAlfa extends Component{
          })
        .then(response=>{
           let array  = [];
-
           array.push(response.data.data.getVentasAlfa)
-
-          this.setState({datos:array})
-
-          
-    })
-     .catch(err=>{
-              console.log('error',err.response)
-      })  
+          this.setState({datos:array})          
+          })
+        .catch(err=>{
+                  console.log('error',err.response)
+          })  
 
 
     }
@@ -94,8 +83,6 @@ class dashboardAlfa extends Component{
         });
           
     })
-
-   
      .catch(err=>{
               console.log('error',err.response)
       })  
@@ -212,6 +199,8 @@ class dashboardAlfa extends Component{
               </div>
 
               {modal}
+
+              <MDBBtn color="primary" href="/cotizaciones">cotizacion</MDBBtn>
 
             
         </React.Fragment>

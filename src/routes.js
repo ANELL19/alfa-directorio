@@ -24,11 +24,13 @@ import LoginClientes from './component/clientes/LoginClientes'
 import RegistrarClientes from './component/administradores/registrarClientes'
 import navbarAdmin from './component/administradores/NavbarAdmin'
 import Navbar from './component/panelVentasAlfa/navbar'
+
 import loginAlfa from './component/panelVentasAlfa/loginAlfa'
 import dahboardAlfa from './component/panelVentasAlfa/dahboardAlfa'
 import signupAdminAlfa from './component/panelVentasAlfa/signupPanelAlfa'
 import signupAdminG from './component/panelVentasAlfa/signupAdminG'
 import company from '../src/component/adminGeneral/empresas'
+import cotizaciones from './component/panelVentasAlfa/cotizaciones'
 
 
 class App extends Component{
@@ -68,8 +70,8 @@ render(){
         <PrivateRouteAlfa exact path = "/signupAdminG" component={signupAdminG}/>
       
         <PrivateRoutePanelAlfa exact path = "/signupAdminAlfa" component={signupAdminAlfa}/> 
+        <PrivateRouteAlfa exact path= "/cotizaciones" component={cotizaciones}/>
         
-       
         
         <Route  exact path= "/" component= {LoginAdminG}/> 
         <PrivateRoute exact path = "/dashbordAdminGral" component={dashboardAdminGral}/>
