@@ -109,18 +109,24 @@ class LoginAdminGener extends Component{
         <React.Fragment>
             <div id="apppage1"  >
         <MDBView>
-        <div style={{marginTop:"10%", marginLeft:"20%" , marginRight:"15%"}} >
+        <div style={{marginTop:"10%", marginLeft:"10%" }} >
 
                 <MDBCol md="5">
-                <MDBCard  style={{width:"80%",heigth:"40%", marginLeft:"100%"}}  >
+                <MDBCard  style={{width:"70%",heigth:"59%", marginLeft:"100%"}}  >
                 
                                     
             <MDBCardBody >
             <MDBAlert color="primary"  className="h5 text-center mb-4" >
-                <strong>Administrador Alfa</strong>
+                <strong>Administrador General</strong>
             </MDBAlert>       
-            <Form onSubmit={this.onSubmitBtn}>       
-            <MDBInput  
+            <Form onSubmit={this.onSubmitBtn}>  
+            <FormGroup row >  
+            <Label for="correo" sm={3} size="lg" >
+            <h6>  Correo:</h6> 
+           
+            </Label>   
+            <Col sm={7}>
+            <Input  
                     label="correo"            
                 icon="user"
                 id="user"
@@ -132,7 +138,15 @@ class LoginAdminGener extends Component{
                 className="form-control" 
                 placeholder="example@.com"                 
                 />
-                <MDBInput  
+                </Col>
+                </FormGroup>
+                <FormGroup row > 
+                <Label for="contraseña"  sm={3} size="lg">
+              <h6>Contraseña:</h6> 
+               
+                </Label>
+                <Col sm={7}>
+                <Input  
                     label="contraseña"  
                 icon="lock"        		
                 id="pass"
@@ -144,7 +158,9 @@ class LoginAdminGener extends Component{
                 required              
                 className="form-control"
                 placeholder="contraseña"
-                />          
+                /> 
+                </Col>   
+                </FormGroup>     
             
                 <div className="text-center">
                             <MDBBtn   color="info"  type="submit"> iniciar sesión</MDBBtn>                     

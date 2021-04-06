@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import { MDBBtn} from 'mdbreact';
-import { MDBContainer, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter } from 'mdbreact';
+import { MDBModal,  MDBModalHeader, MDBModalFooter } from 'mdbreact';
 import Navbar from './navbar'
 import MUIDataTable from "mui-datatables";
 import axios from 'axios'
@@ -44,13 +44,10 @@ class dashboardAlfa extends Component{
         .catch(err=>{
                   console.log('error',err.response)
           })  
-
-
     }
 
     consultarAdminG(id){
-
-      const API='http://localhost:4000/graphql'   
+      const API='http://localhost:4000/graphql'  
 
       axios({
         url:API,
@@ -200,7 +197,7 @@ class dashboardAlfa extends Component{
 
               {modal}
 
-              <MDBBtn color="primary" href="/cotizaciones">cotizacion</MDBBtn>
+              {/* <MDBBtn color="primary" href="/cotizaciones">cotizacion</MDBBtn> */}
 
             
         </React.Fragment>

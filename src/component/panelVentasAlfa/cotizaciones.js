@@ -3,14 +3,17 @@ import React,{Component} from 'react'
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import'bootstrap-css-only/css/bootstrap.min.css'; 
 import'mdbreact/dist/css/mdb.css';
-import {  MDBRow, MDBCol, MDBInput, MDBBtn,MDBAlert, MDBCard,MDBCardBody, MDBView} from 'mdbreact';
-import Paper from '@material-ui/core/Paper';
+import {  MDBRow, MDBCol, MDBBtn,MDBAlert, MDBCard,MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText} from 'mdbreact';
 import { DialogUtility } from '@syncfusion/ej2-popups';
-import {Form,FormGroup,Label,Col,Input} from 'reactstrap';
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
+import {Form} from 'reactstrap';
 import Navbar from './navbar'
 import { PDFExport } from '@progress/kendo-react-pdf';
+import { Paper } from '@material-ui/core';
+// import {  MDBCard, MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText, MDBCol } from 'mdbreact';
+import { Table } from 'reactstrap';
+import imagen3 from './images/liz.png'
+import imagen from './images/encabezado.JPG'
+import imagen2 from './images/Captura1.JPG'
 
 class Cotizaciones extends Component{
     pdfExportComponent
@@ -31,7 +34,7 @@ class Cotizaciones extends Component{
             Servicio:"",
             precio:"",  
             iva:"",           
-            total:"",
+            totalFloat:"",
             promocion:"", 
             vendedor:"",
             fecha:"" ,   
@@ -93,60 +96,71 @@ class Cotizaciones extends Component{
         let tel5 = this.state.telefono5;
         let servicio  = this.state.Servicio.toUpperCase();
         let precio = this.state.precio;
-        let total = this.state.total;
+        let total = this.state.totalFloat;        
         let promocion = this.state.promocion.toUpperCase();
         let iva = ((precio * 16)/100).toFixed(2)
         let vendedor = localStorage.getItem("nombre").toUpperCase() + " "  + localStorage.getItem("apellido").toUpperCase()
 
         console.log(
-            rs,nombre,apellidos,total,promocion,iva,vendedor
+            "es total", total
+            // rs,nombre,apellidos,total,promocion,iva,vendedor
+            
         )
-        // axios({
-        //     url:API,
-        //     method:'post',
-        //     data:{
-        //         query:`
-        //         mutation{
-        //             insertCotizaciones(data:"${[id_adminAlfa]}"){
-                    
-        //           message
+            axios({
+                url:API,
+                method:'post',
+                data:{
+                    query:`
+                    mutation{
+                        insertCotizaciones(data:"${[rs,nombre,apellidos,correo1,correo2,tel1,tel2,tel3,tel4,tel5,servicio,precio,iva,total,promocion,vendedor,id_adminAlfa]}"){
+                        
+                    message
 
-        //            } 
-        //         }
-        //         `
-        //     }   
-        //      }).then(response=>{
-        //      console.log( 'este es el response',response)
-        //         if(response.data.data. insertCotizaciones.message=="login exitoso"){                    
-        //             localStorage.setItem("id",response.data.data. insertCotizaciones.id)                    
-        //             localStorage.setItem("nombre",response.data.data. insertCotizaciones.nombre)   
-        //             localStorage.setItem("apellido",response.data.data.loginAd  insertCotizaciones.apellido) 
-        //             localStorage.setItem("correo",response.data.data. insertCotizaciones.correo)                                
-        //             localStorage.setItem("TokenVentasAlfa",response.data.data. insertCotizaciones.token)
-                 
-        //             DialogUtility.alert({
-        //                 title:'Bienvenido' ,
-        //                 content: "inicio de sesión exitoso!",
-        //             });                   
-        //             this.props.history.push("/dahboardAlfa")
-        //         }
-        //         else if(response.data.data.insertCotizaciones.message=="usuario y contraseña incorrecto"){                   
-        //             DialogUtility.alert({
-        //                 title: 'usuario y contraseña incorrectos'                       
-        //             });                    
-        //         }else {
-        //             DialogUtility.alert({
-        //                 title: 'Algo salio mal, por favor vuelva a intentarlo'                       
-        //             });                
-        //         }
-        //      })
-        //      .catch(err=>{
-        //          console.log('error',err.response)
-        //      })
+                    } 
+                    }
+                    `
+                }   
+                }).then(response=>{
+                console.log( 'este es el response',response)
+                    if(response.data.data. insertCotizaciones.message=="registro exitoso"){                    
+                        localStorage.setItem("rs",response.data.data. insertCotizaciones.rs)                    
+                        localStorage.setItem("nombre",response.data.data. insertCotizaciones.nombre)   
+                        localStorage.setItem("apellidos",response.data.data.insertCotizaciones.apellidos) 
+                        localStorage.setItem("correo1",response.data.data.insertCotizaciones.correo1)                                
+                        localStorage.setItem("correo2",response.data.data.insertCotizaciones.correo2)
+                        localStorage.setItem("tel",response.data.data.insertCotizaciones.telefono1)
+                        localStorage.setItem("servicio",response.data.data.insertCotizaciones.servicio)
+                        localStorage.setItem("precio",response.data.data.insertCotizaciones.precio)
+                        localStorage.setItem("iva",response.data.data.insertCotizaciones.iva)
+                        localStorage.setItem("total",response.data.data.insertCotizaciones.total)
+                        localStorage.setItem("promocion",response.data.data.insertCotizaciones.promocion)
+                        localStorage.setItem("vendedor",response.data.data.insertCotizaciones.vendedor)
+                        localStorage.setItem("id_adminAlfa",response.data.data.insertCotizaciones.id_adminAlfa)
+
+                    
+                        DialogUtility.alert({
+                            title:'Bienvenido' ,
+                            content: "inicio de sesión exitoso!",
+                        });                   
+                        this.props.history.push("/dahboardAlfa")
+                    }
+                    else if(response.data.data.insertCotizaciones.message=="usuario y contraseña incorrecto"){                   
+                        DialogUtility.alert({
+                            title: 'usuario y contraseña incorrectos'                       
+                        });                    
+                    }else {
+                        DialogUtility.alert({
+                            title: 'Algo salio mal, por favor vuelva a intentarlo'                       
+                        });                
+                    }
+                })
+                .catch(err=>{
+                    console.log('error',err.response)
+                })
     }
 
     pdfView ( ){
-        let rs = this.state.razonSocial;
+        let rs = this.state.razonSocial.toUpperCase();
         let nombre  = this.state.nombre.toUpperCase();
         let apellidos = this.state.apellidos.toUpperCase();
         let correo1 =  this.state.correo1;
@@ -202,7 +216,7 @@ total= (parseInt(this.state.precio) + parseFloat(tasaIva))
 <MDBRow >
 
 <MDBCol md="3" className="mb-3"> 
-                       <label htmlFor="defaultFormLoginPasswordEx" > Razon social: </label>
+                       <label htmlFor="defaultFormLoginPasswordEx" ><strong> Razón social:</strong> </label>
                   <input                                         			
                       id="razonSocial"
                       type="text"
@@ -252,6 +266,254 @@ total= (parseInt(this.state.precio) + parseFloat(tasaIva))
                       required
                       className="form-control" />
                       </MDBCol>
+
+                      <MDBCol md="3" className="mb-3">   
+                  <label htmlFor="defaultFormLoginEmailEx" >
+                  <strong>Correo alterno:</strong>
+                  </label>
+                  <input   
+                      icon="envelope"
+                      id="correo2"
+                      type="email"
+                      name="correo2"
+                      onChange={this.onChangeInput}
+                      value={this.state.pass}
+                     
+                      className="form-control" />
+                      </MDBCol>
+
+                      <MDBCol md="3" className="mb-3">    
+                  <label htmlFor="defaultFormLoginPasswordEx" >
+                  <strong>Telefono:</strong>
+                  </label>
+                  <input 
+                           
+                  id="telefono1"
+                  type="number"
+                  name="telefono1"
+                  onChange={this.onChangeInput}
+                  value={this.state.pass}	
+                  required
+                  className="form-control"
+                  />
+                  </MDBCol>
+
+                  <MDBCol md="3" className="mb-3">   
+                  <label htmlFor="defaultFormLoginPasswordEx" >
+                  <strong>  Servicio:</strong>
+                  </label>
+                  <input            
+               
+                  id="Servicio"
+                  type="text"
+                  name="Servicio"
+                  onChange={this.onChangeInput}
+                  value={this.state.pass}
+                  required
+                  className="form-control"/>
+                  </MDBCol>
+
+                  <MDBCol md="3" className="mb-3">    
+                  <label htmlFor="defaultFormLoginPasswordEx" >
+                  <strong>Precio:</strong>
+                  </label>
+                  <input 
+                  required		 
+                  id="precio"
+                  type="number"
+                  name="precio"
+                  onChange={this.onChangeInput}
+                  value={this.state.pass}	
+                  
+                  className="form-control"
+                  />
+                  </MDBCol>
+
+                  <MDBCol md="3" className="mb-4 mt-4">    
+                  <label htmlFor="defaultFormLoginPasswordEx" >
+                  <strong>Tasa:</strong>
+                  </label>
+                  < label>{iva}%</ label>
+                  </MDBCol>
+
+                  <MDBCol md="3" className="mb-4 mt-4">    
+                  <label htmlFor="defaultFormLoginPasswordEx" >
+                  <strong> Total: &nbsp;</strong>
+                  </label>
+                  <label>$ {total}</label>
+                  </MDBCol>
+                  <MDBCol md="3" className="mb-4 mt-4">    
+                  <label htmlFor="defaultFormLoginPasswordEx" >
+                  <strong>Iva: &nbsp;</strong> 
+                  </label>
+                  <label>$ {tasaIva}</label>
+                  </MDBCol>
+                     
+
+                  
+</MDBRow>
+
+<MDBRow>
+                
+
+                  
+
+                      <MDBCol md="3" className="mb-3">   
+                  <label htmlFor="defaultFormLoginPasswordEx" >
+                  <strong>Promocion:</strong>
+                  </label>
+                  <input
+                              
+                      id="promocion"
+                      type="text"
+                      name="promocion"
+                      onChange={this.onChangeInput}
+                      value={this.state.pass}
+                      validate 
+                     
+                      className="form-control"/>
+                      </MDBCol>
+
+                      <MDBCol md="3" className="mb-3 mt-4">   
+                  <label htmlFor="defaultFormLoginPasswordEx" >
+                  <strong> Vendedor : &nbsp;</strong>
+                  </label>
+                  <label>{localStorage.getItem("nombre").toUpperCase() + " "  + localStorage.getItem("apellido").toUpperCase()}</label>
+                      </MDBCol>
+
+                      <MDBCol md="3" className="mb-3">   
+                  
+
+                      </MDBCol>
+
+</MDBRow>
+</Form>
+              
+    <MDBRow style={{marginTop:"10%"}}> 
+          <MDBCol md="3" className="mb-3"/>
+          
+          <MDBCol md="3" className="mb-3">      
+                  <MDBBtn   color="info"  onClick = {e=> this.pdfView()}> Generar Cotización</MDBBtn>
+          </MDBCol>
+          <MDBCol md="3" className="mb-3"> 
+                  <MDBBtn  color="secondary"   onClick={this.regresar} type="submit">Cancelar</MDBBtn>
+          </MDBCol>
+   
+  </MDBRow>
+    </MDBCardBody>
+              </MDBCard>
+              </MDBCol>
+    </div>
+   }
+        let pdf;
+        if(this.state.pdfview == true) {
+            let boton;
+            
+            if(this.state.botonPdfExport == true) {
+                boton =    <div className="example-config">
+            <MDBBtn size="md"color = "success" onClick={() => { this.pdfExportComponent.save(); }}>
+                Descargar Cotización
+            </MDBBtn>
+         </div>
+            }
+            pdf =   <div>
+         
+            
+            <PDFExport
+                scale={0.6}
+                paperSize="A4"
+                margin="2cm"
+                ref={(component) => this.pdfExportComponent = component}
+            >
+                {/* <div style={{width:200, height:400}}> */}
+                    <Paper   style={{width:1200,height:1200, marginLeft:"6%",marginTop:"2%",marginBottom:"2%"}}>
+                    {/* <MDBCol>
+      <MDBCard style={{ width: "22rem" }}>
+        <MDBCardImage className="img-fluid" src={imagen} waves />
+        <MDBCardBody>
+          <MDBCardTitle>Card title</MDBCardTitle>
+          <MDBCardText>
+            Some quick eof the card&apos;s content.
+          </MDBCardText>
+          
+        </MDBCardBody>
+      </MDBCard>
+    </MDBCol> */}
+    <img src={imagen} alt="imagen" style={{height:150, width: 200}}/>
+
+                       <label htmlFor="defaultFormLoginPasswordEx" ><strong> Razón social:</strong> </label>
+                  <label>{this.state.razonSocial} </label>                                 
+                 
+
+                  <br></br> 
+            
+                  <label htmlFor="nombre" ><strong>Nombre (s):</strong></label>
+                  <label> {this.state.nombre} </label> 
+              
+                  <br></br> 
+                  <label htmlFor="defaultFormLoginPasswordEx"><strong>Apellidos:</strong></label>
+                  <label>{this.state.apellidos}</label> 
+
+                  <br></br> 
+                  <label htmlFor="defaultFormLoginEmailEx"><strong>Correo:</strong></label>
+                  <label>{this.state.correo1}</label> 
+
+                  <br></br>
+                  <label htmlFor="defaultFormLoginEmailEx"><strong>Correo alterno:</strong></label>
+                  <label>{this.state.correo2}</label>
+                  
+
+                  <br></br>
+                  <label htmlFor="defaultFormLoginPasswordEx"><strong>Telefono:</strong></label>
+                  <label>{this.state.tel1}</label>
+                 
+                  <br></br>
+                   
+                  <label htmlFor="defaultFormLoginPasswordEx"><strong>Tasa:</strong></label>
+                  < label>{iva}%</ label>
+
+                  <br></br>
+                  <label htmlFor="defaultFormLoginPasswordEx"><strong> Total: &nbsp;</strong>
+                  </label>
+                  <label>$ {total}</label>
+                  <br></br>
+                    
+                  <label htmlFor="defaultFormLoginPasswordEx" >
+                  <strong>Iva: &nbsp;</strong> 
+                  </label>
+                  <label>$ {tasaIva}</label>
+                  </Paper>
+                  {/* </div> */}
+                  
+
+
+{/* 
+
+
+
+                    
+<MDBRow >
+
+<MDBCol md="3" className="mb-3"> 
+                       <label htmlFor="defaultFormLoginPasswordEx" ><strong> Razón social:</strong> </label>
+                  <label> {rs} </label>                                 
+                  </MDBCol>
+
+
+              <MDBCol md="3" className="mb-3"> 
+                  <label htmlFor="nombre" ><strong> Nombre (s):</strong> </label>
+                  <label> {nombre} </label> 
+              </MDBCol>
+
+                  <MDBCol md="3" className="mb-3"> 
+                  <label htmlFor="defaultFormLoginPasswordEx" > <strong>Apellidos: </strong></label>
+                  <label>  {apellidos} </label> 
+
+                          <MDBCol md="3" className="mb-3">   
+                  <label htmlFor="defaultFormLoginEmailEx" >
+                  <strong>Correo:</strong>
+                  </label>
+                  <label>  {correo1}</label> 
 
                       <MDBCol md="3" className="mb-3">   
                   <label htmlFor="defaultFormLoginEmailEx" >
@@ -372,45 +634,9 @@ total= (parseInt(this.state.precio) + parseFloat(tasaIva))
 
                       </MDBCol>
 
-</MDBRow>
-</Form>
-              
-    <MDBRow style={{marginTop:"10%"}}> 
-          <MDBCol md="3" className="mb-3"/>
-          
-          <MDBCol md="3" className="mb-3">      
-                  <MDBBtn   color="info"  onClick = {e=> this.pdfView()}> Generar Cotización</MDBBtn>
-          </MDBCol>
-          <MDBCol md="3" className="mb-3"> 
-                  <MDBBtn  color="secondary"   onClick={this.regresar} type="submit">Cancelar</MDBBtn>
-          </MDBCol>
-   
-  </MDBRow>
-    </MDBCardBody>
-              </MDBCard>
-              </MDBCol>
-    </div>
-   }
-        let pdf;
-        if(this.state.pdfview == true) {
-            let boton;
-            
-            if(this.state.botonPdfExport == true) {
-                boton =    <div className="example-config">
-            <MDBBtn size="md"color = "success" onClick={() => { this.pdfExportComponent.save(); }}>
-                Descargar Cotización
-            </MDBBtn>
-         </div>
-            }
-            pdf =   <div>
-         
-            
-            <PDFExport
-                scale={0.6}
-                paperSize="A4"
-                margin="2cm"
-                ref={(component) => this.pdfExportComponent = component}
-            >
+</MDBRow> */}
+
+
 
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer felis libero, lobortis ac rutrum quis, varius a velit. Donec lacus erat, cursus sed porta quis, adipiscing et ligula. Duis volutpat, sem pharetra accumsan pharetra, mi ligula cursus felis, ac aliquet leo diam eget risus. Integer facilisis, justo cursus venenatis vehicula, massa nisl tempor sem, in ullamcorper neque mauris in orci.
@@ -437,6 +663,324 @@ total= (parseInt(this.state.precio) + parseFloat(tasaIva))
         <Navbar/>
         {form} 
         {pdf}
+        <image src="imagen"></image>
+
+{/* ************************************************************************************** */}
+
+
+
+             {/* <div style={{width:200, height:400}}> */}
+                 <Paper   style={{width:1200,height:1200, marginLeft:"6%",marginTop:"2%",marginBottom:"2%"}}>
+                 {/* <MDBCol>
+   <MDBCard style={{ width: "22rem" }}>
+     <MDBCardImage className="img-fluid" src={imagen} alt="imagen" waves />
+     <MDBCardBody>
+       <MDBCardTitle>Card title</MDBCardTitle>
+       <MDBCardText>
+         Some quick eof the card&apos;s content.
+       </MDBCardText>
+       
+     </MDBCardBody>
+   </MDBCard>
+ </MDBCol> */}
+      <img src={imagen3} alt="imagen"    style={{width:1210,height:150}}/>
+      <br></br>
+      <br></br>
+      <br></br>
+     
+     
+                    <label htmlFor="defaultFormLoginPasswordEx" ><strong> Razón social:</strong> </label>
+               <label>{this.state.razonSocial} </label>                                 
+              
+
+               <br></br> 
+         
+               <label htmlFor="nombre" ><strong>Nombre (s):</strong></label>
+               <label> {this.state.nombre}{this.state.apellidos} </label> 
+           
+               {/* <br></br> 
+               <label htmlFor="defaultFormLoginPasswordEx"><strong>Apellidos:</strong></label>
+               <label>{this.state.apellidos}</label>  */}
+
+               <br></br> 
+               <label htmlFor="defaultFormLoginEmailEx"><strong>Correo:</strong></label>
+               <label>{this.state.correo1}</label> 
+
+               {/* <br></br>
+               <label htmlFor="defaultFormLoginEmailEx"><strong>Correo alterno:</strong></label>
+               <label>{this.state.correo2}</label> */}
+               
+
+               <br></br>
+               <label htmlFor="defaultFormLoginPasswordEx"><strong>Telefono:</strong></label>
+               <label>{this.state.tel1}</label>
+               <br></br>
+              
+{/* <fort style={{color:"#3371FF"}} ><strong></strong> </fort> */}
+              
+                   <fort  face="Verdana"> Buen día, me permito presentar  nuestra propuesta referente a los producto (s) y servicio (s) de su interés.</fort>
+
+              
+               <br></br>
+
+
+
+               <Table bordered>
+      <thead>
+        <tr>
+          <th bgcolor="DeepSkyBlue" colspan="2">PRODUCTO O SERVICIO</th>          
+          <th bgcolor="DeepSkyBlue" colspan="2">PRECIO MAS IVA</th>
+        </tr>
+      </thead>
+      <tbody>
+       
+          <th colspan="2">{this.state.Servicio}</th>
+          <th colspan="2">{this.state.precio}</th>
+        
+        <tr>
+          <th ROWSPAN="2"></th>
+          <td>IVA:</td>
+          <td>{tasaIva}</td>
+          
+        </tr>
+        <tr>         
+          <td>TOTAL</td>
+          <td>{total}</td>          
+        </tr>
+      </tbody>
+    </Table>
+
+
+    <label style={{color:"red"}} htmlFor="defaultFormLoginPasswordEx"><strong>Promoción &nbsp;</strong></label>
+               < label style={{color:"red"}}><strong>{this.state.promocion}</strong></ label>
+               <br></br>
+    {/* <label htmlFor="defaultFormLoginPasswordEx"><strong>Servicio</strong></label>
+               < label>{this.state.Servicio}</ label>
+               <br></br>
+                
+               <label htmlFor="defaultFormLoginPasswordEx"><strong>Tasa:</strong></label>
+               < label>{iva}%</ label>
+
+               <br></br>
+               <label htmlFor="defaultFormLoginPasswordEx"><strong> Total: &nbsp;</strong>
+               </label>
+               <label>$ {total}</label>
+               <br></br>
+                 
+               <label htmlFor="defaultFormLoginPasswordEx" >
+               <strong>Iva: &nbsp;</strong> 
+               </label>
+               <label>$ {tasaIva}</label> */}
+
+<p>
+               {/* <p style = "font-family:courier,arial,helvética;"> */}
+              <strong> Nota:</strong> El costo no incluye Interfaz, Formatos, Carga de Catálogos o alguna implementación adicional a la mencionada en su cotización.
+<br></br>
+<br></br>
+
+<strong> No se aceptan devoluciones</strong>
+<br></br>
+<br></br>
+<fort style={{color:"#3371FF"}}> <strong>Condiciones Comerciales y Formas de Pago</strong></fort>
+
+<ul face="Verdana">
+
+<li>Todos los costos anteriormente presentados son más IVA.</li>
+<li>Precios representados en M.N.</li>
+<li>Pago por anticipado</li>
+<li>Pago por depósito bancario o transferencia electrónica.</li>	
+
+    </ul>
+<fort  > 
+<p align="left" marginLeft="20%">
+    - Cuenta: 50020978434 
+<br></br>
+- Clabe: 036180500209784346
+<br></br>
+- Banco: Inbursa
+<br></br>
+- Beneficiario: ALFA DISEÑO DE SISTEMAS, S.A. de C.V.
+<br></br>
+- RFC: ADS020524CH1
+</p>
+</fort>
+
+<p>Sin más por el momento y agradeciéndole por su amable atención, Quedo a sus órdenes para cualquier duda al respecto. Cordialmente.</p>
+
+ {/* <label htmlFor="defaultFormLoginPasswordEx"><strong>Servicio</strong></label> */}
+ <fort  > 
+                < p className="text-center mb-4" > <strong>{localStorage.getItem("nombre").toUpperCase() + " "  + localStorage.getItem("apellido").toUpperCase()}</strong></p>
+              
+                <p  style={{color:"#3371FF"}} className="text-center mb-4"><strong> ALFA DISEÑO DE SISTEMAS, S.A. DE C.V.</strong></p>
+              <p className="text-center mb-4" style={{color:"#3371FF"}}> <u >www.ads.com.mx </u> </p>
+                <p className="text-center mb-4" style={{color:"#3371FF"}}>{localStorage.getItem("correo")}</p>
+                </fort  > 
+</p>
+
+
+               </Paper>
+               {/* </div> */}
+               
+
+
+{/* 
+
+
+
+                 
+<MDBRow >
+
+<MDBCol md="3" className="mb-3"> 
+                    <label htmlFor="defaultFormLoginPasswordEx" ><strong> Razón social:</strong> </label>
+               <label> {rs} </label>                                 
+               </MDBCol>
+
+
+           <MDBCol md="3" className="mb-3"> 
+               <label htmlFor="nombre" ><strong> Nombre (s):</strong> </label>
+               <label> {nombre} </label> 
+           </MDBCol>
+
+               <MDBCol md="3" className="mb-3"> 
+               <label htmlFor="defaultFormLoginPasswordEx" > <strong>Apellidos: </strong></label>
+               <label>  {apellidos} </label> 
+
+                       <MDBCol md="3" className="mb-3">   
+               <label htmlFor="defaultFormLoginEmailEx" >
+               <strong>Correo:</strong>
+               </label>
+               <label>  {correo1}</label> 
+
+                   <MDBCol md="3" className="mb-3">   
+               <label htmlFor="defaultFormLoginEmailEx" >
+               <strong>Correo alterno:</strong>
+               </label>
+               <input   
+                   icon="envelope"
+                   id="correo2"
+                   type="email"
+                   name="correo2"
+                   onChange={this.onChangeInput}
+                   value={this.state.pass}
+                  
+                   className="form-control" />
+                   </MDBCol>
+
+                   <MDBCol md="3" className="mb-3">    
+               <label htmlFor="defaultFormLoginPasswordEx" >
+               <strong>Telefono:</strong>
+               </label>
+               <input 
+                        
+               id="telefono1"
+               type="number"
+               name="telefono1"
+               onChange={this.onChangeInput}
+               value={this.state.pass}	
+               required
+               className="form-control"
+               />
+               </MDBCol>
+
+               <MDBCol md="3" className="mb-3">   
+               <label htmlFor="defaultFormLoginPasswordEx" >
+               <strong>  Servicio:</strong>
+               </label>
+               <input            
+            
+               id="Servicio"
+               type="text"
+               name="Servicio"
+               onChange={this.onChangeInput}
+               value={this.state.pass}
+               required
+               className="form-control"/>
+               </MDBCol>
+
+               <MDBCol md="3" className="mb-3">    
+               <label htmlFor="defaultFormLoginPasswordEx" >
+               <strong>Precio:</strong>
+               </label>
+               <input 
+               required		 
+               id="precio"
+               type="text"
+               name="precio"
+               onChange={this.onChangeInput}
+               value={this.state.pass}	
+               
+               className="form-control"
+               />
+               </MDBCol>
+
+               <MDBCol md="3" className="mb-4 mt-4">    
+               <label htmlFor="defaultFormLoginPasswordEx" >
+               <strong>Tasa:</strong>
+               </label>
+               < label>{iva}%</ label>
+               </MDBCol>
+
+               <MDBCol md="3" className="mb-4 mt-4">    
+               <label htmlFor="defaultFormLoginPasswordEx" >
+               <strong> Total: &nbsp;</strong>
+               </label>
+               <label>$ {total}</label>
+               </MDBCol>
+               <MDBCol md="3" className="mb-4 mt-4">    
+               <label htmlFor="defaultFormLoginPasswordEx" >
+               <strong>Iva: &nbsp;</strong> 
+               </label>
+               <label>$ {tasaIva}</label>
+               </MDBCol>
+                  
+
+               
+</MDBRow>
+
+<MDBRow>
+             
+
+               
+
+                   <MDBCol md="3" className="mb-3">   
+               <label htmlFor="defaultFormLoginPasswordEx" >
+               <strong>Promocion:</strong>
+               </label>
+               <input
+                           
+                   id="promocion"
+                   type="text"
+                   name="promocion"
+                   onChange={this.onChangeInput}
+                   value={this.state.pass}
+                   validate 
+                  
+                   className="form-control"/>
+                   </MDBCol>
+
+                   <MDBCol md="3" className="mb-3 mt-4">   
+               <label htmlFor="defaultFormLoginPasswordEx" >
+               <strong> Vendedor : &nbsp;</strong>
+               </label>
+               <label>{localStorage.getItem("nombre").toUpperCase() + " "  + localStorage.getItem("apellido").toUpperCase()}</label>
+                   </MDBCol>
+
+                   <MDBCol md="3" className="mb-3">   
+               
+
+                   </MDBCol>
+
+</MDBRow> */}
+
+
+
+          
+
+
+
+
+
+
        
         </React.Fragment>
         )

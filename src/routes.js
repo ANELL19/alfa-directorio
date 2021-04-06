@@ -14,7 +14,6 @@ import LoginAdminG from './component/adminGeneral/loginadminG'
 import dashboardAdminGral from './component/adminGeneral/dahboardAdminG'
 import navbarAdminGral from '../src/component/adminGeneral/navbarDashboard'
 import signupAdmin from './component/adminGeneral/signupAdmin'
-import validation from '../src/component/adminGeneral/validation'
 
 
 import LoginAdmin from './component/administradores/loginAdmin'
