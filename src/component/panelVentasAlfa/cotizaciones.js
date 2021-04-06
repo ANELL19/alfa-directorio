@@ -101,11 +101,11 @@ class Cotizaciones extends Component{
         let iva = ((precio * 16)/100).toFixed(2)
         let vendedor = localStorage.getItem("nombre").toUpperCase() + " "  + localStorage.getItem("apellido").toUpperCase()
 
-        console.log(
-            "es total", total
-            // rs,nombre,apellidos,total,promocion,iva,vendedor
+        // console.log(
+        //     "es total", total
+        //  rs,nombre,apellidos,total,promocion,iva,vendedor
             
-        )
+        // )
             axios({
                 url:API,
                 method:'post',
