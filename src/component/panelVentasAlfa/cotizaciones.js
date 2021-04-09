@@ -3,17 +3,20 @@ import React,{Component} from 'react'
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import'bootstrap-css-only/css/bootstrap.min.css'; 
 import'mdbreact/dist/css/mdb.css';
-import {  MDBRow, MDBCol, MDBBtn,MDBAlert, MDBCard,MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText} from 'mdbreact';
+import {  MDBRow, MDBCol, MDBBtn,MDBAlert, MDBCard,MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText, MDBInput} from 'mdbreact';
 import { DialogUtility } from '@syncfusion/ej2-popups';
 import {Form} from 'reactstrap';
 import Navbar from './navbar'
 import { PDFExport } from '@progress/kendo-react-pdf';
-import { Paper } from '@material-ui/core';
+import { Container, Paper } from '@material-ui/core';
 // import {  MDBCard, MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText, MDBCol } from 'mdbreact';
 import { Table } from 'reactstrap';
 import imagen3 from './images/liz.png'
 import imagen from './images/encabezado.JPG'
 import imagen2 from './images/Captura1.JPG'
+import titulo1 from  './images/titulo1.png'
+import titulo3 from  './images/titulo3.png'
+import style from "./style.css"
 
 class Cotizaciones extends Component{
     pdfExportComponent
@@ -49,26 +52,8 @@ class Cotizaciones extends Component{
     regresar(){
         this.props.history.push("/dahboardAlfa")
     } 
-     componentWillMount(){
-     
-    //     localStorage.removeItem("razonSocial")
-    //     localStorage.removeItem("nombre")
-    //     localStorage.removeItem("apellidos")
-    //     localStorage.removeItem("correo1")
-    //     localStorage.removeItem("correo2")
-    //     localStorage.removeItem("telefono1")
-    //     localStorage.removeItem("telefono2")
-    //     localStorage.removeItem("telefono3")
-    //     localStorage.removeItem("telefono4")
-    //     localStorage.removeItem("telefono5")
-    //     localStorage.removeItem("Servicio")
-    //     localStorage.removeItem("precio")
-    //     localStorage.removeItem("iva")
-    //    localStorage.removeItem("total")
-    //    localStorage.removeItem("promoacion")
-    //    localStorage.removeItem("vendedor")
-    //    localStorage.removeItem("fecha")
-    //    localStorage.removeItem("fk_adminalfa") 
+     componentWillMount(){    
+
 
     }
 
@@ -95,17 +80,13 @@ class Cotizaciones extends Component{
         let tel4 = this.state.telefono4;
         let tel5 = this.state.telefono5;
         let servicio  = this.state.Servicio.toUpperCase();
-        let precio = this.state.precio;
-        let total = this.state.totalFloat;        
+        let precio = this.state.precio;              
         let promocion = this.state.promocion.toUpperCase();
         let iva = ((precio * 16)/100).toFixed(2)
-        let vendedor = localStorage.getItem("nombre").toUpperCase() + " "  + localStorage.getItem("apellido").toUpperCase()
-
-        // console.log(
-        //     "es total", total
-        //  rs,nombre,apellidos,total,promocion,iva,vendedor
-            
-        // )
+        let total = suma
+        let vendedor = localStorage.getItem("nombre").toUpperCase() + " "  + localStorage.getItem("apellido").toUpperCase()       
+        var suma = (parseInt(precio) + parseFloat(iva))
+        
             axios({
                 url:API,
                 method:'post',
@@ -115,7 +96,6 @@ class Cotizaciones extends Component{
                         insertCotizaciones(data:"${[rs,nombre,apellidos,correo1,correo2,tel1,tel2,tel3,tel4,tel5,servicio,precio,iva,total,promocion,vendedor,id_adminAlfa]}"){
                         
                     message
-
                     } 
                     }
                     `
@@ -123,32 +103,14 @@ class Cotizaciones extends Component{
                 }).then(response=>{
                 console.log( 'este es el response',response)
                     if(response.data.data. insertCotizaciones.message=="registro exitoso"){                    
-                        localStorage.setItem("rs",response.data.data. insertCotizaciones.rs)                    
-                        localStorage.setItem("nombre",response.data.data. insertCotizaciones.nombre)   
-                        localStorage.setItem("apellidos",response.data.data.insertCotizaciones.apellidos) 
-                        localStorage.setItem("correo1",response.data.data.insertCotizaciones.correo1)                                
-                        localStorage.setItem("correo2",response.data.data.insertCotizaciones.correo2)
-                        localStorage.setItem("tel",response.data.data.insertCotizaciones.telefono1)
-                        localStorage.setItem("servicio",response.data.data.insertCotizaciones.servicio)
-                        localStorage.setItem("precio",response.data.data.insertCotizaciones.precio)
-                        localStorage.setItem("iva",response.data.data.insertCotizaciones.iva)
-                        localStorage.setItem("total",response.data.data.insertCotizaciones.total)
-                        localStorage.setItem("promocion",response.data.data.insertCotizaciones.promocion)
-                        localStorage.setItem("vendedor",response.data.data.insertCotizaciones.vendedor)
-                        localStorage.setItem("id_adminAlfa",response.data.data.insertCotizaciones.id_adminAlfa)
-
-                    
+                  
                         DialogUtility.alert({
-                            title:'Bienvenido' ,
-                            content: "inicio de sesión exitoso!",
+                            title:'registro exitoso' ,
+                            content: "Cotizacion generada!",
                         });                   
-                        this.props.history.push("/dahboardAlfa")
+                     
                     }
-                    else if(response.data.data.insertCotizaciones.message=="usuario y contraseña incorrecto"){                   
-                        DialogUtility.alert({
-                            title: 'usuario y contraseña incorrectos'                       
-                        });                    
-                    }else {
+                   else {
                         DialogUtility.alert({
                             title: 'Algo salio mal, por favor vuelva a intentarlo'                       
                         });                
@@ -411,574 +373,547 @@ total= (parseInt(this.state.precio) + parseFloat(tasaIva))
             
             if(this.state.botonPdfExport == true) {
                 boton =    <div className="example-config">
-            <MDBBtn size="md"color = "success" onClick={() => { this.pdfExportComponent.save(); }}>
-                Descargar Cotización
-            </MDBBtn>
-         </div>
+                            <MDBBtn size="md"color = "success" onClick={() => { this.pdfExportComponent.save(); }}>
+                                Descargar Cotización
+                            </MDBBtn>
+                            </div>
             }
             pdf =   <div>
          
             
-            <PDFExport
-                scale={0.6}
-                paperSize="A4"
-                margin="2cm"
-                ref={(component) => this.pdfExportComponent = component}
-            >
-                {/* <div style={{width:200, height:400}}> */}
-                    <Paper   style={{width:1200,height:1200, marginLeft:"6%",marginTop:"2%",marginBottom:"2%"}}>
-                    {/* <MDBCol>
-      <MDBCard style={{ width: "22rem" }}>
-        <MDBCardImage className="img-fluid" src={imagen} waves />
-        <MDBCardBody>
-          <MDBCardTitle>Card title</MDBCardTitle>
-          <MDBCardText>
-            Some quick eof the card&apos;s content.
-          </MDBCardText>
           
-        </MDBCardBody>
-      </MDBCard>
-    </MDBCol> */}
-    <img src={imagen} alt="imagen" style={{height:150, width: 200}}/>
-
-                       <label htmlFor="defaultFormLoginPasswordEx" ><strong> Razón social:</strong> </label>
-                  <label>{this.state.razonSocial} </label>                                 
-                 
-
-                  <br></br> 
-            
-                  <label htmlFor="nombre" ><strong>Nombre (s):</strong></label>
-                  <label> {this.state.nombre} </label> 
-              
-                  <br></br> 
-                  <label htmlFor="defaultFormLoginPasswordEx"><strong>Apellidos:</strong></label>
-                  <label>{this.state.apellidos}</label> 
-
-                  <br></br> 
-                  <label htmlFor="defaultFormLoginEmailEx"><strong>Correo:</strong></label>
-                  <label>{this.state.correo1}</label> 
-
-                  <br></br>
-                  <label htmlFor="defaultFormLoginEmailEx"><strong>Correo alterno:</strong></label>
-                  <label>{this.state.correo2}</label>
-                  
-
-                  <br></br>
-                  <label htmlFor="defaultFormLoginPasswordEx"><strong>Telefono:</strong></label>
-                  <label>{this.state.tel1}</label>
-                 
-                  <br></br>
-                   
-                  <label htmlFor="defaultFormLoginPasswordEx"><strong>Tasa:</strong></label>
-                  < label>{iva}%</ label>
-
-                  <br></br>
-                  <label htmlFor="defaultFormLoginPasswordEx"><strong> Total: &nbsp;</strong>
-                  </label>
-                  <label>$ {total}</label>
-                  <br></br>
-                    
-                  <label htmlFor="defaultFormLoginPasswordEx" >
-                  <strong>Iva: &nbsp;</strong> 
-                  </label>
-                  <label>$ {tasaIva}</label>
-                  </Paper>
-                  {/* </div> */}
-                  
-
-
-{/* 
-
-
-
-                    
-<MDBRow >
-
-<MDBCol md="3" className="mb-3"> 
-                       <label htmlFor="defaultFormLoginPasswordEx" ><strong> Razón social:</strong> </label>
-                  <label> {rs} </label>                                 
-                  </MDBCol>
-
-
-              <MDBCol md="3" className="mb-3"> 
-                  <label htmlFor="nombre" ><strong> Nombre (s):</strong> </label>
-                  <label> {nombre} </label> 
-              </MDBCol>
-
-                  <MDBCol md="3" className="mb-3"> 
-                  <label htmlFor="defaultFormLoginPasswordEx" > <strong>Apellidos: </strong></label>
-                  <label>  {apellidos} </label> 
-
-                          <MDBCol md="3" className="mb-3">   
-                  <label htmlFor="defaultFormLoginEmailEx" >
-                  <strong>Correo:</strong>
-                  </label>
-                  <label>  {correo1}</label> 
-
-                      <MDBCol md="3" className="mb-3">   
-                  <label htmlFor="defaultFormLoginEmailEx" >
-                  <strong>Correo alterno:</strong>
-                  </label>
-                  <input   
-                      icon="envelope"
-                      id="correo2"
-                      type="email"
-                      name="correo2"
-                      onChange={this.onChangeInput}
-                      value={this.state.pass}
-                     
-                      className="form-control" />
-                      </MDBCol>
-
-                      <MDBCol md="3" className="mb-3">    
-                  <label htmlFor="defaultFormLoginPasswordEx" >
-                  <strong>Telefono:</strong>
-                  </label>
-                  <input 
-                           
-                  id="telefono1"
-                  type="number"
-                  name="telefono1"
-                  onChange={this.onChangeInput}
-                  value={this.state.pass}	
-                  required
-                  className="form-control"
-                  />
-                  </MDBCol>
-
-                  <MDBCol md="3" className="mb-3">   
-                  <label htmlFor="defaultFormLoginPasswordEx" >
-                  <strong>  Servicio:</strong>
-                  </label>
-                  <input            
+         
+         <div>
+<Paper   style={{width:1200,height:1500, marginLeft:"6%",marginTop:"2%",marginBottom:"2%"}}>
                
-                  id="Servicio"
-                  type="text"
-                  name="Servicio"
-                  onChange={this.onChangeInput}
-                  value={this.state.pass}
-                  required
-                  className="form-control"/>
-                  </MDBCol>
+               <img src={imagen3} alt="imagen"    style={{width:1210,height:150}}/>
+    
+     <div style={{marginLeft:"5%", marginRight:"5%", marginTop:"2%",marginBottom:"2%"}}>
+    
+                   <label htmlFor="defaultFormLoginPasswordEx" ><strong>Razón social:&nbsp;</strong> </label>
+              <label>{this.state.razonSocial} </label>                                 
+             
 
-                  <MDBCol md="3" className="mb-3">    
-                  <label htmlFor="defaultFormLoginPasswordEx" >
-                  <strong>Precio:</strong>
-                  </label>
-                  <input 
-                  required		 
-                  id="precio"
-                  type="text"
-                  name="precio"
-                  onChange={this.onChangeInput}
-                  value={this.state.pass}	
-                  
-                  className="form-control"
-                  />
-                  </MDBCol>
+              <br></br> 
+        
+              <label htmlFor="nombre" ><strong>Nombre(s):&nbsp;</strong></label>
+              <label> {this.state.nombre}&nbsp;{this.state.apellidos} </label> 
+          
+          
 
-                  <MDBCol md="3" className="mb-4 mt-4">    
-                  <label htmlFor="defaultFormLoginPasswordEx" >
-                  <strong>Tasa:</strong>
-                  </label>
-                  < label>{iva}%</ label>
-                  </MDBCol>
+              <br></br> 
+              <label htmlFor="defaultFormLoginEmailEx"><strong>Correo:&nbsp;</strong></label>
+              <label>{this.state.correo1}</label> 
 
-                  <MDBCol md="3" className="mb-4 mt-4">    
-                  <label htmlFor="defaultFormLoginPasswordEx" >
-                  <strong> Total: &nbsp;</strong>
-                  </label>
-                  <label>$ {total}</label>
-                  </MDBCol>
-                  <MDBCol md="3" className="mb-4 mt-4">    
-                  <label htmlFor="defaultFormLoginPasswordEx" >
-                  <strong>Iva: &nbsp;</strong> 
-                  </label>
-                  <label>$ {tasaIva}</label>
-                  </MDBCol>
-                     
+              
 
-                  
-</MDBRow>
+              <br></br>
+              <label htmlFor="defaultFormLoginPasswordEx"><strong>Télefono:&nbsp;</strong></label>
+              <label>{this.state.telefono1}</label>
+              <br></br>
+              
+              
+              <label htmlFor="defaultFormLoginPasswordEx"><strong>fecha:&nbsp;</strong></label>
+              <label>{"fecha"}</label>
+              <br></br>
+              <br></br>
 
-<MDBRow>
-                
+               
+             
+                  <fort  face="Verdana"> Buen día, me permito presentar  nuestra propuesta referente a los producto (s) y servicio (s) de su interés.</fort>
+             
+              <br></br>
+              <br></br>
 
-                  
+              <Table bordered>
+                   <thead>
+                       <tr>
+                       <th bgcolor="DeepSkyBlue" colspan="2">PRODUCTO O SERVICIO</th>          
+                       <th bgcolor="DeepSkyBlue" colspan="2">PRECIO MAS IVA</th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                   
+                       <th colspan="2">{this.state.Servicio}</th>
+                       <th colspan="2">{this.state.precio}</th>
+                       
+                       <tr>
+                       <th ROWSPAN="2"></th>
+                       <td>IVA:</td>
+                       <td>{tasaIva}</td>
+                       
+                       </tr>
+                       <tr>         
+                       <td>TOTAL</td>
+                       <td>{total}</td>          
+                       </tr>
+                   </tbody>
+            </Table>
 
-                      <MDBCol md="3" className="mb-3">   
-                  <label htmlFor="defaultFormLoginPasswordEx" >
-                  <strong>Promocion:</strong>
-                  </label>
-                  <input
-                              
-                      id="promocion"
-                      type="text"
-                      name="promocion"
-                      onChange={this.onChangeInput}
-                      value={this.state.pass}
-                      validate 
-                     
-                      className="form-control"/>
-                      </MDBCol>
+          
+              <br></br>
 
-                      <MDBCol md="3" className="mb-3 mt-4">   
-                  <label htmlFor="defaultFormLoginPasswordEx" >
-                  <strong> Vendedor : &nbsp;</strong>
-                  </label>
-                  <label>{localStorage.getItem("nombre").toUpperCase() + " "  + localStorage.getItem("apellido").toUpperCase()}</label>
-                      </MDBCol>
+   <label style={{color:"red"}} htmlFor="defaultFormLoginPasswordEx"><strong>Promoción &nbsp;</strong></label>
+              < label style={{color:"red"}}><strong>{this.state.promocion}</strong></ label>
+              <br></br>
+              <br></br>
 
-                      <MDBCol md="3" className="mb-3">   
-                  
+              
+              <Table bordered>
+                   <thead>
+                       <tr>
+                       <th bgcolor="DeepSkyBlue" colspan="3">PÓLIZA DE SOPORTE TECNICO REMOTO BASICAS ** LA POLIZA ES POR SISTEMA **</th>          
+                       </tr>
+                   </thead>
+                   <tbody>
+                   
+                       <th >SERVICIO</th>
+                       <th >PRECIO ESPECIAL</th>
+                       <th >PRECIO NORMAL</th>
+                       
+                       <tr>
+                       <th > Póliza semestral  - por sistema </th>
+                       <th > $ 2,500.00 </th>
+                       <th > $ 5000.00 </th>
+                      
+                       
+                       </tr>
 
-                      </MDBCol>
+                       <tr>
+                       <th > Póliza semestral  - por sistema</th>
+                       <th > $ 4,000.00 </th>
+                       <th > $ 8,000.00 </th>
+                       
+                       
+                       </tr>
+                       <tr>  
+                       <th colspan="2"></th>       
+                       <th  style={{color:"red"}}><strong>PRECIO MAS IVA</strong></th>           
+                       </tr>
+                   </tbody>
+            </Table>
+   
 
-</MDBRow> */}
+       
+          < br></br>
+         <strong> Nota:</strong> El costo no incluye Interfaz, Formatos, Carga de Catálogos o alguna implementación adicional a la mencionada en su cotización.
+           <br></br>
+           <br></br>
+
+           <strong> No se aceptan devoluciones</strong>
+           <br></br>
+           <br></br>
+           <fort style={{color:"#3371FF"}}> <strong>Condiciones Comerciales y Formas de Pago</strong></fort>
+
+           <ul face="Verdana">
+               <li>Todos los costos anteriormente presentados son más IVA.</li>
+               <li>Precios representados en M.N.</li>
+               <li>Pago por anticipado</li>
+               <li>Pago por depósito bancario o transferencia electrónica.</li>	
+           </ul>
+           <fort  > 
+               <p align="left" marginLeft="20%">
+                   - Cuenta: 50020978434 
+               <br></br>
+               - Clabe: 036180500209784346
+               <br></br>
+               - Banco: Inbursa
+               <br></br>
+               - Beneficiario: ALFA DISEÑO DE SISTEMAS, S.A. de C.V.
+               <br></br>
+               - RFC: ADS020524CH1
+               </p>
+           </fort>
+
+       <p>Sin más por el momento y agradeciéndole por su amable atención,
+            Quedo a sus órdenes para cualquier duda al respecto. Cordialmente.</p>
 
 
+         <fort> 
+              
+             
+               <p style={{color:"#3371FF"}} className="text-center mb-4">
+                   <strong> ALFA DISEÑO DE SISTEMAS, S.A. DE C.V.</strong>
+               </p>
 
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer felis libero, lobortis ac rutrum quis, varius a velit. Donec lacus erat, cursus sed porta quis, adipiscing et ligula. Duis volutpat, sem pharetra accumsan pharetra, mi ligula cursus felis, ac aliquet leo diam eget risus. Integer facilisis, justo cursus venenatis vehicula, massa nisl tempor sem, in ullamcorper neque mauris in orci.
-                </p>
-                <p>
-                    Ut orci ligula, varius ac consequat in, rhoncus in dolor. Mauris pulvinar molestie accumsan. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean velit ligula, pharetra quis aliquam sed, scelerisque sed sapien. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aliquam dui mi, vulputate vitae pulvinar ac, condimentum sed eros.
-                </p>
-                <p>
-                    Aliquam at nisl quis est adipiscing bibendum. Nam malesuada eros facilisis arcu vulputate at aliquam nunc tempor. In commodo scelerisque enim, eget sodales lorem condimentum rutrum. Phasellus sem metus, ultricies at commodo in, tristique non est. Morbi vel mauris eget mauris commodo elementum. Nam eget libero lacus, ut sollicitudin ante. Nam odio quam, suscipit a fringilla eget, dignissim nec arcu. Donec tristique arcu ut sapien elementum pellentesque.
-                </p>
-                <p>
-                    Maecenas vitae eros vel enim molestie cursus. Proin ut lacinia ipsum. Nam at elit arcu, at porttitor ipsum. Praesent id viverra lorem. Nam lacinia elementum fermentum. Nulla facilisi. Nulla bibendum erat sed sem interdum suscipit. Vestibulum eget molestie leo. Aliquam erat volutpat. Ut sed nulla libero. Suspendisse id euismod quam. Aliquam interdum turpis vitae purus consectetur in pulvinar libero accumsan. In id augue dui, ac volutpat ante. Suspendisse purus est, ullamcorper id bibendum sed, placerat id leo.
-                </p>
-            </PDFExport>
-            <MDBRow>
+               <p className="text-center mb-4" style={{color:"#3371FF"}}>
+                   <u>www.ads.com.mx </u>
+              </p>
+
+             
+       </fort  > 
+       </div>
+
+              </Paper>
+              </div> 
+              
+
+            <MDBRow style = {{marginLeft:"10%"}}>
             <MDBBtn size="md" disabled = {this.state.botonPdfExport} color = "primary" onClick = {e=> this.onSubmitBtn()}> Enviar cotización </MDBBtn>
             {boton}
             <MDBBtn size="md" color = "secondary" onClick = {e=> this.cerrarCotizacion()}> Cerrar </MDBBtn>
             </MDBRow>
+            <div style={{ position: "absolute", left: "-2000px", top: 0 }}>
+
+                
+            <PDFExport
+                paperSize="letter"
+                margin="1cm"
+                forcePageBreak=".page-break"
+                fileName={`${"Cotización"} PDF ${new Date().getFullYear()}`}
+                ref={(component) => this.pdfExportComponent = component}
+                >
+
+
+<Container  style={{width:1000,height:1200}}> 
+
+<Paper  >
+            
+            <img src={titulo1} alt="titulo1" style={{width:520,height:100}}   />
+            <br></br>
+            
+    <div style={{ marginRight:"45%", marginTop:"2%",marginBottom:"2%"}}>
+    
+                <label> <strong>{this.state.razonSocial}</strong> </label>                                 
+            
+
+            <br></br> 
+        
+            <label> {this.state.nombre}&nbsp;{this.state.apellidos} </label> 
+        
+        
+
+            <br></br> 
+            <label>{this.state.correo1}</label> 
+
+            
+
+            <label>{this.state.telefono1}</label>
+            <br></br>
+
+            
+                        
+            
+                <fort  face="Verdana"> Buen día, me permito presentar  nuestra propuesta referente a los producto (s) y servicio (s) de su interés.</fort>
+
+            
+            <br></br>
+            <br></br>
+
+
+
+            <Table bordered >
+                <thead>
+                    <tr>
+                    <th bgcolor="DeepSkyBlue" colspan="2" face ="Arial"fontsize="80">PRODUCTO O SERVICIO</th>          
+                    <th bgcolor="DeepSkyBlue" colspan="2">PRECIO MAS IVA</th>
+                    </tr>
+                </thead>
+                <tbody>
+                
+                    <th colspan="2">{this.state.Servicio}</th>
+                    <th colspan="2">{this.state.precio}</th>
+                    
+                    <tr>
+                    <th ROWSPAN="2"></th>
+                    <td>IVA:</td>
+                    <td colspan="2">{tasaIva}</td>
+                    
+                    </tr>
+                    <tr>         
+                    <td>TOTAL</td>
+                    <td colspan="2">{total}</td>          
+                    </tr>
+                </tbody>
+            </Table>
+
+        
+            <br></br>
+
+<label style={{color:"red"}} htmlFor="defaultFormLoginPasswordEx"><strong>Promoción &nbsp;</strong></label>
+            < label style={{color:"red"}}><strong>{this.state.promocion}</strong></ label>
+            <br></br>
+            <br></br>
+
+            
+            <Table bordered>
+                <thead>
+                    <tr>
+                    <th bgcolor="DeepSkyBlue" colspan="3">PÓLIZA DE SOPORTE TECNICO REMOTO BASICAS ** LA POLIZA ES POR SISTEMA **</th>          
+                    
+                    </tr>
+                </thead>
+                <tbody>
+                
+                    <th >SERVICIO</th>
+                    <th >PRECIO ESPECIAL</th>
+                    <th >PRECIO NORMAL</th>
+                    
+                    <tr>
+                    <th > Póliza semestral  - por sistema </th>
+                    <th > $ 2,500.00 </th>
+                    <th > $ 5000.00 </th>
+                    
+                    
+                    </tr>
+
+                    <tr>
+                    <th > Póliza semestral  - por sistema</th>
+                    <th > $ 4,000.00 </th>
+                    <th > $ 8,000.00 </th>
+                    
+                    
+                    </tr>
+                    <tr>  
+                    <th colspan="2"></th>       
+                    <th  style={{color:"red"}}><strong>PRECIO MAS IVA</strong></th>           
+                    </tr>
+                </tbody>
+            </Table>
+
+
+    
+        < br></br>
+        <strong> Nota:</strong> El costo no incluye Interfaz, Formatos, Carga de Catálogos o alguna implementación adicional a la mencionada en su cotización.
+        <br></br>
+        <br></br>
+
+        <strong> No se aceptan devoluciones</strong>
+        <br></br>
+        <br></br>
+        <fort style={{color:"#3371FF"}}> <strong>Condiciones Comerciales y Formas de Pago</strong></fort>
+
+        <ul face="Verdana">
+            <li>Todos los costos anteriormente presentados son más IVA.</li>
+            <li>Precios representados en M.N.</li>
+            <li>Pago por anticipado</li>
+            <li>Pago por depósito bancario o transferencia electrónica.</li>	
+        </ul>
+        <fort  > 
+            <p align="left" marginLeft="20%">
+                - Cuenta: 50020978434 
+            <br></br>
+            - Clabe: 036180500209784346
+            <br></br>
+            - Banco: Inbursa
+            <br></br>
+            - Beneficiario: ALFA DISEÑO DE SISTEMAS, S.A. de C.V.
+            <br></br>
+            - RFC: ADS020524CH1
+            </p>
+        </fort>
+
+    <p>Sin más por el momento y agradeciéndole por su amable atención,
+            Quedo a sus órdenes para cualquier duda al respecto. Cordialmente.</p>
+
+
+        <fort className="text-center mb-4" > 
+            <p face="Consolas" >
+                <strong >{localStorage.getItem("nombre").toUpperCase() + " "  + localStorage.getItem("apellido").toUpperCase()}</strong>
+                    <br></br>
+                <strong style={{color:"#3371FF"}}> ALFA DISEÑO DE SISTEMAS, S.A. DE C.V.</strong>
+                <br></br>
+                <u style={{color:"#3371FF"}}>www.ads.com.mx </u>
+                <br></br>
+                <label>{localStorage.getItem("correo")}</label> 
+            
+            </p>
+            
+    </fort  > 
+    </div>      
+
+<div class="contenedor">
+<img src={titulo3}   style={{width:530,height:100}} />
+
+<div class="centrado">Av. Chapultepec N° 473, Piso 3 Col. Juárez, Del. Cuauhtémoc C.P. 06600 Ciudad de México Información, soporte y ventas: Conmutador con 6 líneas   1209 0740 -  5553 2049</div>
+</div>
+            </Paper>
+
+            </Container>
+
+
+                </PDFExport>
+            </div>
         </div>
+
+
+
+
         }
          return(
         <React.Fragment>
         <Navbar/>
         {form} 
         {pdf}
-        <image src="imagen"></image>
-
-{/* ************************************************************************************** */}
 
 
-
-             {/* <div style={{width:200, height:400}}> */}
-                 <Paper   style={{width:1200,height:1200, marginLeft:"6%",marginTop:"2%",marginBottom:"2%"}}>
-                 {/* <MDBCol>
-   <MDBCard style={{ width: "22rem" }}>
-     <MDBCardImage className="img-fluid" src={imagen} alt="imagen" waves />
-     <MDBCardBody>
-       <MDBCardTitle>Card title</MDBCardTitle>
-       <MDBCardText>
-         Some quick eof the card&apos;s content.
-       </MDBCardText>
+        {/* //***********************************************************  */}
        
-     </MDBCardBody>
-   </MDBCard>
- </MDBCol> */}
-      <img src={imagen3} alt="imagen"    style={{width:1210,height:150}}/>
-      <br></br>
-      <br></br>
-      <br></br>
-     
-     
-                    <label htmlFor="defaultFormLoginPasswordEx" ><strong> Razón social:</strong> </label>
-               <label>{this.state.razonSocial} </label>                                 
-              
+<Container  style={{width:1000,height:1200}}> 
 
-               <br></br> 
-         
-               <label htmlFor="nombre" ><strong>Nombre (s):</strong></label>
-               <label> {this.state.nombre}{this.state.apellidos} </label> 
-           
-               {/* <br></br> 
-               <label htmlFor="defaultFormLoginPasswordEx"><strong>Apellidos:</strong></label>
-               <label>{this.state.apellidos}</label>  */}
-
-               <br></br> 
-               <label htmlFor="defaultFormLoginEmailEx"><strong>Correo:</strong></label>
-               <label>{this.state.correo1}</label> 
-
-               {/* <br></br>
-               <label htmlFor="defaultFormLoginEmailEx"><strong>Correo alterno:</strong></label>
-               <label>{this.state.correo2}</label> */}
-               
-
-               <br></br>
-               <label htmlFor="defaultFormLoginPasswordEx"><strong>Telefono:</strong></label>
-               <label>{this.state.tel1}</label>
-               <br></br>
-              
-{/* <fort style={{color:"#3371FF"}} ><strong></strong> </fort> */}
-              
-                   <fort  face="Verdana"> Buen día, me permito presentar  nuestra propuesta referente a los producto (s) y servicio (s) de su interés.</fort>
-
-              
-               <br></br>
-
-
-
-               <Table bordered>
-      <thead>
-        <tr>
-          <th bgcolor="DeepSkyBlue" colspan="2">PRODUCTO O SERVICIO</th>          
-          <th bgcolor="DeepSkyBlue" colspan="2">PRECIO MAS IVA</th>
-        </tr>
-      </thead>
-      <tbody>
-       
-          <th colspan="2">{this.state.Servicio}</th>
-          <th colspan="2">{this.state.precio}</th>
-        
-        <tr>
-          <th ROWSPAN="2"></th>
-          <td>IVA:</td>
-          <td>{tasaIva}</td>
-          
-        </tr>
-        <tr>         
-          <td>TOTAL</td>
-          <td>{total}</td>          
-        </tr>
-      </tbody>
-    </Table>
-
-
-    <label style={{color:"red"}} htmlFor="defaultFormLoginPasswordEx"><strong>Promoción &nbsp;</strong></label>
-               < label style={{color:"red"}}><strong>{this.state.promocion}</strong></ label>
-               <br></br>
-    {/* <label htmlFor="defaultFormLoginPasswordEx"><strong>Servicio</strong></label>
-               < label>{this.state.Servicio}</ label>
-               <br></br>
-                
-               <label htmlFor="defaultFormLoginPasswordEx"><strong>Tasa:</strong></label>
-               < label>{iva}%</ label>
-
-               <br></br>
-               <label htmlFor="defaultFormLoginPasswordEx"><strong> Total: &nbsp;</strong>
-               </label>
-               <label>$ {total}</label>
-               <br></br>
-                 
-               <label htmlFor="defaultFormLoginPasswordEx" >
-               <strong>Iva: &nbsp;</strong> 
-               </label>
-               <label>$ {tasaIva}</label> */}
-
-<p>
-               {/* <p style = "font-family:courier,arial,helvética;"> */}
-              <strong> Nota:</strong> El costo no incluye Interfaz, Formatos, Carga de Catálogos o alguna implementación adicional a la mencionada en su cotización.
-<br></br>
-<br></br>
-
-<strong> No se aceptan devoluciones</strong>
-<br></br>
-<br></br>
-<fort style={{color:"#3371FF"}}> <strong>Condiciones Comerciales y Formas de Pago</strong></fort>
-
-<ul face="Verdana">
-
-<li>Todos los costos anteriormente presentados son más IVA.</li>
-<li>Precios representados en M.N.</li>
-<li>Pago por anticipado</li>
-<li>Pago por depósito bancario o transferencia electrónica.</li>	
-
-    </ul>
-<fort  > 
-<p align="left" marginLeft="20%">
-    - Cuenta: 50020978434 
-<br></br>
-- Clabe: 036180500209784346
-<br></br>
-- Banco: Inbursa
-<br></br>
-- Beneficiario: ALFA DISEÑO DE SISTEMAS, S.A. de C.V.
-<br></br>
-- RFC: ADS020524CH1
-</p>
-</fort>
-
-<p>Sin más por el momento y agradeciéndole por su amable atención, Quedo a sus órdenes para cualquier duda al respecto. Cordialmente.</p>
-
- {/* <label htmlFor="defaultFormLoginPasswordEx"><strong>Servicio</strong></label> */}
- <fort  > 
-                < p className="text-center mb-4" > <strong>{localStorage.getItem("nombre").toUpperCase() + " "  + localStorage.getItem("apellido").toUpperCase()}</strong></p>
-              
-                <p  style={{color:"#3371FF"}} className="text-center mb-4"><strong> ALFA DISEÑO DE SISTEMAS, S.A. DE C.V.</strong></p>
-              <p className="text-center mb-4" style={{color:"#3371FF"}}> <u >www.ads.com.mx </u> </p>
-                <p className="text-center mb-4" style={{color:"#3371FF"}}>{localStorage.getItem("correo")}</p>
-                </fort  > 
-</p>
-
-
-               </Paper>
-               {/* </div> */}
-               
-
-
-{/* 
-
-
-
-                 
-<MDBRow >
-
-<MDBCol md="3" className="mb-3"> 
-                    <label htmlFor="defaultFormLoginPasswordEx" ><strong> Razón social:</strong> </label>
-               <label> {rs} </label>                                 
-               </MDBCol>
-
-
-           <MDBCol md="3" className="mb-3"> 
-               <label htmlFor="nombre" ><strong> Nombre (s):</strong> </label>
-               <label> {nombre} </label> 
-           </MDBCol>
-
-               <MDBCol md="3" className="mb-3"> 
-               <label htmlFor="defaultFormLoginPasswordEx" > <strong>Apellidos: </strong></label>
-               <label>  {apellidos} </label> 
-
-                       <MDBCol md="3" className="mb-3">   
-               <label htmlFor="defaultFormLoginEmailEx" >
-               <strong>Correo:</strong>
-               </label>
-               <label>  {correo1}</label> 
-
-                   <MDBCol md="3" className="mb-3">   
-               <label htmlFor="defaultFormLoginEmailEx" >
-               <strong>Correo alterno:</strong>
-               </label>
-               <input   
-                   icon="envelope"
-                   id="correo2"
-                   type="email"
-                   name="correo2"
-                   onChange={this.onChangeInput}
-                   value={this.state.pass}
-                  
-                   className="form-control" />
-                   </MDBCol>
-
-                   <MDBCol md="3" className="mb-3">    
-               <label htmlFor="defaultFormLoginPasswordEx" >
-               <strong>Telefono:</strong>
-               </label>
-               <input 
-                        
-               id="telefono1"
-               type="number"
-               name="telefono1"
-               onChange={this.onChangeInput}
-               value={this.state.pass}	
-               required
-               className="form-control"
-               />
-               </MDBCol>
-
-               <MDBCol md="3" className="mb-3">   
-               <label htmlFor="defaultFormLoginPasswordEx" >
-               <strong>  Servicio:</strong>
-               </label>
-               <input            
+<Paper  >
             
-               id="Servicio"
-               type="text"
-               name="Servicio"
-               onChange={this.onChangeInput}
-               value={this.state.pass}
-               required
-               className="form-control"/>
-               </MDBCol>
+            <img src={titulo1} alt="titulo1" style={{width:520,height:100}}   />
+            <br></br>
+            
+    <div style={{ marginRight:"45%", marginTop:"2%",marginBottom:"2%"}}>
+    
+                <label> <strong>{this.state.razonSocial}</strong> </label>                                 
+            
 
-               <MDBCol md="3" className="mb-3">    
-               <label htmlFor="defaultFormLoginPasswordEx" >
-               <strong>Precio:</strong>
-               </label>
-               <input 
-               required		 
-               id="precio"
-               type="text"
-               name="precio"
-               onChange={this.onChangeInput}
-               value={this.state.pass}	
-               
-               className="form-control"
-               />
-               </MDBCol>
+            <br></br> 
+        
+            <label> {this.state.nombre}&nbsp;{this.state.apellidos} </label> 
+        
+        
 
-               <MDBCol md="3" className="mb-4 mt-4">    
-               <label htmlFor="defaultFormLoginPasswordEx" >
-               <strong>Tasa:</strong>
-               </label>
-               < label>{iva}%</ label>
-               </MDBCol>
+            <br></br> 
+            <label>{this.state.correo1}</label> 
 
-               <MDBCol md="3" className="mb-4 mt-4">    
-               <label htmlFor="defaultFormLoginPasswordEx" >
-               <strong> Total: &nbsp;</strong>
-               </label>
-               <label>$ {total}</label>
-               </MDBCol>
-               <MDBCol md="3" className="mb-4 mt-4">    
-               <label htmlFor="defaultFormLoginPasswordEx" >
-               <strong>Iva: &nbsp;</strong> 
-               </label>
-               <label>$ {tasaIva}</label>
-               </MDBCol>
-                  
+            
 
-               
-</MDBRow>
+            <label>{this.state.telefono1}</label>
+            <br></br>
 
-<MDBRow>
-             
+            
+                        
+            
+                <fort  face="Verdana"> Buen día, me permito presentar  nuestra propuesta referente a los producto (s) y servicio (s) de su interés.</fort>
 
-               
-
-                   <MDBCol md="3" className="mb-3">   
-               <label htmlFor="defaultFormLoginPasswordEx" >
-               <strong>Promocion:</strong>
-               </label>
-               <input
-                           
-                   id="promocion"
-                   type="text"
-                   name="promocion"
-                   onChange={this.onChangeInput}
-                   value={this.state.pass}
-                   validate 
-                  
-                   className="form-control"/>
-                   </MDBCol>
-
-                   <MDBCol md="3" className="mb-3 mt-4">   
-               <label htmlFor="defaultFormLoginPasswordEx" >
-               <strong> Vendedor : &nbsp;</strong>
-               </label>
-               <label>{localStorage.getItem("nombre").toUpperCase() + " "  + localStorage.getItem("apellido").toUpperCase()}</label>
-                   </MDBCol>
-
-                   <MDBCol md="3" className="mb-3">   
-               
-
-                   </MDBCol>
-
-</MDBRow> */}
+            
+            <br></br>
+            <br></br>
 
 
 
-          
+            <Table bordered >
+                <thead>
+                    <tr>
+                    <th bgcolor="DeepSkyBlue" colspan="2" face ="Arial"fontsize="80">PRODUCTO O SERVICIO</th>          
+                    <th bgcolor="DeepSkyBlue" colspan="2">PRECIO MAS IVA</th>
+                    </tr>
+                </thead>
+                <tbody>
+                
+                    <th colspan="2">{this.state.Servicio}</th>
+                    <th colspan="2">{this.state.precio}</th>
+                    
+                    <tr>
+                    <th ROWSPAN="2"></th>
+                    <td>IVA:</td>
+                    <td colspan="2">{tasaIva}</td>
+                    
+                    </tr>
+                    <tr>         
+                    <td>TOTAL</td>
+                    <td colspan="2">{total}</td>          
+                    </tr>
+                </tbody>
+            </Table>
+
+        
+            <br></br>
+
+<label style={{color:"red"}} htmlFor="defaultFormLoginPasswordEx"><strong>Promoción &nbsp;</strong></label>
+            < label style={{color:"red"}}><strong>{this.state.promocion}</strong></ label>
+            <br></br>
+            <br></br>
+
+            
+            <Table bordered>
+                <thead>
+                    <tr>
+                    <th bgcolor="DeepSkyBlue" colspan="3">PÓLIZA DE SOPORTE TECNICO REMOTO BASICAS ** LA POLIZA ES POR SISTEMA **</th>          
+                    
+                    </tr>
+                </thead>
+                <tbody>
+                
+                    <th >SERVICIO</th>
+                    <th >PRECIO ESPECIAL</th>
+                    <th >PRECIO NORMAL</th>
+                    
+                    <tr>
+                    <th > Póliza semestral  - por sistema </th>
+                    <th > $ 2,500.00 </th>
+                    <th > $ 5000.00 </th>
+                    
+                    
+                    </tr>
+
+                    <tr>
+                    <th > Póliza semestral  - por sistema</th>
+                    <th > $ 4,000.00 </th>
+                    <th > $ 8,000.00 </th>
+                    
+                    
+                    </tr>
+                    <tr>  
+                    <th colspan="2"></th>       
+                    <th  style={{color:"red"}}><strong>PRECIO MAS IVA</strong></th>           
+                    </tr>
+                </tbody>
+            </Table>
 
 
+    
+        < br></br>
+        <strong> Nota:</strong> El costo no incluye Interfaz, Formatos, Carga de Catálogos o alguna implementación adicional a la mencionada en su cotización.
+        <br></br>
+        <br></br>
+
+        <strong> No se aceptan devoluciones</strong>
+        <br></br>
+        <br></br>
+        <fort style={{color:"#3371FF"}}> <strong>Condiciones Comerciales y Formas de Pago</strong></fort>
+
+        <ul face="Verdana">
+            <li>Todos los costos anteriormente presentados son más IVA.</li>
+            <li>Precios representados en M.N.</li>
+            <li>Pago por anticipado</li>
+            <li>Pago por depósito bancario o transferencia electrónica.</li>	
+        </ul>
+        <fort  > 
+            <p align="left" marginLeft="20%">
+                - Cuenta: 50020978434 
+            <br></br>
+            - Clabe: 036180500209784346
+            <br></br>
+            - Banco: Inbursa
+            <br></br>
+            - Beneficiario: ALFA DISEÑO DE SISTEMAS, S.A. de C.V.
+            <br></br>
+            - RFC: ADS020524CH1
+            </p>
+        </fort>
+
+    <p>Sin más por el momento y agradeciéndole por su amable atención,
+            Quedo a sus órdenes para cualquier duda al respecto. Cordialmente.</p>
 
 
+        <fort className="text-center mb-4" > 
+            <p face="Consolas" >
+                <strong >{localStorage.getItem("nombre").toUpperCase() + " "  + localStorage.getItem("apellido").toUpperCase()}</strong>
+                    <br></br>
+                <strong style={{color:"#3371FF"}}> ALFA DISEÑO DE SISTEMAS, S.A. DE C.V.</strong>
+                <br></br>
+                <u style={{color:"#3371FF"}}>www.ads.com.mx </u>
+                <br></br>
+                <label>{localStorage.getItem("correo")}</label> 
+            
+            </p>
+            
+    </fort  > 
+    </div>      
+
+<div class="contenedor">
+<img src={titulo3}   style={{width:530,height:100}} />
+
+<div class="centrado">Av. Chapultepec N° 473, Piso 3 Col. Juárez, Del. Cuauhtémoc C.P. 06600 Ciudad de México Información, soporte y ventas: Conmutador con 6 líneas   1209 0740 -  5553 2049</div>
+</div>
+            </Paper>
+
+            </Container>
 
 
        

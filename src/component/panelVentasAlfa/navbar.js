@@ -156,7 +156,7 @@ class NavbarAlfa extends Component {
                   </MDBNavItem>   
                   <MDBNavItem active>
                   {/* <MDBNavLink >  Registrar alfa </MDBNavLink>                    */}
-                  <MDBBtn  color="info" to="/loginAlfa">
+                  <MDBBtn  color="info" href="/loginAlfa">
                      Salir
                     </MDBBtn>
                      </MDBNavItem> 
