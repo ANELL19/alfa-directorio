@@ -17,6 +17,7 @@ import imagen2 from './images/Captura1.JPG'
 import titulo1 from  './images/titulo1.png'
 import titulo3 from  './images/titulo3.png'
 import style from "./style.css"
+import { MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
 
 class Cotizaciones extends Component{
     pdfExportComponent
@@ -563,69 +564,53 @@ total= (parseInt(this.state.precio) + parseFloat(tasaIva))
                 fileName={`${"Cotización"} PDF ${new Date().getFullYear()}`}
                 ref={(component) => this.pdfExportComponent = component}
                 >
-
-
-<Container  style={{width:1000,height:1200}}> 
+       
+       <Container  style={{width:550,height:800}}> 
 
 <Paper  >
             
             <img src={titulo1} alt="titulo1" style={{width:520,height:100}}   />
             <br></br>
             
-    <div style={{ marginRight:"45%", marginTop:"2%",marginBottom:"2%"}}>
+    {/* <div style={{ marginRight:"45%", marginTop:"2%",marginBottom:"2%"}}> */}
     
-                <label> <strong>{this.state.razonSocial}</strong> </label>                                 
-            
+                <font face="arial" size="1" > <strong>{this.state.razonSocial}</strong> </font >
+                <br></br>        
+                <font face="arial" size="1"> {this.state.nombre}&nbsp;{this.state.apellidos} </font>
+                <br></br> 
+                <font face="arial" size="1">{this.state.correo1}</font>
+                <br></br> 
+                <font face="arial" size="1">{this.state.telefono1}</font>
+                <br></br>
+                <br></br>
+                <font face="arial" size="1"> Buen día, me permito presentar  nuestra propuesta referente a los producto (s) y servicio (s) de su interés. </font>
+                <br></br>
 
-            <br></br> 
-        
-            <label> {this.state.nombre}&nbsp;{this.state.apellidos} </label> 
-        
-        
-
-            <br></br> 
-            <label>{this.state.correo1}</label> 
-
-            
-
-            <label>{this.state.telefono1}</label>
-            <br></br>
-
-            
+            <MDBTable bordered  fontFamily= 'arial' >
+            <MDBTableHead>
+                    <tr>
+                    <td bgcolor="DeepSkyBlue" colspan="3" align="center" ><font face="arial" size="1">PRODUCTO O SERVICIO</font></td>          
+                    <td bgcolor="DeepSkyBlue" align="center"> <font face="arial" size="1">PRECIO MAS IVA</font></td>
+                    </tr>
+            </MDBTableHead>
+                <MDBTableBody>
+                <tr> 
+                    <td colspan="3"><font>{this.state.Servicio}</font></td>
+                    <td align="center"> <font>$ &nbsp; {this.state.precio}</font></td>
+                    </tr>    
+                    <tr>
+                    <th ROWSPAN="2" colspan="2"></th>
+                    <td align="center">IVA:</td>
+                    <td align="center">{tasaIva}</td>
+                    
+                    </tr>
+                    <tr>  
                         
-            
-                <fort  face="Verdana"> Buen día, me permito presentar  nuestra propuesta referente a los producto (s) y servicio (s) de su interés.</fort>
-
-            
-            <br></br>
-            <br></br>
-
-
-
-            <Table bordered >
-                <thead>
-                    <tr>
-                    <th bgcolor="DeepSkyBlue" colspan="2" face ="Arial"fontsize="80">PRODUCTO O SERVICIO</th>          
-                    <th bgcolor="DeepSkyBlue" colspan="2">PRECIO MAS IVA</th>
+                    <td align="center">TOTAL:</td>
+                    <td align="center">{total}</td>          
                     </tr>
-                </thead>
-                <tbody>
-                
-                    <th colspan="2">{this.state.Servicio}</th>
-                    <th colspan="2">{this.state.precio}</th>
-                    
-                    <tr>
-                    <th ROWSPAN="2"></th>
-                    <td>IVA:</td>
-                    <td colspan="2">{tasaIva}</td>
-                    
-                    </tr>
-                    <tr>         
-                    <td>TOTAL</td>
-                    <td colspan="2">{total}</td>          
-                    </tr>
-                </tbody>
-            </Table>
+                </MDBTableBody>
+            </MDBTable>
 
         
             <br></br>
@@ -636,7 +621,7 @@ total= (parseInt(this.state.precio) + parseFloat(tasaIva))
             <br></br>
 
             
-            <Table bordered>
+            <Table bordered >
                 <thead>
                     <tr>
                     <th bgcolor="DeepSkyBlue" colspan="3">PÓLIZA DE SOPORTE TECNICO REMOTO BASICAS ** LA POLIZA ES POR SISTEMA **</th>          
@@ -645,28 +630,28 @@ total= (parseInt(this.state.precio) + parseFloat(tasaIva))
                 </thead>
                 <tbody>
                 
-                    <th >SERVICIO</th>
-                    <th >PRECIO ESPECIAL</th>
-                    <th >PRECIO NORMAL</th>
+                    <td align="center"><font FACE="arial" SIZE="1">SERVICIO</font></td>
+                    <td align="center">PRECIO ESPECIAL</td>
+                    <td align="center">PRECIO NORMAL</td>
                     
                     <tr>
-                    <th > Póliza semestral  - por sistema </th>
-                    <th > $ 2,500.00 </th>
-                    <th > $ 5000.00 </th>
+                    <td align="center"> Póliza semestral  - por sistema </td>
+                    <td align="center"> $ 2,500.00 </td>
+                    <td align="center"> $ 5000.00 </td>
                     
                     
                     </tr>
 
                     <tr>
-                    <th > Póliza semestral  - por sistema</th>
-                    <th > $ 4,000.00 </th>
-                    <th > $ 8,000.00 </th>
+                    <td align="center"> Póliza semestral  - por sistema</td>
+                    <td align="center"> $ 4,000.00 </td>
+                    <td align="center"> $ 8,000.00 </td>
                     
                     
                     </tr>
                     <tr>  
-                    <th colspan="2"></th>       
-                    <th  style={{color:"red"}}><strong>PRECIO MAS IVA</strong></th>           
+                    <td colspan="2" align="center"></td>       
+                    <td style={{color:"red"}} align="center"><strong>PRECIO MAS IVA</strong></td>           
                     </tr>
                 </tbody>
             </Table>
@@ -720,7 +705,7 @@ total= (parseInt(this.state.precio) + parseFloat(tasaIva))
             </p>
             
     </fort  > 
-    </div>      
+    {/* </div>       */}
 
 <div class="contenedor">
 <img src={titulo3}   style={{width:530,height:100}} />
@@ -749,68 +734,49 @@ total= (parseInt(this.state.precio) + parseFloat(tasaIva))
 
         {/* //***********************************************************  */}
        
-<Container  style={{width:1000,height:1200}}> 
+<Container  style={{width:550,height:800}}> 
 
 <Paper  >
             
-            <img src={titulo1} alt="titulo1" style={{width:520,height:100}}   />
-            <br></br>
-            
-    <div style={{ marginRight:"45%", marginTop:"2%",marginBottom:"2%"}}>
-    
-                <label> <strong>{this.state.razonSocial}</strong> </label>                                 
-            
-
-            <br></br> 
-        
-            <label> {this.state.nombre}&nbsp;{this.state.apellidos} </label> 
-        
-        
-
-            <br></br> 
-            <label>{this.state.correo1}</label> 
-
-            
-
-            <label>{this.state.telefono1}</label>
-            <br></br>
-
-            
-                        
-            
-                <fort  face="Verdana"> Buen día, me permito presentar  nuestra propuesta referente a los producto (s) y servicio (s) de su interés.</fort>
-
-            
-            <br></br>
-            <br></br>
-
-
-
-            <Table bordered >
-                <thead>
-                    <tr>
-                    <th bgcolor="DeepSkyBlue" colspan="2" face ="Arial"fontsize="80">PRODUCTO O SERVICIO</th>          
-                    <th bgcolor="DeepSkyBlue" colspan="2">PRECIO MAS IVA</th>
-                    </tr>
-                </thead>
-                <tbody>
+            <img src={titulo1} alt="titulo1" style={{width:520,height:100}}   /> 
                 
-                    <th colspan="2">{this.state.Servicio}</th>
-                    <th colspan="2">{this.state.precio}</th>
-                    
+                <font face="arial" size="1" color="black" > <strong>{this.state.razonSocial}</strong> </font >
+                <br></br>        
+                <font face="arial" size="1"> {this.state.nombre}&nbsp;{this.state.apellidos} </font>
+                <br></br> 
+                <font face="arial" size="1">{this.state.correo1}</font>
+                <br></br> 
+                <font face="arial" size="1">{this.state.telefono1}</font>
+                <br></br>                
+                <font face="arial" size="1"> Buen día, me permito presentar  nuestra propuesta referente a los producto (s) y servicio (s) de su interés. </font>
+                <br></br>
+              
+            <MDBTable bordered  fontFamily= 'arial' >
+            <MDBTableHead>
                     <tr>
-                    <th ROWSPAN="2"></th>
-                    <td>IVA:</td>
-                    <td colspan="2">{tasaIva}</td>
+                    <td bgcolor="DeepSkyBlue" colspan="3" align="center"  ><font face="arial" size="1">PRODUCTO O SERVICIO</font></td>          
+                    <td bgcolor="DeepSkyBlue" align="center"> <font face="arial" size="1">PRECIO MAS IVA</font></td>
+                    </tr>
+            </MDBTableHead>
+                <MDBTableBody>
+                <tr> 
+                    <td colspan="3"><font>{this.state.Servicio}</font></td>
+                    <td align="center"> <font>${this.state.precio}</font></td>
+                    </tr>    
+                    <tr>
+                    <th ROWSPAN="2" colspan="2"></th>
+                    <td align="center">IVA:</td>
+                    <td align="center">${tasaIva}</td>
                     
                     </tr>
-                    <tr>         
-                    <td>TOTAL</td>
-                    <td colspan="2">{total}</td>          
+                    <tr>  
+                        
+                    <td align="center">TOTAL:</td>
+                    <td align="center">${total}</td>          
                     </tr>
-                </tbody>
-            </Table>
-
+                </MDBTableBody>
+            </MDBTable>
+           
         
             <br></br>
 
@@ -819,43 +785,38 @@ total= (parseInt(this.state.precio) + parseFloat(tasaIva))
             <br></br>
             <br></br>
 
-            
-            <Table bordered>
+   
+            <Table bordered  >
                 <thead>
                     <tr>
-                    <th bgcolor="DeepSkyBlue" colspan="3">PÓLIZA DE SOPORTE TECNICO REMOTO BASICAS ** LA POLIZA ES POR SISTEMA **</th>          
+                    <td bgcolor="DeepSkyBlue" colspan="3"><font FACE="arial" SIZE="1" >PÓLIZA DE SOPORTE TECNICO REMOTO BASICAS ** LA POLIZA ES POR SISTEMA **</font></td>          
                     
                     </tr>
                 </thead>
                 <tbody>
-                
-                    <th >SERVICIO</th>
-                    <th >PRECIO ESPECIAL</th>
-                    <th >PRECIO NORMAL</th>
-                    
-                    <tr>
-                    <th > Póliza semestral  - por sistema </th>
-                    <th > $ 2,500.00 </th>
-                    <th > $ 5000.00 </th>
-                    
-                    
-                    </tr>
-
-                    <tr>
-                    <th > Póliza semestral  - por sistema</th>
-                    <th > $ 4,000.00 </th>
-                    <th > $ 8,000.00 </th>
-                    
-                    
-                    </tr>
-                    <tr>  
-                    <th colspan="2"></th>       
-                    <th  style={{color:"red"}}><strong>PRECIO MAS IVA</strong></th>           
-                    </tr>
+                <tr>
+                    <td align="center" ><font FACE="arial" SIZE="1">SERVICIO</font></td>
+                    <td align="center"><font FACE="arial" SIZE="1">PRECIO ESPECIAL</font></td>
+                    <td align="center"><font FACE="arial" SIZE="1">PRECIO NORMAL</font></td>
+                </tr>    
+                <tr>
+                    <td align="center"><font FACE="arial" SIZE="1">Póliza semestral - Por sistema</font>  </td>
+                    <td align="center"><font FACE="arial" SIZE="1">$ 2,500.00</font>  </td>
+                    <td align="center"><font FACE="arial" SIZE="1">$ 5000.00</font>  </td> 
+                </tr>
+                <tr>
+                    <td align="center"><font FACE="arial" SIZE="1">Póliza semestral - Por sistema</font> </td>
+                    <td align="center"><font FACE="arial" SIZE="1">$ 4,000.00</font>  </td>
+                    <td align="center"><font FACE="arial" SIZE="1">$ 8,000.00</font>  </td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center"></td>       
+                    <td style={{color:"red"}} align="center"><font FACE="arial" SIZE="1"><strong>PRECIO MAS IVA</strong></font></td>           
+                </tr>
                 </tbody>
             </Table>
-
-
+            
+<div>
     
         < br></br>
         <strong> Nota:</strong> El costo no incluye Interfaz, Formatos, Carga de Catálogos o alguna implementación adicional a la mencionada en su cotización.
@@ -904,14 +865,15 @@ total= (parseInt(this.state.precio) + parseFloat(tasaIva))
             </p>
             
     </fort  > 
-    </div>      
+    {/* </div>       */}
 
 <div class="contenedor">
 <img src={titulo3}   style={{width:530,height:100}} />
 
-<div class="centrado">Av. Chapultepec N° 473, Piso 3 Col. Juárez, Del. Cuauhtémoc C.P. 06600 Ciudad de México Información, soporte y ventas: Conmutador con 6 líneas   1209 0740 -  5553 2049</div>
+<div class="centrado"><font size="1">Av. Chapultepec N° 473, Piso 3 Col. Juárez, Del. Cuauhtémoc C.P. 06600 Ciudad de México Información, soporte y ventas: Conmutador con 6 líneas   1209 0740 -  5553 2049</font></div>
 </div>
-            </Paper>
+      
+</div>      </Paper>
 
             </Container>
 
