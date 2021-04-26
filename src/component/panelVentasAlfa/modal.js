@@ -16,8 +16,8 @@ class dashboardAlfa extends Component{
           modal: false,
           detallesAdminGral:[],
           user:"",
-          pass:"",   
-          correoAlfa:"",
+          pass:"",
+         
 
          
         }
@@ -112,34 +112,24 @@ class dashboardAlfa extends Component{
 
     }
 
-    modal(dataEmpresas){
-      console.log("dataEmpresas" , dataEmpresas)
-      this.setState({correoAlfa :dataEmpresas.correo})
-      localStorage.setItem("correoAlfa",dataEmpresas.correo)
-      // this.setState({modal12:true})
-      
-    }
-
     onSubmitBtn =(e)=>{        
       e.preventDefault();
       const API='http://localhost:4000/graphql'   
   //  let correo = this.state.correoAlfa;
-       const  contraseña = this.state.pass;
-       let correo=this.state.correoAlfa;
-
-      const correoAlfa = localStorage.getItem("correo") 
-       console.log("correoAlfa",this.state.correoAlfa)
+      //  const  contraseña = this.state.pass;
+      //  const correo1=this.state.user
+      // const correo = localStorage.getItem("correo") 
+      // console.log("correo",correo)
     //  console.log("state",this.state.correoAlfa)
      // console.log("correo" , correo , "pass", this.state.pass)
-       console.log("correo" , correo , "pass", this.state.pass)
+      // console.log("correo" , correo1 , "pass", this.state.pass)
           axios ({
               url:API,
               method:'post',
               data:{
                   query:`
                   query{
-                 
-                      loginAdminAlfa(data:"${[correo,contraseña]}"){  
+                    loginAdminAlfa(data:"${[this.state.user,this.state.pass]}"){
                       message
                       correo                                         
                       token
@@ -172,13 +162,6 @@ class dashboardAlfa extends Component{
                 console.log('error',err.response)
             })
             
-        } 
-           modal(dataEmpresas){
-          console.log("dataEmpresas" , dataEmpresas)
-          this.setState({correoAlfa :dataEmpresas.correo})
-          localStorage.setItem("correoAdministrador",dataEmpresas.correo)
-          // this.setState({modal12:true})
-          
         }
 
   
@@ -305,7 +288,7 @@ class dashboardAlfa extends Component{
       <p className="h5 text-center mb-4">{correo} </p> 
 
 
-      {/* <FormGroup row>
+      <FormGroup row>
           <Label for="Correo" sm={3} size="lg">Correo</Label>
               <Col sm={9}>
               <Input 
@@ -318,7 +301,7 @@ class dashboardAlfa extends Component{
                 required 
               />
               </Col>
-          </FormGroup>     */}
+          </FormGroup>    
 
         <FormGroup row>
           <Label for="contraseña" sm={3} size="lg">Contraseña</Label>
@@ -355,4 +338,3 @@ class dashboardAlfa extends Component{
         )
     }
 } export default dashboardAlfa
-

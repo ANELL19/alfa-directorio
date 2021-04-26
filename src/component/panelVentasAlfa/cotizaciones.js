@@ -9,6 +9,7 @@ import {Form} from 'reactstrap';
 import Navbar from './navbar'
 import { PDFExport } from '@progress/kendo-react-pdf';
 import { Container, Paper } from '@material-ui/core';
+import {  Row, Col } from 'reactstrap';
 // import {  MDBCard, MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText, MDBCol } from 'mdbreact';
 import { Table } from 'reactstrap';
 import imagen3 from './images/liz.png'
@@ -16,7 +17,6 @@ import imagen from './images/encabezado.JPG'
 import imagen2 from './images/Captura1.JPG'
 import titulo1 from  './images/titulo1.png'
 import titulo3 from  './images/titulo3.png'
-import style from "./style.css"
 import { MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
 
 class Cotizaciones extends Component{
@@ -53,11 +53,7 @@ class Cotizaciones extends Component{
     regresar(){
         this.props.history.push("/dahboardAlfa")
     } 
-     componentWillMount(){    
-
-
-    }
-
+   
 
     onChangeInput =(e)=>{
         const {id,value} = e.target;
@@ -147,8 +143,12 @@ class Cotizaciones extends Component{
         window.location.reload()
     }
      render(){
-        var dat= new Date(); //Obtienes la fecha
-        var dat2 = Date.parse(dat);
+        // var dat= new Date(); //Obtienes la fecha
+        // var dat2 = Date.parse(dat);
+ 
+        var date= new Date()
+        var fecha = date.toLocaleString('es')        
+        console.log("fecha",fecha)   
 
 let iva = 16;
 let total
@@ -311,17 +311,10 @@ total= (parseInt(this.state.precio) + parseFloat(tasaIva))
                   </label>
                   <label>$ {tasaIva}</label>
                   </MDBCol>
-                     
-
-                  
 </MDBRow>
 
 <MDBRow>
-                
-
-                  
-
-                      <MDBCol md="3" className="mb-3">   
+                <MDBCol md="3" className="mb-3">   
                   <label htmlFor="defaultFormLoginPasswordEx" >
                   <strong>Promocion:</strong>
                   </label>
@@ -380,133 +373,96 @@ total= (parseInt(this.state.precio) + parseFloat(tasaIva))
                             </div>
             }
             pdf =   <div>
-         
-            
-          
-         
+         <MDBRow style = {{marginLeft:"10%"}}>
+            <MDBBtn size="md" disabled = {this.state.botonPdfExport} color = "primary" onClick = {e=> this.onSubmitBtn()}> Enviar cotización </MDBBtn>
+            {boton}
+            <MDBBtn size="md" color = "secondary" onClick = {e=> this.cerrarCotizacion()}> Cerrar </MDBBtn>
+            </MDBRow>
          <div>
-<Paper   style={{width:1200,height:1500, marginLeft:"6%",marginTop:"2%",marginBottom:"2%"}}>
+<Paper   style={{width:1200,height:1400, marginLeft:"6%",marginTop:"2%",marginBottom:"2%"}}>
                
-               <img src={imagen3} alt="imagen"    style={{width:1210,height:150}}/>
+               <img src={titulo1} alt="imagen" alt="imagen"   style={{width:1210,height:150}}/>
     
-     <div style={{marginLeft:"5%", marginRight:"5%", marginTop:"2%",marginBottom:"2%"}}>
-    
-                   <label htmlFor="defaultFormLoginPasswordEx" ><strong>Razón social:&nbsp;</strong> </label>
-              <label>{this.state.razonSocial} </label>                                 
-             
-
-              <br></br> 
-        
-              <label htmlFor="nombre" ><strong>Nombre(s):&nbsp;</strong></label>
-              <label> {this.state.nombre}&nbsp;{this.state.apellidos} </label> 
-          
-          
-
-              <br></br> 
-              <label htmlFor="defaultFormLoginEmailEx"><strong>Correo:&nbsp;</strong></label>
-              <label>{this.state.correo1}</label> 
-
-              
-
-              <br></br>
-              <label htmlFor="defaultFormLoginPasswordEx"><strong>Télefono:&nbsp;</strong></label>
-              <label>{this.state.telefono1}</label>
-              <br></br>
-              
-              
-              <label htmlFor="defaultFormLoginPasswordEx"><strong>fecha:&nbsp;</strong></label>
-              <label>{"fecha"}</label>
-              <br></br>
-              <br></br>
-
-               
-             
-                  <fort  face="Verdana"> Buen día, me permito presentar  nuestra propuesta referente a los producto (s) y servicio (s) de su interés.</fort>
-             
-              <br></br>
-              <br></br>
-
-              <Table bordered>
+     <div style={{marginLeft:"5%", marginRight:"5%",marginBottom:"2%"}}>
+            <Row  xs="2">               
+                <Col>
+                     <p><strong>Razón social:</strong>&nbsp;{this.state.razonSocial} </p>                     
+                     <p ><strong>Nombre(s):</strong>&nbsp;{this.state.nombre}&nbsp;{this.state.apellidos}</p>                    
+                     <p><strong>Correo:</strong>&nbsp;{this.state.correo1}</p>                     
+                     <p><strong>Télefono:</strong>&nbsp;{this.state.telefono1}</p>                     
+                     <p><strong>fecha:</strong>&nbsp;{"fecha"}</p>   
+                </Col>   
+                <Col >
+                     <p><strong>Fecha:</strong>&nbsp;{fecha}</p>
+                </Col>                                  
+            </Row> 
+            <p  face="Verdana"> Buen día, me permito presentar  nuestra propuesta referente a los producto (s) y servicio (s) de su interés.</p>
+            <Table bordered>
                    <thead>
                        <tr>
-                       <th bgcolor="DeepSkyBlue" colspan="2">PRODUCTO O SERVICIO</th>          
-                       <th bgcolor="DeepSkyBlue" colspan="2">PRECIO MAS IVA</th>
+                       <td style={{padding:"5px"}} bgcolor="DeepSkyBlue" colspan="2" align="center">PRODUCTO O SERVICIO</td>          
+                       <td style={{padding:"5px"}} bgcolor="DeepSkyBlue" colspan="2" align="center">PRECIO MAS IVA</td>
                        </tr>
                    </thead>
                    <tbody>
-                   
-                       <th colspan="2">{this.state.Servicio}</th>
-                       <th colspan="2">{this.state.precio}</th>
-                       
+                   <tr>
+                       <td style={{padding:"5px"}} colspan="2">{this.state.Servicio}</td>
+                       <td style={{padding:"5px"}} colspan="2" align="center">$ {this.state.precio}</td>
+                       </tr>  
                        <tr>
-                       <th ROWSPAN="2"></th>
-                       <td>IVA:</td>
-                       <td>{tasaIva}</td>
-                       
+                       <td style={{padding:"5px"}} ROWSPAN="2"></td>
+                       <td style={{padding:"5px"}} align="center">IVA:</td>
+                       <td style={{padding:"5px"}} align="center">$ {tasaIva}</td>                       
                        </tr>
+
                        <tr>         
-                       <td>TOTAL</td>
-                       <td>{total}</td>          
+                       <td style={{padding:"5px"}} align="center">TOTAL</td>
+                       <td style={{padding:"5px"}} align="center">$ {total}</td>          
                        </tr>
                    </tbody>
-            </Table>
+            </Table>        
+             
 
-          
-              <br></br>
-
-   <label style={{color:"red"}} htmlFor="defaultFormLoginPasswordEx"><strong>Promoción &nbsp;</strong></label>
-              < label style={{color:"red"}}><strong>{this.state.promocion}</strong></ label>
-              <br></br>
-              <br></br>
-
+   <p style={{color:"red"}} htmlFor="defaultFormLoginPasswordEx"><strong>Promoción &nbsp;{this.state.promocion}</strong></p>
+    
               
               <Table bordered>
                    <thead>
                        <tr>
-                       <th bgcolor="DeepSkyBlue" colspan="3">PÓLIZA DE SOPORTE TECNICO REMOTO BASICAS ** LA POLIZA ES POR SISTEMA **</th>          
+                       <td style={{padding:"5px"}} bgcolor="DeepSkyBlue" colspan="3" align="center"><strong>PÓLIZA DE SOPORTE TECNICO REMOTO BASICAS ** LA POLIZA ES POR SISTEMA **</strong></td>          
                        </tr>
                    </thead>
                    <tbody>
-                   
-                       <th >SERVICIO</th>
-                       <th >PRECIO ESPECIAL</th>
-                       <th >PRECIO NORMAL</th>
-                       
+                   <tr>
+                       <td style={{padding:"5px"}} align="center">SERVICIO</td>
+                       <td style={{padding:"5px"}} align="center">PRECIO ESPECIAL</td>
+                       <td style={{padding:"5px"}} align="center">PRECIO NORMAL</td>
+                       </tr>    
                        <tr>
-                       <th > Póliza semestral  - por sistema </th>
-                       <th > $ 2,500.00 </th>
-                       <th > $ 5000.00 </th>
-                      
-                       
+                       <td style={{padding:"5px"}} align="center"> Póliza semestral - por sistema </td>
+                       <td style={{padding:"5px"}} align="center"> $ 2,500.00 </td>
+                       <td style={{padding:"5px"}} align="center"> $ 5,000.00 </td>  
                        </tr>
 
                        <tr>
-                       <th > Póliza semestral  - por sistema</th>
-                       <th > $ 4,000.00 </th>
-                       <th > $ 8,000.00 </th>
+                       <td style={{padding:"5px"}} align="center"> Póliza semestral - por sistema</td>
+                       <td style={{padding:"5px"}} align="center"> $ 4,000.00 </td>
+                       <td style={{padding:"5px"}} align="center"> $ 8,000.00 </td>
                        
                        
                        </tr>
                        <tr>  
-                       <th colspan="2"></th>       
-                       <th  style={{color:"red"}}><strong>PRECIO MAS IVA</strong></th>           
+                       <td style={{padding:"5px"}} colspan="2" align="center"></td>       
+                       <td style={{color:"red", padding:"5px" }} align="center"><strong>PRECIO MAS IVA</strong></td>           
                        </tr>
                    </tbody>
             </Table>
    
+        <p><strong> Nota:</strong> El costo no incluye Interfaz, Formatos, Carga de Catálogos o alguna implementación adicional a la mencionada en su cotización.</p>
+        <p><strong> No se aceptan devoluciones</strong></p>           
+        <p style={{color:"#3371FF"}}><strong>Condiciones Comerciales y Formas de Pago</strong></p>
 
-       
-          < br></br>
-         <strong> Nota:</strong> El costo no incluye Interfaz, Formatos, Carga de Catálogos o alguna implementación adicional a la mencionada en su cotización.
-           <br></br>
-           <br></br>
-
-           <strong> No se aceptan devoluciones</strong>
-           <br></br>
-           <br></br>
-           <fort style={{color:"#3371FF"}}> <strong>Condiciones Comerciales y Formas de Pago</strong></fort>
-
-           <ul face="Verdana">
+           <ul >
                <li>Todos los costos anteriormente presentados son más IVA.</li>
                <li>Precios representados en M.N.</li>
                <li>Pago por anticipado</li>
@@ -527,19 +483,23 @@ total= (parseInt(this.state.precio) + parseFloat(tasaIva))
            </fort>
 
        <p>Sin más por el momento y agradeciéndole por su amable atención,
-            Quedo a sus órdenes para cualquier duda al respecto. Cordialmente.</p>
-
+            Quedo a sus órdenes para cualquier duda al respecto. </p>
 
          <fort> 
               
-             
-               <p style={{color:"#3371FF"}} className="text-center mb-4">
-                   <strong> ALFA DISEÑO DE SISTEMAS, S.A. DE C.V.</strong>
-               </p>
+             <p className="text-center mb-4" >
+               {this.state.nombre.toUpperCase()}&nbsp;{this.state.apellidos.toUpperCase()}
+               <br></br>
+               {this.state.correo1}
+               <br></br>
+               <br></br>
+               <strong> ALFA DISEÑO DE SISTEMAS, S.A. DE C.V.</strong>
+               <br></br>
+             <u  style={{color:"#3371FF"}}>www.ads.com.mx </u>
+             </p>
+              <p  className="text-center mb-4">Av. Chapultepec N° 473, Piso 3 Col. Juárez, Del. Cuauhtémoc C.P. 06600 Ciudad de México <br></br> Información, soporte y ventas:
+                 Conmutador con 6 líneas   1209 0740 -  5553 2049</p>
 
-               <p className="text-center mb-4" style={{color:"#3371FF"}}>
-                   <u>www.ads.com.mx </u>
-              </p>
 
              
        </fort  > 
@@ -549,133 +509,117 @@ total= (parseInt(this.state.precio) + parseFloat(tasaIva))
               </div> 
               
 
-            <MDBRow style = {{marginLeft:"10%"}}>
+            {/* <MDBRow style = {{marginLeft:"10%"}}>
             <MDBBtn size="md" disabled = {this.state.botonPdfExport} color = "primary" onClick = {e=> this.onSubmitBtn()}> Enviar cotización </MDBBtn>
             {boton}
             <MDBBtn size="md" color = "secondary" onClick = {e=> this.cerrarCotizacion()}> Cerrar </MDBBtn>
-            </MDBRow>
+            </MDBRow> */}
             <div style={{ position: "absolute", left: "-2000px", top: 0 }}>
 
                 
             <PDFExport
                 paperSize="letter"
-                margin="1cm"
+                margin="0.5cm"
                 forcePageBreak=".page-break"
                 fileName={`${"Cotización"} PDF ${new Date().getFullYear()}`}
                 ref={(component) => this.pdfExportComponent = component}
                 >
        
-       <Container  style={{width:550,height:800}}> 
+            <Container  style={{width:550,height:2000}}> 
 
-<Paper  >
+<Paper >            
+            <img src={imagen } alt="titulo1" style={{width:500,height:55}}/>  
+                    
+                <p style={{fontFamily:'arial', fontSize:'10px', marginTop:-9}}>               
+                  Razón Social:&nbsp;{this.state.razonSocial} 
+                  <br></br>
+                  Nombre:&nbsp;{this.state.nombre}&nbsp;{this.state.apellidos}
+                  <br></br>
+                  correo:&nbsp;{this.state.correo1}
+                  <br></br>
+                  teléfono:&nbsp;{this.state.telefono1}
+                  <br></br>
+                  Buen día, me permito presentar nuestra propuesta referente a los producto (s) y servicio (s) de su interés. 
+                 </p>
+                       
             
-            <img src={titulo1} alt="titulo1" style={{width:520,height:100}}   />
-            <br></br>
-            
-    {/* <div style={{ marginRight:"45%", marginTop:"2%",marginBottom:"2%"}}> */}
+
+<div style= {{marginLeft:10, marginRight:10, marginTop:-10}}>    
+<MDBTable bordered  >
+      <MDBTableHead color="light-blue accent-1"  align="center" >
+        <tr>
+          <th style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}}  colspan="3" >PRODUCTO O SERVICIO</th>
+          <th style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} >PRECIO MAS IVA</th>
+        </tr>
+      </MDBTableHead>
+      <MDBTableBody>
+        <tr>
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} colspan="3" >  {this.state.Servicio}</td>
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">{this.state.precio}</td>         
+        </tr>
+        <tr>
+          <td ROWSPAN="2" colspan="2"></td>
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center">IVA:</td>
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">${tasaIva}</td>         
+        </tr>
+        <tr>
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center">TOTAL:</td>
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">${total}</td>
+        </tr>
+      </MDBTableBody>
+    </MDBTable>     
+    </div>
+
+<p style={{color:"red",fontFamily:'arial', fontSize:'10px',marginTop:-10}} >Promoción &nbsp; {this.state.promocion}</p>
+      {/* < p style={{color:"red" , fontFamily:'arial', fontSize:'10px'}}><strong></strong></p> */}
+           
+<div style= {{marginLeft:10, marginRight:10, marginTop:-10}}>
+<MDBTable bordered>
+      <MDBTableHead color="light-blue accent-1"  align="center">
+        <tr>
+          <th style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center" colspan="3">PÓLIZA DE SOPORTE TECNICO REMOTO BASICAS ** LA POLIZA ES POR SISTEMA **</th>
+        </tr>
+      </MDBTableHead>
+      <MDBTableBody>
+        <tr>
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">SERVICIO</td>
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">PRECIO ESPECIAL</td>
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">PRECIO NORMAL</td>         
+        </tr>
+        <tr>
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">Póliza semestral - Por sistema</td>
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$ 2,500.00</td>
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$ 5,000.00</td>
+        </tr>
+        <tr>
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">Póliza semestral - Por sistema</td>
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$ 4,000.00</td>
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$ 8,000.00</td>          
+        </tr>
+        <tr>
+          <td  style={{padding:"3px" ,fontFamily:'arial', fontSize:'10px'}}colspan="2" align="center"></td>
+          <td style={{padding:"3px" ,fontFamily:'arial', fontSize:'10px',color:"red"}} align="center">PRECIO MAS IVA</td>                
+        </tr>
+      </MDBTableBody>
+    </MDBTable>
+    </div> 
     
-                <font face="arial" size="1" > <strong>{this.state.razonSocial}</strong> </font >
-                <br></br>        
-                <font face="arial" size="1"> {this.state.nombre}&nbsp;{this.state.apellidos} </font>
-                <br></br> 
-                <font face="arial" size="1">{this.state.correo1}</font>
-                <br></br> 
-                <font face="arial" size="1">{this.state.telefono1}</font>
-                <br></br>
-                <br></br>
-                <font face="arial" size="1"> Buen día, me permito presentar  nuestra propuesta referente a los producto (s) y servicio (s) de su interés. </font>
-                <br></br>
-
-            <MDBTable bordered  fontFamily= 'arial' >
-            <MDBTableHead>
-                    <tr>
-                    <td bgcolor="DeepSkyBlue" colspan="3" align="center" ><font face="arial" size="1">PRODUCTO O SERVICIO</font></td>          
-                    <td bgcolor="DeepSkyBlue" align="center"> <font face="arial" size="1">PRECIO MAS IVA</font></td>
-                    </tr>
-            </MDBTableHead>
-                <MDBTableBody>
-                <tr> 
-                    <td colspan="3"><font>{this.state.Servicio}</font></td>
-                    <td align="center"> <font>$ &nbsp; {this.state.precio}</font></td>
-                    </tr>    
-                    <tr>
-                    <th ROWSPAN="2" colspan="2"></th>
-                    <td align="center">IVA:</td>
-                    <td align="center">{tasaIva}</td>
-                    
-                    </tr>
-                    <tr>  
-                        
-                    <td align="center">TOTAL:</td>
-                    <td align="center">{total}</td>          
-                    </tr>
-                </MDBTableBody>
-            </MDBTable>
-
-        
-            <br></br>
-
-<label style={{color:"red"}} htmlFor="defaultFormLoginPasswordEx"><strong>Promoción &nbsp;</strong></label>
-            < label style={{color:"red"}}><strong>{this.state.promocion}</strong></ label>
-            <br></br>
-            <br></br>
-
-            
-            <Table bordered >
-                <thead>
-                    <tr>
-                    <th bgcolor="DeepSkyBlue" colspan="3">PÓLIZA DE SOPORTE TECNICO REMOTO BASICAS ** LA POLIZA ES POR SISTEMA **</th>          
-                    
-                    </tr>
-                </thead>
-                <tbody>
-                
-                    <td align="center"><font FACE="arial" SIZE="1">SERVICIO</font></td>
-                    <td align="center">PRECIO ESPECIAL</td>
-                    <td align="center">PRECIO NORMAL</td>
-                    
-                    <tr>
-                    <td align="center"> Póliza semestral  - por sistema </td>
-                    <td align="center"> $ 2,500.00 </td>
-                    <td align="center"> $ 5000.00 </td>
-                    
-                    
-                    </tr>
-
-                    <tr>
-                    <td align="center"> Póliza semestral  - por sistema</td>
-                    <td align="center"> $ 4,000.00 </td>
-                    <td align="center"> $ 8,000.00 </td>
-                    
-                    
-                    </tr>
-                    <tr>  
-                    <td colspan="2" align="center"></td>       
-                    <td style={{color:"red"}} align="center"><strong>PRECIO MAS IVA</strong></td>           
-                    </tr>
-                </tbody>
-            </Table>
-
-
-    
-        < br></br>
-        <strong> Nota:</strong> El costo no incluye Interfaz, Formatos, Carga de Catálogos o alguna implementación adicional a la mencionada en su cotización.
+             
+<div style={{fontFamily:'arial', fontSize:'10px',marginTop:-10}}>
+        Nota: El costo no incluye Interfaz, Formatos, Carga de Catálogos o alguna implementación adicional a la mencionada en su cotización.
         <br></br>
-        <br></br>
-
-        <strong> No se aceptan devoluciones</strong>
-        <br></br>
-        <br></br>
-        <fort style={{color:"#3371FF"}}> <strong>Condiciones Comerciales y Formas de Pago</strong></fort>
-
-        <ul face="Verdana">
+                 <strong > No se aceptan devoluciones</strong> 
+                 <br></br>
+              <fort style={{color:"#3371FF", fontFamily:'arial', fontSize:'10px'}}> <strong>Condiciones Comerciales y Formas de Pago</strong></fort>
+ {/* <div style={{fontFamily:'arial', fontSize:'9px',marginTop:-15}}> */}
+        <ul >
             <li>Todos los costos anteriormente presentados son más IVA.</li>
             <li>Precios representados en M.N.</li>
             <li>Pago por anticipado</li>
             <li>Pago por depósito bancario o transferencia electrónica.</li>	
         </ul>
-        <fort  > 
-            <p align="left" marginLeft="20%">
+       
+            <p align="left" marginLeft="20%" style={{fontFamily:'arial', fontSize:'10px',marginTop:-10}}>
                 - Cuenta: 50020978434 
             <br></br>
             - Clabe: 036180500209784346
@@ -686,37 +630,34 @@ total= (parseInt(this.state.precio) + parseFloat(tasaIva))
             <br></br>
             - RFC: ADS020524CH1
             </p>
-        </fort>
-
-    <p>Sin más por el momento y agradeciéndole por su amable atención,
-            Quedo a sus órdenes para cualquier duda al respecto. Cordialmente.</p>
-
-
-        <fort className="text-center mb-4" > 
-            <p face="Consolas" >
-                <strong >{localStorage.getItem("nombre").toUpperCase() + " "  + localStorage.getItem("apellido").toUpperCase()}</strong>
-                    <br></br>
+     
+    <p style={{fontFamily:'arial', fontSize:'10px',marginTop:-10}}>Sin más por el momento y agradeciéndole por su amable atención,
+       Quedo a sus órdenes para cualquier duda al respecto.</p>
+            {/* </div > */}
+           <div  className="text-center mb-4" style={{fontFamily:'arial', fontSize:'10px',marginTop:-10}}>
+        {/* <fort className="text-center mb-4" >  */}           
+                <strong >{localStorage.getItem("nombre").toUpperCase() + " " + localStorage.getItem("apellido").toUpperCase()}</strong>                
+                <br></br>
+                <p>{localStorage.getItem("correo")}</p>   
                 <strong style={{color:"#3371FF"}}> ALFA DISEÑO DE SISTEMAS, S.A. DE C.V.</strong>
                 <br></br>
                 <u style={{color:"#3371FF"}}>www.ads.com.mx </u>
                 <br></br>
-                <label>{localStorage.getItem("correo")}</label> 
-            
-            </p>
-            
-    </fort  > 
-    {/* </div>       */}
+                 
 
-<div class="contenedor">
-<img src={titulo3}   style={{width:530,height:100}} />
+         </div >  
+         <p className="text-center mb-4" style={{fontFamily:'arial', fontSize:'10px'}}>Av. Chapultepec N° 473, Piso 3 Col. Juárez, Del. Cuauhtémoc C.P. 06600 Ciudad de México Información, soporte y ventas: Conmutador con 6 líneas   1209 0740 -  5553 2049</p> 
+          
+{/* <div class="contenedor" >
+<img src={titulo3}   style={{width:530,height:100 , marginTop:-25}} />
+<div class="encima"><p style={{fontFamily:'arial', fontSize:'10px', marginTop:-25}}> Av. Chapultepec N° 473, Piso 3 Col. Juárez, Del. Cuauhtémoc C.P. 06600 Ciudad de México Información, soporte y ventas: Conmutador con 6 líneas   1209 0740 -  5553 2049</p></div>
+</div>    */}
 
-<div class="centrado">Av. Chapultepec N° 473, Piso 3 Col. Juárez, Del. Cuauhtémoc C.P. 06600 Ciudad de México Información, soporte y ventas: Conmutador con 6 líneas   1209 0740 -  5553 2049</div>
-</div>
-            </Paper>
+</div>    
+
+   </Paper>
 
             </Container>
-
-
                 </PDFExport>
             </div>
         </div>
@@ -733,109 +674,102 @@ total= (parseInt(this.state.precio) + parseFloat(tasaIva))
 
 
         {/* //***********************************************************  */}
-       
-<Container  style={{width:550,height:800}}> 
 
-<Paper  >
-            
-            <img src={titulo1} alt="titulo1" style={{width:520,height:100}}   /> 
-                
-                <font face="arial" size="1" color="black" > <strong>{this.state.razonSocial}</strong> </font >
-                <br></br>        
-                <font face="arial" size="1"> {this.state.nombre}&nbsp;{this.state.apellidos} </font>
-                <br></br> 
-                <font face="arial" size="1">{this.state.correo1}</font>
-                <br></br> 
-                <font face="arial" size="1">{this.state.telefono1}</font>
-                <br></br>                
-                <font face="arial" size="1"> Buen día, me permito presentar  nuestra propuesta referente a los producto (s) y servicio (s) de su interés. </font>
-                <br></br>
-              
-            <MDBTable bordered  fontFamily= 'arial' >
-            <MDBTableHead>
-                    <tr>
-                    <td bgcolor="DeepSkyBlue" colspan="3" align="center"  ><font face="arial" size="1">PRODUCTO O SERVICIO</font></td>          
-                    <td bgcolor="DeepSkyBlue" align="center"> <font face="arial" size="1">PRECIO MAS IVA</font></td>
-                    </tr>
-            </MDBTableHead>
-                <MDBTableBody>
-                <tr> 
-                    <td colspan="3"><font>{this.state.Servicio}</font></td>
-                    <td align="center"> <font>${this.state.precio}</font></td>
-                    </tr>    
-                    <tr>
-                    <th ROWSPAN="2" colspan="2"></th>
-                    <td align="center">IVA:</td>
-                    <td align="center">${tasaIva}</td>
+             <Container  style={{width:550,height:2000}}> 
+
+<Paper >            
+            <img src={imagen } alt="titulo1" style={{width:500,height:55}}/>  
                     
-                    </tr>
-                    <tr>  
-                        
-                    <td align="center">TOTAL:</td>
-                    <td align="center">${total}</td>          
-                    </tr>
-                </MDBTableBody>
-            </MDBTable>
+                <p style={{fontFamily:'arial', fontSize:'10px', marginTop:-9}}>               
+                  Razón Social:&nbsp;{this.state.razonSocial} 
+                  <br></br>
+                  Nombre:&nbsp;{this.state.nombre}&nbsp;{this.state.apellidos}
+                  <br></br>
+                  correo:&nbsp;{this.state.correo1}
+                  <br></br>
+                  teléfono:&nbsp;{this.state.telefono1}
+                  <br></br>
+                  Buen día, me permito presentar nuestra propuesta referente a los producto (s) y servicio (s) de su interés. 
+                 </p>
+                       
+            
+
+<div style= {{marginLeft:10, marginRight:10, marginTop:-10}}>    
+<MDBTable bordered  >
+      <MDBTableHead color="light-blue accent-1"  align="center" >
+        <tr>
+          <th style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}}  colspan="3" >PRODUCTO O SERVICIO</th>
+          <th style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} >PRECIO MAS IVA</th>
+        </tr>
+      </MDBTableHead>
+      <MDBTableBody>
+        <tr>
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} colspan="3" >  {this.state.Servicio}</td>
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">{this.state.precio}</td>         
+        </tr>
+        <tr>
+          <td ROWSPAN="2" colspan="2"></td>
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center">IVA:</td>
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">${tasaIva}</td>         
+        </tr>
+        <tr>
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center">TOTAL:</td>
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">${total}</td>
+        </tr>
+      </MDBTableBody>
+    </MDBTable>     
+    </div>
+
+<p style={{color:"red",fontFamily:'arial', fontSize:'10px',marginTop:-10}} >Promoción &nbsp; {this.state.promocion}</p>
+      {/* < p style={{color:"red" , fontFamily:'arial', fontSize:'10px'}}><strong></strong></p> */}
            
-        
-            <br></br>
-
-<label style={{color:"red"}} htmlFor="defaultFormLoginPasswordEx"><strong>Promoción &nbsp;</strong></label>
-            < label style={{color:"red"}}><strong>{this.state.promocion}</strong></ label>
-            <br></br>
-            <br></br>
-
-   
-            <Table bordered  >
-                <thead>
-                    <tr>
-                    <td bgcolor="DeepSkyBlue" colspan="3"><font FACE="arial" SIZE="1" >PÓLIZA DE SOPORTE TECNICO REMOTO BASICAS ** LA POLIZA ES POR SISTEMA **</font></td>          
-                    
-                    </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td align="center" ><font FACE="arial" SIZE="1">SERVICIO</font></td>
-                    <td align="center"><font FACE="arial" SIZE="1">PRECIO ESPECIAL</font></td>
-                    <td align="center"><font FACE="arial" SIZE="1">PRECIO NORMAL</font></td>
-                </tr>    
-                <tr>
-                    <td align="center"><font FACE="arial" SIZE="1">Póliza semestral - Por sistema</font>  </td>
-                    <td align="center"><font FACE="arial" SIZE="1">$ 2,500.00</font>  </td>
-                    <td align="center"><font FACE="arial" SIZE="1">$ 5000.00</font>  </td> 
-                </tr>
-                <tr>
-                    <td align="center"><font FACE="arial" SIZE="1">Póliza semestral - Por sistema</font> </td>
-                    <td align="center"><font FACE="arial" SIZE="1">$ 4,000.00</font>  </td>
-                    <td align="center"><font FACE="arial" SIZE="1">$ 8,000.00</font>  </td>
-                </tr>
-                <tr>
-                    <td colspan="2" align="center"></td>       
-                    <td style={{color:"red"}} align="center"><font FACE="arial" SIZE="1"><strong>PRECIO MAS IVA</strong></font></td>           
-                </tr>
-                </tbody>
-            </Table>
-            
-<div>
+<div style= {{marginLeft:10, marginRight:10, marginTop:-10}}>
+<MDBTable bordered>
+      <MDBTableHead color="light-blue accent-1"  align="center">
+        <tr>
+          <th style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center" colspan="3">PÓLIZA DE SOPORTE TECNICO REMOTO BASICAS ** LA POLIZA ES POR SISTEMA **</th>
+        </tr>
+      </MDBTableHead>
+      <MDBTableBody>
+        <tr>
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">SERVICIO</td>
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">PRECIO ESPECIAL</td>
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">PRECIO NORMAL</td>         
+        </tr>
+        <tr>
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">Póliza semestral - Por sistema</td>
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$ 2,500.00</td>
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$ 5,000.00</td>
+        </tr>
+        <tr>
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">Póliza semestral - Por sistema</td>
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$ 4,000.00</td>
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$ 8,000.00</td>          
+        </tr>
+        <tr>
+          <td  style={{padding:"3px" ,fontFamily:'arial', fontSize:'10px'}}colspan="2" align="center"></td>
+          <td style={{padding:"3px" ,fontFamily:'arial', fontSize:'10px',color:"red"}} align="center">PRECIO MAS IVA</td>                
+        </tr>
+      </MDBTableBody>
+    </MDBTable>
+    </div> 
     
-        < br></br>
-        <strong> Nota:</strong> El costo no incluye Interfaz, Formatos, Carga de Catálogos o alguna implementación adicional a la mencionada en su cotización.
+             
+<div style={{fontFamily:'arial', fontSize:'10px',marginTop:-10}}>
+        Nota: El costo no incluye Interfaz, Formatos, Carga de Catálogos o alguna implementación adicional a la mencionada en su cotización.
         <br></br>
-        <br></br>
-
-        <strong> No se aceptan devoluciones</strong>
-        <br></br>
-        <br></br>
-        <fort style={{color:"#3371FF"}}> <strong>Condiciones Comerciales y Formas de Pago</strong></fort>
-
-        <ul face="Verdana">
+                 <strong > No se aceptan devoluciones</strong> 
+                 <br></br>
+              <fort style={{color:"#3371FF", fontFamily:'arial', fontSize:'10px'}}> <strong>Condiciones Comerciales y Formas de Pago</strong></fort>
+ {/* <div style={{fontFamily:'arial', fontSize:'9px',marginTop:-15}}> */}
+        <ul >
             <li>Todos los costos anteriormente presentados son más IVA.</li>
             <li>Precios representados en M.N.</li>
             <li>Pago por anticipado</li>
             <li>Pago por depósito bancario o transferencia electrónica.</li>	
         </ul>
-        <fort  > 
-            <p align="left" marginLeft="20%">
+       
+            <p align="left" marginLeft="20%" style={{fontFamily:'arial', fontSize:'10px',marginTop:-10}}>
                 - Cuenta: 50020978434 
             <br></br>
             - Clabe: 036180500209784346
@@ -846,34 +780,32 @@ total= (parseInt(this.state.precio) + parseFloat(tasaIva))
             <br></br>
             - RFC: ADS020524CH1
             </p>
-        </fort>
-
-    <p>Sin más por el momento y agradeciéndole por su amable atención,
-            Quedo a sus órdenes para cualquier duda al respecto. Cordialmente.</p>
-
-
-        <fort className="text-center mb-4" > 
-            <p face="Consolas" >
-                <strong >{localStorage.getItem("nombre").toUpperCase() + " "  + localStorage.getItem("apellido").toUpperCase()}</strong>
-                    <br></br>
+     
+    <p style={{fontFamily:'arial', fontSize:'10px',marginTop:-10}}>Sin más por el momento y agradeciéndole por su amable atención,
+       Quedo a sus órdenes para cualquier duda al respecto.</p>
+            {/* </div > */}
+           <div  className="text-center mb-4" style={{fontFamily:'arial', fontSize:'10px',marginTop:-10}}>
+        {/* <fort className="text-center mb-4" >  */}           
+                <strong >{localStorage.getItem("nombre").toUpperCase() + " " + localStorage.getItem("apellido").toUpperCase()}</strong>                
+                <br></br>
+                <p>{localStorage.getItem("correo")}</p>   
                 <strong style={{color:"#3371FF"}}> ALFA DISEÑO DE SISTEMAS, S.A. DE C.V.</strong>
                 <br></br>
                 <u style={{color:"#3371FF"}}>www.ads.com.mx </u>
                 <br></br>
-                <label>{localStorage.getItem("correo")}</label> 
-            
-            </p>
-            
-    </fort  > 
-    {/* </div>       */}
+                 
 
-<div class="contenedor">
-<img src={titulo3}   style={{width:530,height:100}} />
+         </div >  
+         <p className="text-center mb-4" style={{fontFamily:'arial', fontSize:'10px'}}>Av. Chapultepec N° 473, Piso 3 Col. Juárez, Del. Cuauhtémoc C.P. 06600 Ciudad de México Información, soporte y ventas: Conmutador con 6 líneas   1209 0740 -  5553 2049</p> 
+          
+{/* <div class="contenedor" >
+<img src={titulo3}   style={{width:530,height:100 , marginTop:-25}} />
+<div class="encima"><p style={{fontFamily:'arial', fontSize:'10px', marginTop:-25}}> Av. Chapultepec N° 473, Piso 3 Col. Juárez, Del. Cuauhtémoc C.P. 06600 Ciudad de México Información, soporte y ventas: Conmutador con 6 líneas   1209 0740 -  5553 2049</p></div>
+</div>    */}
 
-<div class="centrado"><font size="1">Av. Chapultepec N° 473, Piso 3 Col. Juárez, Del. Cuauhtémoc C.P. 06600 Ciudad de México Información, soporte y ventas: Conmutador con 6 líneas   1209 0740 -  5553 2049</font></div>
-</div>
-      
-</div>      </Paper>
+</div>    
+
+   </Paper>
 
             </Container>
 

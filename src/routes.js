@@ -50,9 +50,9 @@ render(){
   //   <Route {...rest  } render={(props)=> checkTokenClient() === true ? <Component {...props}/> : <Redirect to="/loginClient"/>}/>
   // ) 
 
-  const PrivateRoutePanelAlfa = ({component:Component,...rest})=>(
-    <Route {...rest  } render={(props)=> checkTokenSigPanelAlfa() === true ? <Component {...props}/> : <Redirect to= "/signupAdminAlfa" />}/>
-  )  
+  // const PrivateRoutePanelAlfa = ({component:Component,...rest})=>(
+  //   <Route {...rest  } render={(props)=> checkTokenSigPanelAlfa() === true ? <Component {...props}/> : <Redirect to= "/signupAdminAlfa" />}/>
+  // )  
  
 
   return(
@@ -68,7 +68,7 @@ render(){
         <PrivateRouteAlfa exact path = "/navbar" component={Navbar}/> 
         <PrivateRouteAlfa exact path = "/signupAdminG" component={signupAdminG}/>
       
-        <PrivateRoutePanelAlfa exact path = "/signupAdminAlfa" component={signupAdminAlfa}/> 
+        <PrivateRouteAlfa exact path = "/signupAdminAlfa" component={signupAdminAlfa}/> 
         <PrivateRouteAlfa exact path= "/cotizaciones" component={cotizaciones}/>
         
         

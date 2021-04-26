@@ -1,12 +1,15 @@
-.contenedor{
+/* .contenedor{
     position: relative;
     display: inline-block;
     text-align: center;
+    top: 10%;
 }
-.texto-encima{
-    position: absolute;
-    top: 20px;
-    left: 10px;
+.encima{
+    position: absolute;   
+    top: 15%;
+    left: 26%;
+    transform: translate(-30%, -30%);
+   
 }
 .centrado{
     position: absolute;
@@ -14,4 +17,4 @@
     left: 40%;
     
     transform: translate(-30%, -30%);
-}
+} */

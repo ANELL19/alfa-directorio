@@ -125,7 +125,7 @@ render(){
     return(
         <React.Fragment>
           <Navbar/>
-          <div style={{marginTop:"2%"}}>
+          <div style={{marginTop:"2%", marginRight:"10%", marginLeft:"10%"}}>
           <MDBCol md="10">
           <MDBCard narrow style={{width:"80%",heigth:"60%"}}>                          
                 <MDBAlert color="primary"  className="h5 text-center mb-4" ><strong>Datos del cliente</strong> </MDBAlert>

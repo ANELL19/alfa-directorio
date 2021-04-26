@@ -147,6 +147,7 @@ class Empresas extends Component{
               this.setState({correoAdmin :dataEmpresas.correo})
               localStorage.setItem("correoAdministrador",dataEmpresas.correo)
               this.setState({modal12:true})
+              
             }
            
            
