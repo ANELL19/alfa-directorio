@@ -337,10 +337,7 @@ total= (parseInt(this.state.precio) + parseFloat(tasaIva))
                   <label>{localStorage.getItem("nombre").toUpperCase() + " "  + localStorage.getItem("apellido").toUpperCase()}</label>
                       </MDBCol>
 
-                      <MDBCol md="3" className="mb-3">   
-                  
-
-                      </MDBCol>
+                      
 
 </MDBRow>
 </Form>
@@ -488,9 +485,11 @@ total= (parseInt(this.state.precio) + parseFloat(tasaIva))
          <fort> 
               
              <p className="text-center mb-4" >
-               {this.state.nombre.toUpperCase()}&nbsp;{this.state.apellidos.toUpperCase()}
+               {/* {this.state.nombre.toUpperCase()}&nbsp;{this.state.apellidos.toUpperCase()} */}
+               {localStorage.getItem("nombre").toUpperCase() + " "  + localStorage.getItem("apellido").toUpperCase()}
                <br></br>
-               {this.state.correo1}
+               {/* {this.state.correo1} */}
+               {localStorage.getItem("correo")}
                <br></br>
                <br></br>
                <strong> ALFA DISEÑO DE SISTEMAS, S.A. DE C.V.</strong>
@@ -525,7 +524,7 @@ total= (parseInt(this.state.precio) + parseFloat(tasaIva))
                 ref={(component) => this.pdfExportComponent = component}
                 >
        
-            <Container  style={{width:550,height:2000}}> 
+       <Container  style={{width:550,height:2000}}> 
 
 <Paper >            
             <img src={imagen } alt="titulo1" style={{width:500,height:55}}/>  
@@ -641,13 +640,10 @@ total= (parseInt(this.state.precio) + parseFloat(tasaIva))
                 <p>{localStorage.getItem("correo")}</p>   
                 <strong style={{color:"#3371FF"}}> ALFA DISEÑO DE SISTEMAS, S.A. DE C.V.</strong>
                 <br></br>
-                <u style={{color:"#3371FF"}}>www.ads.com.mx </u>
-                <br></br>
-                 
-
+                <u style={{color:"#3371FF"}}>www.ads.com.mx </u> 
          </div >  
-         <p className="text-center mb-4" style={{fontFamily:'arial', fontSize:'10px'}}>Av. Chapultepec N° 473, Piso 3 Col. Juárez, Del. Cuauhtémoc C.P. 06600 Ciudad de México Información, soporte y ventas: Conmutador con 6 líneas   1209 0740 -  5553 2049</p> 
-          
+         <p className="text-center mb-4" style={{fontFamily:'arial', fontSize:'10px', marginTop:-10}}>Av. Chapultepec N° 473, Piso 3 Col. Juárez, Del. Cuauhtémoc C.P. 06600 Ciudad de México Información, soporte y ventas: Conmutador con 6 líneas   1209 0740 -  5553 2049</p> 
+          <br></br>
 {/* <div class="contenedor" >
 <img src={titulo3}   style={{width:530,height:100 , marginTop:-25}} />
 <div class="encima"><p style={{fontFamily:'arial', fontSize:'10px', marginTop:-25}}> Av. Chapultepec N° 473, Piso 3 Col. Juárez, Del. Cuauhtémoc C.P. 06600 Ciudad de México Información, soporte y ventas: Conmutador con 6 líneas   1209 0740 -  5553 2049</p></div>
@@ -657,7 +653,7 @@ total= (parseInt(this.state.precio) + parseFloat(tasaIva))
 
    </Paper>
 
-            </Container>
+            </Container> 
                 </PDFExport>
             </div>
         </div>
@@ -675,143 +671,7 @@ total= (parseInt(this.state.precio) + parseFloat(tasaIva))
 
         {/* //***********************************************************  */}
 
-             <Container  style={{width:550,height:2000}}> 
-
-<Paper >            
-            <img src={imagen } alt="titulo1" style={{width:500,height:55}}/>  
-                    
-                <p style={{fontFamily:'arial', fontSize:'10px', marginTop:-9}}>               
-                  Razón Social:&nbsp;{this.state.razonSocial} 
-                  <br></br>
-                  Nombre:&nbsp;{this.state.nombre}&nbsp;{this.state.apellidos}
-                  <br></br>
-                  correo:&nbsp;{this.state.correo1}
-                  <br></br>
-                  teléfono:&nbsp;{this.state.telefono1}
-                  <br></br>
-                  Buen día, me permito presentar nuestra propuesta referente a los producto (s) y servicio (s) de su interés. 
-                 </p>
-                       
-            
-
-<div style= {{marginLeft:10, marginRight:10, marginTop:-10}}>    
-<MDBTable bordered  >
-      <MDBTableHead color="light-blue accent-1"  align="center" >
-        <tr>
-          <th style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}}  colspan="3" >PRODUCTO O SERVICIO</th>
-          <th style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} >PRECIO MAS IVA</th>
-        </tr>
-      </MDBTableHead>
-      <MDBTableBody>
-        <tr>
-          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} colspan="3" >  {this.state.Servicio}</td>
-          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">{this.state.precio}</td>         
-        </tr>
-        <tr>
-          <td ROWSPAN="2" colspan="2"></td>
-          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center">IVA:</td>
-          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">${tasaIva}</td>         
-        </tr>
-        <tr>
-          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center">TOTAL:</td>
-          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">${total}</td>
-        </tr>
-      </MDBTableBody>
-    </MDBTable>     
-    </div>
-
-<p style={{color:"red",fontFamily:'arial', fontSize:'10px',marginTop:-10}} >Promoción &nbsp; {this.state.promocion}</p>
-      {/* < p style={{color:"red" , fontFamily:'arial', fontSize:'10px'}}><strong></strong></p> */}
-           
-<div style= {{marginLeft:10, marginRight:10, marginTop:-10}}>
-<MDBTable bordered>
-      <MDBTableHead color="light-blue accent-1"  align="center">
-        <tr>
-          <th style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center" colspan="3">PÓLIZA DE SOPORTE TECNICO REMOTO BASICAS ** LA POLIZA ES POR SISTEMA **</th>
-        </tr>
-      </MDBTableHead>
-      <MDBTableBody>
-        <tr>
-          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">SERVICIO</td>
-          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">PRECIO ESPECIAL</td>
-          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">PRECIO NORMAL</td>         
-        </tr>
-        <tr>
-          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">Póliza semestral - Por sistema</td>
-          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$ 2,500.00</td>
-          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$ 5,000.00</td>
-        </tr>
-        <tr>
-          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">Póliza semestral - Por sistema</td>
-          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$ 4,000.00</td>
-          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$ 8,000.00</td>          
-        </tr>
-        <tr>
-          <td  style={{padding:"3px" ,fontFamily:'arial', fontSize:'10px'}}colspan="2" align="center"></td>
-          <td style={{padding:"3px" ,fontFamily:'arial', fontSize:'10px',color:"red"}} align="center">PRECIO MAS IVA</td>                
-        </tr>
-      </MDBTableBody>
-    </MDBTable>
-    </div> 
-    
-             
-<div style={{fontFamily:'arial', fontSize:'10px',marginTop:-10}}>
-        Nota: El costo no incluye Interfaz, Formatos, Carga de Catálogos o alguna implementación adicional a la mencionada en su cotización.
-        <br></br>
-                 <strong > No se aceptan devoluciones</strong> 
-                 <br></br>
-              <fort style={{color:"#3371FF", fontFamily:'arial', fontSize:'10px'}}> <strong>Condiciones Comerciales y Formas de Pago</strong></fort>
- {/* <div style={{fontFamily:'arial', fontSize:'9px',marginTop:-15}}> */}
-        <ul >
-            <li>Todos los costos anteriormente presentados son más IVA.</li>
-            <li>Precios representados en M.N.</li>
-            <li>Pago por anticipado</li>
-            <li>Pago por depósito bancario o transferencia electrónica.</li>	
-        </ul>
-       
-            <p align="left" marginLeft="20%" style={{fontFamily:'arial', fontSize:'10px',marginTop:-10}}>
-                - Cuenta: 50020978434 
-            <br></br>
-            - Clabe: 036180500209784346
-            <br></br>
-            - Banco: Inbursa
-            <br></br>
-            - Beneficiario: ALFA DISEÑO DE SISTEMAS, S.A. de C.V.
-            <br></br>
-            - RFC: ADS020524CH1
-            </p>
-     
-    <p style={{fontFamily:'arial', fontSize:'10px',marginTop:-10}}>Sin más por el momento y agradeciéndole por su amable atención,
-       Quedo a sus órdenes para cualquier duda al respecto.</p>
-            {/* </div > */}
-           <div  className="text-center mb-4" style={{fontFamily:'arial', fontSize:'10px',marginTop:-10}}>
-        {/* <fort className="text-center mb-4" >  */}           
-                <strong >{localStorage.getItem("nombre").toUpperCase() + " " + localStorage.getItem("apellido").toUpperCase()}</strong>                
-                <br></br>
-                <p>{localStorage.getItem("correo")}</p>   
-                <strong style={{color:"#3371FF"}}> ALFA DISEÑO DE SISTEMAS, S.A. DE C.V.</strong>
-                <br></br>
-                <u style={{color:"#3371FF"}}>www.ads.com.mx </u>
-                <br></br>
-                 
-
-         </div >  
-         <p className="text-center mb-4" style={{fontFamily:'arial', fontSize:'10px'}}>Av. Chapultepec N° 473, Piso 3 Col. Juárez, Del. Cuauhtémoc C.P. 06600 Ciudad de México Información, soporte y ventas: Conmutador con 6 líneas   1209 0740 -  5553 2049</p> 
-          
-{/* <div class="contenedor" >
-<img src={titulo3}   style={{width:530,height:100 , marginTop:-25}} />
-<div class="encima"><p style={{fontFamily:'arial', fontSize:'10px', marginTop:-25}}> Av. Chapultepec N° 473, Piso 3 Col. Juárez, Del. Cuauhtémoc C.P. 06600 Ciudad de México Información, soporte y ventas: Conmutador con 6 líneas   1209 0740 -  5553 2049</p></div>
-</div>    */}
-
-</div>    
-
-   </Paper>
-
-            </Container>
-
-
-       
-        </React.Fragment>
+         </React.Fragment>
         )
     }
 }
