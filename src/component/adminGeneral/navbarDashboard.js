@@ -1,7 +1,6 @@
 import React, {Component}from 'react'
-import { MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavItem, MDBNavLink, MDBNavbarToggler, MDBCollapse, MDBDropdown,
-MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem, MDBIcon } from "mdbreact";
-import {NavItem} from 'reactstrap'; 
+import { MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavItem, MDBNavLink, MDBNavbarToggler, MDBCollapse} from "mdbreact";
+import ADS from '../imagen/ADS.png'
 
 class NavbarDashboard extends Component {
     constructor(props){
@@ -9,22 +8,21 @@ class NavbarDashboard extends Component {
         this.state = {
             isOpen: false,
             modal:false,
-        }  
-      
+        }        
           }
     
  render(){
-        console.log("props" , this.props.data)
+        // console.log("props" , this.props.data)
         return(
          <MDBNavbar color="info-color"  dark expand="md">
           <MDBNavbarBrand >
+            <a  href="/dashbordAdminGral"><img src={ADS} style={{width:"30%"}} /></a> &nbsp;&nbsp;&nbsp;
           <strong className="white-text" > {this.props.data} </strong>
-          </MDBNavbarBrand>
-          &nbsp;
+          </MDBNavbarBrand>        
           <MDBNavbarToggler onClick={this.toggleCollapse} />
           <MDBCollapse id="navbarCollapse3" isOpen={this.state.isOpen} navbar>
             <MDBNavbarNav left>
-              &nbsp;
+             
               <MDBNavItem>
                     <MDBNavLink className="waves-effect waves-light" to="/signupadmin">
                     Registrar empresa
@@ -47,8 +45,7 @@ class NavbarDashboard extends Component {
                   </MDBNavItem>                              
             </MDBNavbarNav>
              </MDBCollapse>
-        </MDBNavbar>
-          
+        </MDBNavbar>          
         )
     }
 }export default NavbarDashboard;

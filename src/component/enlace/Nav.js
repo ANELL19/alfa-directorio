@@ -19,14 +19,14 @@ class NavbarAlfa extends Component {
               <MDBNavbarToggler onClick={this.toggleCollapse} />
               <MDBCollapse id="navbarCollapse3" isOpen={this.state.isOpen} navbar>
                 <MDBNavbarNav right>
-                  <MDBNavItem active>
+                  {/* <MDBNavItem active>
                     <MDBBtn color="info" href="/signupAdminG">  Registrar clientes</MDBBtn>
                   </MDBNavItem>                 
                       <MDBNavItem active>                
                   <MDBBtn color="info"  href="/cotizaciones">
                      Cotización
                     </MDBBtn> 
-                     </MDBNavItem>                    
+                     </MDBNavItem>                     */}
                      <MDBNavItem active>                
                   <MDBBtn  color="info" href="/loginAlfa">
                      Salir

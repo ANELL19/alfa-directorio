@@ -1,25 +1,17 @@
 import React, { Component } from "react"
 import NavbarAdmin from './NavbarAdmin'
 import TablasAdmin from './tablasAdmin'
-import {  CarouselItem,
-  CarouselCaption} from 'reactstrap';
- 
-  import { MDBBtn, MDBCard, MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText, MDBCol , MDBContainer,MDBRow, MDBView} from 'mdbreact';
-
-import axios from 'axios'
+import {  MDBView} from 'mdbreact';
 
 class dashboardAdmin extends Component{
   constructor(props){
     super(props)
     this.state = {
          larazonSocial:'',
-
          activeIndex:0,
-      animating:false,
+         animating:false,
         }
     } 
-
-    
       toggleCollapse = () => {
         this.setState({ isOpen: !this.state.isOpen });
       }
@@ -27,8 +19,7 @@ class dashboardAdmin extends Component{
 
        const rs = localStorage.getItem("razonSocial");     
         return(
-            <React.Fragment>
-              
+            <React.Fragment>              
               <MDBView >  
                 <NavbarAdmin data={rs}/>   
                 <TablasAdmin/> 

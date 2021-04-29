@@ -32,6 +32,9 @@ import company from '../src/component/adminGeneral/empresas'
 import cotizaciones from './component/panelVentasAlfa/cotizaciones'
 
 
+import EnlaceDashboard from './component/enlace/Dashboard'
+
+
 class App extends Component{
 
 render(){
@@ -84,6 +87,9 @@ render(){
         <PrivateRouteAdmin exact path= "/navbarAdmin " component={navbarAdmin }/>
         <PrivateRouteAdmin exact path = "/registrarClientes" component ={RegistrarClientes}/>         
         <PrivateRouteAdmin exact path= "/tablasAdmin" component={TablasAdmin}/> 
+
+        <Route exact path="/enlace" component={EnlaceDashboard}/>
+       
         
         
      

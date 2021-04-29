@@ -3,13 +3,10 @@ import React,{Component} from 'react'
 import '@fortawesome/fontawesome-free/css/all.min.css';
  import'bootstrap-css-only/css/bootstrap.min.css'; 
 import'mdbreact/dist/css/mdb.css';
-import Paper from '@material-ui/core/Paper';
 import { DialogUtility } from '@syncfusion/ej2-popups';
-import { MDBContainer, MDBRow, MDBCol, MDBCardBody,MDBCard, MDBBtn, MDBInput ,MDBAlert,MDBView, MDBMask} from 'mdbreact';
-import Grid from '@material-ui/core/Grid';
+import {  MDBCol, MDBCardBody,MDBCard, MDBBtn,MDBAlert,MDBView} from 'mdbreact';
 import {Form,FormGroup,Label,Col,Input} from 'reactstrap';
 import  index from "./index.css";
-
 
 class LoginAdminGener extends Component{
     constructor(props){
@@ -80,19 +77,14 @@ class LoginAdminGener extends Component{
                     DialogUtility.alert({
                         title:'Bienvenido' ,
                         content: "inicio de sesión exitoso!",
-                    });
-                   
+                    });                   
                     this.props.history.push("/dashbordAdminGral")
                 }
-                else if(response.data.data.loginAdminGeneral.message=="usuario y contraseña incorrecto"){
-                    // alert("usuario y contraseña incorrectos")
+                else if(response.data.data.loginAdminGeneral.message=="usuario y contraseña incorrecto"){                   
                     DialogUtility.alert({
-                        title: 'usuario y contraseña incorrectos'
-                       
-                    });
-                    
-                }else {
-                  //  alert("Algo salio mal, por favor vuelva a intentarlo")
+                        title: 'usuario y contraseña incorrectos'                       
+                    });                    
+                }else {                 
                     DialogUtility.alert({
                         title: 'Algo salio mal, por favor vuelva a intentarlo'                       
                     });
@@ -102,79 +94,62 @@ class LoginAdminGener extends Component{
                  console.log('error',err)
              })
     }
-
-
         render(){
         return(
         <React.Fragment>
             <div id="apppage1"  >
         <MDBView>
-        <div style={{marginTop:"10%", marginLeft:"10%" }} >
-
+        <div style={{marginTop:"10%", marginLeft:"10%" }}>
                 <MDBCol md="5">
-                <MDBCard  style={{width:"70%",heigth:"59%", marginLeft:"100%"}}  >
-                
-                                    
+                <MDBCard  style={{width:"70%",heigth:"59%", marginLeft:"100%"}}>  
             <MDBCardBody >
             <MDBAlert color="primary"  className="h5 text-center mb-4" >
                 <strong>Administrador General</strong>
             </MDBAlert>       
             <Form onSubmit={this.onSubmitBtn}>  
             <FormGroup row >  
-            <Label for="correo" sm={3} size="lg" >
-            <h6>  Correo:</h6> 
-           
-            </Label>   
-            <Col sm={7}>
-            <Input  
-                    label="correo"            
-                icon="user"
-                id="user"
-                type="email"
-                name="user"
-                onChange={this.onChangeInput}
-                value={this.state.user}
-                required
-                className="form-control" 
-                placeholder="example@.com"                 
-                />
-                </Col>
-                </FormGroup>
-                <FormGroup row > 
-                <Label for="contraseña"  sm={3} size="lg">
-              <h6>Contraseña:</h6> 
-               
-                </Label>
-                <Col sm={7}>
+              <Label for="correo" sm={4} size="lg" ><h6> Correo:</h6></Label>   
+               <Col sm={7}>
                 <Input  
+                    label="correo"            
+                    icon="user"
+                    id="user"
+                    type="email"
+                    name="user"
+                    onChange={this.onChangeInput}
+                    value={this.state.user}
+                    required
+                    className="form-control" 
+                    placeholder="example@.com"/>
+               </Col>
+            </FormGroup>
+            <FormGroup row > 
+               <Label for="contraseña" sm={4} size="lg"><h6>Contraseña:</h6></Label>
+                <Col sm={7}>
+                 <Input  
                     label="contraseña"  
-                icon="lock"        		
-                id="pass"
-                type="password"
-                name="contrasena"
-                onChange={this.onChangeInput}
-                value={this.state.pass}
-                validate 
-                required              
-                className="form-control"
-                placeholder="contraseña"
-                /> 
+                    icon="lock"        		
+                    id="pass"
+                    type="password"
+                    name="contrasena"
+                    onChange={this.onChangeInput}
+                    value={this.state.pass}
+                    validate 
+                    required              
+                    className="form-control"
+                    placeholder="contraseña"/> 
                 </Col>   
-                </FormGroup>     
-            
+            </FormGroup> 
                 <div className="text-center">
-                            <MDBBtn   color="info"  type="submit"> iniciar sesión</MDBBtn>                     
+                 <MDBBtn color="info"  type="submit"> iniciar sesión</MDBBtn>                     
                 </div>            
-                </Form> 
-                </MDBCardBody>          
-                </MDBCard>
-                </MDBCol>
-                        
+            </Form> 
+            </MDBCardBody>          
+            </MDBCard>
+            </MDBCol>                        
                 </div>
                 </MDBView>
                 </div>
-            
-
         </React.Fragment>
         )
         }

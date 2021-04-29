@@ -3,6 +3,7 @@ import RegistroClientes from './registrarClientes'
 import { MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavItem, MDBNavLink, MDBNavbarToggler, MDBCollapse, MDBDropdown,
 MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem, MDBIcon, MDBBtn } from "mdbreact";
 import {NavItem} from 'reactstrap'; 
+import ADS from '../imagen/ADS.png'
 
 class NavbarAdmin extends Component {
     constructor(props){
@@ -18,7 +19,8 @@ class NavbarAdmin extends Component {
         return(
      <React.Fragment>
          <MDBNavbar color="info-color" dark expand="md">
-          <MDBNavbarBrand>
+         <a href="/dasboardAdmin"><img src={ADS} style={{width:"66%"}}/></a>
+          <MDBNavbarBrand>        
           <strong className="white-text"> {this.props.data} </strong>
           </MDBNavbarBrand>
           &nbsp;

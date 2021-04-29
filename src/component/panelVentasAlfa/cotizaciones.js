@@ -12,11 +12,8 @@ import { Container, Paper } from '@material-ui/core';
 import {  Row, Col } from 'reactstrap';
 // import {  MDBCard, MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText, MDBCol } from 'mdbreact';
 import { Table } from 'reactstrap';
-import imagen3 from './images/liz.png'
-import imagen from './images/encabezado.JPG'
-import imagen2 from './images/Captura1.JPG'
-import titulo1 from  './images/titulo1.png'
-import titulo3 from  './images/titulo3.png'
+import imagen from '../imagen/encabezado.JPG'
+import titulo1 from  '../imagen/titulo1.png'
 import { MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
 
 class Cotizaciones extends Component{
@@ -61,6 +58,10 @@ class Cotizaciones extends Component{
             [id]:value
         })
     }
+
+    
+
+
     onSubmitBtn = (e)=>{      
         this.setState({botonPdfExport:true})  
         const API='http://localhost:4000/graphql' 
@@ -80,20 +81,18 @@ class Cotizaciones extends Component{
         let precio = this.state.precio;              
         let promocion = this.state.promocion.toUpperCase();
         let iva = ((precio * 16)/100).toFixed(2)
-        let total = suma
         let vendedor = localStorage.getItem("nombre").toUpperCase() + " "  + localStorage.getItem("apellido").toUpperCase()       
         var suma = (parseInt(precio) + parseFloat(iva))
-        
+        let total = suma
             axios({
                 url:API,
                 method:'post',
                 data:{
                     query:`
                     mutation{
-                        insertCotizaciones(data:"${[rs,nombre,apellidos,correo1,correo2,tel1,tel2,tel3,tel4,tel5,servicio,precio,iva,total,promocion,vendedor,id_adminAlfa]}"){
-                        
-                    message
-                    } 
+                    insertCotizaciones(data:"${[rs,nombre,apellidos,correo1,correo2,tel1,tel2,tel3,tel4,tel5,servicio,precio,iva,total,promocion,vendedor,id_adminAlfa]}"){
+                         message
+                        } 
                     }
                     `
                 }   
@@ -130,55 +129,48 @@ class Cotizaciones extends Component{
         if(rs && nombre && apellidos && correo1 && tel1 && servicio && precio && promocion){
             this.setState({form:false})
             this.setState({pdfview:true})
-    
         }else {
             DialogUtility.alert({
                 title:'AVISO !' ,
                 content: "Estimado usuario, por favor complete todos los campos obigatorios",
             });          
         }
-      
     }
+    
     cerrarCotizacion() {
         window.location.reload()
     }
+
      render(){
-        // var dat= new Date(); //Obtienes la fecha
-        // var dat2 = Date.parse(dat);
- 
         var date= new Date()
         var fecha = date.toLocaleString('es')        
         console.log("fecha",fecha)   
 
-let iva = 16;
-let total
-let tasaIva
-let totalFloat;
-if(this.state.precio){
-    console.log("estado de precio",this.state.precio)
- tasaIva=((this.state.precio*iva)/100).toFixed(2)
- console.log("calculando IVA",tasaIva)
-total= (parseInt(this.state.precio) + parseFloat(tasaIva))
+        let iva = 16;
+        let total
+        let tasaIva
+        let totalFloat;
 
-    totalFloat = parseFloat(total.toFixed(2))
+      if(this.state.precio){
+        console.log("estado de precio",this.state.precio)
+        tasaIva=((this.state.precio*iva)/100).toFixed(2)
+        console.log("calculando IVA",tasaIva)
+        total= (parseInt(this.state.precio) + parseFloat(tasaIva))
+        totalFloat = parseFloat(total.toFixed(2))
+      }
 
 
-}
     let form;
 
    if (this.state.form == true) {
-    form =            <div style={{marginTop:"2%", marginLeft:"20%"}}>
-    <MDBCol md="10">
+    form = <div style={{marginTop:"2%"}}>
+    <center>    
     <MDBCard narrow style={{width:"80%",heigth:"60%"}}>                          
           <MDBAlert color="primary"  className="h5 text-center mb-4" > <strong>Datos del cliente</strong> </MDBAlert>
                       <MDBCardBody>
-                      <Form onSubmit={this.onSubmitBtn}>  
-
-                     
-
-<MDBRow >
-
-<MDBCol md="3" className="mb-3"> 
+                      <Form onSubmit={this.onSubmitBtn}> 
+                <MDBRow >
+                <MDBCol md="3" className="mb-3"> 
                        <label htmlFor="defaultFormLoginPasswordEx" ><strong> Razón social:</strong> </label>
                   <input                                         			
                       id="razonSocial"
@@ -192,7 +184,7 @@ total= (parseInt(this.state.precio) + parseFloat(tasaIva))
 
 
               <MDBCol md="3" className="mb-3"> 
-                  <label htmlFor="nombre" ><strong> Nombre (s):</strong> </label>
+                  <label htmlFor="nombre" ><strong> Nombre (s) del cliente:</strong> </label>
                       <input                                     
                           id="nombre"
                           type="text"
@@ -263,7 +255,7 @@ total= (parseInt(this.state.precio) + parseFloat(tasaIva))
 
                   <MDBCol md="3" className="mb-3">   
                   <label htmlFor="defaultFormLoginPasswordEx" >
-                  <strong>  Servicio:</strong>
+                  <strong>Producto o servicio:</strong>
                   </label>
                   <input            
                
@@ -311,9 +303,9 @@ total= (parseInt(this.state.precio) + parseFloat(tasaIva))
                   </label>
                   <label>$ {tasaIva}</label>
                   </MDBCol>
-</MDBRow>
+                </MDBRow>
 
-<MDBRow>
+                <MDBRow>
                 <MDBCol md="3" className="mb-3">   
                   <label htmlFor="defaultFormLoginPasswordEx" >
                   <strong>Promocion:</strong>
@@ -336,32 +328,30 @@ total= (parseInt(this.state.precio) + parseFloat(tasaIva))
                   </label>
                   <label>{localStorage.getItem("nombre").toUpperCase() + " "  + localStorage.getItem("apellido").toUpperCase()}</label>
                       </MDBCol>
-
-                      
-
-</MDBRow>
-</Form>
+                    </MDBRow>
+                    </Form>
               
-    <MDBRow style={{marginTop:"10%"}}> 
-          <MDBCol md="3" className="mb-3"/>
-          
-          <MDBCol md="3" className="mb-3">      
-                  <MDBBtn   color="info"  onClick = {e=> this.pdfView()}> Generar Cotización</MDBBtn>
-          </MDBCol>
-          <MDBCol md="3" className="mb-3"> 
-                  <MDBBtn  color="secondary"   onClick={this.regresar} type="submit">Cancelar</MDBBtn>
-          </MDBCol>
-   
-  </MDBRow>
-    </MDBCardBody>
+                    <MDBRow style={{marginTop:"10%"}}> 
+                        <MDBCol md="3" className="mb-3"/>
+                        
+                        <MDBCol md="3" className="mb-3">      
+                                <MDBBtn   color="info"  onClick = {e=> this.pdfView()}> Generar Cotización</MDBBtn>
+                        </MDBCol>
+                        <MDBCol md="3" className="mb-3"> 
+                                <MDBBtn  color="secondary"   onClick={this.regresar} type="submit">Cancelar</MDBBtn>
+                        </MDBCol>
+                
+                    </MDBRow>
+                 </MDBCardBody>
               </MDBCard>
-              </MDBCol>
-    </div>
-   }
+              </center>
+            </div>
+            }
+
         let pdf;
         if(this.state.pdfview == true) {
             let boton;
-            
+
             if(this.state.botonPdfExport == true) {
                 boton =    <div className="example-config">
                             <MDBBtn size="md"color = "success" onClick={() => { this.pdfExportComponent.save(); }}>
@@ -369,25 +359,23 @@ total= (parseInt(this.state.precio) + parseFloat(tasaIva))
                             </MDBBtn>
                             </div>
             }
-            pdf =   <div>
+
+        pdf =   <div>
          <MDBRow style = {{marginLeft:"10%"}}>
             <MDBBtn size="md" disabled = {this.state.botonPdfExport} color = "primary" onClick = {e=> this.onSubmitBtn()}> Enviar cotización </MDBBtn>
             {boton}
             <MDBBtn size="md" color = "secondary" onClick = {e=> this.cerrarCotizacion()}> Cerrar </MDBBtn>
             </MDBRow>
          <div>
-<Paper   style={{width:1200,height:1400, marginLeft:"6%",marginTop:"2%",marginBottom:"2%"}}>
-               
-               <img src={titulo1} alt="imagen" alt="imagen"   style={{width:1210,height:150}}/>
-    
-     <div style={{marginLeft:"5%", marginRight:"5%",marginBottom:"2%"}}>
+        <Paper   style={{width:1200,height:1400, marginLeft:"6%",marginTop:"2%",marginBottom:"2%"}}>
+            <img src={titulo1} alt="imagen" alt="imagen"   style={{width:1210,height:150}}/>
+            <div style={{marginLeft:"5%", marginRight:"5%",marginBottom:"2%"}}>
             <Row  xs="2">               
                 <Col>
                      <p><strong>Razón social:</strong>&nbsp;{this.state.razonSocial} </p>                     
                      <p ><strong>Nombre(s):</strong>&nbsp;{this.state.nombre}&nbsp;{this.state.apellidos}</p>                    
                      <p><strong>Correo:</strong>&nbsp;{this.state.correo1}</p>                     
                      <p><strong>Télefono:</strong>&nbsp;{this.state.telefono1}</p>                     
-                     <p><strong>fecha:</strong>&nbsp;{"fecha"}</p>   
                 </Col>   
                 <Col >
                      <p><strong>Fecha:</strong>&nbsp;{fecha}</p>
@@ -506,13 +494,7 @@ total= (parseInt(this.state.precio) + parseFloat(tasaIva))
 
               </Paper>
               </div> 
-              
-
-            {/* <MDBRow style = {{marginLeft:"10%"}}>
-            <MDBBtn size="md" disabled = {this.state.botonPdfExport} color = "primary" onClick = {e=> this.onSubmitBtn()}> Enviar cotización </MDBBtn>
-            {boton}
-            <MDBBtn size="md" color = "secondary" onClick = {e=> this.cerrarCotizacion()}> Cerrar </MDBBtn>
-            </MDBRow> */}
+           
             <div style={{ position: "absolute", left: "-2000px", top: 0 }}>
 
                 
@@ -569,9 +551,7 @@ total= (parseInt(this.state.precio) + parseFloat(tasaIva))
     </MDBTable>     
     </div>
 
-<p style={{color:"red",fontFamily:'arial', fontSize:'10px',marginTop:-10}} >Promoción &nbsp; {this.state.promocion}</p>
-      {/* < p style={{color:"red" , fontFamily:'arial', fontSize:'10px'}}><strong></strong></p> */}
-           
+<p style={{color:"red",fontFamily:'arial', fontSize:'10px',marginTop:-10}} >Promoción &nbsp; {this.state.promocion}</p>          
 <div style= {{marginLeft:10, marginRight:10, marginTop:-10}}>
 <MDBTable bordered>
       <MDBTableHead color="light-blue accent-1"  align="center">
@@ -657,19 +637,12 @@ total= (parseInt(this.state.precio) + parseFloat(tasaIva))
                 </PDFExport>
             </div>
         </div>
-
-
-
-
-        }
+                }
          return(
         <React.Fragment>
         <Navbar/>
         {form} 
         {pdf}
-
-
-        {/* //***********************************************************  */}
 
          </React.Fragment>
         )

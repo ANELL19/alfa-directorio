@@ -5,9 +5,9 @@ import axios from 'axios';
 import { DialogUtility } from '@syncfusion/ej2-popups';
 import { Alert } from 'reactstrap';
 import { Button as Boton, Modal, ModalBody,ModalHeader} from 'reactstrap';
-import {MDBRow,  MDBModal, MDBModalBody, MDBModalFooter ,MDBContainer, MDBBtn} from 'mdbreact';
+import {MDBBtn} from 'mdbreact';
 
-//modal
+
   const ModalPrueba = (props) => {
 	const {
 	  buttonLabel,

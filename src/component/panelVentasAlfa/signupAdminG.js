@@ -24,14 +24,7 @@ class signupAdminG extends Component{
         this.regresar = this.regresar.bind(this)     
     }   
     componentWillUnmount(){
-      localStorage.removeItem("nombre")
-      localStorage.removeItem("apellido")
-      localStorage.removeItem("razonSocial")
-      localStorage.removeItem("RFC")
-      localStorage.removeItem("telefono")
-      localStorage.removeItem("correo")
-      localStorage.removeItem("contraseña")
-      localStorage.removeItem("fk_paquetes")
+
 
     }
 
@@ -44,47 +37,6 @@ class signupAdminG extends Component{
         this.setState({
             [id]:value
         })
-               
-       // this.setState({ [e.target.name]: e.target.value });
-
-    //    if(this.state.nombre && this.state.apellido && this.state.RFC && this.state.razonSocial && this.state.telefono && this.state.correo && this.state.contrasena && this.state.fk_paquetes !="Ya seleccionado"){
-    //     function ValidateEmail(sEmail) {
-    //         var reEmail = /^(?:[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+\.)*[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+@(?:(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9\-](?!\.)){0,61}[a-zA-Z0-9]?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9\-](?!$)){0,61}[a-zA-Z0-9]?)|(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\]))$/;
-          
-    //         if(!sEmail.match(reEmail)) {
-    //           return false;
-    //         }
-          
-    //         return true;
-          
-    //       }
-    //       if(this.state.rfc.length >= 12 && this.state.rfc.length < 14){
-    //         if(ValidateEmail(this.state.correo)===true){
-    //             if(this.state.contrasena.length >= 8){
-    //                 if(this.state.nombre.length > 2 && this.state.apellido.length > 2 && this.state.razonSocial.length > 2 && this.state.telefono.length >= 8 ){
-    //                     this.setState({success:true});
-    //                 }else{
-    //                     alert("Alguno de los datos ingresados no cumple con los requisitos")
-    //                 }
-    //             }else{
-    //                 alert("Su contraseña debe contener al menos 8 caracteres")
-    //             }
-    //         }else{
-    //             alert("El correo electrónico no cumple los requisitos")
-    //         }
-    //       }else{
-    //           alert("El RFC no es válido ")
-    //       }
-         
-    //   }else{
-    //     this.setState({open:true});
-    //   }
-    // }
-    //  handleClose = (e) =>{
-    //    this.setState({open:false})
-    //  }  
-    //  handleSuccess= ()=>{
-    //    this.setState({success:false})
       }
     onSubmitBtn = (e)=>{
      // console.log("contraseña" , this.state.contrasena)
@@ -126,142 +78,138 @@ render(){
         <React.Fragment>
           <Navbar/>
           <div style={{marginTop:"2%", marginRight:"10%", marginLeft:"10%"}}>
-          <MDBCol md="10">
+          <center>
           <MDBCard narrow style={{width:"80%",heigth:"60%"}}>                          
-                <MDBAlert color="primary"  className="h5 text-center mb-4" ><strong>Datos del cliente</strong> </MDBAlert>
-        <MDBCardBody>
-        <Form onSubmit={this.onSubmitBtn}>   
+            <MDBAlert color="primary"  className="h5 text-center mb-4" ><strong>Registro de clientes nuevos</strong> </MDBAlert>
+            <MDBCardBody>
+            <Form onSubmit={this.onSubmitBtn}>   
+            <MDBRow >      
+                <MDBCol md="3" className="mb-3">     
+                  <label htmlFor="nombre" >Nombre (s): </label>
+                  <input           
+                      id="nombre"
+                      type="text"
+                      name="nombres"
+                      onChange={this.onChangeInput}
+                      value={this.state.pass}
+                      required 
+                      className="form-control"/>
+                </MDBCol>
+                <MDBCol md="3" className="mb-3"> 
+                  <label htmlFor="defaultFormLoginPasswordEx">Apellidos:</label>
+                  <input  
+                      icon="user"	
+                      id="apellido"
+                      type="text"
+                      name="apellido"
+                      onChange={this.onChangeInput}
+                      value={this.state.pass}
+                      required 
+                      className="form-control"/>
+                </MDBCol>
+                <MDBCol md="3" className="mb-3">        
+                  <label htmlFor="defaultFormLoginPasswordEx" >Razon social:</label>
+                  <input 
+                      icon="city"				
+                      id="razonSocial"
+                      type="text"
+                      name="razonSocial"			
+                      onChange={this.onChangeInput}
+                      value={this.state.pass} 
+                      required
+                      className="form-control"/>           
+                </MDBCol>
+                <MDBCol md="3" className="mb-3">   
+                  <label htmlFor="defaultFormLoginPasswordEx">RFC:</label>
+                  <input            
+                    icon="user"	
+                    id="RFC"
+                    type="text"
+                    name="RFC"
+                    onChange={this.onChangeInput}
+                    value={this.state.pass}
+                    required
+                    className="form-control"/>
+                </MDBCol>
+                </MDBRow>
 
-  <MDBRow >
-    
-      
-      <MDBCol md="3" className="mb-3">     
-        <label htmlFor="nombre" >Nombre (s): </label>
-        <input           
-            id="nombre"
-            type="text"
-            name="nombres"
-            onChange={this.onChangeInput}
-            value={this.state.pass}
-            required 
-            className="form-control"/>
-      </MDBCol>
-      <MDBCol md="3" className="mb-3"> 
-        <label htmlFor="defaultFormLoginPasswordEx">Apellidos:</label>
-        <input  
-            icon="user"	
-            id="apellido"
-            type="text"
-            name="apellido"
-            onChange={this.onChangeInput}
-            value={this.state.pass}
-            required 
-            className="form-control"/>
-      </MDBCol>
-      <MDBCol md="3" className="mb-3">        
-        <label htmlFor="defaultFormLoginPasswordEx" >Razon social:</label>
-        <input 
-            icon="city"				
-            id="razonSocial"
-            type="text"
-            name="razonSocial"			
-            onChange={this.onChangeInput}
-            value={this.state.pass} 
-            required
-            className="form-control"/>           
-      </MDBCol>
-      <MDBCol md="3" className="mb-3">   
-        <label htmlFor="defaultFormLoginPasswordEx">RFC:</label>
-        <input            
-           icon="user"	
-           id="RFC"
-           type="text"
-           name="RFC"
-           onChange={this.onChangeInput}
-           value={this.state.pass}
-           required
-           className="form-control"/>
-      </MDBCol>
-      </MDBRow>
-
-      <MDBRow>
-      <MDBCol md="3" className="mb-3">    
-          <label htmlFor="defaultFormLoginPasswordEx">Telefono:</label>
-          <input 
-            icon="phone"		 
-            id="telefono"
-            type="number"
-            name="telefono"
-            onChange={this.onChangeInput}
-            value={this.state.pass}	
-            required
-            className="form-control"/>
-      </MDBCol>
-      <MDBCol md="3" className="mb-3">   
-          <label htmlFor="defaultFormLoginEmailEx">Correo:</label>
-          <input   
-              icon="envelope"
-              id="correo"
-              type="email"
-              name="correo"
-              onChange={this.onChangeInput}
-              value={this.state.pass}
-              required
-              className="form-control" />
-      </MDBCol>
-      <MDBCol md="3" className="mb-3">   
-          <label htmlFor="defaultFormLoginPasswordEx">Contraseña:</label>
-          <input
-              icon="lock" 		
-              id="contrasena"
-              type="password"
-              name="contrasena"
-              onChange={this.onChangeInput}
-              value={this.state.pass}
-              validate 
-              required 
-                className="form-control"/>
-      </MDBCol>
-      <MDBCol md="3" className="mb-3" style={{marginTop:32}}>   
-        <div>
-          <select 
-          className="browser-default custom-select"
-          type="select"
-          name="fk_paquetes"
-          id="fk_paquetes" 
-          onChange={this.onChangeInput} 
-          value={this.state.fk_paquetes}
-        //  validate 
-          required >
-          <option>Seleccione su paquete</option>
-          <option value="1">1 empresa</option>
-          <option value="2">3 empresas</option>
-          <option value="3">5 empresas</option>
-          <option value="4">10 empresas</option>
-          <option value="5">20 empresas</option>
-        </select>
-        </div>
-        </MDBCol>  
-        </MDBRow>
-       
-       <MDBRow style={{marginTop:"10%"}}> 
-         <MDBCol md="3" className="mb-3"></ MDBCol>
-          
-        <MDBCol md="3" className="mb-3">      
-          <MDBBtn   color="info"   type="submit"> Guardar</MDBBtn>
-          </MDBCol>
-          <MDBCol md="3" className="mb-3"> 
-          <MDBBtn  color="secondary"   onClick={this.regresar} type="submit">Cancelar</MDBBtn>
-           </MDBCol>
-         
-        </MDBRow>
-          </Form>
-          
-          </MDBCardBody>
-                    </MDBCard>
+                <MDBRow>
+                <MDBCol md="3" className="mb-3">    
+                    <label htmlFor="defaultFormLoginPasswordEx">Telefono:</label>
+                    <input 
+                      icon="phone"		 
+                      id="telefono"
+                      type="number"
+                      name="telefono"
+                      onChange={this.onChangeInput}
+                      value={this.state.pass}	
+                      required
+                      className="form-control"/>
+                </MDBCol>
+                <MDBCol md="3" className="mb-3">   
+                    <label htmlFor="defaultFormLoginEmailEx">Correo:</label>
+                    <input   
+                        icon="envelope"
+                        id="correo"
+                        type="email"
+                        name="correo"
+                        onChange={this.onChangeInput}
+                        value={this.state.pass}
+                        required
+                        className="form-control" />
+                </MDBCol>
+                <MDBCol md="3" className="mb-3">   
+                    <label htmlFor="defaultFormLoginPasswordEx">Contraseña:</label>
+                    <input
+                        icon="lock" 		
+                        id="contrasena"
+                        type="password"
+                        name="contrasena"
+                        onChange={this.onChangeInput}
+                        value={this.state.pass}
+                        validate 
+                        required 
+                          className="form-control"/>
+                </MDBCol>
+                <MDBCol md="3" className="mb-3" style={{marginTop:32}}>   
+                  <div>
+                    <select 
+                    className="browser-default custom-select"
+                    type="select"
+                    name="fk_paquetes"
+                    id="fk_paquetes" 
+                    onChange={this.onChangeInput} 
+                    value={this.state.fk_paquetes}
+                  //  validate 
+                    required >
+                    <option>Seleccione su paquete</option>
+                    <option value="1">1 empresa</option>
+                    <option value="2">3 empresas</option>
+                    <option value="3">5 empresas</option>
+                    <option value="4">10 empresas</option>
+                    <option value="5">20 empresas</option>
+                  </select>
+                  </div>
+                  </MDBCol>  
+                  </MDBRow>
+                
+                <MDBRow style={{marginTop:"10%"}}> 
+                  <MDBCol md="3" className="mb-3"></ MDBCol>
+                    
+                  <MDBCol md="3" className="mb-3">      
+                    <MDBBtn   color="info"   type="submit"> Guardar</MDBBtn>
                     </MDBCol>
-          </div>
-  
+                    <MDBCol md="3" className="mb-3"> 
+                    <MDBBtn  color="secondary"   onClick={this.regresar} type="submit">Cancelar</MDBBtn>
+                    </MDBCol>
+                  
+                  </MDBRow>
+              </Form>
+              
+              </MDBCardBody>
+                    </MDBCard>
+                    </center>
+          </div>  
           </React.Fragment>
     )
 }

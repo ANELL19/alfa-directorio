@@ -1,20 +1,4 @@
-/* .contenedor{
-    position: relative;
-    display: inline-block;
+.App{
+    font-family: sans-serif;
     text-align: center;
-    top: 10%;
 }
-.encima{
-    position: absolute;   
-    top: 15%;
-    left: 26%;
-    transform: translate(-30%, -30%);
-   
-}
-.centrado{
-    position: absolute;
-    top: 50%;
-    left: 40%;
-    
-    transform: translate(-30%, -30%);
-} */

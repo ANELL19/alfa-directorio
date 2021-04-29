@@ -2,10 +2,8 @@ import React, { Component } from "react"
 import NavbarDashboard from './navbarDashboard'
 import MUIDataTable from "mui-datatables";
 import {MDBContainer,MDBBtn, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter} from 'mdbreact'
-import { Button, Table,Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import {  MDBRow, MDBCol, MDBInput } from 'mdbreact';
-import { CardBody, Label,Form,Row,Col,Alert} from 'reactstrap';
-import modalLoginAdmin from './modal'
+import { Form} from 'reactstrap';
 import { DialogUtility } from '@syncfusion/ej2-popups';
 import axios from 'axios'
 

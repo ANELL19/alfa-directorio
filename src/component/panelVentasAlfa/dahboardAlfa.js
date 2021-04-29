@@ -1,12 +1,10 @@
-import React, { Component } from "react"
 
-import {  MDBModalFooter,MDBContainer,MDBRow,MDBCol, MDBBtn, MDBModal, MDBModalBody, MDBModalHeader } from 'mdbreact';
+import React, { Component } from "react"
+import { MDBBtn, MDBModalBody} from 'mdbreact';
+import { MDBModal,  MDBModalHeader, MDBModalFooter } from 'mdbreact';
 import Navbar from './navbar'
 import MUIDataTable from "mui-datatables";
-import { DialogUtility } from '@syncfusion/ej2-popups';
 import axios from 'axios'
-import {Form,FormGroup,Label,Col,Input} from 'reactstrap'; 
-
 
 class dashboardAlfa extends Component{
   constructor(props){
@@ -15,34 +13,13 @@ class dashboardAlfa extends Component{
           datos:[],
           modal: false,
           detallesAdminGral:[],
-          user:"",
-          pass:"",   
-          correoAlfa:"",
+          detallesCotizaciones:[]
 
-         
         }
-        this.cerrar = this.cerrar.bind(this)       
+        this.cerrar = this.cerrar.bind(this)
     } 
 
-    onChangeInput =(e)=>{
-      const {id,value} = e.target;
-      this.setState({
-          [id]:value
-      })
-  }
-
-    cerrar(){
-      this.setState({
-        modal:false
-      });
-    }
-      toggleCollapse = () => {
-        this.setState({ isOpen: !this.state.isOpen });
-      }
-
-    componentWillMount(){   
-
-    
+    componentWillMount(){
       const id = localStorage.getItem("id");
       const API='http://localhost:4000/graphql'   
 
@@ -70,8 +47,52 @@ class dashboardAlfa extends Component{
         .catch(err=>{
                   console.log('error',err.response)
           })  
+
+           //const API='http://localhost:4000/graphql'   
+          const fk_adminalfa  = localStorage.getItem("id");
+          console.log(" fk_adminalfa", fk_adminalfa)       
+       axios({
+            url:API,
+            method:'post',
+            data:{
+                query:`
+                query{
+                  getCotizacionesTabla(data:"${[id]}"){
+                      id_cotizacion 
+                      razonSocial
+                      nombre
+                      apellidos 
+                      correo1
+                      correo2
+                      telefono1
+                      telefono2
+                      telefono3
+                      telefono4 
+                      telefono5
+                      Servicio
+                      precio 
+                      iva
+                      total
+                      promocion 
+                      vendedor
+                      fecha 
+                   } 
+                }
+                `
+            }   
+             }).then(response=>{
+               //  console.log("response-DASH",response.data.data.getCotizacionesTabla)
+              
+               let array1 = [];
+               array1.push(response.data.data.getCotizacionesTabla)
+               console.log("PUSH DE ARRAY1",array1)
+               this.setState({detallesCotizaciones:array1})
+             })
+             .catch(err=>{
+                 console.log('error',err)
+             })
     }
-    
+
     consultarAdminG(id){
       const API='http://localhost:4000/graphql'  
 
@@ -111,77 +132,14 @@ class dashboardAlfa extends Component{
       })  
 
     }
-
-    modal(dataEmpresas){
-      console.log("dataEmpresas" , dataEmpresas)
-      this.setState({correoAlfa :dataEmpresas.correo})
-      localStorage.setItem("correoAlfa",dataEmpresas.correo)
-      // this.setState({modal12:true})
-      
+    cerrar(){
+      this.setState({
+        modal:false
+      });
     }
-
-    onSubmitBtn =(e)=>{        
-      e.preventDefault();
-      const API='http://localhost:4000/graphql'   
-  //  let correo = this.state.correoAlfa;
-       const  contraseña = this.state.pass;
-       let correo=this.state.correoAlfa;
-
-      const correoAlfa = localStorage.getItem("correo") 
-       console.log("correoAlfa",this.state.correoAlfa)
-    //  console.log("state",this.state.correoAlfa)
-     // console.log("correo" , correo , "pass", this.state.pass)
-       console.log("correo" , correo , "pass", this.state.pass)
-          axios ({
-              url:API,
-              method:'post',
-              data:{
-                  query:`
-                  query{
-                 
-                      loginAdminAlfa(data:"${[correo,contraseña]}"){  
-                      message
-                      correo                                         
-                      token
-                  } 
-                }
-                `
-            }   
-            }).then(response=>{
-          console.log( 'este es el response',response.data.data.loginAdminAlfa)
-                if(response.data.data.loginAdminAlfa.message=="login exitoso"){ 
-                  localStorage.setItem("TokenVentasAlfa",response.data.data.loginAdminAlfa.token)
-                      
-                    DialogUtility.alert({
-                      title:'Bienvenido' ,
-                      content: "contraseña exitosa!",
-                      position: "fixed"
-                  });  
-                  this.props.history.push("/signupAdminAlfa")
-                //  console.log("estado",this.props)
-                    
-                }else   {                     
-                    DialogUtility.alert({
-                        title: ' contraseña incorrecta',
-                        position: "fixed"
-      
-                    });                    
-                }                 
-            })
-            .catch(err=>{
-                console.log('error',err.response)
-            })
-            
-        } 
-           modal(dataEmpresas){
-          console.log("dataEmpresas" , dataEmpresas)
-          this.setState({correoAlfa :dataEmpresas.correo})
-          localStorage.setItem("correoAdministrador",dataEmpresas.correo)
-          // this.setState({modal12:true})
-          
-        }
-
-  
+      toggleCollapse = () => {
+        this.setState({ isOpen: !this.state.isOpen });
+      }
     
     render(){
       let data;
@@ -243,116 +201,80 @@ class dashboardAlfa extends Component{
     } ;
     
     if(this.state.detallesAdminGral[0]){
-      const columnsAdminGral = ["id", "Nombre", "Apellidos", "RFC","Razón Social","Teléfono","Correo","Empresas Autorizadas"];
+      const columnsAdminGral = [ "Nombre", "Apellidos", "RFC","Razón Social","Teléfono","Correo","Empresas Autorizadas"];
 
      let dataAdminGral = this.state.detallesAdminGral.map(rows=>{
-              return([rows.id_adminG,rows.nombre, rows.apellido, rows.rfc,rows.razonSocial,rows.telefono,rows.correo,rows.empresas])
+              return([rows.nombre, rows.apellido, rows.rfc,rows.razonSocial,rows.telefono,rows.correo,rows.empresas])
 
       } )
 
-      modal =  <div >
-      <MDBModal size="fluid"  dialogClassName={{maxWidth:'70%'}} isOpen={this.state.modal} toggle={this.toggle}>
+      modal =  <div>
+      <MDBModal size="lg"  isOpen={this.state.modal} toggle={this.toggle}>
         <MDBModalHeader toggle={this.toggle}>Detalles del cliente</MDBModalHeader>
-          
+        <MDBModalBody >
+        <div style={{maxWidth:900}}>
         <MUIDataTable  
                 title={"tabla clientes"} 
                 data={dataAdminGral} 
                 columns={columnsAdminGral} 
                 options={options} 
         />
+        </div>
+        </MDBModalBody>
         <MDBModalFooter>
           <MDBBtn color="danger" onClick={this.cerrar}>Cerrar</MDBBtn>
         </MDBModalFooter>
       </MDBModal>
       </div>
           }
+          const columnsCotizaciones = ["Nombre", "Apellidos","telefono","Correo","Razón Social","Fecha de Cotización","Total"];
 
+          let dataCotizaciones;
 
-       const correo= localStorage.getItem("correo")
-      //  const rs = localStorage.getItem("razonSocial");     
+          if(this.state.detallesCotizaciones[0]){
+            dataCotizaciones = this.state.detallesCotizaciones[0].map(rows=>{
+   
+            //  boton = <div><MDBBtn size="md" color="info" onClick={e=> this.consultarAdminG(rows.fk_adminG)}>Detalles</MDBBtn></div>
+                   return([rows.nombre,rows.apellidos, rows.Servicio,rows.correo1,rows.telefono1,rows.fecha,rows.iva,rows.total])
+
+                   console.log("esto es dataCotizaciones",rows.Servicio)
+     
+           } )
+         }
+         
+
+          let tablaCotizaciones=<div>
+              <div  style={{width:"90%",marginLeft:"6%",marginTop:"2%",marginBottom:"2%"}} >               
+                <MUIDataTable  
+                  title={"tabla Cotizaciones"} 
+                  data={dataCotizaciones} 
+                  columns={columnsCotizaciones} 
+                  options={options} 
+                />      
+              </div>
+
+          </div>
         return(
             <React.Fragment>
              <Navbar/>
              
-             <div  style={{width:"100%",marginLeft:"6%",marginTop:"2%",marginBottom:"2%"}} >
-             <MDBCol md="10">
-               {/* <MuiThemeProvider theme= {this.getMuiTheme()}> */}
+             <div  style={{width:"90%",marginLeft:"6%",marginTop:"2%",marginBottom:"2%"}} >               
                 <MUIDataTable  
-                  title={"tabla clientes"} 
+                  title={"Lista de ventas o paquetes registrados"} 
                   data={data} 
                   columns={columns} 
                   options={options} 
-                />
-                {/* </MuiThemeProvider> */}
-               </MDBCol>
+                />      
               </div>
 
               {modal}
+              {tablaCotizaciones}
 
-              {/* <MDBBtn color="primary" href="/cotizaciones">cotizacion</MDBBtn> */}
+            
 
-
-              <MDBContainer>
-        {/* <MDBBtn color="info" onClick={this.toggle}>Registar Administrado de Alfa </MDBBtn>       
-          <MDBModal isOpen={this.state.modal} toggle={this.toggle} > 
-          <MDBModalHeader toggle={this.toggle}>Correo Administrador</MDBModalHeader>
-          <MDBModalBody>
-          <MDBModalBody> */}
-
-    <MDBRow >            
-    <MDBCol > 
-    <Form onSubmit={this.onSubmitBtn}  >
-      <p className="h5 text-center mb-4">{correo} </p> 
-
-
-      {/* <FormGroup row>
-          <Label for="Correo" sm={3} size="lg">Correo</Label>
-              <Col sm={9}>
-              <Input 
-                type="email" 
-                name="user" 
-                id="user"              
-                Size="lg" 
-                onChange={this.onChangeInput}
-                value={this.state.user}
-                required 
-              />
-              </Col>
-          </FormGroup>     */}
-
-        <FormGroup row>
-          <Label for="contraseña" sm={3} size="lg">Contraseña</Label>
-              <Col sm={9}>
-              <Input 
-                type="password" 
-                name="contraseña" 
-                id="pass" 
-                placeholder="contraseña" 
-                Size="lg" 
-                onChange={this.onChangeInput}
-                value={this.state.pass}
-                required 
-              />
-              </Col>
-          </FormGroup>
-                    
-          <div className="text-center">
-          <MDBBtn color="primary" size="sm" type="submit">Iniciar sesión</MDBBtn>
-          {/* <MDBBtn color="secondary" size="sm" onClick={this.toggle}>Cerrrar</MDBBtn> */}
-          </div>
-    </Form>
-    </MDBCol >  
-    </MDBRow>
-        
-    {/* </MDBModalBody> 
-          </MDBModalBody>
-          
-        </MDBModal> */}
-      </MDBContainer>
-           
+            
         </React.Fragment>
 
         )
     }
 } export default dashboardAlfa
-
