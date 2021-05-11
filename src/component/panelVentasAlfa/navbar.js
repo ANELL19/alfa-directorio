@@ -1,15 +1,23 @@
 import React, {Component}from 'react'
 import { MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavItem,  MDBNavbarToggler, MDBCollapse, MDBBtn } from "mdbreact"
 import ADS from '../imagen/ADS.png'
+//import Modal from './modal'
 
 class NavbarAlfa extends Component {
     constructor(props){
         super(props)
         this.state = {
-            isOpen: false
+          isOpen: false,
+          modal:false,
         }
+        
       } 
+      
+         
      render(){
+      
+
+
         return(
           <React.Fragment>             
             <MDBNavbar color="info-color" dark expand="md" >
@@ -26,6 +34,9 @@ class NavbarAlfa extends Component {
                   <MDBBtn color="info"  href="/cotizaciones">
                      Cotización
                     </MDBBtn> 
+                     </MDBNavItem>   
+                      <MDBNavItem >                
+                      <MDBBtn  color="info" href="/modal" >Registrar adminsitrador de Alfa</MDBBtn>
                      </MDBNavItem>                    
                      <MDBNavItem active>                
                   <MDBBtn  color="info" href="/loginAlfa">

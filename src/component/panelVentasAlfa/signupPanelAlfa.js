@@ -3,7 +3,8 @@ import Paper from '@material-ui/core/Paper';
 import { CardBody, Label,Form,Row,Col,Alert} from 'reactstrap';
 import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBInput } from 'mdbreact';
 import { DialogUtility } from '@syncfusion/ej2-popups';
-import axios from 'axios'
+import axios from 'axios';
+import {API} from '../Graphql'
 
 class signupAdminAlfa extends Component{
     constructor(props){
@@ -25,7 +26,7 @@ class signupAdminAlfa extends Component{
 
     
     regresar(){
-        this.props.history.push("/loginAlfa")
+        this.props.history.push("/dahboardAlfa")
     } 
 
     onChangeInput =(e)=>{
@@ -38,7 +39,7 @@ class signupAdminAlfa extends Component{
     onSubmitBtn = (e)=>{
      // console.log("contraseña" , this.state.contrasena)
         e.preventDefault();  
-        const API='http://localhost:4000/graphql'   
+        // const API='http://localhost:4000/graphql'   
 
         axios({
             url:API,

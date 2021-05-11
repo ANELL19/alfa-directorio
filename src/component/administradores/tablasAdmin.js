@@ -4,7 +4,7 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import {MDBBtn, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter, 
        MDBCard, MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText, MDBCol , MDBContainer,MDBRow} from 'mdbreact'
 import { Button,Table, ModalBody,} from 'reactstrap';
-
+import {API} from '../Graphql'
 import axios from 'axios'
 class Tablas extends Component{
 
@@ -53,7 +53,8 @@ class Tablas extends Component{
     let array =  []
     let arrayApi =  []
  
-    const API='http://localhost:4000/graphql'   
+    // const API='http://localhost:4000/graphql'   
+    // let id_admin=localStorage.getItem()
       await axios({
             url:API,
             method:'post',
@@ -86,6 +87,7 @@ class Tablas extends Component{
             })
 
             array[0].map(rows=>{
+              console.log("rows de correo",rows)
               axios.get(`https://app.verify-email.org/api/v1/nsfdbVY9HBiaU4i0a9hypdy1Ids6bLzHayJd2HtonD33AYMjPk/verify/${rows.correo}`)
             .then(res => {
               arrayApi.push([res.data.email,res.data.status_description])

@@ -3,8 +3,9 @@ import { MDBRow, MDBCol, MDBBtn,MDBCard,MDBAlert, MDBCardBody } from 'mdbreact';
 import {Form } from 'reactstrap'
 import { DialogUtility } from '@syncfusion/ej2-popups';
 import axios from 'axios'
-
+import {API} from '../Graphql'
 import Navbar from './navbar'
+
 class signupAdminG extends Component{
     constructor(props){
         super(props)
@@ -18,41 +19,73 @@ class signupAdminG extends Component{
             contrasena:"",  
             fk_paquetes:"",
             open:false,
-            success:false
-                
+            success:false,
+            form :true,                
         } 
         this.regresar = this.regresar.bind(this)     
     }   
-    componentWillUnmount(){
-
-
-    }
-
     regresar(){
         this.props.history.push("/dahboardAlfa")
     } 
     onChangeInput =(e)=>{
      //   console.log("eventoonChange" , e)
         const {id,value} = e.target;
-        this.setState({
-            [id]:value
-        })
+        this.setState({ [e.target.name]: e.target.value });
+        this.setState({ [id]:value }) 
       }
-    onSubmitBtn = (e)=>{
-     // console.log("contraseña" , this.state.contrasena)
-        e.preventDefault();  
-        const API='http://localhost:4000/graphql'   
-        var id = localStorage.getItem("id")
+      
+    onSubmitBtn = (e)=>{  
+        // e.preventDefault();  
+        // e.target.className += " was-validated";
 
+        // let nombre = this.state.nombre.toUpperCase();
+        // let apellido = this.state.apellido.toUpperCase();
+        // let razonSocial = this.state.razonSocial.toUpperCase().replace(/,/g, "");
+        // let RFC = this.state.RFC.toUpperCase();
+        // let telefono = this.state.telefono.toUpperCase();
+        // let correo = this.state.correo;
+        // let contraseña = this.state.contrasena;
+        // let paquetes = this.state.fk_paquetes;  
+      // console.log("Datos",nombre,apellido,razonSocial,RFC,telefono,correo,contraseña,paquetes)      
+      
+    // if(RFC.length>= 12 && RFC.length < 14){ 
+    //   if(contraseña.length>=8){
+    //     if(nombre.length > 2 && apellido.length > 2 && razonSocial.length > 2 && telefono.length >= 8 && paquetes ){
+    //       this.setState({form:true})
+    //     }else{
+    //       DialogUtility.alert({
+    //                     title:'AVISO !' ,
+    //                     content: "Alguno de los datos ingresados no cumple con los requisitos",
+    //                 });  
+    //     }
+
+    //   }else{
+    //     DialogUtility.alert({
+    //                 title:'AVISO !' ,
+    //                 content: "Su contraseña debe contener al menos 8 caracteres",
+    //             });  
+    //   }
+
+    // }else{
+    //   DialogUtility.alert({
+    //                   title:'AVISO !' ,
+    //                  content: "Estimado usuario, El RFC no es válido ",
+            
+
+    // })
+
+    // }
+
+
+        let id = localStorage.getItem("id");
         axios({
             url:API,
             method:'post',
             data:{
                 query:`
                 mutation{
-                    signupAdminGeneral(data:"${[this.state.nombre.toUpperCase(),this.state.apellido.toUpperCase(),this.state.razonSocial.toUpperCase(), this.state.RFC.toUpperCase(),this.state.telefono.toUpperCase(),this.state.correo.toUpperCase(),this.state.contrasena,this.state.fk_paquetes,id]}"){             
-                 
-                    message
+                    signupAdminGeneral(data:"${[this.state.nombre.toUpperCase(),this.state.apellido.toUpperCase(),this.state.razonSocial.toUpperCase().replace(/,/g, ""), this.state.RFC.toUpperCase(),this.state.telefono.toUpperCase(),this.state.correo,this.state.contrasena,this.state.fk_paquetes,id]}"){             
+                        message
                      } 
                 }
                 `
@@ -61,28 +94,28 @@ class signupAdminG extends Component{
            .then(response=>{
               //  if(response.data.data.signup.message==="registro exitoso"){
               DialogUtility.alert({
-                  title:'Registro exitoso' ,
-                  
+                  title:'Registro exitoso'                   
               });
               window.location.reload();
             //  Windows.location.reload();
-                //this.props.history.push("/home_admin")
-              
+                //this.props.history.push("/home_admin")              
         })
          .catch(err=>{
                   console.log('error',err.response)
               })  
-    }
+           }
+  
+ 
+
 render(){
-    return(
-        <React.Fragment>
-          <Navbar/>
-          <div style={{marginTop:"2%", marginRight:"10%", marginLeft:"10%"}}>
+  let form;
+    if(this.state.form == true){
+      form=  <div style={{marginTop:"2%", marginRight:"10%", marginLeft:"10%"}}>
           <center>
           <MDBCard narrow style={{width:"80%",heigth:"60%"}}>                          
             <MDBAlert color="primary"  className="h5 text-center mb-4" ><strong>Registro de clientes nuevos</strong> </MDBAlert>
             <MDBCardBody>
-            <Form onSubmit={this.onSubmitBtn}>   
+            <Form className="needs-validation" onSubmit={this.onSubmitBtn} >   
             <MDBRow >      
                 <MDBCol md="3" className="mb-3">     
                   <label htmlFor="nombre" >Nombre (s): </label>
@@ -91,7 +124,7 @@ render(){
                       type="text"
                       name="nombres"
                       onChange={this.onChangeInput}
-                      value={this.state.pass}
+                      value={this.state.nombre}
                       required 
                       className="form-control"/>
                 </MDBCol>
@@ -103,7 +136,7 @@ render(){
                       type="text"
                       name="apellido"
                       onChange={this.onChangeInput}
-                      value={this.state.pass}
+                      value={this.state.apellido}
                       required 
                       className="form-control"/>
                 </MDBCol>
@@ -115,9 +148,9 @@ render(){
                       type="text"
                       name="razonSocial"			
                       onChange={this.onChangeInput}
-                      value={this.state.pass} 
+                      value={this.state.razonSocial} 
                       required
-                      className="form-control"/>           
+                      className="form-control"/>        
                 </MDBCol>
                 <MDBCol md="3" className="mb-3">   
                   <label htmlFor="defaultFormLoginPasswordEx">RFC:</label>
@@ -127,7 +160,7 @@ render(){
                     type="text"
                     name="RFC"
                     onChange={this.onChangeInput}
-                    value={this.state.pass}
+                    value={this.state.RFC}
                     required
                     className="form-control"/>
                 </MDBCol>
@@ -142,7 +175,7 @@ render(){
                       type="number"
                       name="telefono"
                       onChange={this.onChangeInput}
-                      value={this.state.pass}	
+                      value={this.state.telefono}	
                       required
                       className="form-control"/>
                 </MDBCol>
@@ -154,9 +187,9 @@ render(){
                         type="email"
                         name="correo"
                         onChange={this.onChangeInput}
-                        value={this.state.pass}
+                        value={this.state.correo}
                         required
-                        className="form-control" />
+                        className="form-control" />                        
                 </MDBCol>
                 <MDBCol md="3" className="mb-3">   
                     <label htmlFor="defaultFormLoginPasswordEx">Contraseña:</label>
@@ -166,10 +199,10 @@ render(){
                         type="password"
                         name="contrasena"
                         onChange={this.onChangeInput}
-                        value={this.state.pass}
+                        value={this.state.contrasena}
                         validate 
                         required 
-                          className="form-control"/>
+                        className="form-control"/>                     
                 </MDBCol>
                 <MDBCol md="3" className="mb-3" style={{marginTop:32}}>   
                   <div>
@@ -179,8 +212,7 @@ render(){
                     name="fk_paquetes"
                     id="fk_paquetes" 
                     onChange={this.onChangeInput} 
-                    value={this.state.fk_paquetes}
-                  //  validate 
+                    value={this.state.fk_paquetes}                
                     required >
                     <option>Seleccione su paquete</option>
                     <option value="1">1 empresa</option>
@@ -189,7 +221,7 @@ render(){
                     <option value="4">10 empresas</option>
                     <option value="5">20 empresas</option>
                   </select>
-                  </div>
+                  </div>               
                   </MDBCol>  
                   </MDBRow>
                 
@@ -197,20 +229,24 @@ render(){
                   <MDBCol md="3" className="mb-3"></ MDBCol>
                     
                   <MDBCol md="3" className="mb-3">      
-                    <MDBBtn   color="info"   type="submit"> Guardar</MDBBtn>
+                    <MDBBtn   color="info" type="submit"> Guardar</MDBBtn>
                     </MDBCol>
-                    <MDBCol md="3" className="mb-3"> 
+                    <MDBCol md="3" className="mb-3">                    
                     <MDBBtn  color="secondary"   onClick={this.regresar} type="submit">Cancelar</MDBBtn>
-                    </MDBCol>
-                  
+                    </MDBCol>                  
                   </MDBRow>
-              </Form>
-              
+              </Form>              
               </MDBCardBody>
                     </MDBCard>
                     </center>
-          </div>  
-          </React.Fragment>
+          </div> 
+
+    }
+    return(
+        <React.Fragment>
+          <Navbar/>
+          {form} 
+        </React.Fragment>
     )
 }
 }export default signupAdminG

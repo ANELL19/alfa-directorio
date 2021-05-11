@@ -7,6 +7,7 @@ import { DialogUtility } from '@syncfusion/ej2-popups';
 import {  MDBCol, MDBCardBody,MDBCard, MDBBtn,MDBAlert,MDBView} from 'mdbreact';
 import {Form,FormGroup,Label,Col,Input} from 'reactstrap';
 import  index from "./index.css";
+import {API} from '../Graphql'
 
 class LoginAdminGener extends Component{
     constructor(props){
@@ -38,7 +39,7 @@ class LoginAdminGener extends Component{
     }
     onSubmitBtn = (e)=>{        
         e.preventDefault();  
-        const API='http://localhost:4000/graphql'   
+        // const API='http://localhost:4000/graphql'   
         axios({
             url:API,
             method:'post',

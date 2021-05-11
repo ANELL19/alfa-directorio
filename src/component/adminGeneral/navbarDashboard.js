@@ -2,6 +2,7 @@ import React, {Component}from 'react'
 import { MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavItem, MDBNavLink, MDBNavbarToggler, MDBCollapse} from "mdbreact";
 import ADS from '../imagen/ADS.png'
 
+
 class NavbarDashboard extends Component {
     constructor(props){
         super(props)
@@ -17,15 +18,15 @@ class NavbarDashboard extends Component {
          <MDBNavbar color="info-color"  dark expand="md">
           <MDBNavbarBrand >
             <a  href="/dashbordAdminGral"><img src={ADS} style={{width:"30%"}} /></a> &nbsp;&nbsp;&nbsp;
-          <strong className="white-text" > {this.props.data} </strong>
+           {this.props.data} 
           </MDBNavbarBrand>        
           <MDBNavbarToggler onClick={this.toggleCollapse} />
           <MDBCollapse id="navbarCollapse3" isOpen={this.state.isOpen} navbar>
-            <MDBNavbarNav left>
+            <MDBNavbarNav  right>
              
               <MDBNavItem>
-                    <MDBNavLink className="waves-effect waves-light" to="/signupadmin">
-                    Registrar empresa
+                    <MDBNavLink  to="/signupadmin"> Registrar Empresas
+
                     </MDBNavLink>
                   </MDBNavItem>
                   <MDBNavItem>

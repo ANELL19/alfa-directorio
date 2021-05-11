@@ -6,6 +6,7 @@ import {  MDBRow, MDBCol, MDBInput } from 'mdbreact';
 import { Form} from 'reactstrap';
 import { DialogUtility } from '@syncfusion/ej2-popups';
 import axios from 'axios'
+import {API} from '../Graphql'
 
 
 class Empresas extends Component{
@@ -40,7 +41,7 @@ class Empresas extends Component{
     componentWillMount(){  
       localStorage.removeItem("correoAdministrador")
      const idAdminGral = localStorage.getItem("idadminGral")   
-     const API= 'http://localhost:4000/graphql'  
+    //  const API= 'http://localhost:4000/graphql'  
          axios ({
             url:API,
             method:'post',
@@ -75,7 +76,7 @@ class Empresas extends Component{
           
     onSubmitBtn =(e)=>{        
         e.preventDefault();
-        const API='http://localhost:4000/graphql'   
+        // const API='http://localhost:4000/graphql'   
         let correo   =  this.state.correoAdmin;
       const  contraseña = this.state.pass;
         const correoAdmin  = localStorage.getItem("correoAdministrador")
@@ -122,10 +123,8 @@ class Empresas extends Component{
                         // alert("usuario y contraseña incorrectos")
                         DialogUtility.alert({
                             title: ' contraseña incorrecta',
-                            position: "fixed"
-          
-                        });
-                      
+                            position: "fixed"          
+                        });                        
                     }                   
                  }).catch(err=>{
                      console.log('error',err.response)

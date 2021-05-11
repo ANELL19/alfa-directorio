@@ -34,6 +34,7 @@ import cotizaciones from './component/panelVentasAlfa/cotizaciones'
 
 import EnlaceDashboard from './component/enlace/Dashboard'
 
+import Modal from './component/panelVentasAlfa/modal'
 
 class App extends Component{
 
@@ -73,6 +74,7 @@ render(){
       
         <PrivateRouteAlfa exact path = "/signupAdminAlfa" component={signupAdminAlfa}/> 
         <PrivateRouteAlfa exact path= "/cotizaciones" component={cotizaciones}/>
+        <PrivateRouteAlfa exact path= "/modal" component={Modal}/>
         
         
         <Route  exact path= "/" component= {LoginAdminG}/> 
@@ -89,6 +91,8 @@ render(){
         <PrivateRouteAdmin exact path= "/tablasAdmin" component={TablasAdmin}/> 
 
         <Route exact path="/enlace" component={EnlaceDashboard}/>
+      
+
        
         
         

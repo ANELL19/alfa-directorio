@@ -1,10 +1,10 @@
-
 import React, { Component } from "react"
 import { MDBBtn, MDBModalBody} from 'mdbreact';
-import { MDBModal,  MDBModalHeader, MDBModalFooter } from 'mdbreact';
+import { MDBModal,  MDBModalHeader, MDBModalFooter,MDBContainer} from 'mdbreact';
 import Navbar from './navbar'
 import MUIDataTable from "mui-datatables";
 import axios from 'axios'
+import {API} from '../Graphql'
 
 class dashboardAlfa extends Component{
   constructor(props){
@@ -13,15 +13,22 @@ class dashboardAlfa extends Component{
           datos:[],
           modal: false,
           detallesAdminGral:[],
-          detallesCotizaciones:[]
+          detallesCotizaciones:[],
+          modal12: false
 
         }
         this.cerrar = this.cerrar.bind(this)
     } 
+    
+toggle12 = () => {
+  this.setState({
+    modal12: !this.state.modal12
+  });
+}
 
     componentWillMount(){
       const id = localStorage.getItem("id");
-      const API='http://localhost:4000/graphql'   
+      // const API='http://localhost:4000/graphql'   
 
       axios({
         url:API,
@@ -94,7 +101,7 @@ class dashboardAlfa extends Component{
     }
 
     consultarAdminG(id){
-      const API='http://localhost:4000/graphql'  
+      // const API='http://localhost:4000/graphql'  
 
       axios({
         url:API,
@@ -227,7 +234,7 @@ class dashboardAlfa extends Component{
       </MDBModal>
       </div>
           }
-          const columnsCotizaciones = ["Nombre", "Apellidos","telefono","Correo","Razón Social","Fecha de Cotización","Total"];
+          const columnsCotizaciones = ["Nombre", "Apellidos","Razón Social","Producto o Servicio","Fecha de Cotización","Correo","telefono","Total"];
 
           let dataCotizaciones;
 
@@ -235,7 +242,7 @@ class dashboardAlfa extends Component{
             dataCotizaciones = this.state.detallesCotizaciones[0].map(rows=>{
    
             //  boton = <div><MDBBtn size="md" color="info" onClick={e=> this.consultarAdminG(rows.fk_adminG)}>Detalles</MDBBtn></div>
-                   return([rows.nombre,rows.apellidos, rows.Servicio,rows.correo1,rows.telefono1,rows.fecha,rows.iva,rows.total])
+                   return([rows.nombre,rows.apellidos,rows.razonSocial,rows.Servicio,rows.fecha,rows.correo1,rows.telefono1,rows.total])
 
                    console.log("esto es dataCotizaciones",rows.Servicio)
      
@@ -256,7 +263,21 @@ class dashboardAlfa extends Component{
           </div>
         return(
             <React.Fragment>
-             <Navbar/>
+             <Navbar> 
+               {/* <MDBContainer> */}
+      <MDBBtn onClick={this.toggle12}>Modal</MDBBtn>
+      <MDBModal isOpen={this.state.modal12} toggle={this.toggle12}>
+        <MDBModalHeader toggle={this.toggle12}>MDBModal title</MDBModalHeader>
+        <MDBModalBody>
+          (...)
+        </MDBModalBody>
+        <MDBModalFooter>
+          <MDBBtn color="secondary" onClick={this.toggle12}>Close</MDBBtn>
+          <MDBBtn color="primary">Save changes</MDBBtn>
+        </MDBModalFooter>
+      </MDBModal>
+    {/* </MDBContainer> */}
+</Navbar>
              
              <div  style={{width:"90%",marginLeft:"6%",marginTop:"2%",marginBottom:"2%"}} >               
                 <MUIDataTable  
@@ -268,11 +289,7 @@ class dashboardAlfa extends Component{
               </div>
 
               {modal}
-              {tablaCotizaciones}
-
-            
-
-            
+              {tablaCotizaciones} 
         </React.Fragment>
 
         )

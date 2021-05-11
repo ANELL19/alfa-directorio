@@ -3,6 +3,8 @@ import {Form} from 'reactstrap';
 import {  MDBRow, MDBCol, MDBBtn,MDBCard,MDBAlert, MDBCardBody} from 'mdbreact';
 import { DialogUtility } from '@syncfusion/ej2-popups';
 import axios from 'axios'
+import {API} from '../Graphql'
+import { LaptopWindows } from '@material-ui/icons';
 
 class signupAdmin extends Component{
     constructor(props){
@@ -30,7 +32,7 @@ class signupAdmin extends Component{
     }   
     onSubmitBtn = async (e)=>{  
         e.preventDefault();  
-        const API='http://localhost:4000/graphql'   
+        // const API='http://localhost:4000/graphql'   
         let empresasRegistradas;
         let empresasAutorizadas;       
        const idAdminGral = localStorage.getItem("idadminGral")
@@ -63,7 +65,7 @@ class signupAdmin extends Component{
                       data:{
                           query:`
                          query{
-                          signupAdmin(data:"${[this.state.nombre.toUpperCase(),this.state.apellidos.toUpperCase(),this.state.razonSocial.toUpperCase(), this.state.RFC.toUpperCase(),this.state.telefono.toUpperCase(),this.state.correo.toUpperCase(),this.state.contrasena,idAdminGral]}"){             
+                          signupAdmin(data:"${[this.state.nombre.toUpperCase(),this.state.apellidos.toUpperCase(),this.state.razonSocial.toUpperCase(), this.state.RFC.toUpperCase(),this.state.telefono.toUpperCase(),this.state.correo,this.state.contrasena,idAdminGral]}"){             
                                 message
                               } 
                           }
@@ -76,6 +78,7 @@ class signupAdmin extends Component{
                           title:'Aviso!' ,
                           content:"La empresa se ha registrado exitosamente"
                         }); 
+                        window.location.reload();
                        }else if (response.data.data.signupAdmin.message =="ya se encuentra registrado"){
                         DialogUtility.alert({
                           title:'Aviso!' ,
@@ -106,7 +109,7 @@ class signupAdmin extends Component{
           <MDBCol md="15">
           <MDBCard narrow style={{width:"80%",heigth:"60%"}}>                           
             <MDBAlert color="primary"  className="h5 text-center mb-4" >
-              <strong> Registrar Administradores</strong>
+              <strong> Registrar Empresas</strong>
             </MDBAlert>
                 <MDBCardBody>
                 <Form onSubmit={this.onSubmitBtn}>   
@@ -126,9 +129,9 @@ class signupAdmin extends Component{
                               <label htmlFor="Apellidos:">Apellidos: </label>
                               <input  
                                   icon="user"	
-                                  id="apellido"
+                                  id="apellidos"
                                   type="text"
-                                  name="apellido"
+                                  name="apellidos"
                                   onChange={this.onChangeInput}
                                   value={this.state.pass}
                                   required 

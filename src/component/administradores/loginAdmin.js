@@ -9,6 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import { DialogUtility } from '@syncfusion/ej2-popups';
 import index from "./index.css"
 // import {Form} from 'reactstrap';
+import {API} from '../Graphql'
 
 class LoginAdmin extends Component{
     constructor(props){
@@ -38,7 +39,7 @@ class LoginAdmin extends Component{
     }
     onSubmitBtn = (e)=>{        
         e.preventDefault();  
-        const API='http://localhost:4000/graphql'   
+        // const API='http://localhost:4000/graphql'   
         axios({
             url:API,
             method:'post',

@@ -15,6 +15,7 @@ import { Table } from 'reactstrap';
 import imagen from '../imagen/encabezado.JPG'
 import titulo1 from  '../imagen/titulo1.png'
 import { MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
+import {API} from '../Graphql'
 
 class Cotizaciones extends Component{
     pdfExportComponent
@@ -49,25 +50,21 @@ class Cotizaciones extends Component{
 
     regresar(){
         this.props.history.push("/dahboardAlfa")
-    } 
-   
+    }    
 
     onChangeInput =(e)=>{
         const {id,value} = e.target;
         this.setState({
             [id]:value
         })
-    }
-
-    
-
+    } 
 
     onSubmitBtn = (e)=>{      
         this.setState({botonPdfExport:true})  
-        const API='http://localhost:4000/graphql' 
+        // const API='http://localhost:4000/graphql' 
         var id_adminAlfa = localStorage.getItem("id")  
 
-        let rs = this.state.razonSocial;
+        let rs = this.state.razonSocial.toUpperCase().replace(/,/g, "");
         let nombre  = this.state.nombre.toUpperCase();
         let apellidos = this.state.apellidos.toUpperCase();
         let correo1 =  this.state.correo1;
@@ -83,7 +80,7 @@ class Cotizaciones extends Component{
         let iva = ((precio * 16)/100).toFixed(2)
         let vendedor = localStorage.getItem("nombre").toUpperCase() + " "  + localStorage.getItem("apellido").toUpperCase()       
         var suma = (parseInt(precio) + parseFloat(iva))
-        let total = suma
+        let total = suma.toFixed(2)
             axios({
                 url:API,
                 method:'post',
@@ -132,25 +129,25 @@ class Cotizaciones extends Component{
         }else {
             DialogUtility.alert({
                 title:'AVISO !' ,
-                content: "Estimado usuario, por favor complete todos los campos obigatorios",
+                content: "Estimado usuario, por favor complete todos los campos obligatorios",
             });          
         }
     }
     
+    
     cerrarCotizacion() {
         window.location.reload()
     }
+    
 
      render(){
         var date= new Date()
-        var fecha = date.toLocaleString('es')        
-        console.log("fecha",fecha)   
-
+        var fecha = date.toLocaleString('es')      
+        // console.log("fecha",fecha)   
         let iva = 16;
         let total
         let tasaIva
         let totalFloat;
-
       if(this.state.precio){
         console.log("estado de precio",this.state.precio)
         tasaIva=((this.state.precio*iva)/100).toFixed(2)
@@ -159,9 +156,7 @@ class Cotizaciones extends Component{
         totalFloat = parseFloat(total.toFixed(2))
       }
 
-
     let form;
-
    if (this.state.form == true) {
     form = <div style={{marginTop:"2%"}}>
     <center>    
@@ -170,95 +165,85 @@ class Cotizaciones extends Component{
                       <MDBCardBody>
                       <Form onSubmit={this.onSubmitBtn}> 
                 <MDBRow >
-                <MDBCol md="3" className="mb-3"> 
-                       <label htmlFor="defaultFormLoginPasswordEx" ><strong> Razón social:</strong> </label>
-                  <input                                         			
-                      id="razonSocial"
-                      type="text"
-                      name="razonSocial"			
-                      onChange={this.onChangeInput}
-                      value={this.state.pass} 
-                      required
-                      className="form-control"/>                                    
-                  </MDBCol>
-
-
               <MDBCol md="3" className="mb-3"> 
-                  <label htmlFor="nombre" ><strong> Nombre (s) del cliente:</strong> </label>
-                      <input                                     
-                          id="nombre"
-                          type="text"
-                          name="nombres"
-                          onChange={this.onChangeInput}
-                          value={this.state.pass}
-                          required
-                          className="form-control"/>
+                        <label htmlFor="defaultFormLoginPasswordEx" ><strong> Razón social:</strong> </label>
+                        <input   
+                        // style={{texttransform:uppercase}}                                      			
+                            id="razonSocial"
+                            type="text"
+                            name="razonSocial"			
+                            onChange={this.onChangeInput}
+                            value={this.state.pass} 
+                            required
+                            className="form-control"
+                            />                                    
               </MDBCol>
-
-                  <MDBCol md="3" className="mb-3"> 
-                  <label htmlFor="defaultFormLoginPasswordEx" > <strong>Apellidos: </strong></label>
-                      <input                                              
-                          id="apellidos"
-                          type="text"
-                          name="apellidos"
-                          onChange={this.onChangeInput}
-                          value={this.state.pass}
-                          required
-                          className="form-control"/>
-                          </MDBCol>
-
-                          <MDBCol md="3" className="mb-3">   
-                  <label htmlFor="defaultFormLoginEmailEx" >
-                  <strong>Correo:</strong>
-                  </label>
-                  <input   
-                      
-                      id="correo1"
-                      type="email"
-                      name="correo1"
-                      onChange={this.onChangeInput}
-                      value={this.state.pass}
-                      required
-                      className="form-control" />
-                      </MDBCol>
-
-                      <MDBCol md="3" className="mb-3">   
-                  <label htmlFor="defaultFormLoginEmailEx" >
-                  <strong>Correo alterno:</strong>
-                  </label>
+              <MDBCol md="3" className="mb-3"> 
+                        <label htmlFor="nombre" ><strong> Nombre (s) del cliente:</strong> </label>
+                        <input                                     
+                            id="nombre"
+                            type="text"
+                            name="nombres"
+                            onChange={this.onChangeInput}
+                            value={this.state.pass}
+                            required
+                            className="form-control"/>
+             </MDBCol>
+             <MDBCol md="3" className="mb-3"> 
+                       <label htmlFor="defaultFormLoginPasswordEx" > <strong>Apellidos: </strong></label>
+                       <input                                              
+                            id="apellidos"
+                            type="text"
+                            name="apellidos"
+                            onChange={this.onChangeInput}
+                            value={this.state.pass}
+                            required
+                            className="form-control"/>
+             </MDBCol>
+             <MDBCol md="3" className="mb-3">   
+                    <label htmlFor="defaultFormLoginEmailEx"><strong>Correo:</strong></label><input 
+                        id="correo1"
+                        type="email"
+                       
+                        // id="correo1"
+                        // type="email"
+                        name="correo1"
+                        onChange={this.onChangeInput}
+                        value={this.state.pass}
+                        required
+                        className="form-control"/>
+             </MDBCol>
+             <MDBCol md="3" className="mb-3">   
+                  <label htmlFor="defaultFormLoginEmailEx"><strong>Correo alterno:</strong></label>
                   <input   
                       icon="envelope"
                       id="correo2"
                       type="email"
                       name="correo2"
                       onChange={this.onChangeInput}
-                      value={this.state.pass}
-                     
+                      value={this.state.pass}                     
                       className="form-control" />
-                      </MDBCol>
+             </MDBCol>
 
-                      <MDBCol md="3" className="mb-3">    
+              <MDBCol md="3" className="mb-3">    
                   <label htmlFor="defaultFormLoginPasswordEx" >
                   <strong>Telefono:</strong>
                   </label>
-                  <input 
-                           
+                  <input                            
                   id="telefono1"
                   type="number"
                   name="telefono1"
                   onChange={this.onChangeInput}
                   value={this.state.pass}	
                   required
-                  className="form-control"
-                  />
-                  </MDBCol>
+                  className="form-control"/>
+             </MDBCol>
 
-                  <MDBCol md="3" className="mb-3">   
+              <MDBCol md="3" className="mb-3">   
                   <label htmlFor="defaultFormLoginPasswordEx" >
                   <strong>Producto o servicio:</strong>
                   </label>
-                  <input            
-               
+                  <input 
                   id="Servicio"
                   type="text"
                   name="Servicio"
@@ -266,23 +251,19 @@ class Cotizaciones extends Component{
                   value={this.state.pass}
                   required
                   className="form-control"/>
-                  </MDBCol>
+             </MDBCol>
 
-                  <MDBCol md="3" className="mb-3">    
-                  <label htmlFor="defaultFormLoginPasswordEx" >
-                  <strong>Precio:</strong>
-                  </label>
+              <MDBCol md="3" className="mb-3">    
+                  <label htmlFor="defaultFormLoginPasswordEx"><strong>Precio:</strong></label>
                   <input 
                   required		 
                   id="precio"
                   type="number"
                   name="precio"
                   onChange={this.onChangeInput}
-                  value={this.state.pass}	
-                  
-                  className="form-control"
-                  />
-                  </MDBCol>
+                  value={this.state.pass}	                  
+                  className="form-control"/>
+             </MDBCol>
 
                   <MDBCol md="3" className="mb-4 mt-4">    
                   <label htmlFor="defaultFormLoginPasswordEx" >
@@ -316,7 +297,7 @@ class Cotizaciones extends Component{
                       type="text"
                       name="promocion"
                       onChange={this.onChangeInput}
-                      value={this.state.pass}
+                      value={this.state.promocion}
                       validate 
                      
                       className="form-control"/>
@@ -369,7 +350,7 @@ class Cotizaciones extends Component{
          <div>
         <Paper   style={{width:1200,height:1400, marginLeft:"6%",marginTop:"2%",marginBottom:"2%"}}>
             <img src={titulo1} alt="imagen" alt="imagen"   style={{width:1210,height:150}}/>
-            <div style={{marginLeft:"5%", marginRight:"5%",marginBottom:"2%"}}>
+            <div style={{ marginBottom:"2%"}}>
             <Row  xs="2">               
                 <Col>
                      <p><strong>Razón social:</strong>&nbsp;{this.state.razonSocial} </p>                     
@@ -502,7 +483,7 @@ class Cotizaciones extends Component{
                 paperSize="letter"
                 margin="0.5cm"
                 forcePageBreak=".page-break"
-                fileName={`${"Cotización"} PDF ${new Date().getFullYear()}`}
+                fileName={`${"Cotización"} ${this.state.razonSocial} PDF ${new Date().getFullYear()}`}
                 ref={(component) => this.pdfExportComponent = component}
                 >
        
@@ -525,7 +506,7 @@ class Cotizaciones extends Component{
                        
             
 
-<div style= {{marginLeft:10, marginRight:10, marginTop:-10}}>    
+<div style= {{ marginTop:-10}}>    
 <MDBTable bordered  >
       <MDBTableHead color="light-blue accent-1"  align="center" >
         <tr>
@@ -552,7 +533,7 @@ class Cotizaciones extends Component{
     </div>
 
 <p style={{color:"red",fontFamily:'arial', fontSize:'10px',marginTop:-10}} >Promoción &nbsp; {this.state.promocion}</p>          
-<div style= {{marginLeft:10, marginRight:10, marginTop:-10}}>
+<div style= {{marginTop:-10}}>
 <MDBTable bordered>
       <MDBTableHead color="light-blue accent-1"  align="center">
         <tr>

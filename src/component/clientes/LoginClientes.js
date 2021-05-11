@@ -1,13 +1,14 @@
 import axios from 'axios'
 import React,{Component} from 'react'
-import '@fortawesome/fontawesome-free/css/all.min.css'; import
-'bootstrap-css-only/css/bootstrap.min.css'; import
-'mdbreact/dist/css/mdb.css';
+import '@fortawesome/fontawesome-free/css/all.min.css'; 
+import 'bootstrap-css-only/css/bootstrap.min.css';
+ import 'mdbreact/dist/css/mdb.css';
 import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn} from 'mdbreact';
 import { lighten, makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import { Box } from '@material-ui/core';
 import {Card, CardImg, Row,Button, Form, FormGroup, Label, Input,NavItem, NavLink,CardHeader} from 'reactstrap';
+import {API} from '../Graphql'
 
 class LoginClientes extends Component{
     constructor(props){
@@ -17,14 +18,11 @@ class LoginClientes extends Component{
             pass:""
         }
     }
-     componentWillMount(){
-       
+     componentWillMount(){       
         localStorage.removeItem("id_cliente")
         localStorage.removeItem("nombre_cliente")
         localStorage.removeItem("apellidos_cliente")
-        localStorage.removeItem("nombreEmpresa")
-        
-       
+        localStorage.removeItem("nombreEmpresa") 
     }
 
     
@@ -36,7 +34,7 @@ class LoginClientes extends Component{
     }
     onSubmitBtn = (e)=>{        
         e.preventDefault();  
-        const API='http://localhost:4000/graphql'   
+        // const API='http://localhost:4000/graphql'   
         axios({
             url:API,
             method:'post',
@@ -50,8 +48,7 @@ class LoginClientes extends Component{
                        apellidos_cliente
                        nombreEmpresa                      
                        telefono
-                       correo                                             
-                   
+                       correo   
                    } 
                 }
                 `

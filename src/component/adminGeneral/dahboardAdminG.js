@@ -5,7 +5,7 @@ import MUIDataTable from "mui-datatables";
 import { MDBBtn } from 'mdbreact';
 import axios from 'axios'
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-
+import {API} from '../Graphql'
 
 
 class HomeAdmin extends Component{
@@ -50,7 +50,7 @@ class HomeAdmin extends Component{
       })
      async componentWillMount(){
       const fk_paquetes  = localStorage.getItem("fk_paquetes");
-      const API='http://localhost:4000/graphql';       
+      // const API='http://localhost:4000/graphql';       
     
 
      await axios({
