@@ -54,14 +54,14 @@ class Tablas extends Component{
     let arrayApi =  []
  
     // const API='http://localhost:4000/graphql'   
-    // let id_admin=localStorage.getItem()
+    let id_admin=localStorage.getItem("id_admin")
       await axios({
             url:API,
             method:'post',
             data:{
               query:`
                 query{   
-                  getTablaClientes(data:"${[""]}"){
+                  getTablaClientes(data:"${[id_admin]}"){
                     id_cliente
                     nombre_cliente
                     apellidos_cliente
