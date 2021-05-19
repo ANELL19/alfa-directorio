@@ -52,8 +52,9 @@ class Tablas extends Component{
                     apellido
                     correo1
                     correo2
-                    telefono                    
-                    fk_administrador  
+                    telefono 1 
+                    telefono2                  
+                     
                     } 
                 }
                 `

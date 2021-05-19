@@ -8,7 +8,8 @@ import Paper from '@material-ui/core/Paper';
 import { DialogUtility } from '@syncfusion/ej2-popups';
 import {Form,FormGroup,Label,Col,Input} from 'reactstrap';
 import index from "./index.css"
-import {API} from '../Graphql'
+import {API} from '../Graphql/Graphql'
+import Navbar from './navbar'
 
 
 
@@ -27,7 +28,7 @@ class dashdoardAdminAlfa extends Component{
          return(
         <React.Fragment>
            
-        <h1>dashboard</h1>
+        <Navbar/>
 
         </React.Fragment>
         )

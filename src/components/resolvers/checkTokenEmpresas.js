@@ -1,5 +1,5 @@
 export default ()=>{
-    if(localStorage.getItem("TokenClient")){
+    if(localStorage.getItem("TokenEmpresas")){
         return true
 
     }else{

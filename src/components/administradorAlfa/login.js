@@ -8,7 +8,7 @@ import Paper from '@material-ui/core/Paper';
 import { DialogUtility } from '@syncfusion/ej2-popups';
 import {Form,FormGroup,Label,Col,Input} from 'reactstrap';
 import index from "./index.css"
-import {API} from '..Graphql'
+import {API} from '../Graphql/Graphql'
 
 class loginAdminAlfa extends Component{
     constructor(props){
@@ -66,7 +66,7 @@ class loginAdminAlfa extends Component{
                         title:'Bienvenido' ,
                         content: "inicio de sesión exitoso!",
                     });                   
-                    this.props.history.push("/dashboard")
+                    this.props.history.push("/dashboardAlfa")
                 }
                 else if(response.data.data.loginAdminAlfa.message=="usuario y contraseña incorrecto"){                   
                     DialogUtility.alert({

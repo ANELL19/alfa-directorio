@@ -1,18 +1,22 @@
 import React, {Component} from 'react'
 import Paper from '@material-ui/core/Paper';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+ import'bootstrap-css-only/css/bootstrap.min.css'; 
+import'mdbreact/dist/css/mdb.css';
 import { CardBody, Label,Form,Row,Col,Alert} from 'reactstrap';
 import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBInput } from 'mdbreact';
 import { DialogUtility } from '@syncfusion/ej2-popups';
 import axios from 'axios';
-import {API} from '../Graphql'
+import {API} from '../Graphql/Graphql'
 
-class signupAdminAlfa extends Component{
+class signupEmpresas extends Component{
     constructor(props){
         super(props)
         this.state ={
-            nombre:"",
-            apellido:"",      
+            rfc:"",
+            razonSocial:"",      
             correo:"",
+            telefono:"",
             contrasena:"",  
                 
         } 
@@ -26,7 +30,7 @@ class signupAdminAlfa extends Component{
 
     
     regresar(){
-        this.props.history.push("/dahboardAlfa")
+        this.props.history.push("/loginEmpresa")
     } 
 
     onChangeInput =(e)=>{
@@ -37,9 +41,12 @@ class signupAdminAlfa extends Component{
         })
     }   
     onSubmitBtn = (e)=>{
-     // console.log("contraseña" , this.state.contrasena)
         e.preventDefault();  
-        // const API='http://localhost:4000/graphql'   
+        let rfc = this.state.rfc.toUpperCase();
+        let razonSocial = this.state.razonSocial.toUpperCase().replace(/,/g, "");
+        let correo = this.state.correo;
+        let telefono = this.state.telefono;
+        let contrasena = this.state.contrasena;
 
         axios({
             url:API,
@@ -47,8 +54,7 @@ class signupAdminAlfa extends Component{
             data:{
                 query:`
                 mutation{
-                    signupAlfa(data:"${[this.state.nombre,this.state.apellido,this.state.correo,this.state.contrasena]}"){             
-                 
+                    signupEmpresas(data:"${[rfc,razonSocial,correo,telefono,contrasena]}"){
                     message
                      } 
                 }
@@ -78,29 +84,29 @@ render(){
             <Form  onSubmit={this.onSubmitBtn}>
             <Alert color="primary">
               <a  style={{marginTop:20,marginLeft:120}}>
-                Registrar Administrador panel alfa
+                Registrar  Empresa
               </a>
             </Alert>     
               <div className="grey-text">
               <Row >  
                 <MDBInput 
-                  label="Nombre (s)" 
+                  label="RFC" 
                   icon="user"	
-                  id="nombre"
+                  id="rfc"
                   type="text"
-                  name="nombres"
+                  name="rfc"
                   onChange={this.onChangeInput}
-                  value={this.state.pass}
+                  value={this.state.rfc}
                   required
                 />
                 <MDBInput 
-                  label="apellido" 
+                  label="Razón Social" 
                   icon="user"	
-                  id="apellido"
+                  id="razonSocial"
                   type="text"
-                  name="apellido"
+                  name="razonSocial"
                   onChange={this.onChangeInput}
-                  value={this.state.pass}
+                  value={this.state.razonSocial}
                   required
                 />
                   	 
@@ -111,7 +117,17 @@ render(){
                   type="email"
                   name="correo"
                   onChange={this.onChangeInput}
-                  value={this.state.pass}
+                  value={this.state.correo}
+                  required
+                />
+                <MDBInput 
+                  label="Telefono" 
+                  icon="envelope"
+                  id="telefono"
+                  type="number"
+                  name="telefono"
+                  onChange={this.onChangeInput}
+                  value={this.state.telefono}
                   required
                 />
                 <MDBInput 
@@ -121,7 +137,7 @@ render(){
                   type="password"
                   name="contrasena"
                   onChange={this.onChangeInput}
-                  value={this.state.pass}
+                  value={this.state.contrasena}
                   validate 
                   required
                 />
@@ -140,4 +156,4 @@ render(){
     )
 }
 
-}export default signupAdminAlfa
+}export default signupEmpresas

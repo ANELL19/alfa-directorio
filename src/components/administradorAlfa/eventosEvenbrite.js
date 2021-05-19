@@ -1,14 +1,13 @@
-
 import React, { Component } from "react"
-import NavbarDashboard from './navbarDashboard'
+// import NavbarDashboard from './navbarDashboard'
 import MUIDataTable from "mui-datatables";
 import { MDBBtn } from 'mdbreact';
 import axios from 'axios'
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-// import {API} from '../Graphql'
+import {API} from '../Graphql/Graphql'
 
 
-class HomeAdmin extends Component{
+class Eventos extends Component{
   constructor(props){
     super(props)
     this.state = {
@@ -53,25 +52,25 @@ class HomeAdmin extends Component{
       const API='http://localhost:4000/graphql';       
     
 
-     await axios({
-        url:API,
-        method:'post',
-        data:{
-            query:`
-            query{
-                getPaquetes(data:"${[fk_paquetes]}"){
-                   empresas
-               } 
-            }
-            `
-        }   
-         }).then(response=>{
-            // console.log("response-DASH",response)
-            localStorage.setItem("paquetesdeAdmonGral",response.data.data.getPaquetes.empresas)
-         })
-         .catch(err=>{
-             console.log('error',err)
-         })
+    //  await axios({
+    //     url:API,
+    //     method:'post',
+    //     data:{
+    //         query:`
+    //         query{
+    //             getPaquetes(data:"${[fk_paquetes]}"){
+    //                empresas
+    //            } 
+    //         }
+    //         `
+    //     }   
+    //      }).then(response=>{
+    //         // console.log("response-DASH",response)
+    //         localStorage.setItem("paquetesdeAdmonGral",response.data.data.getPaquetes.empresas)
+    //      })
+    //      .catch(err=>{
+    //          console.log('error',err)
+    //      })
 
  // ************ API *********
         // axios.get(`https://www.eventbriteapi.com/v3/users/me/?token=LE7TWGVIP64TOSQ7VWHV`)
@@ -89,7 +88,7 @@ class HomeAdmin extends Component{
         // })
          
       
-        axios.get(`https://www.eventbriteapi.com/v3/organizations/524103565401/events/?token=LE7TWGVIP64TOSQ7VWHV`)
+     axios.get(`https://www.eventbriteapi.com/v3/organizations/524103565401/events/?token=LE7TWGVIP64TOSQ7VWHV`)
        
      .then(response=>{      
        this.setState({arrayApi:response.data.events})    
@@ -162,14 +161,14 @@ class HomeAdmin extends Component{
       
       }        
       } 
-       const rs = localStorage.getItem("razonSocial");     
+      //  const rs = localStorage.getItem("razonSocial");     
         return(
         <React.Fragment>
-             <NavbarDashboard data={rs}/>
+             {/* <NavbarDashboard data={rs}/> */}
            <div  style={{width:"90%",marginLeft:"5%",marginTop:"2%",marginBottom:"2%"}}>          
              <MuiThemeProvider  theme={this.getMuiTheme()}>  
                 <MUIDataTable  
-                  title={"Tabla de Eventos "} 
+                  title={"Tabla de Eventos de Eventbrite"} 
                     data={data}
                   columns={columns} 
                   options={options} 
@@ -180,4 +179,4 @@ class HomeAdmin extends Component{
         </React.Fragment>
         )
     }
-} export default HomeAdmin
+} export default Eventos
