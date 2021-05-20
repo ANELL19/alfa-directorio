@@ -10,6 +10,7 @@ import {Form,FormGroup,Label,Col,Input} from 'reactstrap';
 import index from "./index.css"
 import {API} from '../Graphql/Graphql'
 import Navbar from './navbar'
+import TablaClientes from './tablaClientes'
 
 
 
@@ -26,9 +27,9 @@ class dashdoardAdminAlfa extends Component{
 
      render(){
          return(
-        <React.Fragment>
-           
+        <React.Fragment>           
         <Navbar/>
+        <TablaClientes/>
 
         </React.Fragment>
         )

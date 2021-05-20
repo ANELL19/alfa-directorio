@@ -44,7 +44,7 @@ class Tablas extends Component{
             data:{
               query:`
                 query{   
-                  getTablaClientes(data:"${[""]}"){
+                  getTablaClientes(data:"${[" "]}"){
                     id_cliente
                     rfc
                     empresa
@@ -61,6 +61,7 @@ class Tablas extends Component{
             }           
              })
            .then(datos => {
+             console.log("LA DATA",datos)
              array.push(datos.data.data.getTablaClientes)
              console.log("email",datos.data.data.getTablaClientes)
               this.setState({tablas:datos.data.data.getTablaClientes})
@@ -69,16 +70,16 @@ class Tablas extends Component{
                console.log('error' ,err.response)
             })
 
-            array[0].map(rows=>{
-              console.log("rows de correo",rows)
-              axios.get(`https://app.verify-email.org/api/v1/nsfdbVY9HBiaU4i0a9hypdy1Ids6bLzHayJd2HtonD33AYMjPk/verify/${rows.correo}`)
-            .then(res => {
-              arrayApi.push([res.data.email,res.data.status_description])
-              this.setState({peticionApi:arrayApi})
-            }).catch(err=>{
-              console.log(err)
-            })
-            }) 
+            // array[0].map(rows=>{
+            //   // console.log("rows de correo",rows)
+            //   axios.get(`https://app.verify-email.org/api/v1/nsfdbVY9HBiaU4i0a9hypdy1Ids6bLzHayJd2HtonD33AYMjPk/verify/${rows.correo}`)
+            // .then(res => {
+            //   arrayApi.push([res.data.email,res.data.status_description])
+            //   this.setState({peticionApi:arrayApi})
+            // }).catch(err=>{
+            //   console.log(err)
+            // })
+            // }) 
     
     }
 

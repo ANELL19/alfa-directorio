@@ -5,6 +5,9 @@ import {
   } from "mdbreact";
   import { BrowserRouter as Router } from 'react-router-dom';
 import ADS from '../imagen/ADS.png'
+import Sidenavbar  from './sidenavbar'
+
+
 
 class NavbarAdmin extends Component {
     constructor(props){
@@ -47,8 +50,11 @@ class NavbarAdmin extends Component {
              </MDBCollapse>
          </MDBNavbar>  */}
 
-<Router>
+ <Router>
+{/*<Navbar style={{backgroundColor:"#10D9F9",height:50}} expand="lg"> */}
+    
       <MDBNavbar color="#4fc3f7 light-blue lighten-2" dark expand="md">
+      <Sidenavbar/>
         <MDBNavbarBrand>
         <a href="/dashboard"><img src={ADS} style={{width:"66%"}}/></a>
         </MDBNavbarBrand>
@@ -105,6 +111,7 @@ class NavbarAdmin extends Component {
           </MDBNavbarNav>
         </MDBCollapse>
       </MDBNavbar>
+      {/* </Navbar>  */}
     </Router>
 
 

@@ -21,6 +21,9 @@ import registrarAdministrador from './components/administrador/registraAdminsitr
 
 import Dashboard from './components/paneldeConection/dashboard'
 
+
+
+import sidenavbar from './components/administradorAlfa/sidenavbar'
 class App extends Component{
 
 render(){
@@ -41,7 +44,8 @@ render(){
         <Route  exact path = "/" component={loginAdmin}/>
         <Route exact path = "/dashboardAlfa" component={dashboardAlfa}/>
         <Route exact path = "/tablaClientes" component={tablaClientes}/>
-
+        <Route  exact path = "/sidenavbar" component={sidenavbar}/>
+        <Route exact path = "/TablaEventos" component={eventosEvenbrite}/>
          {/* <PrivateRouteAdminAlfa exact path= "/signup" component= {signupAdminAlfa}/> */}
          {/* <PrivateRouteAdminAlfa exact path= "/dashboardAlfa" component= {dashboardAlfa}/>
          <PrivateRouteAdminAlfa exact path= "/tablaClientes" component= {tablaClientes}/>

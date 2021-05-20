@@ -5,7 +5,7 @@ import { MDBBtn } from 'mdbreact';
 import axios from 'axios'
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import {API} from '../Graphql/Graphql'
-
+import Navbar from './navbar'
 
 class Eventos extends Component{
   constructor(props){
@@ -164,6 +164,7 @@ class Eventos extends Component{
       //  const rs = localStorage.getItem("razonSocial");     
         return(
         <React.Fragment>
+          <Navbar/>
              {/* <NavbarDashboard data={rs}/> */}
            <div  style={{width:"90%",marginLeft:"5%",marginTop:"2%",marginBottom:"2%"}}>          
              <MuiThemeProvider  theme={this.getMuiTheme()}>  
