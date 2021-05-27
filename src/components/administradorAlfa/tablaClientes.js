@@ -172,8 +172,6 @@ if(this.state.cards==false){
                 </MDBCardBody>
               </MDBCard>
               </MDBCol>
-
-
               <MDBCol md="3" className="mb-3">
               <MDBCard style={{ width: "18rem" }}>
                 <MDBCardImage className="rounded mx-auto d-block" style={{width:"70%", marginTop:10}} src="https://image.freepik.com/free-vector/flat-design-yellow-comics-background_23-2148798165.jpg" waves />
@@ -219,45 +217,7 @@ if(this.state.cards==false){
     
     const columns = ["id", "Nombre", "Apellidos", "CURP","RFC","Nombre Empresa","Teléfono","Correo","Información"];
      const data = this.state.tablas.map((rows,i)=>{
-        //   console.log("esta es rows",rows)   
-        // if(this.state.tablas){
-        //   modal=<MDBContainer>
-        //   <MDBModal  color="info" size="lg"  isOpen={this.state.modal1} >
-        //     <MDBModalHeader>Información cliente</MDBModalHeader>
-        //     <font   size="1" face="arial">
-        //       <ModalBody>
-        //         <Table small responsive>
-        //     <thead>
-        //       <tr>
-        //     <td >id</td>
-        //     <td >Nombre</td>
-        //     <td >Apellido</td>
-        //     <td >xxxx</td>
-        //     <td >ccc</td>
-        //     <td >Direccion</td>
-        //     <td >CP</td>
-        //     </tr>
-        //       </thead>
-        //     <tbody>
-        //     <tr> 
-        //     <td  key={rows.id_cliente}>{rows.id_cliente}</td>
-        //     <td >{rows.nombre_cliente}</td>
-        //     <td width="5%">{rows.apellidos_cliente}</td>
-        //     <td width="5%">{rows.nombreEmpresa}</td>
-        //     <td width="5%">{}</td>
-        //     <td width="5%">{}</td>
-        //     <td width="5%">{}</td>
-        //     </tr>
-        //     </tbody>           
-        //     </Table>
-        //     </ModalBody>             
-        //     </font>
-        //     <MDBModalFooter>
-        //       <MDBBtn color="secondary" size="sm" onClick={(e)=>this.setState({modal1:false})}>Cerrrar</MDBBtn>
-        //     </MDBModalFooter>
-        //   </MDBModal>
-        //   </MDBContainer>
-        // }       
+            
         let botones = <MDBBtn color ="info" size="sm" onClick={(e)=>this.modal()}> datos cliente </MDBBtn>
           
          return([rows.id_cliente,rows.nombre_cliente, rows.apellidos_cliente, rows.curp, rows.rfc, rows.nombreEmpresa, rows.telefono, rows.correo,botones])

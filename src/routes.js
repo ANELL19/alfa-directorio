@@ -11,6 +11,7 @@ import dashboardAlfa from './components/administradorAlfa/dashboard'
 import tablaClientes from './components/administradorAlfa/tablaClientes'
 import eventosEvenbrite from './components/administradorAlfa/eventosEvenbrite'
 import navbar from './components/administradorAlfa/navbar'
+// import ModalPrueba from './components/administradorAlfa/registrarCliente'
 
 import RegistrarEmpresa from './components/empresas/signupEmpresa'
 import LoginEmpresa from './components/empresas/loginEmpresa'
@@ -46,14 +47,10 @@ render(){
         <Route exact path = "/tablaClientes" component={tablaClientes}/>
         <Route  exact path = "/sidenavbar" component={sidenavbar}/>
         <Route exact path = "/TablaEventos" component={eventosEvenbrite}/>
-         {/* <PrivateRouteAdminAlfa exact path= "/signup" component= {signupAdminAlfa}/> */}
-         {/* <PrivateRouteAdminAlfa exact path= "/dashboardAlfa" component= {dashboardAlfa}/>
-         <PrivateRouteAdminAlfa exact path= "/tablaClientes" component= {tablaClientes}/>
-         <PrivateRouteAdminAlfa exact path = "/TablaEventos" component={eventosEvenbrite}/> */}
-
+        
         
          <Route exact path = "/loginEmpresa" component={LoginEmpresa}/>
-         {/* <PrivateRouteEmpresa  exact path = "/empresa" component={Empresa}/> */}
+      
          <Route  exact path = "/RegistrarEmpresa" component={RegistrarEmpresa}/>
 
          

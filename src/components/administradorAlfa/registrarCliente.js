@@ -6,6 +6,11 @@ import { DialogUtility } from '@syncfusion/ej2-popups';
 import { Alert } from 'reactstrap';
 import { Button as Boton, Modal, ModalBody,ModalHeader} from 'reactstrap';
 import {MDBRow,  MDBModal, MDBModalBody, MDBModalFooter ,MDBContainer, MDBBtn} from 'mdbreact';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import 'bootstrap-css-only/css/bootstrap.min.css';
+import 'mdbreact/dist/css/mdb.css';
+import Paper from '@material-ui/core/Paper';
+import { Button, Card, CardBody, CardText, CardGroup, CardTitle } from 'reactstrap';
 
 //modal
   const ModalPrueba = (props) => {
@@ -14,23 +19,31 @@ import {MDBRow,  MDBModal, MDBModalBody, MDBModalFooter ,MDBContainer, MDBBtn} f
 	  className
 	} = props;
 	
-	const [modal, setModal] = useState(false);
+	// const [modal, setModal] = useState(false);
   
-	const toggle = () => setModal(!modal);
+	// const toggle = () => setModal(modal);
 
-	const handleToggle = () => setModal(!modal);
+	// const handleToggle = () => setModal(!modal);
+
 	return (
 	<React.Fragment>
-	  <div>
-		<Boton size="small" className="text-white"  color="default-color" onClick={toggle}  >{buttonLabel} Cargar Clientes</Boton>
-		<Modal isOpen={modal} toggle={toggle} className={className} tabindex="-1" >
-		<ModalHeader toggle={toggle}>Cargar Clientes</ModalHeader>
-		  <ModalBody>
+	  {/* <div>		 */}
+		<MDBContainer  style={{ marginTop:"10%"}} >  
+		<center>                         
+		<MDBCol md="6" >
+		<Paper> 
+		<ModalHeader>Cargar Clientes</ModalHeader>		
+		  <ModalBody>			  
 		  <SheetJSApp/> 
+		    <center>
 		  	Si aún no tiene el formato legible para su BD descárgela <a href="http://www.google.com">aquí.</a>
-         </ModalBody>
-		</Modal>
-	  </div>
+			</center>
+		 </ModalBody>		
+		 </Paper>
+		 </MDBCol>
+		 </center>  
+		 </MDBContainer>		
+	  {/* </div> */}
 	  </React.Fragment>	
 	);
   }
@@ -149,56 +162,58 @@ class SheetJSApp extends React.Component {
 				</div>
 			</DragDropFile>	
 			</React.Fragment>		
-		);
-	};
-};
-
-class DragDropFile extends React.Component {
-	constructor(props) {
-		super(props);
-		this.onDrop = this.onDrop.bind(this);
-
-	};
-	suppress(evt) { evt.stopPropagation(); evt.preventDefault(); };
-	onDrop(evt) {
-		evt.stopPropagation(); evt.preventDefault();
-		const files = evt.dataTransfer.files;
-		if (files && files[0]) this.props.handleFile(files[0]);
-	};
-	render() {
-		return (
-			<div onDrop={this.onDrop} onDragEnter={this.suppress} onDragOver={this.suppress}>
-				{this.props.children}
-			</div>
-		);
-	};
-};
-
-class DataInput extends React.Component {
-	constructor(props) {
-		super(props);
-		this.handleChange = this.handleChange.bind(this);
-	};
-	handleChange(e) {
-		const files = e.target.files;
-		if (files && files[0]) this.props.handleFile(files[0]);
+			);
+		};
 	};
 
-	render() {
-		return (
-			<form > 
-				<div className="form-group">
-					<Alert color="primary">Por favor seleccione su base de datos, Puede cargar archivos ("xlsx","csv")</Alert> 
-				    <input type="file" className="form-control" id="file" accept={SheetJSFT} onChange={this.handleChange} />
+	class DragDropFile extends React.Component {
+		constructor(props) {
+			super(props);
+			this.onDrop = this.onDrop.bind(this);
+
+		};
+		suppress(evt) { evt.stopPropagation(); evt.preventDefault(); };
+		onDrop(evt) {
+			evt.stopPropagation(); evt.preventDefault();
+			const files = evt.dataTransfer.files;
+			if (files && files[0]) this.props.handleFile(files[0]);
+		};
+		render() {
+			return (
+				<div onDrop={this.onDrop} onDragEnter={this.suppress} onDragOver={this.suppress}>
+					{this.props.children}
 				</div>
-                </form>
-		);
+			);
+		};
 	};
-}
 
-const SheetJSFT = [
-	"xlsx", "xlsb", "xlsm", "xls", "xml", "csv", "txt", "ods", "fods", "uos", "sylk", "dif", "dbf", "prn", "qpw", "123", "wb*", "wq*", "html", "htm"
-].map(function (x) { return "." + x; }).join(",");
+	class DataInput extends React.Component {
+		constructor(props) {
+			super(props);
+			this.handleChange = this.handleChange.bind(this);
+		};
+		handleChange(e) {
+			const files = e.target.files;
+			if (files && files[0]) this.props.handleFile(files[0]);
+		};
+
+		render() {
+			return (
+				
+				<form>
+					<div className="form-group">												
+						<Alert color="primary">Por favor seleccione su base de datos, Puede cargar archivos ("xlsx","csv")</Alert> 
+						<input type="file" className="form-control" id="file" accept={SheetJSFT} onChange={this.handleChange} />					    
+					</div>
+					</form>
+				
+			);
+		};
+	}
+
+	const SheetJSFT = [
+		"xlsx", "xlsb", "xlsm", "xls", "xml", "csv", "txt", "ods", "fods", "uos", "sylk", "dif", "dbf", "prn", "qpw", "123", "wb*", "wq*", "html", "htm"
+	].map(function (x) { return "." + x; }).join(",");
 
 
-export default ModalPrueba
+	export default ModalPrueba
