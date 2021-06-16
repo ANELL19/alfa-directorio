@@ -3,7 +3,9 @@ import MUIDataTable from "mui-datatables";
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import {MDBBtn, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter, 
        MDBCard, MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText, MDBCol , MDBContainer,MDBRow} from 'mdbreact'
-import { Button,Table, ModalBody,} from 'reactstrap';
+import { Button, Tooltip } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
+import { Table, ModalBody,} from 'reactstrap';
 import {API} from '../Graphql/Graphql'
 import axios from 'axios'
 class Tablas extends Component{
@@ -213,54 +215,18 @@ if(this.state.cards==false){
      </div>
      }
 
-//*********************
 
   console.log("estado" ,this.state.datos)
     
-    const columns = ["id", "Nombre", "Apellidos", "CURP","RFC","Nombre Empresa","Teléfono","Correo","Información"];
+    const columns = ["id", "Nombre", "Apellidos", "CURP","RFC","Nombre Empresa","Teléfono","Correo","Info","Editar","Guardar"];
      const data = this.state.tablas.map((rows,i)=>{
-        //   console.log("esta es rows",rows)   
-        // if(this.state.tablas){
-        //   modal=<MDBContainer>
-        //   <MDBModal  color="info" size="lg"  isOpen={this.state.modal1} >
-        //     <MDBModalHeader>Información cliente</MDBModalHeader>
-        //     <font   size="1" face="arial">
-        //       <ModalBody>
-        //         <Table small responsive>
-        //     <thead>
-        //       <tr>
-        //     <td >id</td>
-        //     <td >Nombre</td>
-        //     <td >Apellido</td>
-        //     <td >xxxx</td>
-        //     <td >ccc</td>
-        //     <td >Direccion</td>
-        //     <td >CP</td>
-        //     </tr>
-        //       </thead>
-        //     <tbody>
-        //     <tr> 
-        //     <td  key={rows.id_cliente}>{rows.id_cliente}</td>
-        //     <td >{rows.nombre_cliente}</td>
-        //     <td width="5%">{rows.apellidos_cliente}</td>
-        //     <td width="5%">{rows.nombreEmpresa}</td>
-        //     <td width="5%">{}</td>
-        //     <td width="5%">{}</td>
-        //     <td width="5%">{}</td>
-        //     </tr>
-        //     </tbody>           
-        //     </Table>
-        //     </ModalBody>             
-        //     </font>
-        //     <MDBModalFooter>
-        //       <MDBBtn color="secondary" size="sm" onClick={(e)=>this.setState({modal1:false})}>Cerrrar</MDBBtn>
-        //     </MDBModalFooter>
-        //   </MDBModal>
-        //   </MDBContainer>
-        // }       
+        
         let botones = <MDBBtn color ="info" size="sm" onClick={(e)=>this.modal()}> datos cliente </MDBBtn>
+        let botonesEditar = <Button type="primary" shape="circle">  A     </Button>
+  
+        let eliminar = <MDBBtn color ="info" size="sm" onClick={(e)=>this.modal()}> datos cliente </MDBBtn>
           
-         return([rows.id_cliente,rows.nombre_cliente, rows.apellidos_cliente, rows.curp, rows.rfc, rows.nombreEmpresa, rows.telefono, rows.correo,botones])
+         return([rows.id_cliente,rows.nombre_cliente, rows.apellidos_cliente, rows.curp, rows.rfc, rows.nombreEmpresa, rows.telefono, rows.correo,botones,botonesEditar,eliminar])
         
         })  
 

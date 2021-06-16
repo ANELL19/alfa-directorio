@@ -13,12 +13,17 @@ import {
   UsergroupAddOutlined,
   DesktopOutlined,
   DollarOutlined,
-  OrderedListOutlined 
+  OrderedListOutlined,
+  CloseOutlined, 
+  FileDoneOutlined 
+ 
 } from '@ant-design/icons';
+import { Avatar } from 'antd';
 import TablaClientes from './tablaClientes'
 import TablaEventos from './eventosEvenbrite'
 import CargarClientes from './registrarCliente'
 import Cotizaciones from './cotizaciones'
+import TablaCotizacion from './TablaCotizaciones'
 import ADS from '../imagen/ADS.png'
 import MUIDataTable from "mui-datatables";
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
@@ -39,8 +44,14 @@ class SiderDemo extends Component {
       tablaEventos:false,
       registrarClientes:false,      
       cotizaciones:false,
+      tablaCotizaciones:false
     };
+    this.cerrar = this.cerrar.bind(this) 
   }
+  cerrar(){
+    this.props.history.push("/")
+
+  } 
  
   toggle = () => {
     this.setState({
@@ -53,6 +64,7 @@ class SiderDemo extends Component {
     this.setState({cotizaciones:false});
     this.setState({tablaEventos:false});
     this.setState({registrarClientes:false});
+    this.setState({tablaCotizaciones:false});
 
   }
 
@@ -61,6 +73,7 @@ class SiderDemo extends Component {
     this.setState({cotizaciones:true});
     this.setState({tablaEventos:false});
     this.setState({registrarClientes:false});
+    this.setState({tablaCotizaciones:false});
 
   }
 
@@ -69,6 +82,7 @@ class SiderDemo extends Component {
     this.setState({cotizaciones:false});
     this.setState({tablaEventos:true});
     this.setState({registrarClientes:false});
+    this.setState({tablaCotizaciones:false});
 
   }
   cargarClientes(){
@@ -76,7 +90,15 @@ class SiderDemo extends Component {
     this.setState({cotizaciones:false});
     this.setState({tablaEventos:false});
     this.setState({registrarClientes:true});
+    this.setState({tablaCotizaciones:false});
 
+  }
+  consultarCotizaciones(){
+    this.setState({tablaInicio:false});
+    this.setState({cotizaciones:false});
+    this.setState({tablaEventos:false});
+    this.setState({registrarClientes:false});
+    this.setState({tablaCotizaciones:true});
   }
 
   render() {    
@@ -84,6 +106,7 @@ class SiderDemo extends Component {
     let eventos;  
     let clientes;
     let cotizaciones;
+    let tablaCotizaciones;
 
     if(this.state.tablaInicio === true) {  
       tabla=
@@ -113,6 +136,16 @@ class SiderDemo extends Component {
      </div>
 
     }
+    if(this.state.tablaCotizaciones === true){
+      tablaCotizaciones=     
+      <div>
+        <TablaCotizacion/>
+      </div>
+ 
+     }
+    let nombre = localStorage.getItem("nombre")
+    let apellidos= localStorage.getItem("apellido")
+  
 
     return (
       <Layout>     
@@ -120,7 +153,7 @@ class SiderDemo extends Component {
           <div className="logo" >
             <img href="/dashboard" src={ADS} style={{width:"60%", marginTop:"2%", marginLeft:"15%"}}/> 
           </div>
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+          <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>          
             <Menu.Item key="1" onClick={e=>this.tablaInicio()} icon={<OrderedListOutlined style={{ fontSize: '25px', color: '#fff' }}/>}>
               Tabla Clientes              
             </Menu.Item>
@@ -134,13 +167,16 @@ class SiderDemo extends Component {
               Generar Cotizacion
             </Menu.Item>
             <Menu.Item key="6" icon={<CloudUploadOutlined style={{ fontSize: '25px', color: '#fff' }} /> }>
-              nav 6
+              Registrar empresas
             </Menu.Item>
             <Menu.Item key="7" icon={<CloudUploadOutlined style={{ fontSize: '25px', color: '#fff' }} /> }>
-              nav 7
+              Registrar Administrador
             </Menu.Item>
-            <Menu.Item key="8" icon={<UsergroupAddOutlined style={{ fontSize: '25px', color: '#fff' }} />}>
-              nav 8
+            <Menu.Item key="8" onClick={e=>this.consultarCotizaciones()} icon={<FileDoneOutlined  style={{ fontSize: '25px', color: '#fff' }} />}>
+              cotizaciones Realizadas
+            </Menu.Item>
+            <Menu.Item key="9" onClick={this.cerrar} icon={<CloseOutlined  style={{ fontSize: '25px', color: '#fff' }} />}>
+              cerrar sesión
             </Menu.Item>
           </Menu>
         </Sider>
@@ -151,7 +187,7 @@ class SiderDemo extends Component {
               className: 'trigger',
               onClick: this.toggle,              
             })} 
-           <font color="#fff" size="4">DIRECTORIO DE CLIENTES &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>lizbeth cuevas anell</i>  </font > 
+           <font color="#fff" size="4">DIRECTORIO DE CLIENTES &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {localStorage.getItem("nombre").toUpperCase()+" "+localStorage.getItem("apellido").toUpperCase()}</font>           
           </Header>
           <Content
             // className="site-layout-background"
@@ -165,6 +201,7 @@ class SiderDemo extends Component {
             {eventos}
             {clientes}
             {cotizaciones}
+            {tablaCotizaciones}
           </Content>
         </Layout>
       </Layout>

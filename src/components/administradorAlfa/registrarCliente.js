@@ -36,7 +36,7 @@ import { Button, Card, CardBody, CardText, CardGroup, CardTitle } from 'reactstr
 		  <ModalBody>			  
 		  <SheetJSApp/> 
 		    <center>
-		  	Si aún no tiene el formato legible para su BD descárgela <a href="http://www.google.com">aquí.</a>
+		  	Si aún no tiene el formato legible para su BD descárgela <a href="https://drive.google.com/file/d/1NSKcw--1sLMcu6zPrrCvBJe1JDk2M8va/view?usp=sharing" target="_blank" >aquí.</a>
 			</center>
 		 </ModalBody>		
 		 </Paper>

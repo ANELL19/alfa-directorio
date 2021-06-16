@@ -15,7 +15,6 @@ import style from './style.css'
 import { Button, Card, CardBody, CardText, CardGroup, CardTitle } from 'reactstrap';
 import Navbar from '../paneldeConection/navbar'
 
-
   function onSubmit (values) {
   };
     class Validacion extends React.Component {
@@ -27,14 +26,14 @@ import Navbar from '../paneldeConection/navbar'
           this.cerrar = this.cerrar.bind(this) 
         }
         cerrar(){
-          this.props.history.push("/dashboard")
+          this.props.history.push("/Dashboard")
       } 
 
 
     ingresar(values){
         console.log("values" , values)
         if(values.contraseña == "admin"){
-           this.props.history.push("/")     
+           this.props.history.push("/registrarAdministrador")     
         }else if(!values.contraseña){
             // alert("Por favor ingrese algun valor")
 
@@ -49,12 +48,10 @@ import Navbar from '../paneldeConection/navbar'
         }
     }    
 
-     render() {    
-  
+     render() {  
           return (
             <React.Fragment>
-            <Navbar/>    
-            {/* <div style={{marginLeft:"10%",marginTop:"2%"}}> */}
+            <Navbar/>  
              <Form
                     onSubmit={onSubmit}
                     render={({ handleSubmit, submitting,values }) => (
@@ -66,7 +63,7 @@ import Navbar from '../paneldeConection/navbar'
                               <MDBCol md="6">
                             <Paper >  
                               <Button  onClick={this.cerrar} close />
-                                <MDBModalHeader >Ingrese la Contraseña </MDBModalHeader>
+                                <MDBModalHeader  >Ingrese la Contraseña </MDBModalHeader>
                                 <MDBCardBody> 
                                  <center>  
                                   <MDBAlert color="primary"  >
@@ -95,12 +92,9 @@ import Navbar from '../paneldeConection/navbar'
                             </MDBContainer>
                              </MDBView>
                             </div>
-                          
                       </form>
-                     
                     )}
                   />
-                  {/* </div> */}
             </React.Fragment>
           );
         }

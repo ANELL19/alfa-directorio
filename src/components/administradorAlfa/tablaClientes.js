@@ -2,8 +2,11 @@ import React,{Component} from 'react'
 import MUIDataTable from "mui-datatables";
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import {MDBBtn, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter, 
-       MDBCard, MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText, MDBCol , MDBContainer,MDBRow} from 'mdbreact'
-import { Button,Table, ModalBody,} from 'reactstrap';
+       MDBCard, MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText, MDBCol , MDBContainer,MDBRow,MDBIcon} from 'mdbreact'
+       import { Button, Tooltip } from 'antd';
+import { SearchOutlined,
+         DeleteOutlined } from '@ant-design/icons';
+import {Table, ModalBody,} from 'reactstrap';
 import {API} from '../Graphql/Graphql'
 import axios from 'axios'
 class Tablas extends Component{
@@ -11,40 +14,21 @@ class Tablas extends Component{
   constructor(props){
     super(props)
     this.state={      
-      tablas:[],      
-      modal1:false,  
+      tablas:[],          
       peticionApi:[],
-      cards:false,
-      tabla:false,
-      tableSuccess:false,
-      tableWarning:false,      
-      tableDanger:false,
-      tableSecondary:false
-
-      }
-      this.toggle =this.toggle.bind(this)      
+      }    
   }
-
-  toggle(parametro){
-    this.setState({modal:parametro})
-  }
-
-  abrirModal=()=>{
-    this.setState({modal:this.state.modal})   
-  }
-
-
   async componentWillMount(){
     let array =  []
     let arrayApi =  []
 
-      await axios({
+     await axios({
             url:API,
             method:'post',
             data:{
               query:`
                 query{   
-                  getTablaClientes(data:"${[" "]}"){
+                  getTablaClientes(data:"${[""]}"){
                     id_cliente
                     rfc
                     empresa
@@ -52,7 +36,7 @@ class Tablas extends Component{
                     apellido
                     correo1
                     correo2
-                    telefono 1 
+                    telefono1 
                     telefono2                  
                      
                     } 
@@ -61,7 +45,7 @@ class Tablas extends Component{
             }           
              })
            .then(datos => {
-             console.log("LA DATA",datos)
+             console.log("LA DATA de clientes",datos)
              array.push(datos.data.data.getTablaClientes)
              console.log("email",datos.data.data.getTablaClientes)
               this.setState({tablas:datos.data.data.getTablaClientes})
@@ -84,144 +68,31 @@ class Tablas extends Component{
     }
 
   
-    modal(datosCliente){
-     
-      this.setState({modal1:true})
-    }
-
-    toggle = nr =>()=>{
-      let modalNumber= 'modal' + nr
-      console.log("modal",modalNumber)
-      this.setState({
-        [modalNumber]:!this.state[modalNumber]
-      });
-    }
-
-    success(){
-      this.setState({cards:true})
-      this.setState({tabla:true})
-      this.setState({tableSuccess:true})  
-    }
-     warning(){
-      this.setState({cards:true})
-      this.setState({tabla:true})
-      this.setState({tableWarning:true})
-     }
-
-     danger(){
-      this.setState({cards:true})
-      this.setState({tabla:true})
-      this.setState({tableDanger:true}) 
-     }
-
-     secondary(){
-      this.setState({cards:true})
-      this.setState({tabla:true})
-      this.setState({tableSecondary:true})    
-     }
-
-    cerrarSuccess(){
-      this.setState({cards:false})
-      this.setState({tabla:false})
-      this.setState({tableSuccess:false})   
-    }
-    
-    cerrarWarning(){
-      this.setState({cards:false})
-      this.setState({tabla:false})
-      this.setState({tableWarning:false})
-    } 
-    
-    cerrarDanger(){
-      this.setState({cards:false})
-      this.setState({tabla:false})
-      this.setState({tableDanger:false})
-    }
-
-    cerrarSecondary(){
-      this.setState({cards:false})
-      this.setState({tabla:false})
-      this.setState({tableSecondary:false})
-    }
 
     render(){    
 
-      console.log("arrayApi" ,this.state.peticionApi)
-      let filtrar;
-      filtrar = this.state.peticionApi.filter(function(hero){
-        return hero[1] == "BAD email"
-      })
-      console.log("filtrar" , filtrar)
-      let card;
-      let modal;
-      let tabla;
-
-
-if(this.state.cards==false){
-  console.log("cards", this.state.cards)
-     card= <div>
-        <MDBRow  style={{marginLeft:120, marginRight:20, marginTop:20,}}>
-          <MDBCol md="3" className="mb-3">
-              <MDBCard style={{ width: "18rem" }}>
-                <MDBCardImage className="rounded mx-auto d-block" style={{width:"70%", marginTop:10}} src="https://image.freepik.com/free-vector/green-abstract-geometric-background_23-2148366726.jpg" waves />
-                <MDBCardBody>
-                <div className="text-center">
-                  <MDBCardTitle>Correos validados</MDBCardTitle>                                    
-                  <MDBBtn color="success"  href="#" onClick = {e=>this.success()}>Exitosos</MDBBtn>
-                  </div>
-                </MDBCardBody>
-              </MDBCard>
-              </MDBCol>
-              <MDBCol md="3" className="mb-3">
-              <MDBCard style={{ width: "18rem" }}>
-                <MDBCardImage className="rounded mx-auto d-block" style={{width:"70%", marginTop:10}} src="https://image.freepik.com/free-vector/flat-design-yellow-comics-background_23-2148798165.jpg" waves />
-                <MDBCardBody>
-                <div className="text-center">
-                  <MDBCardTitle>Correos validados</MDBCardTitle>                 
-                  <MDBBtn color="warning" href="#"  onClick = {e=>this.warning()}>Desconocidos</MDBBtn>
-                 </div>
-                </MDBCardBody>
-              </MDBCard>
-              </MDBCol>
-           
-              <MDBCol >
-              <MDBCard  style={{ width: "18rem"  }}>
-                <MDBCardImage className="rounded mx-auto d-block" style={{width:"70%", marginTop:10}} src="https://image.freepik.com/free-vector/flat-design-red-comic-style-background_23-2148797742.jpg" waves />
-                <MDBCardBody>
-                <div className="text-center">
-                  <MDBCardTitle>Correos validados</MDBCardTitle>                  
-                  <MDBBtn color="danger"  href="#" onClick={e=>this.danger()}>Erróneos</MDBBtn>
-                </div>
-                </MDBCardBody>
-              </MDBCard>
-              </MDBCol>
-              
-              <MDBCol  md="3" className="mb-3">
-              <MDBCard style={{ width: "18rem" }}>
-                <MDBCardImage className="rounded mx-auto d-block" style={{width:"70%", marginTop:10}} src="https://image.freepik.com/free-vector/purple-3d-modern-background-design_53876-87399.jpg" waves />
-                <MDBCardBody>
-                <div className="text-center">
-                  <MDBCardTitle>Correos validados</MDBCardTitle>                  
-                  <MDBBtn color="secondary"  href="#" onClick={e=>this.secondary()}>Inválidos</MDBBtn>
-                </div>
-                </MDBCardBody>
-              </MDBCard> 
-              </MDBCol>             
-              </MDBRow>  
-     </div>
-     }
-
-//*********************
-
-  console.log("estado" ,this.state.datos)
+      // console.log("arrayApi" ,this.state.peticionApi)
+      // let filtrar;
+      // filtrar = this.state.peticionApi.filter(function(hero){
+      //   return hero[1] == "BAD email"
+      // })
+      // console.log("filtrar" , filtrar)
+     
     
-    const columns = ["id", "Nombre", "Apellidos", "CURP","RFC","Nombre Empresa","Teléfono","Correo","Información"];
+
+
+  console.log("estado" ,this.state.tablas)
+    
+    const columns = ["id_cliente", "RFC","Empresa", "nombre","Apellidos", "correo1","correo2","Teléfono1","Teléfono2","Editar","Eliminar"," "];
      const data = this.state.tablas.map((rows,i)=>{
+      let botonesEditar = <Button type="primary" shape="circle" > <MDBIcon icon="pencil-alt" /></Button>
+  
+      let eliminar = <Button type="danger" shape="circle" > <MDBIcon far icon="trash-alt" /></Button>
             
-        let botones = <MDBBtn color ="info" size="sm" onClick={(e)=>this.modal()}> datos cliente </MDBBtn>
+        // let botones = <MDBBtn color ="info" size="sm" onClick={(e)=>this.modal()}> datos cliente </MDBBtn>
           
-         return([rows.id_cliente,rows.nombre_cliente, rows.apellidos_cliente, rows.curp, rows.rfc, rows.nombreEmpresa, rows.telefono, rows.correo,botones])
-        
+        //  return([rows.id_cliente,rows.nombre_cliente, rows.apellidos_cliente, rows.curp, rows.rfc, rows.nombreEmpresa, rows.telefono, rows.correo,botones])
+         return([rows.id_cliente,rows.rfc,rows.empresa,rows.nombre,rows.apellido, rows.correo1, rows.correo2, rows.telefono1, rows.telefono2,botonesEditar,eliminar])
         })  
 
       const options={ 
@@ -264,90 +135,19 @@ if(this.state.cards==false){
       }
         
       } 
-      if(this.state.tabla == false) {
-        tabla =  <div  style={{width:"90%",marginLeft:"5%",marginTop:"2%",marginBottom:"2%"}} >               
+        return(
+            <React.Fragment>
+                         
+             
+
+     <div  style={{width:"100%",marginTop:"2%",marginBottom:"2%"}} >               
         <MUIDataTable  
           title={"tabla clientes"} 
           data={data} 
           columns={columns} 
           options={options} 
         />                
-      </div>
-      }
-
-      let tableSuccess;
-      if(this.state.tableSuccess == true){
-        const columns = ["success", "success", "success", "success","success"];
-
-        tableSuccess =  <div  style={{width:"90%",marginLeft:"5%",marginTop:"2%",marginBottom:"2%"}} > 
-        <div align="right"><MDBBtn color="red" onClick = {e=>this.cerrarSuccess()}>Cerrar tabla</MDBBtn></div>             
-        <MUIDataTable  
-          title={"tabla clientes"} 
-          data={data} 
-          columns={columns} 
-          options={options} 
-        />         
-      </div>
-      }
-
-
-      let tableWarning;
-      if(this.state.tableWarning == true){
-        const columns = ["Warning", "Warning", "Warning", "Warning","Warning"];
-
-        tableWarning =  <div  style={{width:"90%",marginLeft:"5%",marginTop:"2%",marginBottom:"2%"}} >  
-         <div align="right"><MDBBtn color="red" onClick = {e=>this.cerrarWarning()}>Cerrar tabla</MDBBtn></div>             
-        <MUIDataTable  
-          title={"tabla clientes"} 
-          data={data} 
-          columns={columns} 
-          options={options} 
-        />        
-      </div>
-      }
-
-      
-      let tableDanger;
-      if(this.state.tableDanger == true){
-        const columns = ["Danger", "Danger", "Danger", "Danger","Danger"];
-
-        tableDanger =  <div  style={{width:"90%",marginLeft:"5%",marginTop:"2%",marginBottom:"2%"}} >
-          <div align="right"><MDBBtn color="red" onClick = {e=>this.cerrarDanger()}>Cerrar tabla</MDBBtn></div>                   
-        <MUIDataTable  
-          title={"tabla clientes"} 
-          data={data} 
-          columns={columns} 
-          options={options} 
-        />    
-      </div>
-      }
-
-      let tableSecondary;
-      if(this.state.tableSecondary == true){
-       
-        const columns = ["Secondary", "Secondary", "Secondary", "Secondary","Secondary"];
-        
-        tableSecondary =  <div  style={{width:"90%",marginLeft:"5%",marginTop:"2%",marginBottom:"2%"}} >    
-         <div  align="right"><MDBBtn color="red"  onClick = {e=>this.cerrarSecondary()}>Cerrar tabla</MDBBtn>       </div>      
-        <MUIDataTable  
-          title={"tabla clientes"} 
-          data={data} 
-          columns={columns} 
-          options={options} 
-        />     
-      </div>
-      }
-        return(
-            <React.Fragment>
-                         
-              {card}
-              {tabla}           
-              {modal}
-              {tableSuccess}
-              {tableWarning}
-              {tableDanger}
-              {tableSecondary}
-              
+      </div>    
             </React.Fragment>
         )
     }

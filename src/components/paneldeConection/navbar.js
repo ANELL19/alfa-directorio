@@ -45,7 +45,7 @@ class NavbarAdmin extends Component {
 <Router>
       <MDBNavbar color="#4fc3f7 light-blue lighten-2" dark expand="md">
         <MDBNavbarBrand>
-        <a href="/dashboard"><img src={ADS} style={{width:"66%"}}/></a> 
+        <a href="/Dashboard"><img src={ADS} style={{width:"66%"}}/></a> 
         </MDBNavbarBrand>
         <MDBNavbarToggler onClick={this.toggleCollapse} />
         <MDBCollapse id="navbarCollapse3" isOpen={this.state.isOpen} navbar>

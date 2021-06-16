@@ -14,7 +14,7 @@ import {  Row, Col } from 'reactstrap';
 import { Table } from 'reactstrap';
 import imagen from '../imagen/encabezado.JPG'
 import titulo1 from  '../imagen/titulo1.png'
-import { MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
+import { MDBTable, MDBTableBody, MDBTableHead, MDBIcon} from 'mdbreact';
 import {API} from '../Graphql/Graphql'
 
 class Cotizaciones extends Component{
@@ -30,9 +30,9 @@ class Cotizaciones extends Component{
             correo2:"", 
             telefono1:"" ,
             telefono2:"",
-            telefono3:"", 
-            telefono4:"" , 
-            telefono5:"",
+            // telefono3:"", 
+            // telefono4:"" , 
+            // telefono5:"",
             Servicio:"",
             precio:"",  
             iva:"",           
@@ -45,13 +45,21 @@ class Cotizaciones extends Component{
             pdfview:false,
             botonPdfExport:false
         }
-        this.regresar = this.regresar.bind(this) 
+        // this.regresar = this.regresar.bind(this) 
+        this.cancelar = this.cancelar.bind(this)
     }
 
-    regresar(){
-        this.props.history.push("/dahboardAlfa")
-    }    
-
+    // regresar(){
+    //     this.props.history.push("/dahboardAlfa")
+    // }  
+    
+    cancelar(){
+        // window.location.reload();
+         setTimeout(() => {
+      window.location.reload();
+    }); 
+    } 
+    
     onChangeInput =(e)=>{
         const {id,value} = e.target;
         this.setState({
@@ -62,7 +70,8 @@ class Cotizaciones extends Component{
     onSubmitBtn = (e)=>{      
         this.setState({botonPdfExport:true})  
         // const API='http://localhost:4000/graphql' 
-        var id_adminAlfa = localStorage.getItem("id")  
+        var id_adminAlfa = localStorage.getItem("id_admin")  
+        console.log("id_admin",id_adminAlfa)
 
         let rs = this.state.razonSocial.toUpperCase().replace(/,/g, "");
         let nombre  = this.state.nombre.toUpperCase();
@@ -71,9 +80,9 @@ class Cotizaciones extends Component{
         let correo2 = this.state.correo2;
         let tel1 = this.state.telefono1;
         let tel2 = this.state.telefono2;
-        let tel3 = this.state.telefono3;
-        let tel4 = this.state.telefono4;
-        let tel5 = this.state.telefono5;
+        // let tel3 = this.state.telefono3;
+        // let tel4 = this.state.telefono4;
+        // let tel5 = this.state.telefono5;
         let servicio  = this.state.Servicio.toUpperCase();
         let precio = this.state.precio;              
         let promocion = this.state.promocion.toUpperCase();
@@ -87,7 +96,7 @@ class Cotizaciones extends Component{
                 data:{
                     query:`
                     mutation{
-                    insertCotizaciones(data:"${[rs,nombre,apellidos,correo1,correo2,tel1,tel2,tel3,tel4,tel5,servicio,precio,iva,total,promocion,vendedor,id_adminAlfa]}"){
+                    insertCotizaciones(data:"${[rs,nombre,apellidos,correo1,correo2,tel1,tel2,servicio,precio,iva,total,promocion,vendedor,id_adminAlfa]}"){
                          message
                         } 
                     }
@@ -141,19 +150,29 @@ class Cotizaciones extends Component{
     
 
      render(){
-        var date= new Date()
-        var fecha = date.toLocaleString('es')      
+        // var date= new Date()
+        // var fecha = date.toLocaleString('es')      
         // console.log("fecha",fecha)   
+        var f = new Date();
+        // console.log("esto es fecha",f)
+        // let dataFecha= f.toLocaleString('es')
+        // console.log("esto es DATAFECHA",dataFecha)
+    // let dia= f.getDate()
+    // let mes=f.getMonth()
+    // let año= f.getFullYear()
+   let fecha=f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
+    // console.log("esta es la fecha ",f.getDate() + "/" + (f.getMonth() +1 ) + "/" + f.getFullYear())
         let iva = 16;
         let total
         let tasaIva
         let totalFloat;
       if(this.state.precio){
-        console.log("estado de precio",this.state.precio)
+        // console.log("estado de precio",this.state.precio)
         tasaIva=((this.state.precio*iva)/100).toFixed(2)
-        console.log("calculando IVA",tasaIva)
-        total= (parseInt(this.state.precio) + parseFloat(tasaIva))
-        totalFloat = parseFloat(total.toFixed(2))
+        // console.log("calculando IVA",tasaIva)        
+        total= (parseInt(this.state.precio) + parseFloat(tasaIva)).toFixed(2)        
+        totalFloat=total
+        // console.log("esto es totalFloat",totalFloat)
       }
 
     let form;
@@ -164,7 +183,19 @@ class Cotizaciones extends Component{
           <MDBAlert color="primary"  className="h5 text-center mb-4" > <strong>Datos del cliente</strong> </MDBAlert>
                       <MDBCardBody>
                       <Form onSubmit={this.onSubmitBtn}> 
-                <MDBRow >
+                      {/* <MDBRow> */}
+                      <MDBCol md="3" className="mb-3"></MDBCol>
+                      <MDBCol md="3" className="mb-3"></MDBCol>                      
+                      <MDBCol>
+                <input  type="text" id="rfc" value={this.state.rfc} name="rfc"  onChange={this.onChangeInput}   placeholder="RFC de la Empresa" />
+                    <MDBBtn gradient="aqua" rounded size="sm" type="submit"  >                        
+                      <MDBIcon icon="search" />
+                    </MDBBtn>  
+                    <br></br><br></br>
+          {/* <MDBCol> <h6>Razón Social:{localStorage.getItem("razonSocial")}</h6></MDBCol> */}
+                </MDBCol>
+                      {/* </MDBRow>  */}
+                <MDBRow >   
               <MDBCol md="3" className="mb-3"> 
                         <label htmlFor="defaultFormLoginPasswordEx" ><strong> Razón social:</strong> </label>
                         <input   
@@ -307,9 +338,9 @@ class Cotizaciones extends Component{
                   <label htmlFor="defaultFormLoginPasswordEx" >
                   <strong> Vendedor : &nbsp;</strong>
                   </label>
-                  {/* <label>{localStorage.getItem("nombre").toUpperCase() + " "  + localStorage.getItem("apellido").toUpperCase()}</label> */}
-                  <label>"lizbeth cuevas"
-                  </label>
+                  <label>{localStorage.getItem("nombre").toUpperCase() + " "  + localStorage.getItem("apellido").toUpperCase()}</label>
+                  {/* <label>"lizbeth cuevas"
+                  </label> */}
   
                       </MDBCol>
                     </MDBRow>
@@ -322,7 +353,7 @@ class Cotizaciones extends Component{
                                 <MDBBtn   color="info"  onClick = {e=> this.pdfView()}> Generar Cotización</MDBBtn>
                         </MDBCol>
                         <MDBCol md="3" className="mb-3"> 
-                                <MDBBtn  color="secondary"   onClick={this.regresar} type="submit">Cancelar</MDBBtn>
+                                <MDBBtn  color="secondary"   onClick={this.cancelar} type="submit">Cancelar</MDBBtn>
                         </MDBCol>
                 
                     </MDBRow>
@@ -376,23 +407,23 @@ class Cotizaciones extends Component{
                    <tbody>
                    <tr>
                        <td style={{padding:"5px"}} colspan="2">{this.state.Servicio}</td>
-                       <td style={{padding:"5px"}} colspan="2" align="center">$ {this.state.precio}</td>
+                       <td style={{padding:"5px"}} colspan="2" align="center">$&nbsp;{this.state.precio}</td>
                        </tr>  
                        <tr>
                        <td style={{padding:"5px"}} ROWSPAN="2"></td>
                        <td style={{padding:"5px"}} align="center">IVA:</td>
-                       <td style={{padding:"5px"}} align="center">$ {tasaIva}</td>                       
+                       <td style={{padding:"5px"}} align="center">$&nbsp;{tasaIva}</td>                       
                        </tr>
 
                        <tr>         
                        <td style={{padding:"5px"}} align="center">TOTAL</td>
-                       <td style={{padding:"5px"}} align="center">$ {total}</td>          
+                       <td style={{padding:"5px"}} align="center">$&nbsp;{total}</td>          
                        </tr>
                    </tbody>
             </Table>        
              
 
-   <p style={{color:"red"}} htmlFor="defaultFormLoginPasswordEx"><strong>Promoción &nbsp;{this.state.promocion}</strong></p>
+   <p style={{color:"red"}} htmlFor="defaultFormLoginPasswordEx"><strong>Promoción &nbsp;{this.state.promocion.toLowerCase()}</strong></p>
     
               
               <Table bordered>
@@ -457,11 +488,11 @@ class Cotizaciones extends Component{
          <fort> 
               
              <p className="text-center mb-4" >               
-               {/* {localStorage.getItem("nombre").toUpperCase() + " "  + localStorage.getItem("apellido").toUpperCase()} */}
-                 esto es nombre y Apellidos
+               {localStorage.getItem("nombre") + " "  + localStorage.getItem("apellido")}
+                 {/* esto es nombre y Apellidos */}
                <br></br>              
-               {/* {localStorage.getItem("correo")} */}
-               Esto es el correo
+               {localStorage.getItem("correo")}
+               {/* Esto es el correo */}
                <br></br>
                <br></br>
                <strong> ALFA DISEÑO DE SISTEMAS, S.A. DE C.V.</strong>
@@ -492,62 +523,63 @@ class Cotizaciones extends Component{
        
        <Container  style={{width:550,height:2000}}> 
 
-<Paper >            
+       <Paper >            
             <img src={imagen } alt="titulo1" style={{width:500,height:55}}/>  
                     
-                <p style={{fontFamily:'arial', fontSize:'10px', marginTop:-9}}>               
-                  Razón Social:&nbsp;{this.state.razonSocial} 
+                <p style={{fontFamily:'arial', fontSize:'10px', marginTop:-9 }}>               
+                <strong> {this.state.razonSocial.toUpperCase()} </strong> 
                   <br></br>
-                  Nombre:&nbsp;{this.state.nombre}&nbsp;{this.state.apellidos}
+                 {this.state.nombre.toUpperCase()}&nbsp;{this.state.apellidos.toUpperCase()}
                   <br></br>
-                  correo:&nbsp;{this.state.correo1}
+                  {this.state.correo1}
                   <br></br>
-                  teléfono:&nbsp;{this.state.telefono1}
+                  {this.state.telefono1}
                   <br></br>
                   Buen día, me permito presentar nuestra propuesta referente a los producto (s) y servicio (s) de su interés. 
                  </p>
+                 
                        
             
 
-<div style= {{ marginTop:-10}}>    
+<div style= {{ marginTop:-2}}>    
 <MDBTable bordered  >
       <MDBTableHead color="light-blue accent-1"  align="center" >
         <tr>
-          <th style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}}  colspan="3" >PRODUCTO O SERVICIO</th>
-          <th style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} >PRECIO MAS IVA</th>
+          <th style={{padding:"3px"}}  colspan="3" ><p  style={{fontFamily:'arial', fontSize:'7px'}}>PRODUCTO O SERVICIO</p></th>
+          <th style={{padding:"3px"}} ><p  style={{fontFamily:'arial', fontSize:'7px'}}>PRECIO MAS IVA</p></th>
         </tr>
       </MDBTableHead>
       <MDBTableBody>
         <tr>
-          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} colspan="3" >  {this.state.Servicio}</td>
-          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">{this.state.precio}</td>         
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} colspan="3" >{this.state.Servicio}</td>
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{this.state.precio}</td>         
         </tr>
         <tr>
           <td ROWSPAN="2" colspan="2"></td>
           <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center">IVA:</td>
-          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">${tasaIva}</td>         
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{tasaIva}</td>         
         </tr>
         <tr>
-          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center">TOTAL:</td>
-          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">${total}</td>
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center">Total:</td>
+          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{total}</td>
         </tr>
       </MDBTableBody>
     </MDBTable>     
     </div>
 
-<p style={{color:"red",fontFamily:'arial', fontSize:'10px',marginTop:-10}} >Promoción &nbsp; {this.state.promocion}</p>          
-<div style= {{marginTop:-10}}>
+<p style={{color:"red",fontFamily:'arial', fontSize:'10px',marginTop:-10}} >Promoción {this.state.promocion.toLowerCase()}</p>          
+<div style= {{marginTop:-2}}>
 <MDBTable bordered>
       <MDBTableHead color="light-blue accent-1"  align="center">
         <tr>
-          <th style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center" colspan="3">PÓLIZA DE SOPORTE TECNICO REMOTO BASICAS ** LA POLIZA ES POR SISTEMA **</th>
+          <th style={{padding:"3px"}} align="center" colspan="3"><p  style={{fontFamily:'arial', fontSize:'7px'}}>PÓLIZA DE SOPORTE TECNICO REMOTO BASICAS ** LA POLIZA ES POR SISTEMA **</p></th>
         </tr>
       </MDBTableHead>
       <MDBTableBody>
         <tr>
-          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">SERVICIO</td>
-          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">PRECIO ESPECIAL</td>
-          <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">PRECIO NORMAL</td>         
+          <td style={{padding:"4px"}} align="center"><p style={{fontFamily:'arial', fontSize:'7px'}}>SERVICIO</p></td>
+          <td style={{padding:"4px"}} align="center"><p style={{fontFamily:'arial', fontSize:'7px'}}>PRECIO ESPECIAL</p></td>
+          <td style={{padding:"4px"}} align="center"><p style={{fontFamily:'arial', fontSize:'7px'}}>PRECIO NORMAL</p></td>         
         </tr>
         <tr>
           <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">Póliza semestral - Por sistema</td>
@@ -560,29 +592,34 @@ class Cotizaciones extends Component{
           <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$ 8,000.00</td>          
         </tr>
         <tr>
-          <td  style={{padding:"3px" ,fontFamily:'arial', fontSize:'10px'}}colspan="2" align="center"></td>
-          <td style={{padding:"3px" ,fontFamily:'arial', fontSize:'10px',color:"red"}} align="center">PRECIO MAS IVA</td>                
+          <td  style={{padding:"3px" }}colspan="2" align="center"></td>
+          <td style={{padding:"3px" ,color:"red"}} align="center"><p style={{fontFamily:'arial', fontSize:'7px'}}>PRECIO MAS IVA</p></td>                
         </tr>
       </MDBTableBody>
     </MDBTable>
     </div> 
     
              
-<div style={{fontFamily:'arial', fontSize:'10px',marginTop:-10}}>
-        Nota: El costo no incluye Interfaz, Formatos, Carga de Catálogos o alguna implementación adicional a la mencionada en su cotización.
-        <br></br>
-                 <strong > No se aceptan devoluciones</strong> 
-                 <br></br>
-              <fort style={{color:"#3371FF", fontFamily:'arial', fontSize:'10px'}}> <strong>Condiciones Comerciales y Formas de Pago</strong></fort>
+<div style={{marginTop:-12}}>
+ <p style={{fontFamily:'arial', fontSize:'10px'}}>  Nota: El costo no incluye Interfaz, Formatos, Carga de Catálogos o alguna implementación adicional a la mencionada en su cotización.</p>   
+        
+                 <p style={{fontFamily:'arial', fontSize:'10px'}}>No se aceptan devoluciones</p> 
+                
+              <fort style={{color:"#3371FF", fontFamily:'arial', fontSize:'10px'}}>Condiciones Comerciales y Formas de Pago</fort>
  {/* <div style={{fontFamily:'arial', fontSize:'9px',marginTop:-15}}> */}
-        <ul >
-            <li>Todos los costos anteriormente presentados son más IVA.</li>
-            <li>Precios representados en M.N.</li>
-            <li>Pago por anticipado</li>
-            <li>Pago por depósito bancario o transferencia electrónica.</li>	
-        </ul>
-       
-            <p align="left" marginLeft="20%" style={{fontFamily:'arial', fontSize:'10px',marginTop:-10}}>
+ {/* <p  style={{ fontFamily:'arial', fontSize:'5px'}}>  */}
+
+      <p style={{ fontFamily:'arial',  fontSize:'10px'}}>
+        * Todos los costos anteriormente presentados son más IVA.
+        <br></br>
+        * Precios representados en M.N.
+        <br></br>
+        * Pago por anticipado.
+        <br></br>
+        * Pago por depósito bancario o transferencia electrónica.
+        </p>   
+              <ul>
+              <p align="left" marginLeft="20%" style={{fontFamily:'arial', fontSize:'10px',marginTop:-5}}>
                 - Cuenta: 50020978434 
             <br></br>
             - Clabe: 036180500209784346
@@ -593,28 +630,27 @@ class Cotizaciones extends Component{
             <br></br>
             - RFC: ADS020524CH1
             </p>
+              </ul>                    
+       
+
+       
+       
+            
      
     <p style={{fontFamily:'arial', fontSize:'10px',marginTop:-10}}>Sin más por el momento y agradeciéndole por su amable atención,
        Quedo a sus órdenes para cualquier duda al respecto.</p>
             {/* </div > */}
            <div  className="text-center mb-4" style={{fontFamily:'arial', fontSize:'10px',marginTop:-10}}>
           
-                {/* <strong >{localStorage.getItem("nombre").toUpperCase() + " " + localStorage.getItem("apellido").toUpperCase()}</strong>      
-                           */}
-
-                           esto es nombre  y apellidos 
-                <br></br>
+                <strong >{localStorage.getItem("nombre") + " " + localStorage.getItem("apellido")}</strong> 
                 <p>{localStorage.getItem("correo")}</p>   
                 <strong style={{color:"#3371FF"}}> ALFA DISEÑO DE SISTEMAS, S.A. DE C.V.</strong>
-                <br></br>
-                <u style={{color:"#3371FF"}}>www.ads.com.mx </u> 
+               <br></br>
+                <fort style={{color:"#3371FF", fontSize:'10px', fontFamily:'arial' }}>www.ads.com.mx </fort> 
          </div >  
          <p className="text-center mb-4" style={{fontFamily:'arial', fontSize:'10px', marginTop:-10}}>Av. Chapultepec N° 473, Piso 3 Col. Juárez, Del. Cuauhtémoc C.P. 06600 Ciudad de México Información, soporte y ventas: Conmutador con 6 líneas   1209 0740 -  5553 2049</p> 
           <br></br>
-{/* <div class="contenedor" >
-<img src={titulo3}   style={{width:530,height:100 , marginTop:-25}} />
-<div class="encima"><p style={{fontFamily:'arial', fontSize:'10px', marginTop:-25}}> Av. Chapultepec N° 473, Piso 3 Col. Juárez, Del. Cuauhtémoc C.P. 06600 Ciudad de México Información, soporte y ventas: Conmutador con 6 líneas   1209 0740 -  5553 2049</p></div>
-</div>    */}
+
 
 </div>    
 
@@ -626,11 +662,9 @@ class Cotizaciones extends Component{
         </div>
                 }
          return(
-        <React.Fragment>
-        
-        {form} 
-        {pdf}
-
+        <React.Fragment>        
+            {form} 
+            {pdf}
          </React.Fragment>
         )
     }
