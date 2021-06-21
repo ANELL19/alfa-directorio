@@ -40,12 +40,10 @@ class signupAdminAlfa extends Component {
       fk_empresa:[]
      
     };
-    this.regresar = this.regresar.bind(this);
+  
   }
 
-  regresar() {
-    this.props.history.push("/Dashboard");
-  }
+
 
   onChangeInput = (e) => {
     console.log("eventoonChange", e);
@@ -66,16 +64,10 @@ class signupAdminAlfa extends Component {
 
   onSubmitBtn = (e) => {
     e.preventDefault();
-    let nombre = this.state.nombre;
-    let apellido = this.state.apellido;
+    let nombre = this.state.nombre.toUpperCase();
+    let apellido = this.state.apellido.toUpperCase();
     let correo = this.state.correo;
     let contrasena = this.state.contrasena;
-    // let id_empresa = this.setState.getItem("id_empresa")
-    // let empresa= id_empresa
-    console.log("esto  empresa",this.state.fk_empresa)
-   
-
-    
 
        axios({
       url: API,
@@ -91,8 +83,7 @@ class signupAdminAlfa extends Component {
                 `
       }
     })
-      .then((response) => {
-        //  if(response.data.data.signup.message==="registro exitoso"){
+      .then((response) => {     
         DialogUtility.alert({
           title: "Registro exitoso"
         });
@@ -102,35 +93,10 @@ class signupAdminAlfa extends Component {
         console.log("error", err.response);
       });    
   };
-  // viewSearch(){
-  //   if(this.state.rfc){
-  //     this.setState({viewForm:true})
+  
 
-
-  //   }
-  //   DialogUtility.alert({
-  //     title:'AVISO !' ,
-  //     content: "Estimado usuario, por favor ingrese su RFC",
-  // });  
-  // }
-  // search(){
-  //   this.setState({viewSearch:true});
-  //   this.setState({viewForm:false});
-  // }
-
-  // renderForm(){
-  //   this.setState({viewSearch:false});
-  //   this.setState({viewForm:true});
-  // }
-
-
-  consultarDatos(){
-    // console.log("rfc",rfc)
+  consultarDatos(){    
     let rfc=this.state.rfc
-    console.log("rfc",rfc)
-    // let empresa=[]
-
-    
     axios({
       url:API,
       method:'post',
@@ -156,64 +122,50 @@ class signupAdminAlfa extends Component {
         localStorage.setItem("rfc",response.data.data.getEmpresas[0].rfc)
         localStorage.setItem("razonSocial",response.data.data.getEmpresas[0].razonSocial)
         localStorage.setItem("correo",response.data.data.getEmpresas[0].correo)
-        localStorage.setItem("telefono",response.data.data.getEmpresas[0].telefono)
-          
-        console.log("la razon social",localStorage.getItem("razonSocial"))
-        // empresa.push( localStorage.getItem("id_empresa"))
+        localStorage.setItem("telefono",response.data.data.getEmpresas[0].telefono)          
+        console.log("la razon social",localStorage.getItem("razonSocial"))       
         this.setState({fk_empresa:response.data.data.getEmpresas[0].id_empresa})
-      console.log()
+     
    
         if(response.data.data.getEmpresas[0]){
           this.setState({viewSearch:false})
           this.setState({viewForm:true})
-        }else{
+        }else if (response.data.data.getEmpresas[0] === null){
           DialogUtility.alert({
             title: 'Algo salio mal, por favor vuelva a intentarlo',
-            // position: "fixed",                       
-        });                
+                                   
+        });              
 
-        }
-      
+        }      
 
        })
        .catch(err=>{
            console.log('error',err)
-       })
+       })   
+  }
 
-    
-
+  regresar() {
+    this.setState({viewSearch:true})
+    this.setState({viewForm:false})
   }
   render() {
     let formulario;
     let search;
     let razonSocial=localStorage.getItem("razonSocial")
  if(this.state.viewSearch===true){
-  search= <div>
-  {/* <MDBFormInline className="md-form mr-auto mb-4"> */}
-                   <input  type="text" id="rfc" value={this.state.rfc} name="rfc"  onChange={this.onChangeInput}   placeholder="RFC de la Empresa" />
-                    <MDBBtn gradient="aqua" rounded size="sm" onClick={e=> this.consultarDatos()}  >                        
-                      <MDBIcon icon="search" />
-                    </MDBBtn>  
-                    <br></br> 
-        
-                   
-                  {/* </MDBFormInline> */}
-            
- </div>
+  search= <div>  
+            <input  type="text" id="rfc" value={this.state.rfc} name="rfc"  onChange={this.onChangeInput}   placeholder="RFC de la Empresa" />
+            <MDBBtn gradient="aqua" rounded size="sm" onClick={e=> this.consultarDatos()}  >                        
+              <MDBIcon icon="search" />
+            </MDBBtn>  
+            <br></br> 
+          </div>
   }
     
   if(this.state.viewForm===true){
-    formulario= <div >         
+    formulario= <div marginTop="5%">         
                  
-      <Row>
-        {/* <div>
-      <input  type="text" id="rfc" value={this.state.rfc} name="rfc"  onChange={this.onChangeInput}   placeholder="RFC de la Empresa" />
-                    <MDBBtn gradient="aqua" rounded size="sm" onClick={e=> this.consultarDatos()}  >                        
-                      <MDBIcon icon="search" />
-                    </MDBBtn>  
-                    <br></br>
-                   </div> */}
-      {/* <MDBCol  md="6"></MDBCol> */}
+      <Row>        
       <MDBCol md="6"> <h6>Razón Social:</h6></MDBCol>
       <Label>{localStorage.getItem("razonSocial")}</Label>
           <MDBCol md="6">
@@ -274,7 +226,7 @@ class signupAdminAlfa extends Component {
           </MDBBtn>
           <MDBBtn
             color="danger"
-            onClick={this.regresar}
+            onClick={e=>this.regresar()}
             type="submit"
           >
             Cancelar

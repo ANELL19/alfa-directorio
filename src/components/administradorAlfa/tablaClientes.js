@@ -137,9 +137,6 @@ class Tablas extends Component{
       } 
         return(
             <React.Fragment>
-                         
-             
-
      <div  style={{width:"100%",marginTop:"2%",marginBottom:"2%"}} >               
         <MUIDataTable  
           title={"tabla clientes"} 

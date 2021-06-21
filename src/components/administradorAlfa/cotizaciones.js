@@ -43,7 +43,10 @@ class Cotizaciones extends Component{
             fk_adminAlfa:"",
             form :true,
             pdfview:false,
-            botonPdfExport:false
+            botonPdfExport:false,
+            rfc:"",
+            Datos:[]
+            
         }
         // this.regresar = this.regresar.bind(this) 
         this.cancelar = this.cancelar.bind(this)
@@ -73,13 +76,13 @@ class Cotizaciones extends Component{
         var id_adminAlfa = localStorage.getItem("id_admin")  
         console.log("id_admin",id_adminAlfa)
 
-        let rs = this.state.razonSocial.toUpperCase().replace(/,/g, "");
-        let nombre  = this.state.nombre.toUpperCase();
-        let apellidos = this.state.apellidos.toUpperCase();
-        let correo1 =  this.state.correo1;
-        let correo2 = this.state.correo2;
-        let tel1 = this.state.telefono1;
-        let tel2 = this.state.telefono2;
+        let rs = this.state.Datos.empresa.replace(/,/g, "");
+        let nombre  = this.state.Datos.nombre;
+        let apellidos = this.state.Datos.apellido;
+        let correo1 =  this.state.Datos.correo1;
+        let correo2 = this.state.Datos.correo2;
+        let tel1 = this.state.Datos.telefono1;
+        let tel2 = this.state.Datos.telefono2;
         // let tel3 = this.state.telefono3;
         // let tel4 = this.state.telefono4;
         // let tel5 = this.state.telefono5;
@@ -123,45 +126,109 @@ class Cotizaciones extends Component{
                 })
     }
 
+    // pdfView ( ){
+    //     let rs = this.state.razonSocial.toUpperCase();
+    //     let nombre  = this.state.nombre.toUpperCase();
+    //     let apellidos = this.state.apellidos.toUpperCase();
+    //     let correo1 =  this.state.correo1;
+    //     let tel1 = this.state.telefono1;
+    //     let servicio  = this.state.Servicio.toUpperCase();
+    //     let precio = this.state.precio;
+    //     let promocion = this.state.promocion.toUpperCase();
+    //     // if(rs && nombre && apellidos && correo1 && tel1 && servicio && precio && promocion){
+    //     if( servicio && precio && promocion){
+    //         this.setState({form:false})
+    //         this.setState({pdfview:true})
+    //     }else {
+    //         DialogUtility.alert({
+    //             title:'AVISO !' ,
+    //             content: "Estimado usuario, por favor complete todos los campos obligatorios",
+    //         });          
+    //     }
+    // }
+
     pdfView ( ){
-        let rs = this.state.razonSocial.toUpperCase();
-        let nombre  = this.state.nombre.toUpperCase();
-        let apellidos = this.state.apellidos.toUpperCase();
-        let correo1 =  this.state.correo1;
-        let tel1 = this.state.telefono1;
-        let servicio  = this.state.Servicio.toUpperCase();
-        let precio = this.state.precio;
-        let promocion = this.state.promocion.toUpperCase();
-        if(rs && nombre && apellidos && correo1 && tel1 && servicio && precio && promocion){
-            this.setState({form:false})
-            this.setState({pdfview:true})
-        }else {
-            DialogUtility.alert({
-                title:'AVISO !' ,
-                content: "Estimado usuario, por favor complete todos los campos obligatorios",
-            });          
-        }
-    }
+      let rs = this.state.Datos.empresa;
+      let nombre  = this.state.Datos.nombre;
+      let apellidos = this.state.Datos.apellido;
+      let correo1 = this.state.Datos.correo1;
+      let correo2 = this.state.Datos.correo2;
+      let tel1 = this.state.telefono1;
+      let servicio  = this.state.Servicio.toUpperCase();
+      let precio = this.state.precio;
+      let promocion = this.state.promocion.toUpperCase();
+      if(  servicio && precio && promocion){     
+          this.setState({form:false})
+          this.setState({pdfview:true})
+      }else {
+          DialogUtility.alert({
+              title:'AVISO !' ,
+              content: "Estimado usuario, por favor complete todos los campos obligatorios",
+          });          
+      }
+  }
     
     
-    cerrarCotizacion() {
-        window.location.reload()
+  cerrarCotizacion() {
+    this.setState({form:true})
+    this.setState({pdfview:false})
+}
+    consultarDatos(){
+      let rfc=this.state.rfc
+      axios({
+        url:API,
+        method:'post',
+        data:{
+            query:`
+            query{
+              getClienteRFC(data:"${[rfc]}"){
+                id_cliente
+                empresa
+                rfc
+                nombre
+                apellido
+                correo1
+                correo2
+                telefono1
+                telefono2   
+                message
+                                 
+               } 
+            }
+            `
+        }   
+    
+         }).then(response=>{
+         console.log( 'este es el response',response)      
+          // localStorage.setItem("nombre_empresa",response.data.data.getClienteRFC[0].empresa)
+          // localStorage.setItem("nombre_cliente",response.data.data.getClienteRFC[0].nombre)
+          // localStorage.setItem("apellido_cliente",response.data.data.getClienteRFC[0].apellido)
+          // localStorage.setItem("correo1_cliente",response.data.data.getClienteRFC[0].correo1)
+          // localStorage.setItem("correo2_cliente",response.data.data.getClienteRFC[0].correo2) 
+          // localStorage.setItem("telefono1",response.data.data.getClienteRFC[0].telefono1)  
+          // localStorage.setItem("telefono2",response.data.data.getClienteRFC[0].telefono2)          
+               
+          this.setState({ Datos:response.data.data.getClienteRFC[0]})
+          console.log("esto es Data",this.state.Datos)
+       
+     
+               
+  
+         })
+         .catch(err=>{
+             console.log('error',err)
+         })   
+
     }
     
 
      render(){
-        // var date= new Date()
-        // var fecha = date.toLocaleString('es')      
-        // console.log("fecha",fecha)   
-        var f = new Date();
-        // console.log("esto es fecha",f)
-        // let dataFecha= f.toLocaleString('es')
-        // console.log("esto es DATAFECHA",dataFecha)
-    // let dia= f.getDate()
-    // let mes=f.getMonth()
-    // let año= f.getFullYear()
+      let searchRFC;
+      let form;
+      
+        var f = new Date();     
    let fecha=f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
-    // console.log("esta es la fecha ",f.getDate() + "/" + (f.getMonth() +1 ) + "/" + f.getFullYear())
+   
         let iva = 16;
         let total
         let tasaIva
@@ -175,26 +242,53 @@ class Cotizaciones extends Component{
         // console.log("esto es totalFloat",totalFloat)
       }
 
-    let form;
+      
+
+      searchRFC= <div>
+          <MDBCol md="3" className="mb-3"></MDBCol>
+                      <MDBCol md="3" className="mb-3"></MDBCol>                      
+                      <MDBCol>
+                <input  type="text" id="rfc" value={this.state.rfc} name="rfc"  onChange={this.onChangeInput}   placeholder="RFC de la Empresa" />
+                    <MDBBtn gradient="aqua" rounded size="sm" type="submit"  onClick={e=> this.consultarDatos()}  >                        
+                      <MDBIcon icon="search" />
+                    </MDBBtn>  
+                    <br></br><br></br>        
+                </MDBCol>
+      </div>
+
+
+    
    if (this.state.form == true) {
+    // console.log("esto es Datos de estado",this.state.Datos)
+
+    console.log("esto es data de Datos:",this.state.Datos.empresa)
+    
     form = <div style={{marginTop:"2%"}}>
     <center>    
     <MDBCard narrow style={{width:"80%",heigth:"60%"}}>                          
           <MDBAlert color="primary"  className="h5 text-center mb-4" > <strong>Datos del cliente</strong> </MDBAlert>
                       <MDBCardBody>
+                      <MDBCol md="3" className="mb-3"></MDBCol>
+                      <MDBCol md="3" className="mb-3"></MDBCol>                      
+                      <MDBCol> {searchRFC} </MDBCol>
                       <Form onSubmit={this.onSubmitBtn}> 
                       {/* <MDBRow> */}
-                      <MDBCol md="3" className="mb-3"></MDBCol>
+                      {/* <MDBCol md="3" className="mb-3"></MDBCol>
                       <MDBCol md="3" className="mb-3"></MDBCol>                      
                       <MDBCol>
                 <input  type="text" id="rfc" value={this.state.rfc} name="rfc"  onChange={this.onChangeInput}   placeholder="RFC de la Empresa" />
-                    <MDBBtn gradient="aqua" rounded size="sm" type="submit"  >                        
+                    <MDBBtn gradient="aqua" rounded size="sm" type="submit"  onClick={e=> this.consultarDatos()}  >                        
                       <MDBIcon icon="search" />
                     </MDBBtn>  
-                    <br></br><br></br>
-          {/* <MDBCol> <h6>Razón Social:{localStorage.getItem("razonSocial")}</h6></MDBCol> */}
-                </MDBCol>
+                    <br></br><br></br>        
+                </MDBCol> */}
                       {/* </MDBRow>  */}
+
+                      {/* <Grid item xs={4}>
+                          <Field fullWidth required name="razonSocial" component={TextField} type="text"
+                             defaultValue={this.state.Datos.empresa} label  = "Correo"
+                          />
+                        </Grid> */}
                 <MDBRow >   
               <MDBCol md="3" className="mb-3"> 
                         <label htmlFor="defaultFormLoginPasswordEx" ><strong> Razón social:</strong> </label>
@@ -204,7 +298,8 @@ class Cotizaciones extends Component{
                             type="text"
                             name="razonSocial"			
                             onChange={this.onChangeInput}
-                            value={this.state.pass} 
+                            // value={this.state.pass} 
+                            defaultValue={this.state.Datos.empresa}
                             required
                             className="form-control"
                             />                                    
@@ -216,7 +311,8 @@ class Cotizaciones extends Component{
                             type="text"
                             name="nombres"
                             onChange={this.onChangeInput}
-                            value={this.state.pass}
+                            // value={this.state.pass}
+                            defaultValue={this.state.Datos.nombre}
                             required
                             className="form-control"/>
              </MDBCol>
@@ -227,7 +323,8 @@ class Cotizaciones extends Component{
                             type="text"
                             name="apellidos"
                             onChange={this.onChangeInput}
-                            value={this.state.pass}
+                            // value={this.state.pass}
+                            defaultValue={this.state.Datos.apellido}
                             required
                             className="form-control"/>
              </MDBCol>
@@ -240,7 +337,8 @@ class Cotizaciones extends Component{
                         // type="email"
                         name="correo1"
                         onChange={this.onChangeInput}
-                        value={this.state.pass}
+                        // value={this.state.pass}
+                        defaultValue={this.state.Datos.correo1}
                         required
                         className="form-control"/>
              </MDBCol>
@@ -252,7 +350,8 @@ class Cotizaciones extends Component{
                       type="email"
                       name="correo2"
                       onChange={this.onChangeInput}
-                      value={this.state.pass}                     
+                      // value={this.state.pass}
+                      defaultValue={this.state.Datos.correo2}                     
                       className="form-control" />
              </MDBCol>
 
@@ -265,7 +364,7 @@ class Cotizaciones extends Component{
                   type="number"
                   name="telefono1"
                   onChange={this.onChangeInput}
-                  value={this.state.pass}	
+                  defaultValue={this.state.Datos.telefono1} 
                   required
                   className="form-control"/>
              </MDBCol>
@@ -387,10 +486,10 @@ class Cotizaciones extends Component{
             <div style={{ marginBottom:"2%"}}>
             <Row  xs="2">               
                 <Col>
-                     <p><strong>Razón social:</strong>&nbsp;{this.state.razonSocial} </p>                     
-                     <p ><strong>Nombre(s):</strong>&nbsp;{this.state.nombre}&nbsp;{this.state.apellidos}</p>                    
-                     <p><strong>Correo:</strong>&nbsp;{this.state.correo1}</p>                     
-                     <p><strong>Télefono:</strong>&nbsp;{this.state.telefono1}</p>                     
+                     <p><strong>Razón social:</strong>&nbsp;{this.state.Datos.empresa} </p>                     
+                     <p ><strong>Nombre(s):</strong>&nbsp;{this.state.Datos.nombre}&nbsp;{this.state.Datos.apellido}</p>                    
+                     <p><strong>Correo:</strong>&nbsp;{this.state.Datos.correo1}</p>                     
+                     <p><strong>Télefono:</strong>&nbsp;{this.state.Datos.telefono1}</p>                     
                 </Col>   
                 <Col >
                      <p><strong>Fecha:</strong>&nbsp;{fecha}</p>
@@ -517,7 +616,7 @@ class Cotizaciones extends Component{
                 paperSize="letter"
                 margin="0.5cm"
                 forcePageBreak=".page-break"
-                fileName={`${"Cotización"} ${this.state.razonSocial} PDF ${new Date().getFullYear()}`}
+                fileName={`${"Cotización"} ${this.state.Datos.empresa} PDF ${new Date().getFullYear()}`}
                 ref={(component) => this.pdfExportComponent = component}
                 >
        
@@ -527,13 +626,13 @@ class Cotizaciones extends Component{
             <img src={imagen } alt="titulo1" style={{width:500,height:55}}/>  
                     
                 <p style={{fontFamily:'arial', fontSize:'10px', marginTop:-9 }}>               
-                <strong> {this.state.razonSocial.toUpperCase()} </strong> 
+                <strong> {this.state.Datos.empresa} </strong> 
                   <br></br>
-                 {this.state.nombre.toUpperCase()}&nbsp;{this.state.apellidos.toUpperCase()}
+                 {this.state.Datos.nombre}&nbsp;{this.state.Datos.apellido}
                   <br></br>
-                  {this.state.correo1}
+                  {this.state.Datos.correo1}
                   <br></br>
-                  {this.state.telefono1}
+                  {this.state.Datos.telefono1}
                   <br></br>
                   Buen día, me permito presentar nuestra propuesta referente a los producto (s) y servicio (s) de su interés. 
                  </p>
@@ -665,6 +764,7 @@ class Cotizaciones extends Component{
         <React.Fragment>        
             {form} 
             {pdf}
+           
          </React.Fragment>
         )
     }

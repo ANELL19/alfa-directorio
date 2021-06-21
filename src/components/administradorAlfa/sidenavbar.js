@@ -165,17 +165,11 @@ class SiderDemo extends Component {
             </Menu.Item>            
             <Menu.Item key="4" onClick={e=>this.generarCotizaciones()} icon={<DollarOutlined style={{ fontSize: '25px', color: '#fff' }} /> }>
               Generar Cotizacion
-            </Menu.Item>
-            <Menu.Item key="6" icon={<CloudUploadOutlined style={{ fontSize: '25px', color: '#fff' }} /> }>
-              Registrar empresas
-            </Menu.Item>
-            <Menu.Item key="7" icon={<CloudUploadOutlined style={{ fontSize: '25px', color: '#fff' }} /> }>
-              Registrar Administrador
-            </Menu.Item>
-            <Menu.Item key="8" onClick={e=>this.consultarCotizaciones()} icon={<FileDoneOutlined  style={{ fontSize: '25px', color: '#fff' }} />}>
+            </Menu.Item>           
+            <Menu.Item key="5" onClick={e=>this.consultarCotizaciones()} icon={<FileDoneOutlined  style={{ fontSize: '25px', color: '#fff' }} />}>
               cotizaciones Realizadas
             </Menu.Item>
-            <Menu.Item key="9" onClick={this.cerrar} icon={<CloseOutlined  style={{ fontSize: '25px', color: '#fff' }} />}>
+            <Menu.Item key="6" onClick={this.cerrar} icon={<CloseOutlined  style={{ fontSize: '25px', color: '#fff' }} />}>
               cerrar sesión
             </Menu.Item>
           </Menu>

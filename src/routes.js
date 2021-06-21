@@ -29,6 +29,7 @@ import sidenavbar from './components/administradorAlfa/sidenavbar'
 
 
 import index from './components/depuracionBasa/index'
+import panel from './components/paneldeConection/panelPrueba'
 
 
 
@@ -50,6 +51,8 @@ render(){
       <main>
 
       {/* <PrivateRouteAdminAlfa exact path= "/dasboardAdmin" component= {dasboardAdmin}/> */}
+      <Route  exact path = "/panel" component={panel}/>
+
 
         <Route  exact path = "/" component={loginAdmin}/>
         <PrivateRouteAdminAlfa exact path = "/dashboardAlfa" component={dashboardAlfa}/>

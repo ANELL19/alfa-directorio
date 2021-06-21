@@ -1,9 +1,7 @@
 import React,{Component} from 'react'
 import MUIDataTable from "mui-datatables";
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import {MDBBtn, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter, 
-       MDBCard, MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText, MDBCol , MDBContainer,MDBRow,MDBTableBody,MDBTableHead,MDBTable} from 'mdbreact'
-import { Button,Table, ModalBody} from 'reactstrap';
+import {MDBBtn,MDBRow,MDBTableBody,MDBTableHead,MDBTable} from 'mdbreact'
+import {Table} from 'reactstrap';
 import {API} from '../Graphql/Graphql'
 import axios from 'axios'
 import {Row, Col } from 'reactstrap';
@@ -11,6 +9,8 @@ import imagen from '../imagen/encabezado.JPG'
 import titulo1 from  '../imagen/titulo1.png'
 import { Container, Paper } from '@material-ui/core';
 import { PDFExport } from '@progress/kendo-react-pdf';
+
+
 class TablaCotizaciones extends Component{
   pdfExportComponent
   constructor(props){
@@ -24,11 +24,14 @@ class TablaCotizaciones extends Component{
           tablaInicial:true,
           renderPDF:false,
           botonPdfExport:false
-
         }
-        this.cerrarCotizacion = this.cerrarCotizacion.bind(this)
-     
+            
     } 
+    toggle12 = () => {
+      this.setState({
+        modal12:!this.state.modal12
+      })
+    }
    
 
     componentWillMount(){ 
@@ -211,10 +214,6 @@ class TablaCotizaciones extends Component{
     </div>
 
 </div>
-
-
-
-
       }
 
       if(this.state.renderPDF ===true){
@@ -379,7 +378,7 @@ class TablaCotizaciones extends Component{
                   <img src={imagen } alt="titulo1" style={{width:500,height:55}}/>  
                           
                       <p style={{fontFamily:'arial', fontSize:'10px', marginTop:-9 }}>               
-                      <strong> {localStorage.getItem("razonSocial")} </strong> 
+                      {localStorage.getItem("razonSocial")}  
                         <br></br>
                         {localStorage.getItem("nombre_cliente")}&nbsp;{localStorage.getItem("apellidos_cliente")}
                         <br></br>
@@ -403,7 +402,7 @@ class TablaCotizaciones extends Component{
             </MDBTableHead>
             <MDBTableBody>
               <tr>
-                <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} colspan="3" >{"this.state.Servicio"}</td>
+                <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} colspan="3" >{localStorage.getItem("servicio")}</td>
                 <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{localStorage.getItem("precio")}</td>         
               </tr>
               <tr>
@@ -419,7 +418,7 @@ class TablaCotizaciones extends Component{
           </MDBTable>     
           </div>
       
-      <p style={{color:"red",fontFamily:'arial', fontSize:'10px',marginTop:-10}} >Promoción &nbsp;{localStorage.getItem("promocion")}</p>          
+      <p style={{color:"red",fontFamily:'arial', fontSize:'10px',marginTop:-10}} >Promoción &nbsp;{localStorage.getItem("promocion").toLowerCase()}</p>          
       <div style= {{marginTop:-2}}>
       <MDBTable bordered>
             <MDBTableHead color="light-blue accent-1"  align="center">
@@ -484,10 +483,6 @@ class TablaCotizaciones extends Component{
                   </p>
                     </ul>                    
              
-      
-             
-             
-                  
            
           <p style={{fontFamily:'arial', fontSize:'10px',marginTop:-10}}>Sin más por el momento y agradeciéndole por su amable atención,
              Quedo a sus órdenes para cualquier duda al respecto.</p>
@@ -514,14 +509,10 @@ class TablaCotizaciones extends Component{
               </div>
       
        }
-      
-     
-         
         return(
             <React.Fragment>            
               {tablaCotizaciones} 
-              {pdf}
-              {/* {renderPDF} */}
+              {pdf}              
         </React.Fragment>
         )
     }
