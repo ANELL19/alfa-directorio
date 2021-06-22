@@ -102,7 +102,7 @@ class Eventos extends Component{
       let carousel;
       let buton;
       console.log("estado" , this.state.arrayApi)      
-       const columns = ["IMAGEN","NOMBRE DEL EVENTO", "CUPO DE PARTICIPANTES", "FECHA INICIAl","FECHA FINAL","DESCRIPCIÓN","REGISTRARSE"];
+       const columns = ["Imagen","Nombre del Evento", "Cupo de Participantes", "Fecha de Inicio","Fecha Final","Descripción","Registrarse"];
         let data =  this.state.arrayApi.map(rows=>{         
           cards =  
           <td > <img src = {rows.logo.url}  style={{height:100, width: 200}}/></td>           
@@ -166,7 +166,7 @@ class Eventos extends Component{
         <React.Fragment>
           {/* <Navbar/> */}
              {/* <NavbarDashboard data={rs}/> */}
-           <div  style={{width:"90%",marginLeft:"5%",marginTop:"2%",marginBottom:"2%"}}>          
+           <div  style={{width:"90%",marginLeft:"5%",marginTop:"1%",marginBottom:"2%"}}>          
              <MuiThemeProvider  theme={this.getMuiTheme()}>  
                 <MUIDataTable  
                   title={"Tabla de Eventos de Eventbrite"} 

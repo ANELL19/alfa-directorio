@@ -190,7 +190,7 @@ class TablaCotizaciones extends Component{
         }
       } ;
 
-      const columnsCotizaciones = ["id","Nombre", "Apellidos","Razón Social","Fecha de Cotización","Correo","telefono","Total","Descargar"];
+      const columnsCotizaciones = ["Id","Nombre","Apellidos","Razón Social","Fecha de Cotización","Correo","telefono","Total","Descargar"];
       let boton;
       let dataCotizaciones;
       // if(this.state.detallesCotizaciones[0]){
@@ -204,7 +204,7 @@ class TablaCotizaciones extends Component{
        } )
     //  }
      tablaCotizaciones=<div>
-    <div  style={{width:"95%",marginLeft:"3%",marginTop:"2%",marginBottom:"2%"}} >               
+    <div  style={{width:"95%",marginLeft:"3%",marginTop:"1%",marginBottom:"2%"}} >               
       <MUIDataTable  
         title={"Cotizaciones Realizadas"} 
         data={dataCotizaciones} 

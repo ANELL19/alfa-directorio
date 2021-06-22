@@ -83,7 +83,7 @@ class Tablas extends Component{
 
   console.log("estado" ,this.state.tablas)
     
-    const columns = ["id_cliente", "RFC","Empresa", "nombre","Apellidos", "correo1","correo2","Teléfono1","Teléfono2","Editar","Eliminar"," "];
+    const columns = ["Id_Cliente","RFC","Empresa","Nombre","Apellidos","Correo1","Correo2","Teléfono1","Teléfono2","Editar","Eliminar"," "];
      const data = this.state.tablas.map((rows,i)=>{
       let botonesEditar = <Button type="primary" shape="circle" > <MDBIcon icon="pencil-alt" /></Button>
   
@@ -137,7 +137,7 @@ class Tablas extends Component{
       } 
         return(
             <React.Fragment>
-     <div  style={{width:"100%",marginTop:"2%",marginBottom:"2%"}} >               
+     <div  style={{width:"100%",marginTop:"1%",marginBottom:"2%"}} >               
         <MUIDataTable  
           title={"tabla clientes"} 
           data={data} 

@@ -14,8 +14,9 @@ import {
   DesktopOutlined,
   DollarOutlined,
   OrderedListOutlined,
-  CloseOutlined, 
-  FileDoneOutlined 
+  CloseOutlined,  
+  FilePdfOutlined,
+  SolutionOutlined 
  
 } from '@ant-design/icons';
 import { Avatar } from 'antd';
@@ -24,6 +25,7 @@ import TablaEventos from './eventosEvenbrite'
 import CargarClientes from './registrarCliente'
 import Cotizaciones from './cotizaciones'
 import TablaCotizacion from './TablaCotizaciones'
+import Cliente from './signupClientes'
 import ADS from '../imagen/ADS.png'
 import MUIDataTable from "mui-datatables";
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
@@ -44,7 +46,8 @@ class SiderDemo extends Component {
       tablaEventos:false,
       registrarClientes:false,      
       cotizaciones:false,
-      tablaCotizaciones:false
+      tablaCotizaciones:false,
+      nuevoCliente:false
     };
     this.cerrar = this.cerrar.bind(this) 
   }
@@ -65,6 +68,7 @@ class SiderDemo extends Component {
     this.setState({tablaEventos:false});
     this.setState({registrarClientes:false});
     this.setState({tablaCotizaciones:false});
+    this.setState({nuevoCliente:false});
 
   }
 
@@ -74,6 +78,7 @@ class SiderDemo extends Component {
     this.setState({tablaEventos:false});
     this.setState({registrarClientes:false});
     this.setState({tablaCotizaciones:false});
+    this.setState({nuevoCliente:false});
 
   }
 
@@ -83,6 +88,7 @@ class SiderDemo extends Component {
     this.setState({tablaEventos:true});
     this.setState({registrarClientes:false});
     this.setState({tablaCotizaciones:false});
+    this.setState({nuevoCliente:false});
 
   }
   cargarClientes(){
@@ -91,6 +97,7 @@ class SiderDemo extends Component {
     this.setState({tablaEventos:false});
     this.setState({registrarClientes:true});
     this.setState({tablaCotizaciones:false});
+    this.setState({nuevoCliente:false});
 
   }
   consultarCotizaciones(){
@@ -99,6 +106,15 @@ class SiderDemo extends Component {
     this.setState({tablaEventos:false});
     this.setState({registrarClientes:false});
     this.setState({tablaCotizaciones:true});
+    this.setState({nuevoCliente:false});
+  }
+  registrarCliente(){
+    this.setState({tablaInicio:false});
+    this.setState({cotizaciones:false});
+    this.setState({tablaEventos:false});
+    this.setState({registrarClientes:false});
+    this.setState({tablaCotizaciones:false});
+    this.setState({nuevoCliente:true});
   }
 
   render() {    
@@ -107,6 +123,7 @@ class SiderDemo extends Component {
     let clientes;
     let cotizaciones;
     let tablaCotizaciones;
+    let signupCliente;
 
     if(this.state.tablaInicio === true) {  
       tabla=
@@ -143,6 +160,13 @@ class SiderDemo extends Component {
       </div>
  
      }
+
+     if(this.state.nuevoCliente === true){
+      signupCliente=
+       <div>
+         <Cliente/>
+       </div>
+     }
     let nombre = localStorage.getItem("nombre")
     let apellidos= localStorage.getItem("apellido")
   
@@ -158,18 +182,21 @@ class SiderDemo extends Component {
               Tabla Clientes              
             </Menu.Item>
             <Menu.Item key="2" onClick={e=>this.cargarClientes()}icon={<CloudUploadOutlined style={{ fontSize: '25px', color: '#fff' }} />}>
-              Registrar Clientes
-            </Menu.Item>          
-            <Menu.Item key="3" onClick={e=>this.tablaEventos()} icon={<DesktopOutlined style={{ fontSize: '25px', color: '#fff' }} />}>           
+              Cargar Clientes
+            </Menu.Item>
+            <Menu.Item key="3" onClick={e=>this.registrarCliente()} icon={<SolutionOutlined style={{ fontSize: '25px', color: '#fff' }} />}>           
+              Registrar Cliente            
+            </Menu.Item>           
+            <Menu.Item key="4" onClick={e=>this.tablaEventos()} icon={<DesktopOutlined style={{ fontSize: '25px', color: '#fff' }} />}>           
               Eventos Evenbrite              
             </Menu.Item>            
-            <Menu.Item key="4" onClick={e=>this.generarCotizaciones()} icon={<DollarOutlined style={{ fontSize: '25px', color: '#fff' }} /> }>
+            <Menu.Item key="5" onClick={e=>this.generarCotizaciones()} icon={<DollarOutlined style={{ fontSize: '25px', color: '#fff' }} /> }>
               Generar Cotizacion
             </Menu.Item>           
-            <Menu.Item key="5" onClick={e=>this.consultarCotizaciones()} icon={<FileDoneOutlined  style={{ fontSize: '25px', color: '#fff' }} />}>
+            <Menu.Item key="6" onClick={e=>this.consultarCotizaciones()} icon={< FilePdfOutlined  style={{ fontSize: '25px', color: '#fff' }} />}>
               cotizaciones Realizadas
             </Menu.Item>
-            <Menu.Item key="6" onClick={this.cerrar} icon={<CloseOutlined  style={{ fontSize: '25px', color: '#fff' }} />}>
+            <Menu.Item key="7" onClick={this.cerrar} icon={<CloseOutlined  style={{ fontSize: '25px', color: '#fff' }} />}>
               cerrar sesión
             </Menu.Item>
           </Menu>
@@ -196,6 +223,7 @@ class SiderDemo extends Component {
             {clientes}
             {cotizaciones}
             {tablaCotizaciones}
+            {signupCliente}
           </Content>
         </Layout>
       </Layout>

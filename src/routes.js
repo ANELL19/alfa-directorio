@@ -32,7 +32,7 @@ import index from './components/depuracionBasa/index'
 import panel from './components/paneldeConection/panelPrueba'
 
 
-
+import cliente from './components/administradorAlfa/signupClientes'
 
 
 class App extends Component{
@@ -74,7 +74,7 @@ render(){
 
          <Route exact path = "/index" component={index}/>
 
-      
+         <Route exact path = "/cliente" component={cliente}/>
          {/* <PrivateRoute  exact path = "/Dashboard" component={Dashboard}/> */}
 
          
