@@ -1,114 +1,121 @@
 import React, {Component}from 'react'
-// import RegistrarClientes from './registrarClientes'
-// import CargarClientes from './cargarClientes'
-import { MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavItem, MDBNavLink, MDBNavbarToggler, MDBCollapse, MDBDropdown,
-MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem, MDBIcon, MDBBtn, MDBContainer } from "mdbreact";
-import {NavItem} from 'reactstrap'; 
-import { BrowserRouter as Router } from 'react-router-dom';
-import ADS from '../imagen/ADS.png'
+import './styleNavbar.css'
+import { Layout, Menu, Breadcrumb } from 'antd';
+import {  MDBIcon} from "mdbreact";
+  
+import {
+  DesktopOutlined,
+  PieChartOutlined,
+  FileOutlined,
+  TeamOutlined,
+  UserOutlined,
+ UsergroupAddOutlined 
+} from '@ant-design/icons';
+import LoginEmpresa  from '../empresas/loginEmpresa'
+import LoginAdminsitrador from '../administrador/loginadministrador'
+import LoginADS from '../administradorAlfa/login'
 
-import { Layout, Menu, Breadcrumb } from "antd";
-import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
-
+const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
 class NavbarAdmin extends Component {
     constructor(props){
         super(props)
         this.state = {
-            isOpen: false  ,        
-           
+          collapsed: false,
+          registraEmpresa:true,
+          registrarCliente:false,
+          iniciarSesion:false
         }
           }
 
-          toggleCollapse = () => {
-            this.setState({ isOpen: !this.state.isOpen });
-          }
-        
-
-          handleClick = e => {
-            console.log('click ', e);
+          onCollapse = collapsed => {
+            console.log(collapsed);
+            this.setState({ collapsed });
           };
     
+          registraEmpresa(){
+            this.setState({registraEmpresa:true});
+            this.setState({registrarCliente:false});
+            this.setState({iniciarSesion:false});
+          }
+          registrarCliente(){
+            this.setState({registraEmpresa:false});
+            this.setState({registrarCliente:true});
+            this.setState({iniciarSesion:false});
+    
+          }
+          iniciarSesion(){
+            this.setState({registraEmpresa:false});
+            this.setState({registrarCliente:false});
+            this.setState({iniciarSesion:true});
+          }
  render(){  
-    // var date= new Date()
-    // var fecha = date.toLocaleString('es')     
+          var  momentoActual = new Date()
+          let horas= momentoActual.getHours()+ ":" + momentoActual.getMinutes()+ ":"+ momentoActual.getSeconds()
+          var f = new Date();
+          let fecha=f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
 
-    var  momentoActual = new Date()
-//     let  hora = momentoActual.getHours()
-//    let  minuto = momentoActual.getMinutes()
-//    let  segundo = momentoActual.getSeconds()   
-    // console.log("esta es la hora ",hora + " : " + minuto + " : " + segundo )
-    // console.log("esta es la hora ", momentoActual.getHours()+ " : " + momentoActual.getMinutes()+ " : "+ momentoActual.getSeconds())
-    let horas= momentoActual.getHours()+ ":" + momentoActual.getMinutes()+ ":"+ momentoActual.getSeconds()
-    var f = new Date();
-    // let dia= f.getDate()
-    // let mes=f.getMonth()
-    // let año= f.getFullYear()
-//    console.log("esta es la fecha ",f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear())
-   let fecha=f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
+        let signUpEmpresa;
+        let signUpCliente;
+        let loginADS;
 
+        if(this.state.registraEmpresa === true){
+          signUpEmpresa=
+          <div>
+          <LoginEmpresa/>
+          </div>
+        }
 
+        if(this.state.registrarCliente === true){
+          signUpCliente=
+          <div>
+          <LoginAdminsitrador/>
+          </div>
+        }
+          
+        if(this.state.iniciarSesion === true){
+          loginADS=
+          <div>
+          <LoginADS/>
+          </div>
+        }
+
+          const { collapsed } = this.state;
         return(
-     <React.Fragment>
-<Router>
-      <MDBNavbar color="#4fc3f7 light-blue lighten-2" dark expand="md">
-        <MDBNavbarBrand>
-        <a href="/Dashboard"><img src={ADS} style={{width:"66%"}}/></a> 
-        </MDBNavbarBrand>
-        <MDBNavbarToggler onClick={this.toggleCollapse} />
-        <MDBCollapse id="navbarCollapse3" isOpen={this.state.isOpen} navbar>
-          <MDBNavbarNav left>
-            <MDBNavItem disabled>
-              {/* <MDBNavLink  to="#!" disabled ><MDBIcon icon="calendar-alt" />&nbsp;<h5>{fecha}</h5></MDBNavLink> */}
-             <p><MDBIcon icon="calendar-alt" size="2x"/>&nbsp;<font  size="4" className="white-text pr-3">{fecha } </font></p>
-           
-            </MDBNavItem>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <MDBNavItem disabled>
-              {/* <MDBNavLink  to="#!" disabled> <MDBIcon far  />&nbsp;<h5>{horas}</h5></MDBNavLink> */}
-              <p><MDBIcon far icon="clock"  size="2x"/>&nbsp;<font size="4" className="white-text pr-3">{horas}</font></p> 
-            </MDBNavItem>
-          </MDBNavbarNav>          
-        </MDBCollapse>
-      </MDBNavbar>
-    </Router>
-{/* ++++++ */}
-<Menu
-        onClick={this.handleClick}
-        style={{ width: 256 }}
-        defaultSelectedKeys={['1']}
-        defaultOpenKeys={['sub1']}
-        mode="inline"
-      >
-        <SubMenu key="sub1" icon={<MailOutlined />} title="Navigation One">
-          <Menu.ItemGroup key="g1" title="Item 1">
-            <Menu.Item key="1">Option 1</Menu.Item>
-            <Menu.Item key="2">Option 2</Menu.Item>
-          </Menu.ItemGroup>
-          <Menu.ItemGroup key="g2" title="Item 2">
-            <Menu.Item key="3">Option 3</Menu.Item>
-            <Menu.Item key="4">Option 4</Menu.Item>
-          </Menu.ItemGroup>
-        </SubMenu>
-        <SubMenu key="sub2" icon={<AppstoreOutlined />} title="Navigation Two">
-          <Menu.Item key="5">Option 5</Menu.Item>
-          <Menu.Item key="6">Option 6</Menu.Item>
-          <SubMenu key="sub3" title="Submenu">
-            <Menu.Item key="7">Option 7</Menu.Item>
-            <Menu.Item key="8">Option 8</Menu.Item>
-          </SubMenu>
-        </SubMenu>
-        <SubMenu key="sub4" icon={<SettingOutlined />} title="Navigation Three">
-          <Menu.Item key="9">Option 9</Menu.Item>
-          <Menu.Item key="10">Option 10</Menu.Item>
-          <Menu.Item key="11">Option 11</Menu.Item>
-          <Menu.Item key="12">Option 12</Menu.Item>
-        </SubMenu>
-      </Menu>
-
-      
-     </React.Fragment>           
+          <Layout style={{ minHeight: '100vh' }}>
+          <Sider className="sidevar" collapsible collapsed={collapsed} onCollapse={this.onCollapse}>
+            <div className="logo1" > aqui va la fecha 17/06/2021 </div>
+            <Menu theme="light" defaultSelectedKeys={['1']} mode="inline">
+              <Menu.Item key="1" onClick={e=>this.registraEmpresa()} icon={<PieChartOutlined />}>
+                Registrar Empresa
+              </Menu.Item>
+              <Menu.Item key="2" onClick={e=>this.registrarCliente()} icon={<UsergroupAddOutlined />}>
+                Registrar Adminsitrador
+              </Menu.Item>
+              <Menu.Item key="3" onClick={e=>this.iniciarSesion()} icon={<DesktopOutlined />}>
+                Iniciar sesión
+              </Menu.Item>                
+            </Menu>
+          </Sider>
+          <Layout className="site-layout">
+            <Header className="site-layout-background1" style={{ padding: 0 }} >                
+            <p>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <MDBIcon icon="calendar-alt" size="2x"/>&nbsp;<font  size="4" className="white-text pr-3">{fecha }</font> 
+              <MDBIcon far icon="clock"  size="2x"/>&nbsp;<font size="4" className="white-text pr-3">{horas}</font>
+            </p> 
+            </Header>
+            <Content>               
+              <div className="site-layout-background2" style={{padding:15,minHeight:250,marginTop:"1%" }}>
+                {signUpEmpresa}
+                {signUpCliente}
+                {loginADS}
+              </div>
+            </Content>
+            <Footer style={{ textAlign: 'center' }}>ALFA DISEÑO DE SISTEMAS S.A DE C.V.</Footer>
+          </Layout>
+        </Layout>          
         )
     }
 }export default NavbarAdmin;

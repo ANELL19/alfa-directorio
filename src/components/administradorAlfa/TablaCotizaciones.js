@@ -1,6 +1,6 @@
 import React,{Component} from 'react'
 import MUIDataTable from "mui-datatables";
-import {MDBBtn,MDBRow,MDBTableBody,MDBTableHead,MDBTable} from 'mdbreact'
+import {MDBBtn,MDBRow,MDBTableBody,MDBTableHead,MDBTable,MDBIcon} from 'mdbreact'
 import {Table} from 'reactstrap';
 import {API} from '../Graphql/Graphql'
 import axios from 'axios'
@@ -9,6 +9,7 @@ import imagen from '../imagen/encabezado.JPG'
 import titulo1 from  '../imagen/titulo1.png'
 import { Container, Paper } from '@material-ui/core';
 import { PDFExport } from '@progress/kendo-react-pdf';
+import { Button, Tooltip } from 'antd';
 
 
 class TablaCotizaciones extends Component{
@@ -36,7 +37,7 @@ class TablaCotizaciones extends Component{
 
     componentWillMount(){ 
           const fk_adminalfa  = localStorage.getItem("id_admin");
-          console.log(" fk_adminalfa", fk_adminalfa)       
+          // console.log(" fk_adminalfa", fk_adminalfa)       
        axios({
             url:API,
             method:'post',
@@ -45,6 +46,7 @@ class TablaCotizaciones extends Component{
                 query{
                   getCotizacionesTabla(data:"${[fk_adminalfa]}"){
                       id_cotizacion 
+                      rfc
                       razonSocial
                       nombre
                       apellidos 
@@ -64,11 +66,10 @@ class TablaCotizaciones extends Component{
                 `
             }   
              }).then(response=>{
-                console.log("response-DASH",response)
-              
+                // console.log("response-DASH",response)              
                let array1 = [];
                array1.push(response.data.data.getCotizacionesTabla)
-               console.log("PUSH DE ARRAY1",array1)
+              //  console.log("PUSH DE ARRAY1",array1)
                this.setState({detallesCotizaciones:array1[0]})
                
              })
@@ -90,6 +91,7 @@ class TablaCotizaciones extends Component{
             query{
               getIdCotizacion(data:"${[id]}"){   
                       id_cotizacion 
+                      rfc
                       razonSocial
                       nombre
                       apellidos 
@@ -111,10 +113,12 @@ class TablaCotizaciones extends Component{
         }   
          })
        .then(response=>{
+        //  console.log("esto es response",response)
          let array = [];
          array.push(response.data.data.getIdCotizacion)        
          this.setState({detallesIdCotizaciones:array[0]})       
-        localStorage.setItem("id_cotizacion",this.state.detallesIdCotizaciones[0].id_cotizacion )                    
+        localStorage.setItem("id_cotizacion",this.state.detallesIdCotizaciones[0].id_cotizacion )     
+        localStorage.setItem("rfc",this.state.detallesIdCotizaciones[0].rfc)               
         localStorage.setItem("razonSocial",this.state.detallesIdCotizaciones[0].razonSocial)   
         localStorage.setItem("nombre_cliente",this.state.detallesIdCotizaciones[0].nombre) 
         localStorage.setItem("apellidos_cliente",this.state.detallesIdCotizaciones[0].apellidos)
@@ -190,14 +194,14 @@ class TablaCotizaciones extends Component{
         }
       } ;
 
-      const columnsCotizaciones = ["Id","Nombre","Apellidos","Razón Social","Fecha de Cotización","Correo","telefono","Total","Descargar"];
+      const columnsCotizaciones = ["Id","RFC","Nombre","Apellidos","Razón Social","Fecha de Cotización","Correo","telefono","Total","Descargar"];
       let boton;
       let dataCotizaciones;
       // if(this.state.detallesCotizaciones[0]){
         dataCotizaciones = this.state.detallesCotizaciones.map(rows=>{
-      boton = <MDBBtn size="md" color="danger" onClick={e=> this.datosIndividuales(rows.id_cotizacion)}>Detalles</MDBBtn>
+      boton = <Button type="primary" shape="circle" size="large" onClick={e=> this.datosIndividuales(rows.id_cotizacion)}><MDBIcon far icon="file-pdf" /></Button>
       
-               return([rows.id_cotizacion,rows.nombre,rows.apellidos,rows.razonSocial,rows.fecha,rows.correo1,rows.telefono1,rows.total,boton])
+               return([rows.id_cotizacion,rows.rfc,rows.nombre,rows.apellidos,rows.razonSocial,rows.fecha,rows.correo1,rows.telefono1,rows.total,boton])
                
                 
               

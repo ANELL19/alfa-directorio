@@ -1,4 +1,3 @@
-
 import React, { Component } from "react";
 import Paper from "@material-ui/core/Paper";
 import "@fortawesome/fontawesome-free/css/all.min.css";
@@ -14,12 +13,11 @@ import {
   MDBCol,
   MDBBtn,
   MDBInput,
-  MDBModalHeader,
   MDBCard,
   MDBAlert,
   MDBIcon
 } from "mdbreact";
-import { MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText } from "mdbreact";
+import { MDBCardImage } from "mdbreact";
 import axios from "axios";
 import { API } from "../Graphql/Graphql";
 import Navbar from "../paneldeConection/navbar";

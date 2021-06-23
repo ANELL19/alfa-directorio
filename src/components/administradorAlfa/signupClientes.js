@@ -258,7 +258,7 @@ console.log("esto es el  id",id_empresa)
                 <MDBCard style={{ width: "100%" }}>
                   <MDBCardImage
                     className="img-fluid"
-                    src="https://images.pexels.com/photos/3178818/pexels-photo-3178818.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+                    src="https://images.pexels.com/photos/4065864/pexels-photo-4065864.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
                     waves
                   />
                 </MDBCard>

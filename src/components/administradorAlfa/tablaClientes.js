@@ -16,6 +16,7 @@ class Tablas extends Component{
     this.state={      
       tablas:[],          
       peticionApi:[],
+      detallesEditarCliente:[],
       }    
   }
   async componentWillMount(){
@@ -67,6 +68,62 @@ class Tablas extends Component{
     
     }
 
+    datosIndividialesClientes(id){
+      console.log("idRecibido", id)
+      axios({
+        url:API,
+        method:'post',
+        data:{
+            query:`
+            query{
+              getTablaClientes(data:"${[id]}"){
+                id_cliente
+                rfc
+                empresa
+                nombre
+                apellido
+                correo1
+                correo2
+                telefono1 
+                telefono2      
+                 
+                 } 
+            }
+            `
+        }   
+         })
+       .then(response=>{
+        //  console.log("esto es response",response)
+         let array = [];
+         array.push(response.data.data.getTablaCliente)        
+         this.setState({detallesEditarCliente:array[0]})       
+        // localStorage.setItem("id_cotizacion",this.state.detallesIdCotizaciones[0].id_cotizacion )     
+        // localStorage.setItem("rfc",this.state.detallesIdCotizaciones[0].rfc)               
+        // localStorage.setItem("razonSocial",this.state.detallesIdCotizaciones[0].razonSocial)   
+        // localStorage.setItem("nombre_cliente",this.state.detallesIdCotizaciones[0].nombre) 
+        // localStorage.setItem("apellidos_cliente",this.state.detallesIdCotizaciones[0].apellidos)
+        // localStorage.setItem("correo1",this.state.detallesIdCotizaciones[0].correo1)                                    
+        // localStorage.setItem("telefono1",this.state.detallesIdCotizaciones[0].telefono1)
+        // localStorage.setItem("servicio",this.state.detallesIdCotizaciones[0].servicio)
+        // localStorage.setItem("precio",this.state.detallesIdCotizaciones[0].precio)                                    
+        // localStorage.setItem("iva",this.state.detallesIdCotizaciones[0].iva)
+        // localStorage.setItem("total",this.state.detallesIdCotizaciones[0].total)
+        // localStorage.setItem("promocion",this.state.detallesIdCotizaciones[0].promocion)
+        // localStorage.setItem("vendedor",this.state.detallesIdCotizaciones[0].vendedor)
+        // localStorage.setItem("fecha",this.state.detallesIdCotizaciones[0].fecha)
+          //  if(this.state.detallesIdCotizaciones[0]){
+          //    this.setState({tablaInicial:false})
+          //    this.setState({renderPDF:true})
+          //  }
+         
+        
+    })
+     .catch(err=>{
+              console.log('error',err.response)
+      }) 
+
+    }
+
   
 
     render(){    
@@ -79,15 +136,19 @@ class Tablas extends Component{
       // console.log("filtrar" , filtrar)
      
     
-
+let botonesEditar;
 
   console.log("estado" ,this.state.tablas)
     
     const columns = ["Id_Cliente","RFC","Empresa","Nombre","Apellidos","Correo1","Correo2","Teléfono1","Teléfono2","Editar","Eliminar"," "];
      const data = this.state.tablas.map((rows,i)=>{
-      let botonesEditar = <Button type="primary" shape="circle" > <MDBIcon icon="pencil-alt" /></Button>
+      // botonesEditar = this.state.tablas.map(rows=>{
+        // console.log("esto es rows",rows)
+        botonesEditar=<Button type="primary" shape="circle" size="large"  onClick={e=>this.datosIndividialesClientes(rows.id_cliente)}> <MDBIcon icon="pencil-alt" /></Button>
   
-      let eliminar = <Button type="danger" shape="circle" > <MDBIcon far icon="trash-alt" /></Button>
+      // })
+      
+      let eliminar = <Button type="danger" shape="circle" size="large" > <MDBIcon far icon="trash-alt" /></Button>
             
         // let botones = <MDBBtn color ="info" size="sm" onClick={(e)=>this.modal()}> datos cliente </MDBBtn>
           

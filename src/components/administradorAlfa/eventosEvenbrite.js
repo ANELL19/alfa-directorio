@@ -1,11 +1,10 @@
 import React, { Component } from "react"
-// import NavbarDashboard from './navbarDashboard'
 import MUIDataTable from "mui-datatables";
-import { MDBBtn } from 'mdbreact';
+import { MDBIcon } from 'mdbreact';
 import axios from 'axios'
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import {API} from '../Graphql/Graphql'
-// import Navbar from './navbar'
+import { Button } from 'antd';
+
 
 class Eventos extends Component{
   constructor(props){
@@ -23,10 +22,8 @@ class Eventos extends Component{
         MUIDataTableBodyCell: {
             root: {              
             fontFamily : 'arial' ,
-            fontSize: '14px',  
-           
+            fontSize: '14px', 
             // textAlign:"center"
-
           },          
         },
         MUIDataTableHeadCell: {
@@ -108,7 +105,7 @@ class Eventos extends Component{
           <td > <img src = {rows.logo.url}  style={{height:100, width: 200}}/></td>           
 
             buton=<div>
-               <MDBBtn color="info"  href={rows.url} >Registrarse</MDBBtn>
+               <Button type="primary" shape="circle" size="large" href={rows.url} target=" _blank"  ><MDBIcon icon="chalkboard-teacher"/></Button>
              
             </div>
         return( [ cards,rows.name.text, rows.capacity,rows.start.local,rows.end.local,rows.description.text, buton])

@@ -16,6 +16,7 @@ import imagen from '../imagen/encabezado.JPG'
 import titulo1 from  '../imagen/titulo1.png'
 import { MDBTable, MDBTableBody, MDBTableHead, MDBIcon} from 'mdbreact';
 import {API} from '../Graphql/Graphql'
+import {  MDBFormInline } from "mdbreact";
 
 class Cotizaciones extends Component{
     pdfExportComponent
@@ -74,8 +75,8 @@ class Cotizaciones extends Component{
         this.setState({botonPdfExport:true})  
         // const API='http://localhost:4000/graphql' 
         var id_adminAlfa = localStorage.getItem("id_admin")  
-        console.log("id_admin",id_adminAlfa)
-
+        // console.log("id_admin",id_adminAlfa)
+        let rfc= this.state.Datos.rfc
         let rs = this.state.Datos.empresa.replace(/,/g, "");
         let nombre  = this.state.Datos.nombre;
         let apellidos = this.state.Datos.apellido;
@@ -99,7 +100,7 @@ class Cotizaciones extends Component{
                 data:{
                     query:`
                     mutation{
-                    insertCotizaciones(data:"${[rs,nombre,apellidos,correo1,correo2,tel1,tel2,servicio,precio,iva,total,promocion,vendedor,id_adminAlfa]}"){
+                    insertCotizaciones(data:"${[rfc,rs,nombre,apellidos,correo1,correo2,tel1,tel2,servicio,precio,iva,total,promocion,vendedor,id_adminAlfa]}"){
                          message
                         } 
                     }
@@ -148,12 +149,12 @@ class Cotizaciones extends Component{
     // }
 
     pdfView ( ){
-      let rs = this.state.Datos.empresa;
-      let nombre  = this.state.Datos.nombre;
-      let apellidos = this.state.Datos.apellido;
-      let correo1 = this.state.Datos.correo1;
-      let correo2 = this.state.Datos.correo2;
-      let tel1 = this.state.telefono1;
+      // let rs = this.state.Datos.empresa;
+      // let nombre  = this.state.Datos.nombre;
+      // let apellidos = this.state.Datos.apellido;
+      // let correo1 = this.state.Datos.correo1;
+      // let correo2 = this.state.Datos.correo2;
+      // let tel1 = this.state.telefono1;
       let servicio  = this.state.Servicio.toUpperCase();
       let precio = this.state.precio;
       let promocion = this.state.promocion.toUpperCase();
@@ -245,15 +246,23 @@ class Cotizaciones extends Component{
       
 
       searchRFC= <div>
-          <MDBCol md="3" className="mb-3"></MDBCol>
-                      <MDBCol md="3" className="mb-3"></MDBCol>                      
+        <Row>
+                     <MDBCol md="3" className="mb-3"></MDBCol>
+                      <MDBCol md="3" className="mb-3"></MDBCol>        
+                                      
                       <MDBCol>
-                <input  type="text" id="rfc" value={this.state.rfc} name="rfc"  onChange={this.onChangeInput}   placeholder="RFC de la Empresa" />
-                    <MDBBtn gradient="aqua" rounded size="sm" type="submit"  onClick={e=> this.consultarDatos()}  >                        
+                        <div className="md-form mr-auto mb-4">
+                <input  type="text" id="rfc" value={this.state.rfc} name="rfc"  onChange={this.onChangeInput}   placeholder="RFC de la Empresa"  aria-label="Search"/>
+                    <MDBBtn gradient="aqua" rounded size="sm" type="submit" className="mr-auto" onClick={e=> this.consultarDatos()}  >                        
                       <MDBIcon icon="search" />
                     </MDBBtn>  
+                    </div>
+
+       
+
                     <br></br><br></br>        
                 </MDBCol>
+                </Row>
       </div>
 
 

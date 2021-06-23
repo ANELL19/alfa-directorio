@@ -55,7 +55,7 @@ import Navbar from '../paneldeConection/navbar'
   
           return (
             <React.Fragment>
-           <Navbar/>
+           {/* <Navbar/> */}
              <Form
                     onSubmit={onSubmit}
                     render={({ handleSubmit, submitting,values }) => (
