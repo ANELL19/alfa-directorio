@@ -29,7 +29,7 @@ import sidenavbar from './components/administradorAlfa/sidenavbar'
 
 
 import index from './components/depuracionBasa/index'
-import panel from './components/paneldeConection/panelPrueba'
+import Agregar from './components/paneldeConection/botonAgregar'
 
 
 import cliente from './components/administradorAlfa/signupClientes'
@@ -51,7 +51,8 @@ render(){
       <main>
 
       {/* <PrivateRouteAdminAlfa exact path= "/dasboardAdmin" component= {dasboardAdmin}/> */}
-      <Route  exact path = "/panel" component={panel}/>
+      <Route  exact path = "/boton" component={Agregar}/>
+      
 
 
         <Route  exact path = "/" component={loginAdmin}/>

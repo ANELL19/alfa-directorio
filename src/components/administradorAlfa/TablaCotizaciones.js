@@ -199,8 +199,9 @@ class TablaCotizaciones extends Component{
       let dataCotizaciones;
       // if(this.state.detallesCotizaciones[0]){
         dataCotizaciones = this.state.detallesCotizaciones.map(rows=>{
+          console.log("esto es rows de dataCotizaciones",rows)
       boton = <Button type="primary" shape="circle" size="large" onClick={e=> this.datosIndividuales(rows.id_cotizacion)}><MDBIcon far icon="file-pdf" /></Button>
-      
+      console.log("esto es rows boton",rows.id_cotizacion)
                return([rows.id_cotizacion,rows.rfc,rows.nombre,rows.apellidos,rows.razonSocial,rows.fecha,rows.correo1,rows.telefono1,rows.total,boton])
                
                 

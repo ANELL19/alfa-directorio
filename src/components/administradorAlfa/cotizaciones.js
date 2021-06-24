@@ -403,6 +403,12 @@ class Cotizaciones extends Component{
                   value={this.state.pass}	                  
                   className="form-control"/>
              </MDBCol>
+             <MDBCol md="3" className="mb-4 mt-4">    
+                  <label htmlFor="defaultFormLoginPasswordEx" >
+                  <strong> Total: &nbsp;</strong>
+                  </label>
+                  <label>$ {total}</label>
+                  </MDBCol>
 
                   <MDBCol md="3" className="mb-4 mt-4">    
                   <label htmlFor="defaultFormLoginPasswordEx" >
@@ -411,12 +417,7 @@ class Cotizaciones extends Component{
                   < label>{iva}%</ label>
                   </MDBCol>
 
-                  <MDBCol md="3" className="mb-4 mt-4">    
-                  <label htmlFor="defaultFormLoginPasswordEx" >
-                  <strong> Total: &nbsp;</strong>
-                  </label>
-                  <label>$ {total}</label>
-                  </MDBCol>
+                 
                   <MDBCol md="3" className="mb-4 mt-4">    
                   <label htmlFor="defaultFormLoginPasswordEx" >
                   <strong>Iva: &nbsp;</strong> 

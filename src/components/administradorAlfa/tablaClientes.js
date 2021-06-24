@@ -17,6 +17,7 @@ class Tablas extends Component{
       tablas:[],          
       peticionApi:[],
       detallesEditarCliente:[],
+      modal: false
       }    
   }
   async componentWillMount(){
@@ -95,10 +96,12 @@ class Tablas extends Component{
        .then(response=>{
         //  console.log("esto es response",response)
          let array = [];
-         array.push(response.data.data.getTablaCliente)        
-         this.setState({detallesEditarCliente:array[0]})       
-        // localStorage.setItem("id_cotizacion",this.state.detallesIdCotizaciones[0].id_cotizacion )     
-        // localStorage.setItem("rfc",this.state.detallesIdCotizaciones[0].rfc)               
+         array.push(response)        
+         this.setState({detallesEditarCliente:array[0]})    
+         console.log("array de id",array)
+         console.log("estado",this.state.detallesEditarCliente[0].id_cliente)   
+        // localStorage.setItem("id_cliente",this.state.tablas.id_cliente )     
+        // localStorage.setItem("rfc_cliente",this.state.getTablaClientes[0].rfc)               
         // localStorage.setItem("razonSocial",this.state.detallesIdCotizaciones[0].razonSocial)   
         // localStorage.setItem("nombre_cliente",this.state.detallesIdCotizaciones[0].nombre) 
         // localStorage.setItem("apellidos_cliente",this.state.detallesIdCotizaciones[0].apellidos)
@@ -124,6 +127,12 @@ class Tablas extends Component{
 
     }
 
+    toggle = () => {
+      this.setState({
+        modal: !this.state.modal
+      });
+    }
+
   
 
     render(){    
@@ -137,23 +146,33 @@ class Tablas extends Component{
      
     
 let botonesEditar;
+let eliminar;
 
-  console.log("estado" ,this.state.tablas)
+let dataClientes ;
+
+
     
-    const columns = ["Id_Cliente","RFC","Empresa","Nombre","Apellidos","Correo1","Correo2","Teléfono1","Teléfono2","Editar","Eliminar"," "];
+    const columns = ["Id_Cliente","RFC","Empresa","Nombre","Apellidos","Correo1","Correo2","Teléfono1","Teléfono2","Editar","Eliminar","Boton MOdal"];
      const data = this.state.tablas.map((rows,i)=>{
       // botonesEditar = this.state.tablas.map(rows=>{
         // console.log("esto es rows",rows)
-        botonesEditar=<Button type="primary" shape="circle" size="large"  onClick={e=>this.datosIndividialesClientes(rows.id_cliente)}> <MDBIcon icon="pencil-alt" /></Button>
-  
-      // })
-      
-      let eliminar = <Button type="danger" shape="circle" size="large" > <MDBIcon far icon="trash-alt" /></Button>
+        // }) 
+
+        // botonesEditar=<Button type="primary" shape="circle" size="large"  onClick={e=>this.datosIndividialesClientes(rows.id_cliente)}> <MDBIcon icon="pencil-alt" /></Button>
+        // eliminar= <Button type="danger" shape="circle" size="large" > <MDBIcon far icon="trash-alt" /></Button>
+        dataClientes = this.state.detallesEditarCliente.map(rows =>{
+          console.log("esto es roes de dataClientes",rows)
+           botonesEditar=<Button type="primary" shape="circle" size="large"  onClick={e=>this.datosIndividialesClientes(rows.id_cliente)}> <MDBIcon icon="pencil-alt" /></Button>
+                eliminar= <Button type="danger" shape="circle" size="large" > <MDBIcon far icon="trash-alt" /></Button>
             
+        })
+      
+      
+           
         // let botones = <MDBBtn color ="info" size="sm" onClick={(e)=>this.modal()}> datos cliente </MDBBtn>
           
         //  return([rows.id_cliente,rows.nombre_cliente, rows.apellidos_cliente, rows.curp, rows.rfc, rows.nombreEmpresa, rows.telefono, rows.correo,botones])
-         return([rows.id_cliente,rows.rfc,rows.empresa,rows.nombre,rows.apellido, rows.correo1, rows.correo2, rows.telefono1, rows.telefono2,botonesEditar,eliminar])
+         return([rows.id_cliente,rows.rfc,rows.empresa,rows.nombre,rows.apellido, rows.correo1, rows.correo2, rows.telefono1, rows.telefono2,botonesEditar,eliminar,dataClientes])
         })  
 
       const options={ 
