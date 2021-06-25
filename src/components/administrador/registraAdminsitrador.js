@@ -4,9 +4,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap-css-only/css/bootstrap.min.css";
 import "mdbreact/dist/css/mdb.css";
 import { DialogUtility } from '@syncfusion/ej2-popups';
-
-import {  MDBFormInline } from "mdbreact";
-import { CardBody, Label, Form, Row, Col, Alert, Button } from "reactstrap";
+import {  Label, Form, Row} from "reactstrap";
 import {
   MDBContainer,
   MDBRow,
@@ -22,7 +20,6 @@ import axios from "axios";
 import { API } from "../Graphql/Graphql";
 import Navbar from "../paneldeConection/navbar";
 
-
 class signupAdminAlfa extends Component {
   constructor(props) {
     super(props);
@@ -35,13 +32,9 @@ class signupAdminAlfa extends Component {
       tablas:[],
       viewSearch:true,
       viewForm:false,
-      fk_empresa:[]
-     
-    };
-  
+      fk_empresa:[]     
+    };  
   }
-
-
 
   onChangeInput = (e) => {
     console.log("eventoonChange", e);
@@ -50,14 +43,13 @@ class signupAdminAlfa extends Component {
       [id]: value
     });
   };
+
  componentWillUnmount(){
   localStorage.removeItem("id_empresa")
   localStorage.removeItem("rfc")
   localStorage.removeItem("telefono")
   localStorage.removeItem("correo")
-  localStorage.removeItem("razonSocial")
- 
-    
+  localStorage.removeItem("razonSocial")    
   }
 
   onSubmitBtn = (e) => {
@@ -73,8 +65,7 @@ class signupAdminAlfa extends Component {
       data: {
         query: `
                 mutation{
-                    signupAlfa(data:"${[nombre,apellido,correo,contrasena,this.state.fk_empresa]}"){           
-                 
+                    signupAlfa(data:"${[nombre,apellido,correo,contrasena,this.state.fk_empresa]}"){  
                     message
                      } 
                 }
@@ -92,7 +83,6 @@ class signupAdminAlfa extends Component {
       });    
   };
   
-
   consultarDatos(){    
     let rfc=this.state.rfc
     axios({
@@ -107,35 +97,33 @@ class signupAdminAlfa extends Component {
                 razonSocial
                 correo
                 telefono 
-                message    
-                               
+                message        
              } 
           }
           `
       }   
   
        }).then(response=>{
-       console.log( 'este es el response',response)      
-        localStorage.setItem("empresa",response.data.data.getEmpresas[0].id_empresa)
-        localStorage.setItem("rfc",response.data.data.getEmpresas[0].rfc)
-        localStorage.setItem("razonSocial",response.data.data.getEmpresas[0].razonSocial)
-        localStorage.setItem("correo",response.data.data.getEmpresas[0].correo)
-        localStorage.setItem("telefono",response.data.data.getEmpresas[0].telefono)          
-        console.log("la razon social",localStorage.getItem("razonSocial"))       
-        this.setState({fk_empresa:response.data.data.getEmpresas[0].id_empresa})
-     
-   
+       console.log( 'este es el response',response)  
         if(response.data.data.getEmpresas[0]){
-          this.setState({viewSearch:false})
-          this.setState({viewForm:true})
-        }else if (response.data.data.getEmpresas[0] === null){
-          DialogUtility.alert({
-            title: 'Algo salio mal, por favor vuelva a intentarlo',
-                                   
-        });              
-
-        }      
-
+          localStorage.setItem("empresa",response.data.data.getEmpresas[0].id_empresa)
+          localStorage.setItem("rfc",response.data.data.getEmpresas[0].rfc)
+          localStorage.setItem("razonSocial",response.data.data.getEmpresas[0].razonSocial)
+          localStorage.setItem("correo",response.data.data.getEmpresas[0].correo)
+          localStorage.setItem("telefono",response.data.data.getEmpresas[0].telefono)          
+          console.log("la razon social",localStorage.getItem("razonSocial"))       
+          this.setState({fk_empresa:response.data.data.getEmpresas[0].id_empresa})       
+        }else{
+           DialogUtility.alert({
+                
+                  title:'AVISO!' ,
+                  content:'El RFC no fue encontrado'
+                  
+              });
+        }
+        
+   
+       
        })
        .catch(err=>{
            console.log('error',err)
@@ -146,6 +134,7 @@ class signupAdminAlfa extends Component {
     this.setState({viewSearch:true})
     this.setState({viewForm:false})
   }
+
   render() {
     let formulario;
     let search;
@@ -181,7 +170,6 @@ class signupAdminAlfa extends Component {
           <MDBCol md="6">
             <MDBInput
               label="apellido"
-              // icon="user"
               id="apellido"
               type="text"
               name="apellido"
@@ -237,7 +225,7 @@ class signupAdminAlfa extends Component {
     return (
       <React.Fragment>
         <Navbar />
-        <MDBContainer style={{ marginTop: "10%" }}>
+        <MDBContainer style={{ marginTop: "5%" }}>
           <Paper>
             <MDBRow>
               <MDBCol size="5">

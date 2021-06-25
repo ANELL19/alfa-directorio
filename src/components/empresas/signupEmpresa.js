@@ -73,7 +73,7 @@ render(){
     return(
         <React.Fragment>
           <Navbar/>
-           <MDBContainer style={{ marginTop:"10%"}}>
+           <MDBContainer style={{ marginTop:"5%"}}>
             <Paper>
             <MDBRow>
               <MDBCol size="5">

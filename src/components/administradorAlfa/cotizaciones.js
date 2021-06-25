@@ -18,6 +18,8 @@ import { MDBTable, MDBTableBody, MDBTableHead, MDBIcon} from 'mdbreact';
 import {API} from '../Graphql/Graphql'
 import {  MDBFormInline } from "mdbreact";
 
+
+
 class Cotizaciones extends Component{
     pdfExportComponent
 
@@ -208,10 +210,18 @@ class Cotizaciones extends Component{
           // localStorage.setItem("correo2_cliente",response.data.data.getClienteRFC[0].correo2) 
           // localStorage.setItem("telefono1",response.data.data.getClienteRFC[0].telefono1)  
           // localStorage.setItem("telefono2",response.data.data.getClienteRFC[0].telefono2)          
-               
-          this.setState({ Datos:response.data.data.getClienteRFC[0]})
-          console.log("esto es Data",this.state.Datos)
-       
+         
+       if(response.data.data.getClienteRFC[0]){               
+        this.setState({ Datos:response.data.data.getClienteRFC[0]})
+        console.log("esto es Data",this.state.Datos)
+       } else{
+        DialogUtility.alert({
+                
+          title:'AVISO!' ,
+          content:'El RFC no fue encontrado'
+          
+      });
+       }
      
                
   
@@ -447,7 +457,7 @@ class Cotizaciones extends Component{
                   <label htmlFor="defaultFormLoginPasswordEx" >
                   <strong> Vendedor : &nbsp;</strong>
                   </label>
-                  <label>{localStorage.getItem("nombre").toUpperCase() + " "  + localStorage.getItem("apellido").toUpperCase()}</label>
+                  <label>{localStorage.getItem("nombre") + " "  + localStorage.getItem("apellido")}</label>
                   {/* <label>"lizbeth cuevas"
                   </label> */}
   

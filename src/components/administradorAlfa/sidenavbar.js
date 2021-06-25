@@ -208,7 +208,7 @@ class SiderDemo extends Component {
               className: 'trigger',
               onClick: this.toggle,              
             })} 
-           <font color="#fff" size="4">{localStorage.getItem("nombre_empresa")}&nbsp;&nbsp;&nbsp;&nbsp;DIRECTORIO DE CLIENTES &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {localStorage.getItem("nombre").toUpperCase()+" "+localStorage.getItem("apellido").toUpperCase()}</font>           
+           <font color="#fff" size="4">{localStorage.getItem("nombre_empresa")}&nbsp;&nbsp;&nbsp;&nbsp;DIRECTORIO DE CLIENTES &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {localStorage.getItem("nombre")+" "+localStorage.getItem("apellido")}</font>           
           </Header>
           <Content
             // className="site-layout-background"
