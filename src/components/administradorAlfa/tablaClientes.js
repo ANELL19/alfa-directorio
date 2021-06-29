@@ -2,13 +2,16 @@ import React,{Component} from 'react'
 import MUIDataTable from "mui-datatables";
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import {MDBBtn, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter, 
-       MDBCard, MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText, MDBCol , MDBContainer,MDBRow,MDBIcon} from 'mdbreact'
+       MDBCard, MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText,MDBInput, MDBCol , MDBContainer,MDBRow,MDBIcon} from 'mdbreact'
        import { Button, Tooltip } from 'antd';
 import { SearchOutlined,
          DeleteOutlined } from '@ant-design/icons';
-import {Table, ModalBody,} from 'reactstrap';
+import {Table, ModalBody,Row,Col} from 'reactstrap';
 import {API} from '../Graphql/Graphql'
 import axios from 'axios'
+import { Form } from 'react-final-form';
+
+
 class Tablas extends Component{
 
   constructor(props){
@@ -20,6 +23,13 @@ class Tablas extends Component{
       modal: false
       }    
   }
+
+  toggle = () => {
+    this.setState({
+      modal: !this.state.modal
+    });
+  }
+
   async componentWillMount(){
     let array =  []
     let arrayApi =  []
@@ -96,10 +106,10 @@ class Tablas extends Component{
        .then(response=>{
         //  console.log("esto es response",response)
          let array = [];
-         array.push(response)        
-         this.setState({detallesEditarCliente:array[0]})    
-         console.log("array de id",array)
-         console.log("estado",this.state.detallesEditarCliente[0].id_cliente)   
+         array.push("response de array",response)        
+          this.setState({detallesEditarCliente:array})    
+        //  console.log("array de id",array[1].data.data.getTablaClientes)
+        //  console.log("estado",this.state.detallesEditarCliente.id_cliente)   
         // localStorage.setItem("id_cliente",this.state.tablas.id_cliente )     
         // localStorage.setItem("rfc_cliente",this.state.getTablaClientes[0].rfc)               
         // localStorage.setItem("razonSocial",this.state.detallesIdCotizaciones[0].razonSocial)   
@@ -143,36 +153,118 @@ class Tablas extends Component{
       //   return hero[1] == "BAD email"
       // })
       // console.log("filtrar" , filtrar)
-     
+ let modal;
     
 let botonesEditar;
 let eliminar;
 
 let dataClientes ;
+dataClientes = this.state.detallesEditarCliente.map(rows =>{
+  console.log("esto es rows de dataClientes",rows)
+  botonesEditar=<Button type="primary" shape="circle" size="large"  onClick={e=>this.datosIndividialesClientes(rows.id_cliente)}> <MDBIcon icon="pencil-alt" /></Button>
 
-
-    
+   
+})
     const columns = ["Id_Cliente","RFC","Empresa","Nombre","Apellidos","Correo1","Correo2","Teléfono1","Teléfono2","Editar","Eliminar","Boton MOdal"];
      const data = this.state.tablas.map((rows,i)=>{
+
+      botonesEditar=
+      <Button type="primary" shape="circle" size="large" onClick={e=>this.datosIndividialesClientes(rows)}>
+         <MDBIcon icon="pencil-alt" />
+      </Button>
+
+      
+  eliminar= <Button type="danger" shape="circle" size="large" > <MDBIcon far icon="trash-alt" /></Button>
       // botonesEditar = this.state.tablas.map(rows=>{
         // console.log("esto es rows",rows)
         // }) 
 
         // botonesEditar=<Button type="primary" shape="circle" size="large"  onClick={e=>this.datosIndividialesClientes(rows.id_cliente)}> <MDBIcon icon="pencil-alt" /></Button>
         // eliminar= <Button type="danger" shape="circle" size="large" > <MDBIcon far icon="trash-alt" /></Button>
-        dataClientes = this.state.detallesEditarCliente.map(rows =>{
-          console.log("esto es roes de dataClientes",rows)
-           botonesEditar=<Button type="primary" shape="circle" size="large"  onClick={e=>this.datosIndividialesClientes(rows.id_cliente)}> <MDBIcon icon="pencil-alt" /></Button>
-                eliminar= <Button type="danger" shape="circle" size="large" > <MDBIcon far icon="trash-alt" /></Button>
+        // dataClientes = this.state.detallesEditarCliente.map(rows =>{
+          // console.log("esto es rows de dataClientes",rows)
+          //  botonesEditar=<Button type="primary" shape="circle" size="large"  onClick={e=>this.datosIndividialesClientes(rows.id_cliente)}> <MDBIcon icon="pencil-alt" /></Button>
+        
+          //  eliminar= <Button type="danger" shape="circle" size="large" > <MDBIcon far icon="trash-alt" /></Button>
             
-        })
-      
-      
-           
+        // })
         // let botones = <MDBBtn color ="info" size="sm" onClick={(e)=>this.modal()}> datos cliente </MDBBtn>
           
         //  return([rows.id_cliente,rows.nombre_cliente, rows.apellidos_cliente, rows.curp, rows.rfc, rows.nombreEmpresa, rows.telefono, rows.correo,botones])
-         return([rows.id_cliente,rows.rfc,rows.empresa,rows.nombre,rows.apellido, rows.correo1, rows.correo2, rows.telefono1, rows.telefono2,botonesEditar,eliminar,dataClientes])
+          modal= <div>
+          <MDBContainer>
+          <MDBBtn onClick={this.toggle}>Modal</MDBBtn>
+          <MDBModal isOpen={this.state.modal} toggle={this.toggle} size="lg">
+            <MDBModalHeader toggle={this.toggle}>Editar Datos del Cliente</MDBModalHeader>
+            <MDBContainer>
+            <MDBRow>
+              <MDBCol>
+                <MDBCard>
+              <form>
+                
+            <Row  >
+            <Col xs="6">        
+              <MDBInput label="RFC" icon="pencil-alt" group type="text" validate error="wrong"
+                success="right" />
+            </Col>
+            <Col xs="6">
+              <MDBInput label="Razón social" icon="user-tie"  group type="text" validate error="wrong"
+                success="right" /></Col>
+          </Row>
+          <Row>
+          <Col xs="6">       
+              <MDBInput label="Nombre" icon="user"  group type="text" validate error="wrong"
+                success="right" />
+            </Col>
+            <Col xs="6">
+              <MDBInput label="Apellidos" group type="text" validate error="wrong"
+                success="right" /></Col>
+          </Row>
+          <Row>
+          <Col xs="6">       
+              <MDBInput label="Correo1" icon="envelope" group type="text" validate error="wrong"
+                success="right" />
+            </Col>
+            <Col xs="6">
+              <MDBInput label="Correo2" icon="envelope"  group type="text" validate error="wrong"
+                success="right" /></Col>
+          </Row>
+          <Row>
+          <Col xs="6">       
+              <MDBInput label="Teléfono1" icon="phone" group type="text" validate error="wrong"
+                success="right" />
+            </Col>
+            <Col xs="6">
+              <MDBInput label="Teléfono2" icon="phone" group type="text" validate error="wrong"
+                success="right" /></Col>
+          </Row>
+
+          <div className="text-center">
+              <MDBBtn color="info" type="submit">                   
+                Guardar
+              </MDBBtn>
+              <MDBBtn
+                color="danger"
+                onClick={this.onClear}
+                type="submit"
+              >
+              Borrar
+              </MDBBtn>                   
+          </div> 
+
+              
+          </form>
+         
+          </MDBCard>
+        </MDBCol>
+      </MDBRow>
+    </MDBContainer>
+  
+          </MDBModal>
+          </MDBContainer>
+          </div> 
+
+         return([rows.id_cliente,rows.rfc,rows.empresa,rows.nombre,rows.apellido, rows.correo1, rows.correo2, rows.telefono1, rows.telefono2,botonesEditar,eliminar,modal])
         })  
 
       const options={ 
@@ -223,8 +315,10 @@ let dataClientes ;
           data={data} 
           columns={columns} 
           options={options} 
-        />                
-      </div>    
+        />           
+      </div>  
+
+      
             </React.Fragment>
         )
     }

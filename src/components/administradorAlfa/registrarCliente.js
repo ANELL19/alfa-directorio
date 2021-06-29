@@ -3,14 +3,13 @@ import XLSX from 'xlsx'
 import {MDBCol} from "mdbreact";
 import axios from 'axios';
 import { DialogUtility } from '@syncfusion/ej2-popups';
-import { Alert } from 'reactstrap';
-import { Button as Boton, Modal, ModalBody,ModalHeader} from 'reactstrap';
-import {MDBRow,  MDBModal, MDBModalBody, MDBModalFooter ,MDBContainer, MDBBtn} from 'mdbreact';
+import Alert from '@material-ui/lab/Alert';
+import {MDBRow, MDBContainer, MDBBtn,MDBCard, MDBCardImage, MDBAlert } from 'mdbreact';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'mdbreact/dist/css/mdb.css';
 import Paper from '@material-ui/core/Paper';
-import { Button, Card, CardBody, CardText, CardGroup, CardTitle } from 'reactstrap';
+
 
 //modal
   const ModalPrueba = (props) => {
@@ -27,23 +26,35 @@ import { Button, Card, CardBody, CardText, CardGroup, CardTitle } from 'reactstr
 
 	return (
 	<React.Fragment>
-	  {/* <div>		 */}
-		<MDBContainer  style={{ marginTop:"10%"}} >  
-		<center>                         
-		<MDBCol md="6" >
-		<Paper> 
-		<ModalHeader>Cargar Clientes</ModalHeader>		
-		  <ModalBody>			  
-		  <SheetJSApp/> 
-		    <center>
-		  	Si aún no tiene el formato legible para su BD descárgela <a href="https://drive.google.com/file/d/1NSKcw--1sLMcu6zPrrCvBJe1JDk2M8va/view?usp=sharing" target="_blank" >aquí.</a>
-			</center>
-		 </ModalBody>		
-		 </Paper>
-		 </MDBCol>
-		 </center>  
-		 </MDBContainer>		
-	  {/* </div> */}
+
+<MDBContainer style={{ marginTop: "2%" }}>
+          <Paper>
+            <MDBRow>
+              <MDBCol size="5">
+                <MDBCard style={{ width: "100%" }}>
+                  <MDBCardImage
+                    className="img-fluid"
+                    src="https://images.pexels.com/photos/4065864/pexels-photo-4065864.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+                    waves
+                  />
+                </MDBCard>
+              </MDBCol>
+              <MDBCol size="6" style={{ marginTop: "5%" }}>
+			  <MDBAlert color="primary" className="text-center">
+                  <h4>Registrar Masivo de Cliente</h4>
+              </MDBAlert>
+			 
+			  <Alert  style={{marginTop:"10%"}}severity="warning">Por favor seleccione su base de datos, Puede cargar archivos ("xlsx","csv")</Alert>
+				  <div>                   
+                      <MDBCol>
+					  <SheetJSApp /> 
+                     </MDBCol>                    
+                  </div>                  
+               
+              </MDBCol>
+            </MDBRow>
+          </Paper>
+        </MDBContainer>		
 	  </React.Fragment>	
 	);
   }
@@ -157,7 +168,10 @@ class SheetJSApp extends React.Component {
 					<DataInput handleFile={this.handleFile} />
                     <MDBCol className=" text-center mt-2 pt-2 " >
                     <MDBBtn className="boton" disabled={!this.state.data.length}  color="info" type="submit" onClick={this.onSubmitBtn} >Cargar </MDBBtn>					
-					</MDBCol> 		
+					</MDBCol> 
+					<center>
+						Si aún no tiene el formato legible para su BD descárgela <a href="https://drive.google.com/file/d/1NSKcw--1sLMcu6zPrrCvBJe1JDk2M8va/view?usp=sharing" target="_blank" >aquí.</a>
+						</center>		
 				    </div> 
 				</div>
 			</DragDropFile>	
@@ -198,15 +212,13 @@ class SheetJSApp extends React.Component {
 		};
 
 		render() {
-			return (
-				
-				<form>
-					<div className="form-group">												
-						<Alert color="primary">Por favor seleccione su base de datos, Puede cargar archivos ("xlsx","csv")</Alert> 
-						<input type="file" className="form-control" id="file" accept={SheetJSFT} onChange={this.handleChange} />					    
+			return (			
+				<form> 
+					<div class="file-input" style={{marginTop:"10%"}}>	
+				     	<input  color="blue" type="file"  id="file" accept={SheetJSFT} onChange={this.handleChange} />					    
+						<br></br>			
 					</div>
-					</form>
-				
+					</form>				
 			);
 		};
 	}
