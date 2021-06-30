@@ -1,26 +1,29 @@
 import React,{Component} from 'react'
 import MUIDataTable from "mui-datatables";
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import {MDBBtn, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter, 
-       MDBCard, MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText,MDBInput, MDBCol , MDBContainer,MDBRow,MDBIcon} from 'mdbreact'
-       import { Button, Tooltip } from 'antd';
-import { SearchOutlined,
-         DeleteOutlined } from '@ant-design/icons';
-import {Table, ModalBody,Row,Col} from 'reactstrap';
+import { DialogUtility } from '@syncfusion/ej2-popups';
+import {MDBBtn, MDBModal, MDBModalHeader,MDBCard,MDBInput,MDBCol,MDBContainer,MDBRow,MDBIcon} from 'mdbreact'
+import { Button } from 'antd';
+import {Row,Col} from 'reactstrap';
 import {API} from '../Graphql/Graphql'
 import axios from 'axios'
-import { Form } from 'react-final-form';
-
 
 class Tablas extends Component{
-
   constructor(props){
     super(props)
     this.state={      
       tablas:[],          
       peticionApi:[],
       detallesEditarCliente:[],
-      modal: false
+      modal: false,
+      id_cliente:" ",
+      rfc:" ",
+      empresa:" ",
+      nombre:" ",
+      apellido:" ",
+      correo1:" ",
+      correo2:" ",
+      telefono1:" ",
+      telefono2:" "
       }    
   }
 
@@ -30,9 +33,17 @@ class Tablas extends Component{
     });
   }
 
+  onChangeInput = (e) => {
+    console.log("eventoonChange", e);
+    const { id, value } = e.target;
+    this.setState({
+      [id]: value
+    });
+  };
+
+  
   async componentWillMount(){
-    let array =  []
-    let arrayApi =  []
+    let array =  []    
 
      await axios({
             url:API,
@@ -49,8 +60,7 @@ class Tablas extends Component{
                     correo1
                     correo2
                     telefono1 
-                    telefono2                  
-                     
+                    telefono2   
                     } 
                 }
                 `
@@ -60,8 +70,9 @@ class Tablas extends Component{
              console.log("LA DATA de clientes",datos)
              array.push(datos.data.data.getTablaClientes)
              console.log("email",datos.data.data.getTablaClientes)
-              this.setState({tablas:datos.data.data.getTablaClientes})
+              this.setState({tablas:datos.data.data.getTablaClientes})             
             })
+
             .catch(err=>{
                console.log('error' ,err.response)
             })
@@ -81,6 +92,7 @@ class Tablas extends Component{
 
     datosIndividialesClientes(id){
       console.log("idRecibido", id)
+      console.log("el array",id.id_cliente) 
       axios({
         url:API,
         method:'post',
@@ -96,56 +108,146 @@ class Tablas extends Component{
                 correo1
                 correo2
                 telefono1 
-                telefono2      
-                 
+                telefono2 
                  } 
             }
             `
         }   
          })
        .then(response=>{
-        //  console.log("esto es response",response)
-         let array = [];
+          if(response){
+            let array = [];
          array.push("response de array",response)        
-          this.setState({detallesEditarCliente:array})    
+          this.setState({detallesEditarCliente:array})  
+          
+      
+
+      // console.log("id_cliente",id.id_cliente) 
+      // console.log("rfc_cliente",id.rfc)
+      // console.log("empresa_cliente",id.empresa) 
+      // console.log("nombre_cliente",id.nombre) 
+      // console.log("apellidos_cliente",id.apellido) 
+      // console.log("correo1_cliente",id.correo1)
+      // console.log("correo2_cliente",id.correo2)
+      // console.log("telefono1_cliente",id.telefono1)
+      // console.log("telefon2_cliente",id.telefono2)
+
+      
+        localStorage.setItem("id_cliente",id.id_cliente )     
+        localStorage.setItem("rfc_cliente",id.rfc)               
+        localStorage.setItem("razonSocial_cliente",id.empresa)   
+        localStorage.setItem("nombre_cliente",id.nombre) 
+        localStorage.setItem("apellidos_cliente",id.apellido)
+        localStorage.setItem("correo1_cliente",id.correo1)      
+        localStorage.setItem("correo2_cliente",id.correo2)                                
+        localStorage.setItem("telefono1_cliente",id.telefono1)
+        localStorage.setItem("telefono2_cliente",id.telefono2)
+          this.setState({
+            modal: !this.state.modal
+          }); 
+          }
+        //  console.log("esto es response",response)          
         //  console.log("array de id",array[1].data.data.getTablaClientes)
         //  console.log("estado",this.state.detallesEditarCliente.id_cliente)   
-        // localStorage.setItem("id_cliente",this.state.tablas.id_cliente )     
-        // localStorage.setItem("rfc_cliente",this.state.getTablaClientes[0].rfc)               
-        // localStorage.setItem("razonSocial",this.state.detallesIdCotizaciones[0].razonSocial)   
-        // localStorage.setItem("nombre_cliente",this.state.detallesIdCotizaciones[0].nombre) 
-        // localStorage.setItem("apellidos_cliente",this.state.detallesIdCotizaciones[0].apellidos)
-        // localStorage.setItem("correo1",this.state.detallesIdCotizaciones[0].correo1)                                    
-        // localStorage.setItem("telefono1",this.state.detallesIdCotizaciones[0].telefono1)
-        // localStorage.setItem("servicio",this.state.detallesIdCotizaciones[0].servicio)
-        // localStorage.setItem("precio",this.state.detallesIdCotizaciones[0].precio)                                    
-        // localStorage.setItem("iva",this.state.detallesIdCotizaciones[0].iva)
-        // localStorage.setItem("total",this.state.detallesIdCotizaciones[0].total)
-        // localStorage.setItem("promocion",this.state.detallesIdCotizaciones[0].promocion)
-        // localStorage.setItem("vendedor",this.state.detallesIdCotizaciones[0].vendedor)
-        // localStorage.setItem("fecha",this.state.detallesIdCotizaciones[0].fecha)
+       
           //  if(this.state.detallesIdCotizaciones[0]){
           //    this.setState({tablaInicial:false})
           //    this.setState({renderPDF:true})
-          //  }
-         
+          //  }       
         
     })
      .catch(err=>{
               console.log('error',err.response)
       }) 
-
     }
 
-    toggle = () => {
-      this.setState({
-        modal: !this.state.modal
-      });
+    deleteCliente(id){
+      console.log("idRecibido delite", id)
+      // console.log("id_cliente",id_cliente)
+
+      axios({
+        url:API,
+        method:'post',
+        data:{
+            query:`
+            mutation{
+              deleteCliente(data:"${[id]}"){
+                id_cliente
+                rfc
+                razonSocial
+                nombre
+                apellido
+                correo1
+                correo2
+                telefono1 
+                telefono2 
+                 } 
+            }
+            `
+        }   
+         })
+       .then(response=>{
+         console.log("response de delite",response)          
+          window.location.reload()    
+    })
+     .catch(err=>{
+              console.log('error',err.response)
+      })
     }
 
+    onSubmitBtn = (e) => {
+      e.preventDefault();
+    
   
+      //  let id_cliente = localStorage.getItem("id_cliente" )     
+       let rfc = localStorage.getItem("rfc_cliente")               
+       let empresa_cliente = localStorage.getItem("razonSocial_cliente")   
+       let nombre_cliente = localStorage.getItem("nombre_cliente") 
+       let apellidos_cliente =localStorage.getItem("apellidos_cliente")
+       let corre1_cliente = localStorage.getItem("correo1_cliente")      
+       let corre2_cliente = localStorage.getItem("correo2_cliente")                                
+       let telefono1_cliente = localStorage.getItem("telefono1_cliente")
+       let telefono2_cliente = localStorage.getItem("telefono2_cliente")
 
-    render(){    
+          console.log("data a enviar ",rfc,empresa_cliente)
+  
+         axios({
+        url: API,
+        method: "post",
+        data: {
+          query: `
+                  mutation{
+                    updateCliente(data:"${[rfc.toUpperCase(),empresa_cliente.toUpperCase(),nombre_cliente.toUpperCase(),apellidos_cliente.toUpperCase(),corre1_cliente,corre2_cliente,telefono1_cliente,telefono2_cliente]}"){           
+                   
+                      message
+                       } 
+                  }
+                  `
+        }
+      })
+        .then((response) => {     
+          console.log("response de update",response)
+          DialogUtility.alert({
+            title: "Registro exitoso"
+          });
+          
+        })
+        .catch((err) => {
+          console.log("error", err.response);
+        });    
+    };
+
+    render(){ 
+      // let id_cliente = localStorage.getItem("id_cliente" )     
+      let rfc = localStorage.getItem("rfc_cliente")               
+      let empresa_cliente = localStorage.getItem("razonSocial_cliente")   
+      let nombre_cliente = localStorage.getItem("nombre_cliente") 
+      let apellidos_cliente =localStorage.getItem("apellidos_cliente")
+      let corre1_cliente = localStorage.getItem("correo1_cliente")      
+      let corre2_cliente = localStorage.getItem("correo2_cliente")                                
+      let telefono1_cliente = localStorage.getItem("telefono1_cliente")
+      let telefono2_cliente = localStorage.getItem("telefono2_cliente")
+        
 
       // console.log("arrayApi" ,this.state.peticionApi)
       // let filtrar;
@@ -154,89 +256,134 @@ class Tablas extends Component{
       // })
       // console.log("filtrar" , filtrar)
  let modal;
-    
-let botonesEditar;
-let eliminar;
 
-let dataClientes ;
-dataClientes = this.state.detallesEditarCliente.map(rows =>{
-  console.log("esto es rows de dataClientes",rows)
-  botonesEditar=<Button type="primary" shape="circle" size="large"  onClick={e=>this.datosIndividialesClientes(rows.id_cliente)}> <MDBIcon icon="pencil-alt" /></Button>
-
-   
-})
-    const columns = ["Id_Cliente","RFC","Empresa","Nombre","Apellidos","Correo1","Correo2","Teléfono1","Teléfono2","Editar","Eliminar","Boton MOdal"];
-     const data = this.state.tablas.map((rows,i)=>{
-
-      botonesEditar=
-      <Button type="primary" shape="circle" size="large" onClick={e=>this.datosIndividialesClientes(rows)}>
-         <MDBIcon icon="pencil-alt" />
-      </Button>
-
-      
-  eliminar= <Button type="danger" shape="circle" size="large" > <MDBIcon far icon="trash-alt" /></Button>
-      // botonesEditar = this.state.tablas.map(rows=>{
-        // console.log("esto es rows",rows)
-        // }) 
-
-        // botonesEditar=<Button type="primary" shape="circle" size="large"  onClick={e=>this.datosIndividialesClientes(rows.id_cliente)}> <MDBIcon icon="pencil-alt" /></Button>
-        // eliminar= <Button type="danger" shape="circle" size="large" > <MDBIcon far icon="trash-alt" /></Button>
-        // dataClientes = this.state.detallesEditarCliente.map(rows =>{
-          // console.log("esto es rows de dataClientes",rows)
-          //  botonesEditar=<Button type="primary" shape="circle" size="large"  onClick={e=>this.datosIndividialesClientes(rows.id_cliente)}> <MDBIcon icon="pencil-alt" /></Button>
-        
-          //  eliminar= <Button type="danger" shape="circle" size="large" > <MDBIcon far icon="trash-alt" /></Button>
-            
-        // })
-        // let botones = <MDBBtn color ="info" size="sm" onClick={(e)=>this.modal()}> datos cliente </MDBBtn>
-          
-        //  return([rows.id_cliente,rows.nombre_cliente, rows.apellidos_cliente, rows.curp, rows.rfc, rows.nombreEmpresa, rows.telefono, rows.correo,botones])
-          modal= <div>
+     modal= <div>
           <MDBContainer>
-          <MDBBtn onClick={this.toggle}>Modal</MDBBtn>
           <MDBModal isOpen={this.state.modal} toggle={this.toggle} size="lg">
             <MDBModalHeader toggle={this.toggle}>Editar Datos del Cliente</MDBModalHeader>
             <MDBContainer>
             <MDBRow>
               <MDBCol>
                 <MDBCard>
-              <form>
+              <form onSubmit={this.onSubmitBtn}>
                 
             <Row  >
-            <Col xs="6">        
-              <MDBInput label="RFC" icon="pencil-alt" group type="text" validate error="wrong"
-                success="right" />
+            <Col xs="4">        
+            <label htmlFor="defaultFormLoginPasswordEx" > <strong>RFC: </strong></label>
+                       <input                                              
+                            id="rfc"
+                            type="text"
+                            name="rfc"
+                            onChange={this.onChangeInput}
+                            // value={this.state.pass}
+                            defaultValue={rfc}
+                            required
+                            className="form-control"
+                            // value={this.state.rfc}
+                            />
             </Col>
             <Col xs="6">
-              <MDBInput label="Razón social" icon="user-tie"  group type="text" validate error="wrong"
-                success="right" /></Col>
+            <label htmlFor="defaultFormLoginPasswordEx" > <strong>razón Social: </strong></label>
+                       <input                                              
+                            id="razonSocial"
+                            type="text"
+                            name="razonSocial"
+                            onChange={this.onChangeInput}
+                            // value={this.state.pass}
+                            defaultValue={empresa_cliente}
+                            required
+                            className="form-control"
+                            // value={this.state.RazonSocial}
+                            /></Col>
           </Row>
           <Row>
           <Col xs="6">       
-              <MDBInput label="Nombre" icon="user"  group type="text" validate error="wrong"
-                success="right" />
+          <label htmlFor="defaultFormLoginPasswordEx" > <strong>nombre: </strong></label>
+                       <input                                              
+                            id="nombre"
+                            type="text"
+                            name="nombe"
+                            onChange={this.onChangeInput}
+                            // value={this.state.pass}
+                            defaultValue={nombre_cliente}
+                            required
+                            className="form-control"
+                            // value={this.state.nombre}
+                            />
             </Col>
             <Col xs="6">
-              <MDBInput label="Apellidos" group type="text" validate error="wrong"
-                success="right" /></Col>
+            <label htmlFor="defaultFormLoginPasswordEx" > <strong>Apellidos: </strong></label>
+                       <input                                              
+                            id="apellido"
+                            type="text"
+                            name="apellido"
+                            onChange={this.onChangeInput}
+                            // value={this.state.pass}
+                            defaultValue={apellidos_cliente}
+                            required
+                            className="form-control"
+                            // value={this.state.apellido}
+                            />
+              
+              </Col>
           </Row>
           <Row>
           <Col xs="6">       
-              <MDBInput label="Correo1" icon="envelope" group type="text" validate error="wrong"
-                success="right" />
+          <label htmlFor="defaultFormLoginPasswordEx" > <strong>correo 1: </strong></label>
+                       <input                                              
+                            id="correo1"
+                            type="email"
+                            name="correo1"
+                            onChange={this.onChangeInput}
+                            // value={this.state.pass}
+                            defaultValue={corre1_cliente}
+                            required
+                            className="form-control"
+                            // value={this.state.correo1}
+                            />
             </Col>
             <Col xs="6">
-              <MDBInput label="Correo2" icon="envelope"  group type="text" validate error="wrong"
-                success="right" /></Col>
+            <label htmlFor="defaultFormLoginPasswordEx" > <strong>Correo 2: </strong></label>
+                       <input                                              
+                            id="correo2"
+                            type="email"
+                            name="correo2"
+                            onChange={this.onChangeInput}
+                            // value={this.state.pass}
+                            defaultValue={corre2_cliente}                           
+                            className="form-control"
+                            // value={this.state.correo2}
+                            />
+              </Col>
           </Row>
           <Row>
           <Col xs="6">       
-              <MDBInput label="Teléfono1" icon="phone" group type="text" validate error="wrong"
-                success="right" />
+          <label htmlFor="defaultFormLoginPasswordEx" > <strong>Telefono 1: </strong></label>
+                       <input                                              
+                            id="telefono1"
+                            type="text"
+                            name="telefono1"
+                            onChange={this.onChangeInput}
+                            // value={this.state.pass}
+                            defaultValue={telefono1_cliente}
+                            required
+                            className="form-control"
+                            // value={this.state.telefono1}
+                            />
             </Col>
             <Col xs="6">
-              <MDBInput label="Teléfono2" icon="phone" group type="text" validate error="wrong"
-                success="right" /></Col>
+            <label htmlFor="defaultFormLoginPasswordEx" > <strong>Telefono 2: </strong></label>
+                       <input                                              
+                            id="telefono2"
+                            type="text"
+                            name="telefono2"
+                            onChange={this.onChangeInput}
+                            // value={this.state.pass}
+                            defaultValue={telefono2_cliente}                            
+                            className="form-control"
+                            // value={this.state.telefono2}
+                            />
+             </Col>
           </Row>
 
           <div className="text-center">
@@ -248,7 +395,7 @@ dataClientes = this.state.detallesEditarCliente.map(rows =>{
                 onClick={this.onClear}
                 type="submit"
               >
-              Borrar
+              Cancelar
               </MDBBtn>                   
           </div> 
 
@@ -263,10 +410,34 @@ dataClientes = this.state.detallesEditarCliente.map(rows =>{
           </MDBModal>
           </MDBContainer>
           </div> 
+    
+      let botonesEditar;
+      let eliminar;
+      let data;
 
-         return([rows.id_cliente,rows.rfc,rows.empresa,rows.nombre,rows.apellido, rows.correo1, rows.correo2, rows.telefono1, rows.telefono2,botonesEditar,eliminar,modal])
+    const columns = ["Id_Cliente","RFC","Empresa","Nombre","Apellidos","Correo1","Correo2","Teléfono1","Teléfono2","Editar","Eliminar"];
+    
+     data = this.state.tablas.map((rows,i)=>{    
+      
+      botonesEditar=        
+      <div>
+        <Button type="primary" shape="circle" size="large" onClick={e=>this.datosIndividialesClientes(rows)}>
+          <MDBIcon icon="pencil-alt" />
+        </Button>
+      </div>
+
+      eliminar= 
+      <div> 
+        <Button type="danger" shape="circle" size="large" onClick={(e) => { if (window.confirm('¿Está seguro de Eliminar este Cliente?, Los datos se perderán')) this.deleteCliente(rows.id_cliente)} } >
+          <i class="far fa-trash-alt"></i>
+        </Button>
+      </div>
+
+
+         return([rows.id_cliente,rows.rfc,rows.empresa,rows.nombre,rows.apellido, rows.correo1, rows.correo2, rows.telefono1, rows.telefono2,botonesEditar,eliminar])
         })  
 
+      
       const options={ 
         filterType:"drowpdawn",
         responsive: "stacked",
@@ -309,16 +480,15 @@ dataClientes = this.state.detallesEditarCliente.map(rows =>{
       } 
         return(
             <React.Fragment>
-     <div  style={{width:"100%",marginTop:"1%",marginBottom:"2%"}} >               
-        <MUIDataTable  
-          title={"tabla clientes"} 
-          data={data} 
-          columns={columns} 
-          options={options} 
-        />           
-      </div>  
-
-      
+          <div  style={{width:"100%",marginTop:"1%",marginBottom:"2%"}} >               
+              <MUIDataTable  
+                title={"tabla clientes"} 
+                data={data} 
+                columns={columns} 
+                options={options}          
+              /> 
+            </div>  
+            {modal}      
             </React.Fragment>
         )
     }
