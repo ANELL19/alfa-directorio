@@ -75,7 +75,8 @@ class SheetJSApp extends React.Component {
 	onSubmitBtn = async (e)=>{
          e.preventDefault();  
 		const API='http://localhost:4000/graphql' 
-		// const id_admin= localStorage.getItem("id_admin") 
+		// const fk_empresa= localStorage.getItem("fk_empresa") 
+		// console.log("fk_empresa",fk_empresa)
 		 console.log(" datos " , this.state.data)
 		 let increment = 0;
 		 let message  = [];
@@ -84,7 +85,7 @@ class SheetJSApp extends React.Component {
 				 increment = 1
 			 }
 
-			 var estado = this.state.data[i]
+			 var estado = this.state.data[i]		
 			const query = `
 			mutation{
 				 insertClientes(data:["${estado}"]){
@@ -114,9 +115,9 @@ class SheetJSApp extends React.Component {
 					title: 'Aviso!',
 					position: "fixed"
 				});
-				setTimeout(()=>{
-					window.location.reload()
-				},3000)		
+				// setTimeout(()=>{
+				// 	window.location.reload()
+				// },3000)		
 			}else if(message[0] == undefined){
 				DialogUtility.alert({
 					animationSettings: { effect: 'Zoom' },           

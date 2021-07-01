@@ -392,7 +392,7 @@ class Tablas extends Component{
               </MDBBtn>
               <MDBBtn
                 color="danger"
-                onClick={this.onClear}
+                onClick={this.toggle}
                 type="submit"
               >
               Cancelar

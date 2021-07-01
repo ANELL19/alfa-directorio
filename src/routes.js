@@ -33,6 +33,7 @@ import Agregar from './components/paneldeConection/botonAgregar'
 
 
 import cliente from './components/administradorAlfa/signupClientes'
+import checkbox from './components/paneldeConection/check'
 
 
 class App extends Component{
@@ -52,6 +53,7 @@ render(){
 
       {/* <PrivateRouteAdminAlfa exact path= "/dasboardAdmin" component= {dasboardAdmin}/> */}
       <Route  exact path = "/boton" component={Agregar}/>
+      <Route  exact path = "/check" component={checkbox}/>
       
 
 
