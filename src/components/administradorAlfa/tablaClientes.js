@@ -1,7 +1,7 @@
 import React,{Component} from 'react'
 import MUIDataTable from "mui-datatables";
 import { DialogUtility } from '@syncfusion/ej2-popups';
-import {MDBBtn, MDBModal, MDBModalHeader,MDBCard,MDBInput,MDBCol,MDBContainer,MDBRow,MDBIcon} from 'mdbreact'
+import {MDBBtn, MDBModal, MDBModalHeader,MDBCard,MDBCol,MDBContainer,MDBRow,MDBIcon} from 'mdbreact'
 import { Button } from 'antd';
 import {Row,Col} from 'reactstrap';
 import {API} from '../Graphql/Graphql'

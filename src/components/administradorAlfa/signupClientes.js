@@ -1,24 +1,12 @@
-
 import React, { Component } from "react";
 import Paper from "@material-ui/core/Paper";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap-css-only/css/bootstrap.min.css";
 import "mdbreact/dist/css/mdb.css";
 import { DialogUtility } from '@syncfusion/ej2-popups';
-import {  MDBFormInline } from "mdbreact";
-import { CardBody, Label, Form, Row, Col, Alert, Button } from "reactstrap";
-import {
-  MDBContainer,
-  MDBRow,
-  MDBCol,
-  MDBBtn,
-  MDBInput,
-  MDBModalHeader,
-  MDBCard,
-  MDBAlert,
-  MDBIcon
-} from "mdbreact";
-import { MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText } from "mdbreact";
+import {  Form, Row } from "reactstrap";
+import { MDBContainer,MDBRow,MDBCol,MDBBtn,MDBInput,MDBCard,MDBAlert } from "mdbreact";
+import { MDBCardImage } from "mdbreact";
 import axios from "axios";
 import { API } from "../Graphql/Graphql";
 

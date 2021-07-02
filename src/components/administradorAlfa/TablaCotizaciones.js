@@ -9,7 +9,7 @@ import imagen from '../imagen/encabezado.JPG'
 import titulo1 from  '../imagen/titulo1.png'
 import { Container, Paper } from '@material-ui/core';
 import { PDFExport } from '@progress/kendo-react-pdf';
-import { Button, Tooltip } from 'antd';
+import { Button } from 'antd';
 
 
 class TablaCotizaciones extends Component{

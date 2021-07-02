@@ -5,16 +5,7 @@ import "bootstrap-css-only/css/bootstrap.min.css";
 import "mdbreact/dist/css/mdb.css";
 import { DialogUtility } from '@syncfusion/ej2-popups';
 import {  Label, Form, Row} from "reactstrap";
-import {
-  MDBContainer,
-  MDBRow,
-  MDBCol,
-  MDBBtn,
-  MDBInput,
-  MDBCard,
-  MDBAlert,
-  MDBIcon
-} from "mdbreact";
+import { MDBContainer,MDBRow,MDBCol,MDBBtn,MDBInput,MDBCard,MDBAlert,MDBIcon } from "mdbreact";
 import { MDBCardImage } from "mdbreact";
 import axios from "axios";
 import { API } from "../Graphql/Graphql";

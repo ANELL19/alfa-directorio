@@ -1,25 +1,9 @@
 import React, {Component}from 'react'
-import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
 import  './sidenavbar.css';
 import { Layout, Menu } from 'antd';
-import {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-  CloudUploadOutlined,
-  UsergroupAddOutlined,
-  DesktopOutlined,
-  DollarOutlined,
-  OrderedListOutlined,
-  CloseOutlined,  
-  FilePdfOutlined,
-  SolutionOutlined 
- 
-} from '@ant-design/icons';
-import { Avatar } from 'antd';
+import { MenuUnfoldOutlined,MenuFoldOutlined,CloudUploadOutlined,DesktopOutlined,DollarOutlined,OrderedListOutlined,
+  CloseOutlined,FilePdfOutlined,SolutionOutlined } from '@ant-design/icons';
 import TablaClientes from './tablaClientes'
 import TablaEventos from './eventosEvenbrite'
 import CargarClientes from './registrarCliente'
@@ -27,13 +11,7 @@ import Cotizaciones from './cotizaciones'
 import TablaCotizacion from './TablaCotizaciones'
 import Cliente from './signupClientes'
 import ADS from '../imagen/ADS.png'
-import MUIDataTable from "mui-datatables";
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import {MDBBtn, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter, 
-       MDBCard, MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText, MDBCol , MDBContainer,MDBRow} from 'mdbreact'
-import { Button,Table, ModalBody,} from 'reactstrap';
-import {API} from '../Graphql/Graphql'
-import axios from 'axios'
+
 
 const { Header, Sider, Content } = Layout;
 

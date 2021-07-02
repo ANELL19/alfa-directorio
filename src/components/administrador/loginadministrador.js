@@ -1,18 +1,15 @@
 import React from 'react'
-import {MDBBtn,MDBCard,MDBCardBody,MDBCardFooter,MDBAlert,MDBView,MDBContainer,MDBModalHeader} from 'mdbreact';
-import {Form,Field } from 'react-final-form';
+import { MDBBtn,MDBCardBody,MDBAlert,MDBView,MDBContainer,MDBModalHeader } from 'mdbreact';
+import { Form,Field } from 'react-final-form';
 import { TextField } from 'final-form-material-ui';
-import {Grid  } from '@material-ui/core';
+import { Grid  } from '@material-ui/core';
 import '@fortawesome/fontawesome-free/css/all.min.css';
  import'bootstrap-css-only/css/bootstrap.min.css'; 
 import'mdbreact/dist/css/mdb.css';
 import { DialogUtility } from '@syncfusion/ej2-popups';
-import {   MDBCardTitle, MDBCol } from 'mdbreact';
-import { Height } from '@material-ui/icons';
-import { align } from '@progress/kendo-drawing';
+import { MDBCol } from 'mdbreact';
 import Paper from '@material-ui/core/Paper';
-import style from './style.css'
-import { Button, Card, CardBody, CardText, CardGroup, CardTitle } from 'reactstrap';
+import { Button } from 'reactstrap';
 import Navbar from '../paneldeConection/navbar'
 
   function onSubmit (values) {

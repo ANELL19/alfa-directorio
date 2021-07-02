@@ -3,15 +3,12 @@ import React,{Component} from 'react'
 import '@fortawesome/fontawesome-free/css/all.min.css';
  import'bootstrap-css-only/css/bootstrap.min.css'; 
 import'mdbreact/dist/css/mdb.css';
-import {  MDBRow, MDBCol, MDBInput, MDBBtn,MDBAlert, MDBCard,MDBCardBody, MDBView,MDBContainer,MDBIcon} from 'mdbreact';
-import Paper from '@material-ui/core/Paper';
+import {  MDBRow, MDBCol, MDBInput, MDBBtn, MDBCard,MDBCardBody, MDBView} from 'mdbreact';
 import { DialogUtility } from '@syncfusion/ej2-popups';
-import {Form,FormGroup,Label,Col,Input} from 'reactstrap';
+import { Form } from 'reactstrap';
 import index from "./index.css"
 import {API} from '../Graphql/Graphql'
 import { Avatar } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
-import TextField from '@material-ui/core/TextField';
 
 class loginAdminAlfa extends Component{
     constructor(props){

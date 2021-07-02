@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import { MDBBtn, MDBModalBody} from 'mdbreact';
-import { MDBModal,  MDBModalHeader, MDBModalFooter,MDBContainer} from 'mdbreact';
+import { MDBModal,  MDBModalHeader, MDBModalFooter} from 'mdbreact';
 import Navbar from './navbar'
 import MUIDataTable from "mui-datatables";
 import axios from 'axios'

@@ -1,11 +1,7 @@
 import React,{Component} from 'react'
 import MUIDataTable from "mui-datatables";
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import {MDBBtn, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter, 
-       MDBCard, MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText, MDBCol , MDBContainer,MDBRow} from 'mdbreact'
-import { Button, Tooltip } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
-import { Table, ModalBody,} from 'reactstrap';
+import {MDBBtn,MDBCard,MDBCardBody,MDBCardImage,MDBCardTitle,MDBCol,MDBRow } from 'mdbreact'
+import { Button } from 'antd';
 import {API} from '../Graphql/Graphql'
 import axios from 'axios'
 class Tablas extends Component{

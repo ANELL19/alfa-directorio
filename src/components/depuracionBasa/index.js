@@ -1,12 +1,10 @@
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'mdbreact/dist/css/mdb.css';
-
 import MUIDataTable from "mui-datatables";
 import React, { Component } from 'react';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import Button from '@material-ui/core/Button';
- 
+import Button from '@material-ui/core/Button'; 
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 //import ReactExport from "react-export-excel";
 
