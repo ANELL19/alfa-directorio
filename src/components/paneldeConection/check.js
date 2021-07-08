@@ -1,148 +1,122 @@
-import React, {Component} from 'react';
 
-import Checkbox from '@material-ui/core/Checkbox';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
-import Cotizacion  from '../administradorAlfa/cotizaciones'
-import FPolizas from '../administradorAlfa/generarPolizas'
-import PolizasYServicios from '../administradorAlfa/generarPolizayYServicio'
-import { BrowserRouter } from 'react-router-dom';
-import { MDBNav, MDBNavLink, MDBContainer, MDBRow, MDBCol } from "mdbreact";
-import { MDBBtn, MDBCard, MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText,MDBIcon} from 'mdbreact';
-import { throwStatement } from '@babel/types';
+// import React, { Component } from 'react'
 
+// import ReactDOM from "react-dom";
+// import {
+//     Form,
+//     Input,
+//     Button,
+//     Radio,
+//     Select,
+//     Cascader,
+//     DatePicker,
+//     InputNumber,
+//     TreeSelect,
+//     Switch,
+//   } from 'antd';
 
-class check extends Component {
-    constructor(props){
-        super(props)
-        this.state={
-          cardInicio:true,
-          BotonPoliza:false,
-          BotonServicio:false,
-          BotonServicioandPoliza:false
-        }
-    }
+// import "bootstrap/dist/css/bootstrap.css";
+
+// class Check extends Component {
+  
+//     constructor(props) {
+//       super(props);
+//       this.state = {
+//         componentSize: " ",
+//          setComponentSize:" "
     
+//       }      
+//     }
 
-    card(){
-      this.setState({cardInicio:true})
-      this.setState({BotonPoliza:false})
-      this.setState({BotonServicio:false})
-      this.setState({BotonServicioandPoliza:false})
-    }
-
-    checkbox1(){
-      this.setState({cardInicio:false})
-      this.setState({BotonPoliza:true})
-      this.setState({BotonServicio:false})
-      this.setState({BotonServicioandPoliza:false})
-    }
-    checkbox2(){
-      this.setState({cardInicio:false})
-      this.setState({BotonPoliza:false})
-      this.setState({BotonServicio:true})      
-      this.setState({BotonServicioandPoliza:false})      
-    }
-    checkbox3(){
-      this.setState({cardInicio:false})
-      this.setState({BotonPoliza:false})
-      this.setState({BotonServicio:false})      
-      this.setState({BotonServicioandPoliza:true})
-      
-    }
-
-    render(){
-      let card;
-      let cotizacionesPoliza;
-      let cotizacionesServicio ;
-      let cotizacionServicioandPoliza;
-      if(this.state.cardInicio === true){
-        card=<div>
-            <MDBRow  style={{marginLeft:120, marginRight:20, marginTop:20,}} >
-         <MDBCol md="4" className="mb-3 " >          
-      <MDBCard style={{ width: "18rem" }}>
-        <MDBCardImage className="img-fluid"  onClick={e=>this.checkbox1()} src="https://images.pexels.com/photos/6801874/pexels-photo-6801874.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
-          waves />
-        <MDBCardBody>
-          <MDBCardTitle>Polizas</MDBCardTitle>
-          <MDBCardText></MDBCardText>
-          <MDBBtn onClick={e=>this.checkbox1()}><MDBIcon icon="pencil-alt" /> Realizar</MDBBtn>
-        </MDBCardBody>
-      </MDBCard>      
-    </MDBCol>
-
-    <MDBCol  md="4" className="mb-3 " >
-      <MDBCard style={{ width: "18rem" }}>
-        <MDBCardImage className="img-fluid" src="https://images.pexels.com/photos/7379/startup-photos.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
-          waves />
-        <MDBCardBody>
-          <MDBCardTitle>Servicios</MDBCardTitle>
-          <MDBCardText></MDBCardText>
-          <MDBBtn  onClick={e=>this.checkbox2()}><MDBIcon icon="pencil-alt" /> Realizar</MDBBtn>
-        </MDBCardBody>
-      </MDBCard>
-    </MDBCol>
-
-    <MDBCol   md="4" className="mb-3 ">
-      <MDBCard style={{ width: "18rem" }}> 
-        <MDBCardImage className="img-fluid" src="https://images.pexels.com/photos/669609/pexels-photo-669609.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
-          waves />
-        <MDBCardBody>
-          <MDBCardTitle>Polizas y Servicios</MDBCardTitle>
-          <MDBCardText></MDBCardText>
-          <MDBBtn  onClick={e=>this.checkbox3()}><MDBIcon icon="pencil-alt" /> Realizar</MDBBtn>
-        </MDBCardBody>
-      </MDBCard>
-    </MDBCol>
-    </MDBRow>
-
-        </div>
-      }
-
-       if(this.state.BotonPoliza === true){
+//      FormSizeDemo = () => {
        
-        cotizacionesPoliza = 
-        <div><FPolizas/></div>
-       }
+//        const onFormLayoutChange = ({ size }) => {
+//           setComponentSize(size);
+//         };
 
-       if(this.state.BotonServicio === true){      
-        cotizacionesServicio = 
-        <div><Cotizacion/></div>
-       }
 
-       if(this.state.BotonServicioandPoliza === true){      
-        cotizacionServicioandPoliza = 
-        <div><PolizasYServicios/></div>
-       }
-        return(
-      <React.Fragment> 
-        <div>     
-      <div>
-    <div class="custom-control custom-checkbox">
-        <input type="checkbox" class="custom-control-input" id="defaultUnchecked" onClick={e=>this.checkbox1()} />
-        <label class="custom-control-label" for="defaultUnchecked">Generar Polizas</label>
-      </div>
-    </div>       
-      <div class="custom-control custom-checkbox">
-        <input type="checkbox" class="custom-control-input" id="defaultIndeterminate" onClick={e=>this.checkbox2()}/>
-        <label class="custom-control-label" for="defaultIndeterminate">Generar Servicios</label>
-      </div>
-    </div>
-    <div>
-    <div class="custom-control custom-checkbox">
-        <input type="checkbox" class="custom-control-input" id="defaultUncheckedDisabled" onClick={e=>this.checkbox3()}/>
-        <label class="custom-control-label" for="defaultUncheckedDisabled">Generar Polizas y Servicios</label>
-      </div>
-    </div>
-    {card}
-    {cotizacionesPoliza}
-    {cotizacionesServicio}
-    {cotizacionServicioandPoliza}
-
-      </React.Fragment>
-        )
-    }
-}export default check
-
+    
+  
+    
+  
+//     render() {
+//       return (
+//         <Form
+//         labelCol={{
+//           span: 4,
+//         }}
+//         wrapperCol={{
+//           span: 14,
+//         }}
+//         layout="horizontal"
+//         initialValues={{
+//           size: componentSize,
+//         }}
+//         onValuesChange={this.onFormLayoutChange}
+//         size={componentSize}
+//       >
+//         <Form.Item label="Form Size" name="size">
+//           <Radio.Group>
+//             <Radio.Button value="small">Small</Radio.Button>
+//             <Radio.Button value="default">Default</Radio.Button>
+//             <Radio.Button value="large">Large</Radio.Button>
+//           </Radio.Group>
+//         </Form.Item>
+//         <Form.Item label="Input">
+//           <Input />
+//         </Form.Item>
+//         <Form.Item label="Select">
+//           <Select>
+//             <Select.Option value="demo">Demo</Select.Option>
+//           </Select>
+//         </Form.Item>
+//         <Form.Item label="TreeSelect">
+//           <TreeSelect
+//             treeData={[
+//               {
+//                 title: 'Light',
+//                 value: 'light',
+//                 children: [
+//                   {
+//                     title: 'Bamboo',
+//                     value: 'bamboo',
+//                   },
+//                 ],
+//               },
+//             ]}
+//           />
+//         </Form.Item>
+//         <Form.Item label="Cascader">
+//           <Cascader
+//             options={[
+//               {
+//                 value: 'zhejiang',
+//                 label: 'Zhejiang',
+//                 children: [
+//                   {
+//                     value: 'hangzhou',
+//                     label: 'Hangzhou',
+//                   },
+//                 ],
+//               },
+//             ]}
+//           />
+//         </Form.Item>
+//         <Form.Item label="DatePicker">
+//           <DatePicker />
+//         </Form.Item>
+//         <Form.Item label="InputNumber">
+//           <InputNumber />
+//         </Form.Item>
+//         <Form.Item label="Switch">
+//           <Switch />
+//         </Form.Item>
+//         <Form.Item label="Button">
+//           <Button>Button</Button>
+//         </Form.Item>
+//       </Form>
+      
+//       );
+//     }
+//   }
+//   export default Check

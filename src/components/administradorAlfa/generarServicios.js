@@ -56,14 +56,11 @@ class Servicios extends Component{
     //     this.props.history.push("/dahboardAlfa")
     // }  
     
-    cancelar(){
-        // window.location.reload();
+    cancelar(){      
          setTimeout(() => {
       window.location.reload();
     }); 
     } 
-
-   
     
     onChangeInput =(e)=>{
         const {id,value} = e.target;
@@ -109,7 +106,7 @@ class Servicios extends Component{
                 }   
                 }).then(response=>{
                 console.log( 'este es el response',response)
-                    if(response.data.data. insertCotizaciones.message=="registro exitoso"){                    
+                    if(response.data.data.insertCotizaciones.message=="registro exitoso"){                    
                   
                         DialogUtility.alert({
                             title:'registro exitoso' ,
@@ -213,14 +210,10 @@ class Servicios extends Component{
           
       });
        }
-     
-               
-  
          })
          .catch(err=>{
              console.log('error',err)
-         })   
-
+         })  
     }
     
 
@@ -229,7 +222,7 @@ class Servicios extends Component{
       let form;
       
         var f = new Date();     
-   let fecha=f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
+      let fecha=f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
    
         let iva = 16;
         let total
@@ -275,7 +268,7 @@ class Servicios extends Component{
     <MDBCard narrow style={{width:"80%",heigth:"60%"}}>                          
           <MDBAlert color="success" className="h5 text-center mb-4" >  <CardTitle>
 
-<Button close />
+{/* <Button close  /> */}
 
 </CardTitle><strong>Generar Cotización de Servicios</strong> </MDBAlert>
                       <MDBCardBody>
@@ -719,12 +712,7 @@ class Servicios extends Component{
             <br></br>
             - RFC: ADS020524CH1
             </p>
-              </ul>                    
-       
-
-       
-       
-            
+              </ul> 
      
     <p style={{fontFamily:'arial', fontSize:'10px',marginTop:-10}}>Sin más por el momento y agradeciéndole por su amable atención,
        Quedo a sus órdenes para cualquier duda al respecto.</p>

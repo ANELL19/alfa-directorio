@@ -1,13 +1,8 @@
 import React, {Component}from 'react'
-import { MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavItem, MDBNavLink, MDBNavbarToggler, MDBCollapse, MDBDropdown,
-MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem, MDBIcon,MDBFormInline} from "mdbreact";
-import { MDBBreadcrumb, MDBBreadcrumbItem, MDBContainer } from "mdbreact";
+import { MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavItem, MDBNavbarToggler, MDBCollapse, MDBIcon} from "mdbreact";
 import { BrowserRouter as Router } from 'react-router-dom';
 import ADS from '../imagen/ADS.png'
-import { Button, Tooltip } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
 import { MDBBtn } from "mdbreact";
-import ReactDOM from 'react-dom';
 
 class NavbarAdmin extends Component {
     constructor(props){
@@ -20,10 +15,7 @@ class NavbarAdmin extends Component {
           toggleCollapse = () => {
             this.setState({ isOpen: !this.state.isOpen });
           }
-
-         
-       
-    
+          
  render(){  
     // var date= new Date()
     // var fecha = date.toLocaleString('es')     

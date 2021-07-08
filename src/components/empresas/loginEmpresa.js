@@ -1,5 +1,5 @@
 import React from 'react'
-import {MDBBtn,MDBCard,MDBCardBody,MDBCardHeader,MDBCardFooter,MDBAlert,MDBContainer,MDBView,MDBIcon,MDBModalHeader,MDBModal} from 'mdbreact';
+import {MDBBtn,MDBCardBody,MDBAlert,MDBContainer,MDBView,MDBModalHeader,MDBCol} from 'mdbreact';
 import {Form,Field } from 'react-final-form';
 import { TextField } from 'final-form-material-ui';
 import {Grid  } from '@material-ui/core';
@@ -7,15 +7,10 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
  import'bootstrap-css-only/css/bootstrap.min.css'; 
 import'mdbreact/dist/css/mdb.css';
 import { DialogUtility } from '@syncfusion/ej2-popups';
-import {   MDBCardTitle, MDBCol } from 'mdbreact';
-import { Height } from '@material-ui/icons';
-import { align } from '@progress/kendo-drawing';
 import Paper from '@material-ui/core/Paper';
 import style from './style.css'
-import { Button, Card, CardBody, CardText, CardGroup, CardTitle } from 'reactstrap';
+import { Button } from 'reactstrap';
 import Navbar from '../paneldeConection/navbar'
-//   import Navbar from '../dashboardAdminAlfa/Navbar'
-
 
   function onSubmit (values) {
   };
@@ -37,14 +32,12 @@ import Navbar from '../paneldeConection/navbar'
         console.log("values" , values)
         if(values.contraseña === "admin"){
            this.props.history.push("/RegistrarEmpresa")     
-        }else if(!values.contraseña){
-            // alert("Por favor ingrese algun valor")
-
+        }else if(!values.contraseña){  
             DialogUtility.alert({
             title: "Por favor ingrese algun valor"                       
              });       
         }else{
-            // alert("Contraseña incorrecta")
+            
             DialogUtility.alert({
             title: "Contraseña incorrecta"                       
              });

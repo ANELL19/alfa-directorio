@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import FPolizas from './generarPolizas'
 import PolizasYServicios from './generarPolizayYServicio'
+import FServicios from './generarServicios'
 import { MDBRow, MDBCol } from "mdbreact";
 import { MDBBtn, MDBCard, MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText,MDBIcon} from 'mdbreact';
 
@@ -11,7 +12,8 @@ class Cotizaciones extends Component {
           cardInicio:true,
           BotonPoliza:false,
           BotonServicio:false,
-          BotonServicioandPoliza:false
+          BotonServicioandPoliza:false,
+          cancelar:true
         }
     }
 
@@ -20,6 +22,7 @@ class Cotizaciones extends Component {
       this.setState({BotonPoliza:false})
       this.setState({BotonServicio:false})
       this.setState({BotonServicioandPoliza:false})
+      this.setState({cancelar:true})
     }
 
     checkbox1(){
@@ -27,26 +30,32 @@ class Cotizaciones extends Component {
       this.setState({BotonPoliza:true})
       this.setState({BotonServicio:false})
       this.setState({BotonServicioandPoliza:false})
+      this.setState({cancelar:true})
     }
     checkbox2(){
       this.setState({cardInicio:false})
       this.setState({BotonPoliza:false})
       this.setState({BotonServicio:true})      
-      this.setState({BotonServicioandPoliza:false})      
+      this.setState({BotonServicioandPoliza:false})  
+      this.setState({cancelar:true})    
     }
     checkbox3(){
       this.setState({cardInicio:false})
       this.setState({BotonPoliza:false})
       this.setState({BotonServicio:false})      
       this.setState({BotonServicioandPoliza:true})
+      this.setState({cancelar:true})
       
     }
+
 
     render(){
       let card;
       let cotizacionesPoliza;
       let cotizacionesServicio ;
       let cotizacionServicioandPoliza;
+      let botonCancelar;
+
       if(this.state.cardInicio === true){
         card=<div>
             <MDBRow  style={{marginLeft:120, marginRight:20, marginTop:20,}} >
@@ -90,23 +99,45 @@ class Cotizaciones extends Component {
         </div>
       }
 
+      
+
        if(this.state.BotonPoliza === true){
-       
+        botonCancelar=
+        <div>
+         <MDBBtn color="primary">Cancelar</MDBBtn>        
+        </div>
+
         cotizacionesPoliza = 
         <div><FPolizas/></div>
+        
        }
 
-       if(this.state.BotonServicio === true){      
+       if(this.state.BotonServicio === true){ 
+        botonCancelar=
+        <div >
+         <MDBBtn color="primary">Cancelar</MDBBtn>        
+        </div>     
         cotizacionesServicio = 
-        <div><fServicios/></div>
+        <div><FServicios/></div>
+        
        }
 
-       if(this.state.BotonServicioandPoliza === true){      
+       if(this.state.BotonServicioandPoliza === true){    
+        botonCancelar=
+        <div marginTop="10%">
+         <MDBBtn color="primary">Cancelar</MDBBtn>        
+        </div>  
+
         cotizacionServicioandPoliza = 
         <div><PolizasYServicios/></div>
+        
        }
+        // if(this.state.BotonPoliza && this.state.BotonServicio && this.state.BotonServicioandPoliza === true){
+
+        
+        // }
         return(
-      <React.Fragment> 
+      <React.Fragment>         
         {/* <div>     
       <div>
     <div class="custom-control custom-checkbox">
@@ -129,6 +160,7 @@ class Cotizaciones extends Component {
     {cotizacionesPoliza}
     {cotizacionesServicio}
     {cotizacionServicioandPoliza}
+    {botonCancelar}
 
       </React.Fragment>
         )

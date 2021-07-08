@@ -874,7 +874,7 @@
 
 
 import React, { Component } from 'react'
-
+import {  MDBRow, MDBCol } from 'mdbreact';
 import ReactDOM from "react-dom";
 
 import "bootstrap/dist/css/bootstrap.css";
@@ -886,19 +886,18 @@ class Panel extends Component {
       this.state = {
         inputFields: [{ 
           firstName: '',
-          lastName: '' 
-        }] 
+          lastName: '',
+          precio: '',
+         
+        }] ,
+        Datos:[] 
       }      
     }
 
-      
      handleAddFields = () => {
       const values = [...this.state.inputFields];
-      values.push({ firstName: '', lastName: '' });
-      this.setState({inputFields:values})     
-      console.log("esto es algo de los datos",({Datos:this.state.inputFields}))
-localStorage.getItem("Datos",this.state.inputFields)
-
+      values.push({ firstName: '', lastName: '' , precio:''});
+      this.setState({inputFields:values})  
     };
   
      handleRemoveFields = index => {
@@ -911,38 +910,42 @@ localStorage.getItem("Datos",this.state.inputFields)
       const values = [...this.state.inputFields];
       if (event.target.name === "firstName") {
         values[index].firstName = event.target.value;
-      } else {
+      }
+       else if (event.target.name === "lastName") {
         values[index].lastName = event.target.value;
       }
+      // if (event.target.name === "precio") {
+      //   values[index].precio = event.target.value;
+      // }
+      else  {
+        values[index].precio = event.target.value;
+      }
+
+      // values[index].precio = event.target.value;
   
       this.setState({inputFields:values});
     };
   
      handleSubmit = e => {
       e.preventDefault();
-      console.log("inputFields", this.state.inputField);
+      console.log("inputFields",this.state.inputFields);
     };
 
-    
-  
-    
-  
     render() {
       return (
-        <>
-        {/* <h1>Dynamic Form Fields in React</h1> */}
+        <>       
+        <MDBRow>
+          <MDBCol>
         <form onSubmit={this.handleSubmit}>
           <div className="form-row">
-            {this.state.inputFields.map((inputField, index) => {
-              // console.log(inputField)
-              console.log("est es estado",this.state.inputFields)
-
-
+            {this.state.inputFields.map((inputField, index) => {             
+              // console.log("est es estado",({Datos:this.state.inputFields}))
+              // console.log("esto es index",index)
               return( 
                 <React.Fragment key={`${inputField}${index}`}>
 
-                <div className="form-group col-sm-6">
-                  <label htmlFor="firstName">First Name</label>
+                <div className="form-group col-sm-3">
+                  <label htmlFor="firstName">Producto</label>
                   <input
                     type="text"
                     className="form-control"
@@ -952,14 +955,25 @@ localStorage.getItem("Datos",this.state.inputFields)
                     onChange={event => this.handleInputChange(index, event)}
                   />
                 </div>
-                <div className="form-group col-sm-4">
-                  <label htmlFor="lastName">Last Name</label>
+                <div className="form-group col-sm-3">
+                  <label htmlFor="lastName">algo MAS</label>
                   <input
                     type="text" 
                     className="form-control" 
                     id="lastName"
                     name="lastName"
                     value={inputField.lastName}
+                    onChange={event => this.handleInputChange(index, event)}
+                  />
+                </div>
+                <div className="form-group col-sm-3">
+                  <label htmlFor="precio">precio</label>
+                  <input
+                    type="text" 
+                    className="form-control" 
+                    id="precio"
+                    name="precio"
+                    value={inputField.precio}
                     onChange={event => this.handleInputChange(index, event)}
                   />
                 </div>
@@ -997,9 +1011,11 @@ localStorage.getItem("Datos",this.state.inputFields)
           </div>
           <br/>
           <pre>
-            {JSON.stringify(this.state.inputFields, null, 2)}
+            {JSON.stringify(this.state.inputFields,null,2)}            
           </pre>
         </form>
+        </MDBCol>
+        </MDBRow>
       </>
       );
     }

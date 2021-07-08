@@ -101,7 +101,6 @@ class dashboardAlfa extends Component{
     }
 
     consultarAdminG(id){
-      // const API='http://localhost:4000/graphql'  
 
       axios({
         url:API,
@@ -144,9 +143,7 @@ class dashboardAlfa extends Component{
         modal:false
       });
     }
-    //   toggleCollapse = () => {
-    //     this.setState({ isOpen: !this.state.isOpen });
-    //   }
+   
     
     render(){
       let data;
@@ -263,8 +260,7 @@ class dashboardAlfa extends Component{
           </div>
         return(
             <React.Fragment>
-             <Navbar> 
-               {/* <MDBContainer> */}
+             <Navbar>                
       <MDBBtn onClick={this.toggle12}>Modal</MDBBtn>
       <MDBModal isOpen={this.state.modal12} toggle={this.toggle12}>
         <MDBModalHeader toggle={this.toggle12}>MDBModal title</MDBModalHeader>
@@ -275,8 +271,7 @@ class dashboardAlfa extends Component{
           <MDBBtn color="secondary" onClick={this.toggle12}>Close</MDBBtn>
           <MDBBtn color="primary">Save changes</MDBBtn>
         </MDBModalFooter>
-      </MDBModal>
-    {/* </MDBContainer> */}
+      </MDBModal>   
 </Navbar>
              
              <div  style={{width:"90%",marginLeft:"6%",marginTop:"2%",marginBottom:"2%"}} >               

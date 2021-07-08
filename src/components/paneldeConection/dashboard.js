@@ -1,23 +1,9 @@
 import React from 'react'
-import {MDBBtn,MDBCard,MDBCardBody,MDBCardHeader,MDBCardFooter,MDBAlert, MDBRow} from 'mdbreact';
-import {Form,Field } from 'react-final-form';
-import { TextField } from 'final-form-material-ui';
-import {Grid  } from '@material-ui/core';
 import '@fortawesome/fontawesome-free/css/all.min.css';
  import'bootstrap-css-only/css/bootstrap.min.css'; 
 import'mdbreact/dist/css/mdb.css';
-import { DialogUtility } from '@syncfusion/ej2-popups';
-import {   MDBCardTitle, MDBCol } from 'mdbreact';
-import { Height } from '@material-ui/icons';
-import { align } from '@progress/kendo-drawing';
-//   import Navbar from '../dashboardAdminAlfa/Navbar'
-import Paper from '@material-ui/core/Paper';
-import {  Row, Col } from 'reactstrap';
 import { MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem } from "mdbreact";
-import { Carousel } from 'bootstrap';
 import { MDBCarousel, MDBCarouselCaption, MDBCarouselInner, MDBCarouselItem, MDBView, MDBMask, MDBContainer } from "mdbreact";
-import style from './style.css'
-import { Container } from 'reactstrap';
 
 
     class Dashboard extends React.Component {

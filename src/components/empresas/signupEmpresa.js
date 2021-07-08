@@ -3,7 +3,7 @@ import Paper from '@material-ui/core/Paper';
 import '@fortawesome/fontawesome-free/css/all.min.css';
  import'bootstrap-css-only/css/bootstrap.min.css'; 
 import'mdbreact/dist/css/mdb.css';
-import { CardBody, Label,Form,Row,Col,Alert} from 'reactstrap';
+import { Form,Row} from 'reactstrap';
 import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBInput,MDBCard,MDBCardImage,MDBAlert } from 'mdbreact';
 import { DialogUtility } from '@syncfusion/ej2-popups';
 import axios from 'axios';
