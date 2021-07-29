@@ -4,6 +4,10 @@ import  './sidenavbar.css';
 import { Layout, Menu } from 'antd';
 import { MenuUnfoldOutlined,MenuFoldOutlined,CloudUploadOutlined,DesktopOutlined,DollarOutlined,OrderedListOutlined,
   CloseOutlined,FilePdfOutlined,SolutionOutlined } from '@ant-design/icons';
+  import AccessTimeIcon from '@material-ui/icons/AccessTime';
+  import FolderOpenIcon from '@material-ui/icons/FolderOpen';
+  import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
+
 import TablaClientes from './tablaClientes'
 import TablaEventos from './eventosEvenbrite'
 import CargarClientes from './registrarCliente'
@@ -11,7 +15,8 @@ import Cotizaciones from './cotizaciones'
 import TablaCotizacion from './TablaCotizaciones'
 import Cliente from './signupClientes'
 import ADS from '../imagen/ADS.png'
-
+import PanelAlfa from '../paneldeConection/dashboard'
+import HomeWorkIcon from '@material-ui/icons/HomeWork';
 
 const { Header, Sider, Content } = Layout;
 
@@ -25,8 +30,10 @@ class SiderDemo extends Component {
       registrarClientes:false,      
       cotizaciones:false,
       tablaCotizaciones:false,
-      nuevoCliente:false
+      nuevoCliente:false,
+      panelAlfa:false
     };
+
     this.cerrar = this.cerrar.bind(this) 
   }
   cerrar(){
@@ -47,7 +54,7 @@ class SiderDemo extends Component {
     this.setState({registrarClientes:false});
     this.setState({tablaCotizaciones:false});
     this.setState({nuevoCliente:false});
-
+    this.setState({panelAlfa:false});
   }
 
   generarCotizaciones(){
@@ -57,7 +64,7 @@ class SiderDemo extends Component {
     this.setState({registrarClientes:false});
     this.setState({tablaCotizaciones:false});
     this.setState({nuevoCliente:false});
-
+    this.setState({panelAlfa:false});
   }
 
    tablaEventos(){
@@ -67,8 +74,9 @@ class SiderDemo extends Component {
     this.setState({registrarClientes:false});
     this.setState({tablaCotizaciones:false});
     this.setState({nuevoCliente:false});
-
+    this.setState({panelAlfa:false});
   }
+
   cargarClientes(){
     this.setState({tablaInicio:false});
     this.setState({cotizaciones:false});
@@ -76,8 +84,9 @@ class SiderDemo extends Component {
     this.setState({registrarClientes:true});
     this.setState({tablaCotizaciones:false});
     this.setState({nuevoCliente:false});
-
+    this.setState({panelAlfa:false});
   }
+
   consultarCotizaciones(){
     this.setState({tablaInicio:false});
     this.setState({cotizaciones:false});
@@ -85,7 +94,9 @@ class SiderDemo extends Component {
     this.setState({registrarClientes:false});
     this.setState({tablaCotizaciones:true});
     this.setState({nuevoCliente:false});
+    this.setState({panelAlfa:false});
   }
+
   registrarCliente(){
     this.setState({tablaInicio:false});
     this.setState({cotizaciones:false});
@@ -93,15 +104,42 @@ class SiderDemo extends Component {
     this.setState({registrarClientes:false});
     this.setState({tablaCotizaciones:false});
     this.setState({nuevoCliente:true});
+    this.setState({panelAlfa:false});
   }
 
-  render() {    
+  panelAlfa(){
+    this.setState({tablaInicio:false});
+    this.setState({cotizaciones:false});
+    this.setState({tablaEventos:false});
+    this.setState({registrarClientes:false});
+    this.setState({tablaCotizaciones:false});
+    this.setState({nuevoCliente:false});
+    this.setState({panelAlfa:true});
+  }
+
+
+  render() {   
+    var hoy = new Date();
+var dd = hoy.getDate();
+var mm = hoy.getMonth()+1;
+var yyyy = hoy.getFullYear();
+if(dd<10) {
+  dd='0'+dd;
+} 
+if(mm<10) {
+  mm='0'+mm;
+} 
+console.log("esto es la fecha", dd,mm,yyyy)
+
+
+    
     let tabla;
     let eventos;  
     let clientes;
     let cotizaciones;
     let tablaCotizaciones;
     let signupCliente;
+    let panelConexionAlfa;
 
     if(this.state.tablaInicio === true) {  
       tabla=
@@ -122,8 +160,7 @@ class SiderDemo extends Component {
     <div>
       <CargarClientes/>
     </div>
-    }
-     
+    }     
      if(this.state.cotizaciones === true){
      cotizaciones=     
      <div>
@@ -145,8 +182,17 @@ class SiderDemo extends Component {
          <Cliente/>
        </div>
      }
+     
+     if(this.state.panelAlfa === true){
+      panelConexionAlfa=
+       <div>
+         <PanelAlfa/>
+       </div>
+     }
+
     let nombre = localStorage.getItem("nombre")
-    let apellidos= localStorage.getItem("apellido")
+    let apellidos = localStorage.getItem("apellido")
+    let empresa = localStorage.getItem("nombre_empresa")
   
 
     return (
@@ -155,24 +201,27 @@ class SiderDemo extends Component {
           <div className="logo" >
             <img href="/dashboard" src={ADS} style={{width:"60%", marginTop:"2%", marginLeft:"15%"}}/> 
           </div>
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>          
+          <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>             
             <Menu.Item key="1" onClick={e=>this.tablaInicio()} icon={<OrderedListOutlined style={{ fontSize: '25px', color: '#fff' }}/>}>
               Tabla Clientes              
             </Menu.Item>
-            <Menu.Item key="2" onClick={e=>this.cargarClientes()}icon={<CloudUploadOutlined style={{ fontSize: '25px', color: '#fff' }} />}>
+            {/* <Menu.Item key="2" onClick={e=>this.cargarClientes()}icon={<CloudUploadOutlined style={{ fontSize: '25px', color: '#fff' }} />}>
               Cargar Clientes
-            </Menu.Item>
-            <Menu.Item key="3" onClick={e=>this.registrarCliente()} icon={<SolutionOutlined style={{ fontSize: '25px', color: '#fff' }} />}>           
+            </Menu.Item> */}
+            <Menu.Item key="2" onClick={e=>this.registrarCliente()} icon={<SolutionOutlined style={{ fontSize: '25px', color: '#fff' }} />}>           
               Registrar Cliente            
-            </Menu.Item>           
-            <Menu.Item key="4" onClick={e=>this.tablaEventos()} icon={<DesktopOutlined style={{ fontSize: '25px', color: '#fff' }} />}>           
-              Eventos Evenbrite              
-            </Menu.Item>            
-            <Menu.Item key="5" onClick={e=>this.generarCotizaciones()} icon={<DollarOutlined style={{ fontSize: '25px', color: '#fff' }} /> }>
+            </Menu.Item>
+            <Menu.Item key="3" onClick={e=>this.generarCotizaciones()} icon={<DollarOutlined style={{ fontSize: '25px', color: '#fff' }} /> }>
               Generar Cotizacion
-            </Menu.Item>           
-            <Menu.Item key="6" onClick={e=>this.consultarCotizaciones()} icon={< FilePdfOutlined  style={{ fontSize: '25px', color: '#fff' }} />}>
-              cotizaciones Realizadas
+            </Menu.Item>  
+            <Menu.Item key="4" onClick={e=>this.consultarCotizaciones()} icon={<FolderOpenIcon style={{ fontSize: '25px', color: '#fff' }} />}>
+             Historial de Cotizaciones
+            </Menu.Item>          
+            <Menu.Item key="5" onClick={e=>this.tablaEventos()} icon={<DesktopOutlined style={{ fontSize: '25px', color: '#fff' }} />}>           
+              Eventos Evenbrite              
+            </Menu.Item>   
+            <Menu.Item key="6" onClick={e=>this.panelAlfa()} icon={<HomeWorkIcon  style={{ fontSize: '25px', color: '#fff' }} />}>           
+              Registrar Empresa             
             </Menu.Item>
             <Menu.Item key="7" onClick={this.cerrar} icon={<CloseOutlined  style={{ fontSize: '25px', color: '#fff' }} />}>
               cerrar sesión
@@ -186,7 +235,7 @@ class SiderDemo extends Component {
               className: 'trigger',
               onClick: this.toggle,              
             })} 
-           <font color="#fff" size="4">{localStorage.getItem("nombre_empresa")}&nbsp;&nbsp;&nbsp;&nbsp;DIRECTORIO DE CLIENTES &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {localStorage.getItem("nombre")+" "+localStorage.getItem("apellido")}</font>           
+           <font color="#fff" size="4">{empresa}&nbsp;&nbsp;&nbsp;&nbsp;DIRECTORIO DE CLIENTES &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {nombre}&nbsp;{apellidos} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<CalendarTodayIcon style={{ fontSize: '25px', color: '#fff' }}/>}&nbsp;{ dd+"/"+mm+"/"+yyyy} </font>           
           </Header>
           <Content
             // className="site-layout-background"
@@ -202,6 +251,7 @@ class SiderDemo extends Component {
             {cotizaciones}
             {tablaCotizaciones}
             {signupCliente}
+            {panelConexionAlfa}
           </Content>
         </Layout>
       </Layout>

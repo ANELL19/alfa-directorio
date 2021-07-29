@@ -24,10 +24,10 @@ class Panel extends Component {
     constructor(props) {
       super(props);
       this.state = {
-        // inputFields: [{          
-        //   productos: '',
-        //   precio: '',         
-        // }] ,    
+        inputFields: [{          
+          productos: '',
+          precio: '',         
+        }] ,    
         razonSocial:"" ,
             nombre:"", 
             apellidos:"", 
@@ -39,7 +39,7 @@ class Panel extends Component {
             // telefono4:"" , 
             // telefono5:"",
             Servicio:"",
-            precio:"", 
+            // precio:"", 
             descuento:" " ,
             totalDescuento:"",
             iva:"",           
@@ -53,6 +53,7 @@ class Panel extends Component {
             botonPdfExport:false,
             rfc:"",
             Datos:[]
+            // renderTabla= true
       }
       this.cancelar = this.cancelar.bind(this)
     }
@@ -70,34 +71,39 @@ class Panel extends Component {
     })
 } 
 
-handleAddFields = () => {
+handleInputChange = async (index, event) => {
   const values = [...this.state.inputFields];
-  values.push({ productos: '',  precio:''});
-  this.setState({inputFields:values})  
-};
-
- handleRemoveFields = index => {
-  const values = [...this.state.inputFields];
-  values.splice(index, 1);
-  this.setState({inputFields:values});
-};
-
- handleInputChange = (index, event) => {
-  const values = [...this.state.inputFields];
-  if (event.target.name === "productos") {
-    values[index].productos = event.target.value;
-  }else  {
-    values[index].precio = event.target.value;
-  }
-  this.setState({inputFields:values});
-};
+      if (event.target.name === "productos") {
+        values[index].productos = event.target.value;
+      }      
+      else{
+        values[index].precio = event.target.value;
+      }  
+      this.setState({inputFields:values});
+}
 
  handleSubmit = e => {
   e.preventDefault();
   console.log("inputFields",this.state.inputFields);
+  let array1=[];
+  // this.state.inputFields.map(rows =>{
+  //   array1.push(rows)
+  //   console.log("esto es rows",array1)
+  // })
+//  let var = this.state.inputFields.filter(firstName)
+//   console.log("esto es rows",var)
+  // let filter= this.state.inputFields.filter(firstName)
+  // console.log("esto es filter",filter)
+
 };
 
-onSubmitBtn = (e)=>{      
+// renderTabla(){
+//   this.setState({renderTabla:true}); 
+// }
+
+onSubmitBtn = (e)=>{   
+  e.preventDefault();
+   
   this.setState({botonPdfExport:true})  
   var id_adminAlfa = localStorage.getItem("id_admin")  
   let rfc= this.state.Datos.rfc
@@ -153,7 +159,35 @@ cerrarCotizacion() {
   this.setState({pdfview:false})
 }
 
-pdfView ( ){
+
+pdfView (){
+  let array=[];
+  let array1=[];
+  // console.log("inputFields",this.state.inputFields);
+  // this.state.inputFields.map(rows=>{
+  //   array.push(rows)
+  //   array1.push(array)
+  //   console.log("que es rows", rows)
+  //   console.log("que es", array)
+  //   console.log("que es array1", array1)
+
+  // })
+
+//   array.push(this.state.inputFields)
+//   console.log("que es", array[0])
+
+// array.map(rows=>{
+    
+//     array1.push(array)
+//     console.log("que es rows", rows)
+//     // console.log("que es", array)
+//     console.log("que es array1", array1)
+
+//   })
+
+  // const result = this.state.inputFields.filter(array1);
+  // console.log("esto es resultados",result)
+
   let servicio  = this.state.Servicio.toUpperCase();
   let precio = this.state.precio;
   let promocion = this.state.promocion.toUpperCase();
@@ -211,6 +245,29 @@ consultarDatos(){
 
 } 
 
+handleAddFields = () => {
+  const values = [...this.state.inputFields];
+  let valor1=[];
+  let valor2=[];
+  // values.push({ firstName: '', lastName: '' , precio:''});
+  values.push({ productos: '', precio: '' });
+  values.map(rows=>{
+    console.log("esto es rows",rows) 
+    valor2.push(rows)
+    console.log("esto es val2",valor2)
+    this.setState({Datos:valor2})
+  } );
+  console.log("esto es estado",this.state.Datos)
+  console.log("esto es values",valor1)
+  this.setState({inputFields:values})  
+};
+
+ handleRemoveFields = index => {
+  const values = [...this.state.inputFields];
+  values.splice(index, 1);
+  this.setState({inputFields:values});
+};
+
     render() {
       let searchRFC;
       let form;
@@ -222,37 +279,24 @@ consultarDatos(){
         let total
         let IVA
         let totalFloat;
-
-        // ******CALCULANDO DESCUENTO EN PRODUCTOS*********
          let calDescuentoAplicado;
          let Subtotal
-
-        // **************************
-      // if(this.state.precio){
-      //   // console.log("estado de precio",this.state.precio)
-      //   tasaIva=((this.state.precio*iva)/100).toFixed(2)
-      //   // console.log("calculando IVA",tasaIva)        
-      //   total= (parseInt(this.state.precio) + parseFloat(tasaIva)).toFixed(2)        
-      //   totalFloat=total
-      //   // console.log("esto es totalFloat",totalFloat)
-
-        
-      // }
-
       if(this.state.descuento>0){
         calDescuentoAplicado=((this.state.precio * this.state.descuento)/100).toFixed(2)
-         console.log("taza del descuento",calDescuentoAplicado)  
+        //  console.log("taza del descuento",calDescuentoAplicado)  
       }else{
         calDescuentoAplicado=0
       }
 
-      Subtotal=(this.state.precio-calDescuentoAplicado).toFixed(2)
-      // console.log("calculando subtotal",Subtotal)
-      
+      Subtotal=(this.state.precio-calDescuentoAplicado).toFixed(2)      
       IVA=((Subtotal*tasaIva)/100).toFixed(2)
-      total= (parseFloat(Subtotal)+parseFloat(IVA)).toFixed(2)
-  
-
+     let tablaDescuento =
+      <div>
+      <tr>
+      <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center"> Descuento de {this.state.descuento}%:</td>
+      <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{calDescuentoAplicado}</td>
+      </tr>
+      </div>
       searchRFC= <div>
         <Row>
                      <MDBCol md="3" className="mb-3"></MDBCol>
@@ -272,370 +316,12 @@ consultarDatos(){
                 </MDBCol>
                 </Row>
       </div>
-
+let vendedor = localStorage.getItem("nombre") + " "  + localStorage.getItem("apellido");
 if (this.state.form == true) {
-  // console.log("esto es Datos de estado",this.state.Datos)
-
   // console.log("esto es data de Datos:",this.state.Datos.empresa)
-  
-  // form = <div style={{marginTop:"2%"}}>
-  // <center>    
-  // <MDBCard narrow style={{width:"80%",heigth:"60%"}}>                          
-  //       <MDBAlert color="primary"  className="h5 text-center mb-4" > <strong>Datos del cliente</strong> </MDBAlert>
-  //                   <MDBCardBody>
-  //                   <MDBCol md="3" className="mb-3"></MDBCol>
-  //                   <MDBCol md="3" className="mb-3"></MDBCol>                      
-  //                   <MDBCol> {searchRFC} </MDBCol>
-  //                   <Form onSubmit={this.onSubmitBtn}>                   
-  //             <MDBRow >   
-  //           <MDBCol md="3" className="mb-3"> 
-  //                     <label htmlFor="defaultFormLoginPasswordEx" ><strong> Razón social:</strong> </label>
-  //                     <input   
-  //                     // style={{texttransform:uppercase}}                                      			
-  //                         id="razonSocial"
-  //                         type="text"
-  //                         name="razonSocial"			
-  //                         onChange={this.onChangeInput}
-  //                         // value={this.state.pass} 
-  //                         defaultValue={this.state.Datos.empresa}
-  //                         required
-  //                         className="form-control"
-  //                         />                                    
-  //           </MDBCol>
-  //           <MDBCol md="3" className="mb-3"> 
-  //                     <label htmlFor="nombre" ><strong> Nombre (s) del cliente:</strong> </label>
-  //                     <input                                     
-  //                         id="nombre"
-  //                         type="text"
-  //                         name="nombres"
-  //                         onChange={this.onChangeInput}
-  //                         // value={this.state.pass}
-  //                         defaultValue={this.state.Datos.nombre}
-  //                         required
-  //                         className="form-control"/>
-  //          </MDBCol>
-  //          <MDBCol md="3" className="mb-3"> 
-  //                    <label htmlFor="defaultFormLoginPasswordEx" > <strong>Apellidos: </strong></label>
-  //                    <input                                              
-  //                         id="apellidos"
-  //                         type="text"
-  //                         name="apellidos"
-  //                         onChange={this.onChangeInput}
-  //                         // value={this.state.pass}
-  //                         defaultValue={this.state.Datos.apellido}
-  //                         required
-  //                         className="form-control"/>
-  //          </MDBCol>
-  //          <MDBCol md="3" className="mb-3">   
-  //                 <label htmlFor="defaultFormLoginEmailEx"><strong>Correo:</strong></label><input 
-  //                     id="correo1"
-  //                     type="email"
-                     
-  //                     // id="correo1"
-  //                     // type="email"
-  //                     name="correo1"
-  //                     onChange={this.onChangeInput}
-  //                     // value={this.state.pass}
-  //                     defaultValue={this.state.Datos.correo1}
-  //                     required
-  //                     className="form-control"/>
-  //          </MDBCol>
-  //          <MDBCol md="3" className="mb-3">   
-  //               <label htmlFor="defaultFormLoginEmailEx"><strong>Correo alterno:</strong></label>
-  //               <input   
-  //                   icon="envelope"
-  //                   id="correo2"
-  //                   type="email"
-  //                   name="correo2"
-  //                   onChange={this.onChangeInput}
-  //                   // value={this.state.pass}
-  //                   defaultValue={this.state.Datos.correo2}                     
-  //                   className="form-control" />
-  //          </MDBCol>
-
-  //           <MDBCol md="3" className="mb-3">    
-  //               <label htmlFor="defaultFormLoginPasswordEx" >
-  //               <strong>Telefono:</strong>
-  //               </label>
-  //               <input                            
-  //               id="telefono1"
-  //               type="number"
-  //               name="telefono1"
-  //               onChange={this.onChangeInput}
-  //               defaultValue={this.state.Datos.telefono1} 
-  //               required
-  //               className="form-control"/>
-  //          </MDBCol>
-  //          {/* **********************conceptos*********** */}
-  //          <MDBCol md="3" className="mb-3">    
-  //          <div className="form-group">
-  //           <label htmlFor="exampleFormControlTextarea1">
-  //           Promocion:
-  //           </label>
-  //           <textarea
-  //           className="form-control"
-  //           id="exampleFormControlTextarea1"
-  //           rows="5"
-  //           />
-  //       </div>
-  //          </MDBCol>
-  //          <MDBCol md="3" className="mb-3">    
-  //          <div className="form-group">
-  //           <label htmlFor="exampleFormControlTextarea1">
-  //           Otras descripciones :
-  //           </label>
-  //           <textarea
-  //           className="form-control"
-  //           id="exampleFormControlTextarea1"
-  //           rows="5"
-  //           />
-  //       </div>
-  //          </MDBCol>
-  //          {/* ******************************************* */}
-  //          <MDBCol md="3" className="mb-3">    
-  //               <label htmlFor="defaultFormLoginPasswordEx" >
-  //               <strong>Precio:</strong>
-  //               </label>
-  //               <input                            
-  //               id="precio"
-  //               type="number"
-  //               name="precio"
-  //               onChange={this.onChangeInput}
-  //               placeholder= "%"
-  //               // defaultValue={this.state.Datos.telefon} 
-  //               required
-  //               className="form-control"
-  //               />
-  //          </MDBCol>
-
-  //          <MDBCol md="3" className="mb-3">    
-  //               <label htmlFor="defaultFormLoginPasswordEx" >
-  //               <strong>Descuento:</strong>
-  //               </label>
-  //               <input                            
-  //               id="descuento"
-  //               type="number"
-  //               name="descuento"
-  //               onChange={this.onChangeInput}
-  //               placeholder= "%"
-  //               // defaultValue={this.state.Datos.telefon} 
-  //               required
-  //               className="form-control"
-  //               />
-  //          </MDBCol>
-
-
-  //          {/* *********producto***************** */}         
-  //          <MDBRow>
-  //         <MDBCol>
-  //       <form onSubmit={this.handleSubmit}>
-  //         <div className="form-row">
-  //           {this.state.inputFields.map((inputField, index) => {             
-  //             // console.log("est es estado",({Datos:this.state.inputFields}))
-  //             // console.log("esto es index",index)
-  //             return( 
-  //               <React.Fragment key={`${inputField}${index}`}>
-
-  //               <div className="form-group col-sm-3">
-  //                 <label htmlFor="firstName">Producto</label>
-  //                 <input
-  //                   type="text"
-  //                   className="form-control"
-  //                   id="firstName"
-  //                   name="firstName"
-  //                   value={inputField.productos}
-  //                   onChange={event => this.handleInputChange(index, event)}
-  //                 />
-  //               </div>
-  //               {/* <div className="form-group col-sm-3">
-  //                 <label htmlFor="lastName">algo mas</label>
-  //                 <input
-  //                   type="text" 
-  //                   className="form-control" 
-  //                   id="lastName"
-  //                   name="lastName"
-  //                   value={inputField.lastName}
-  //                   onChange={event => this.handleInputChange(index, event)}
-  //                 />
-  //               </div> */}
-  //               <div className="form-group col-sm-3">
-  //                 <label htmlFor="precio">precio</label>
-  //                 <input
-  //                   type="text" 
-  //                   className="form-control" 
-  //                   id="precio"
-  //                   name="precio"
-  //                   value={inputField.precio}
-  //                   onChange={event => this.handleInputChange(index, event)}
-  //                 />
-  //               </div>
-  //               <div className="form-group col-sm-2">
-  //                 <button
-  //                   className="btn btn-link"
-  //                   type="button"
-  //                   onClick={() => this.handleRemoveFields(index)}
-  //                 >
-  //                   -
-  //                 </button>
-  //                 <button
-  //                   className="btn btn-link"
-  //                   type="button"
-  //                   onClick={() => this.handleAddFields()}
-  //                 >
-  //                   +
-  //                 </button>
-  //               </div>
-
-            
-  //             </React.Fragment>
-  //             )
-  //             }
-  //              )} 
-  //         </div>
-  //         <div className="submit-button">
-  //           <button
-  //             className="btn btn-primary mr-2"
-  //             type="submit"
-  //             onSubmit={this.handleSubmit}
-  //           >
-  //             Save
-  //           </button>
-  //         </div>
-  //         <br/>
-  //         <pre>
-  //           {JSON.stringify(this.state.inputFields,null,2)}            
-  //         </pre>
-  //       </form>
-  //       </MDBCol>
-  //       </MDBRow>
-           
-  //          {/* ********************* */}
-
-  //           {/* <MDBCol md="3" className="mb-3">   
-  //               <label htmlFor="defaultFormLoginPasswordEx" >
-  //               <strong>Producto o servicio:</strong>
-  //               </label>
-  //               <input 
-  //               id="Servicio"
-  //               type="text"
-  //               name="Servicio"
-  //               onChange={this.onChangeInput}
-  //               value={this.state.pass}
-  //               required
-  //               className="form-control"/>
-  //          </MDBCol> */}
-
-  //           {/* <MDBCol md="3" className="mb-3">    
-  //               <label htmlFor="defaultFormLoginPasswordEx"><strong>Precio:</strong></label>
-  //               <input 
-  //               required		 
-  //               id="precio"
-  //               type="number"
-  //               name="precio"
-  //               onChange={this.onChangeInput}
-  //               value={this.state.pass}	                  
-  //               className="form-control"/>
-  //          </MDBCol> */}
-  //           <MDBCol md="3" className="mb-4 mt-4">    
-  //               <label htmlFor="defaultFormLoginPasswordEx" >
-  //               <strong> Precio Normal: &nbsp;</strong>
-  //               </label>
-  //               <label>$ </label>
-  //               </MDBCol>
-
-  //               <MDBCol md="3" className="mb-3">   
-  //               <label htmlFor="defaultFormLoginEmailEx"><strong>Descuento:</strong></label>
-  //               <input   
-  //                   icon="envelope"
-  //                   id="descuento"
-  //                   type="text"
-  //                   name="descento"
-  //                   onChange={this.onChangeInput}
-  //                   // value={this.state.pass}                                     
-  //                   className="form-control" />
-  //          </MDBCol>
-  //          <MDBCol md="3" className="mb-4 mt-4">    
-  //               <label htmlFor="defaultFormLoginPasswordEx" >
-  //               <strong> {}  Descuento: &nbsp;</strong>
-  //               </label>
-  //               <label>$ </label>
-  //               </MDBCol>
-  //          <MDBCol md="3" className="mb-4 mt-4">    
-  //               <label htmlFor="defaultFormLoginPasswordEx" >
-  //               <strong> Subtotal: &nbsp;</strong>
-  //               </label>
-  //               <label>$ </label>
-  //               </MDBCol>
-
-  //               <MDBCol md="3" className="mb-4 mt-4">    
-  //               <label htmlFor="defaultFormLoginPasswordEx" >
-  //               <strong>Tasa iva:</strong>
-  //               </label>
-  //               < label>{iva}%</ label>
-  //               </MDBCol>
-  //               <MDBCol md="3" className="mb-4 mt-4">    
-  //               <label htmlFor="defaultFormLoginPasswordEx" >
-  //               <strong>Iva: &nbsp;</strong> 
-  //               </label>
-  //               <label>$ {tasaIva}</label>
-  //               </MDBCol>
-  //             </MDBRow>
-
-  //             <MDBCol md="3" className="mb-4 mt-4">    
-  //               <label htmlFor="defaultFormLoginPasswordEx" >
-  //               <strong> Total: &nbsp;</strong>
-  //               </label>
-  //               <label>$ {total}</label>
-  //               </MDBCol>
-
-  //             <MDBRow>
-  //             {/* <MDBCol md="3" className="mb-3">   
-  //               <label htmlFor="defaultFormLoginPasswordEx" >
-  //               <strong>Promocion:</strong>
-  //               </label>
-  //               <input
-                            
-  //                   id="promocion"
-  //                   type="text"
-  //                   name="promocion"
-  //                   onChange={this.onChangeInput}
-  //                   value={this.state.promocion}
-  //                   validate 
-                   
-  //                   className="form-control"/>
-  //                   </MDBCol> */}
-
-  //                   <MDBCol md="3" className="mb-3 mt-4">   
-  //               <label htmlFor="defaultFormLoginPasswordEx" >
-  //               <strong> Vendedor : &nbsp;</strong>
-  //               </label>
-  //               <label>{localStorage.getItem("nombre") + " "  + localStorage.getItem("apellido")}</label>
-  //               {/* <label>"lizbeth cuevas"
-  //               </label> */}
-
-  //                   </MDBCol>
-  //                 </MDBRow>
-  //                 </Form>
-            
-  //                 <MDBRow style={{marginTop:"10%"}}> 
-  //                     <MDBCol md="3" className="mb-3"/>
-                      
-  //                     <MDBCol md="3" className="mb-3">      
-  //                             <MDBBtn   color="info"  onClick = {e=> this.pdfView()}> Generar Cotización</MDBBtn>
-  //                     </MDBCol>
-  //                     <MDBCol md="3" className="mb-3"> 
-  //                             <MDBBtn  color="secondary"   onClick={this.cancelar} type="submit">Cancelar</MDBBtn>
-  //                     </MDBCol>
-              
-  //                 </MDBRow>
-  //              </MDBCardBody>
-  //           </MDBCard>
-  //           </center>
-  //         </div>
-
-  console.log("esto es data de Datos:",this.state.Datos.empresa)
     
-  form = <div style={{marginTop:"2%"}}>
+  form = 
+  <div style={{marginTop:"2%"}}>
   <center>    
   <MDBCard narrow style={{width:"80%",heigth:"60%"}}>                          
         <MDBAlert color="primary"  className="h5 text-center mb-4" > <strong>Generar Cotización de Polizas </strong> </MDBAlert>
@@ -643,8 +329,8 @@ if (this.state.form == true) {
                     <MDBCol md="3" className="mb-3"></MDBCol>
                     <MDBCol md="3" className="mb-3"></MDBCol>                      
                     <MDBCol> {searchRFC} </MDBCol>
-                    <Form onSubmit={this.onSubmitBtn}>                      
-              <MDBRow >   
+        <Form onSubmit={this.onSubmitBtn}>                      
+            <MDBRow>   
             <MDBCol md="3" className="mb-3"> 
                       <label htmlFor="defaultFormLoginPasswordEx" ><strong> Razón social:</strong> </label>
                       <input   
@@ -771,17 +457,7 @@ if (this.state.form == true) {
                 <strong>descuento aplicado: &nbsp;</strong>
                 </label>
                 <label>$ {calDescuentoAplicado}</label>
-
-
-                {/* <input                            
-                id="descuentoAplicado"
-                type="number"
-                name="descuentoAplicado"
-                onChange={this.onChangeInput}
-                defaultValue={calDescuentoAplicado} 
-                required
-                className="form-control"/>*/}
-                </MDBCol> 
+            </MDBCol> 
            <MDBCol md="3" className="mb-4 mt-4">    
                 <label htmlFor="defaultFormLoginPasswordEx" >
                 <strong> Subtotal: &nbsp;</strong>
@@ -829,14 +505,61 @@ if (this.state.form == true) {
                     </MDBCol>
 
                     <MDBCol md="3" className="mb-3 mt-4">   
-                <label htmlFor="defaultFormLoginPasswordEx" >
-                <strong> Vendedor : &nbsp;</strong>
-                </label>
-                <label>{localStorage.getItem("nombre") + " "  + localStorage.getItem("apellido")}</label>
-                {/* <label>"lizbeth cuevas"
-                </label> */}
+                    <label htmlFor="defaultFormLoginPasswordEx" >
+                    <strong> Vendedor : &nbsp;</strong>
+                    </label>
+                    <label>{ "vendedor desconocido"|| vendedor }</label>
+                    {/* <label>"lizbeth cuevas"
+                    </label> */}
 
                     </MDBCol>
+                 <MDBCol md="3" className="mb-3 mt-4">  
+
+                   
+                  {this.state.inputFields.map((inputField,index) => {  
+                    return(
+                      <div className="form-group">
+                      <label htmlFor="Productos">Producto</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="productos"
+                        name="productos"
+                        value={inputField.productos}
+                        onChange={event => this.handleInputChange(index, event)}
+                      />
+                        <div className="form-group">
+                      <label htmlFor="precio">precio</label>
+                      <input
+                        type="text" 
+                        className="form-control" 
+                        id="precio"
+                        name="precio"
+                        value={inputField.precio}
+                        onChange={event => this.handleInputChange(index, event)}
+                      />
+                    </div>
+                      <button
+                        className="btn btn-link"
+                        type="button"
+                        onClick={() => this.handleRemoveFields(index)}
+                      >
+                        -
+                      </button>
+                      <button
+                        className="btn btn-link"
+                        type="button"
+                        onClick={() => this.handleAddFields()}
+                      >
+                        +
+                      </button>
+                    </div>
+                    )
+                  })}       
+                 
+                  </MDBCol>
+                 
+
                   </MDBRow>
                   </Form>
             
@@ -1200,10 +923,11 @@ if (this.state.form == true) {
    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center"> Precio Normal</td>
    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{this.state.precio}</td>         
  </tr>
- <tr>
+ {/* <tr>
    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center"> Descuento de {this.state.descuento}%:</td>
    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{calDescuentoAplicado}</td>
- </tr>
+ </tr> */}
+{ tablaDescuento}
  <tr>
  <td ROWSPAN="2" colspan="2" ></td>
    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center">subtotal:</td>
@@ -1314,154 +1038,3 @@ Quedo a sus órdenes para cualquier duda al respecto.</p>
     }
   }
   export default Panel
-//   ************************************************
-
-
-// import React, { Component } from 'react'
-// import {  MDBRow, MDBCol } from 'mdbreact';
-// import ReactDOM from "react-dom";
-
-// import "bootstrap/dist/css/bootstrap.css";
-
-// class Panel extends Component {
-  
-//     constructor(props) {
-//       super(props);
-//       this.state = {
-//         inputFields: [{ 
-//           firstName: '',
-//           lastName: '',
-//           precio: '',
-         
-//         }] ,
-//         Datos:[] 
-//       }      
-//     }
-
-//      handleAddFields = () => {
-//       const values = [...this.state.inputFields];
-//       values.push({ firstName: '', lastName: '' , precio:''});
-//       this.setState({inputFields:values})  
-//     };
-  
-//      handleRemoveFields = index => {
-//       const values = [...this.state.inputFields];
-//       values.splice(index, 1);
-//       this.setState({inputFields:values});
-//     };
-  
-//      handleInputChange = (index, event) => {
-//       const values = [...this.state.inputFields];
-//       if (event.target.name === "firstName") {
-//         values[index].firstName = event.target.value;
-//       }
-//        else if (event.target.name === "lastName") {
-//         values[index].lastName = event.target.value;
-//       }
-//       // if (event.target.name === "precio") {
-//       //   values[index].precio = event.target.value;
-//       // }
-//       else  {
-//         values[index].precio = event.target.value;
-//       }
-
-//       // values[index].precio = event.target.value;
-  
-//       this.setState({inputFields:values});
-//     };
-  
-//      handleSubmit = e => {
-//       e.preventDefault();
-//       console.log("inputFields",this.state.inputFields);
-//     };
-
-//     render() {
-//       return (
-//         <>       
-//         <MDBRow>
-//           <MDBCol>
-//         <form onSubmit={this.handleSubmit}>
-//           <div className="form-row">
-//             {this.state.inputFields.map((inputField, index) => {             
-//               // console.log("est es estado",({Datos:this.state.inputFields}))
-//               // console.log("esto es index",index)
-//               return( 
-//                 <React.Fragment key={`${inputField}${index}`}>
-
-//                 <div className="form-group col-sm-3">
-//                   <label htmlFor="firstName">Producto</label>
-//                   <input
-//                     type="text"
-//                     className="form-control"
-//                     id="firstName"
-//                     name="firstName"
-//                     value={inputField.firstName}
-//                     onChange={event => this.handleInputChange(index, event)}
-//                   />
-//                 </div>
-//                 <div className="form-group col-sm-3">
-//                   <label htmlFor="lastName">algo mas</label>
-//                   <input
-//                     type="text" 
-//                     className="form-control" 
-//                     id="lastName"
-//                     name="lastName"
-//                     value={inputField.lastName}
-//                     onChange={event => this.handleInputChange(index, event)}
-//                   />
-//                 </div>
-//                 <div className="form-group col-sm-3">
-//                   <label htmlFor="precio">precio</label>
-//                   <input
-//                     type="text" 
-//                     className="form-control" 
-//                     id="precio"
-//                     name="precio"
-//                     value={inputField.precio}
-//                     onChange={event => this.handleInputChange(index, event)}
-//                   />
-//                 </div>
-//                 <div className="form-group col-sm-2">
-//                   <button
-//                     className="btn btn-link"
-//                     type="button"
-//                     onClick={() => this.handleRemoveFields(index)}
-//                   >
-//                     -
-//                   </button>
-//                   <button
-//                     className="btn btn-link"
-//                     type="button"
-//                     onClick={() => this.handleAddFields()}
-//                   >
-//                     +
-//                   </button>
-//                 </div>
-
-            
-//               </React.Fragment>
-//               )
-//               }
-//                )} 
-//           </div>
-//           <div className="submit-button">
-//             <button
-//               className="btn btn-primary mr-2"
-//               type="submit"
-//               onSubmit={this.handleSubmit}
-//             >
-//               Save
-//             </button>
-//           </div>
-//           <br/>
-//           <pre>
-//             {JSON.stringify(this.state.inputFields,null,2)}            
-//           </pre>
-//         </form>
-//         </MDBCol>
-//         </MDBRow>
-//       </>
-//       );
-//     }
-//   }
-//   export default Panel

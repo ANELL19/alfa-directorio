@@ -7,7 +7,7 @@ import checkTokenEmpresas from '../src/components/resolvers/checkTokenEmpresas'
 
 // import signupAdminAlfa from './components/administradorAlfa/signupAdmin'
 import loginAdmin from './components/administradorAlfa/login'
-import dashboardAlfa from './components/administradorAlfa/dashboard'
+// import dashboardAlfa from './components/administradorAlfa/dashboard'
 import tablaClientes from './components/administradorAlfa/tablaClientes'
 import eventosEvenbrite from './components/administradorAlfa/eventosEvenbrite'
 import tablaCotizaciones from './components/administradorAlfa/TablaCotizaciones'
@@ -59,7 +59,7 @@ render(){
 
 
         <Route  exact path = "/" component={loginAdmin}/>
-        <PrivateRouteAdminAlfa exact path = "/dashboardAlfa" component={dashboardAlfa}/>
+        {/* <PrivateRouteAdminAlfa exact path = "/dashboardAlfa" component={dashboardAlfa}/> */}
         <PrivateRouteAdminAlfa exact path = "/tablaClientes" component={tablaClientes}/>
         <PrivateRouteAdminAlfa  exact path = "/sidenavbar" component={sidenavbar}/>
         <PrivateRouteAdminAlfa exact path = "/TablaEventos" component={eventosEvenbrite}/>

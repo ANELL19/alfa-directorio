@@ -16,15 +16,61 @@ class NavbarAdmin extends Component {
             this.setState({ isOpen: !this.state.isOpen });
           }
           
- render(){  
+ render(){ 
+ 
+
+
     // var date= new Date()
     // var fecha = date.toLocaleString('es')     
 
-    var  momentoActual = new Date()
-    let horas= momentoActual.getHours()+ ":" + momentoActual.getMinutes()+ ":"+ momentoActual.getSeconds()
-    var f = new Date();
-    let fecha=f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
+    // var  h = new Date()
+    // // let horas= h.getHours()+ ":" + h.getMinutes()+ ":"+ h.getSeconds()
+    // var horas = h.getHours();
+    // var minutos = h.getMinutes();
+    // var segundos = h.getSeconds()
+    // if(horas<10) {
+    //   horas='0'+horas;
+    // } 
+    // if(minutos<10) {
+    //   minutos='0'+minutos;
+    // }
+    // if(segundos<10) {
+    //   segundos='0'+segundos;
+    // }
+    //   console.log("esto es la hora", horas,minutos,segundos)
 
+      // **************horas*************
+  var d = new Date();
+  var hh = d.getHours();
+  var m = d.getMinutes();
+  var s = d.getSeconds(); 
+  if (hh >= 12) {
+    hh = hh - 12;    
+  }
+  if (hh == 0) {
+    hh = 12;
+  }
+
+  let horas= hh + ":" + m + ":" + s
+
+ 
+  console.log("esto es la hora de hora", horas)
+  
+   
+
+    var f = new Date();
+    // let fecha=f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()   
+    var dd = f.getDate();
+    var mm = f.getMonth()+1;
+    var yyyy = f.getFullYear()
+    if(dd<10) {
+      dd='0'+dd;
+    } 
+    if(mm<10) {
+      mm='0'+mm;
+    }    
+    let fecha =  dd+"/"+mm+"/"+yyyy
+    console.log("esto es la fecha", fecha)
 
         return(
           <Router>

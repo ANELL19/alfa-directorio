@@ -9,7 +9,9 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'mdbreact/dist/css/mdb.css';
 import Paper from '@material-ui/core/Paper';
-
+import registrarCliente from './registrarCliente.css'
+import { Avatar, Image } from 'antd';
+import BackupIcon from '@material-ui/icons/Backup';
 
 //modal
   const ModalPrueba = (props) => {
@@ -77,7 +79,7 @@ class SheetJSApp extends React.Component {
 		const API='http://localhost:4000/graphql' 
 		// const fk_empresa= localStorage.getItem("fk_empresa") 
 		// console.log("fk_empresa",fk_empresa)
-		 console.log(" datos " , this.state.data)
+		 console.log(" datos ",this.state.data)
 		 let increment = 0;
 		 let message  = [];
 		 for(var i = 1; i< this.state.data.length; i++ ){
@@ -85,7 +87,8 @@ class SheetJSApp extends React.Component {
 				 increment = 1
 			 }
 
-			 var estado = this.state.data[i]		
+			 var estado = this.state.data[i]
+			 	console.log("esto es estado",estado)	
 			const query = `
 			mutation{
 				 insertClientes(data:["${estado}"]){
@@ -102,6 +105,7 @@ class SheetJSApp extends React.Component {
 						data:`${estado}`
 					}
 				}
+				
 			}).then(datos=>{
 				message.push(datos.data.data.insertClientes.message);
 				console.log("mensaje" , message)
@@ -164,17 +168,17 @@ class SheetJSApp extends React.Component {
 		return (			
 				<React.Fragment>					
 			 	<DragDropFile handleFile={this.handleFile}>	
-				<div className="row">
+				{/* <div className="row"> */}
 					<div className="col-xs-12">
 					<DataInput handleFile={this.handleFile} />
-                    <MDBCol className=" text-center mt-2 pt-2 " >
+                    <MDBCol className="text-center mt-2 pt-2">
                     <MDBBtn className="boton" disabled={!this.state.data.length}  color="info" type="submit" onClick={this.onSubmitBtn} >Cargar </MDBBtn>					
 					</MDBCol> 
 					<center>
 						Si aún no tiene el formato legible para su BD descárgela <a href="https://drive.google.com/file/d/1NSKcw--1sLMcu6zPrrCvBJe1JDk2M8va/view?usp=sharing" target="_blank" >aquí.</a>
 						</center>		
 				    </div> 
-				</div>
+				{/* </div> */}
 			</DragDropFile>	
 			</React.Fragment>		
 			);
@@ -214,12 +218,29 @@ class SheetJSApp extends React.Component {
 
 		render() {
 			return (			
-				<form> 
-					<div class="file-input" style={{marginTop:"10%"}}>	
-				     	<input  color="blue" type="file"  id="file" accept={SheetJSFT} onChange={this.handleChange} />					    
-						<br></br>			
+				<form > 
+					{/* <div  class="file-upload-button"  style={{marginTop:"10%"}}>
+				     	 <input  class="file-upload-button"  type="file"  id="file" accept={SheetJSFT} onChange={this.handleChange}/>	
+					 </div>  */}
+					 
+					<div class="custom-input-file col-md-12 col-sm-6 col-xs-6">
+				
+					<input type="file"  class="input-file" id="file" accept={SheetJSFT} onChange={this.handleChange}/>
+					
+					{/* <Avatar size={70} style={{ backgroundColor: '#69c0ff' }} > */}
+					<BackupIcon style={{ fontSize: 50 }}/>
+					{/* </Avatar>  */}
+					{/* </input> */}
+
+					<br></br>Subir Archivo...
+					{/* <button className="boton" disabled={!this.state.data.length}  color="info" type="submit" onClick={this.onSubmitBtn} >Cargar </button>	 */}
 					</div>
-					</form>				
+						
+					</form>
+					
+					
+				
+								
 			);
 		};
 	}

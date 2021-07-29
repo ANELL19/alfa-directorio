@@ -6,6 +6,7 @@ import { Button } from 'antd';
 import {Row,Col} from 'reactstrap';
 import {API} from '../Graphql/Graphql'
 import axios from 'axios'
+import { MDBAlert } from 'mdbreact';
 
 class Tablas extends Component{
   constructor(props){
@@ -23,7 +24,8 @@ class Tablas extends Component{
       correo1:" ",
       correo2:" ",
       telefono1:" ",
-      telefono2:" "
+      telefono2:" ",   
+      DatosClientes:[] 
       }    
   }
 
@@ -39,8 +41,7 @@ class Tablas extends Component{
     this.setState({
       [id]: value
     });
-  };
-
+  };  
   
   async componentWillMount(){
     let array =  []    
@@ -63,16 +64,14 @@ class Tablas extends Component{
                     telefono2   
                     } 
                 }
-                `
-            }           
+                `            }           
              })
            .then(datos => {
              console.log("LA DATA de clientes",datos)
              array.push(datos.data.data.getTablaClientes)
              console.log("email",datos.data.data.getTablaClientes)
-              this.setState({tablas:datos.data.data.getTablaClientes})             
+              this.setState({tablas:datos.data.data.getTablaClientes}) 
             })
-
             .catch(err=>{
                console.log('error' ,err.response)
             })
@@ -89,10 +88,11 @@ class Tablas extends Component{
             // }) 
     
     }
-
+// let valorCliente=[];
     datosIndividialesClientes(id){
-      console.log("idRecibido", id)
-      console.log("el array",id.id_cliente) 
+      console.log("idRecibido1", id)
+      console.log("idRecibido2",id.id_cliente) 
+      console.log("idRecibido3",id.empresa) 
       axios({
         url:API,
         method:'post',
@@ -115,25 +115,33 @@ class Tablas extends Component{
         }   
          })
        .then(response=>{
-          if(response){
-            let array = [];
-         array.push("response de array",response)        
-          this.setState({detallesEditarCliente:array})  
-          
+         console.log("este es el response",response)
+         console.log("este es el response de :",response) 
+         this.setState({DatosClientes:response})
+         console.log("estos son los datos que se mandaron a el estado",this.state.DatosClientes)
+        //  console.log("el array",id.id_cliente) 
+          // if("esto es response de tabla",response){
+      // <MDBAlert color="primary">
+      //  agregar Datos
+      // </MDBAlert>
+        //     let array = [];
+        //  array.push("response de array",response)        
+        //   this.setState({detallesEditarCliente:array})   
+                 
+      console.log("id_cliente",id.id_cliente) 
+      console.log("rfc_cliente",id.rfc)
+      console.log("empresa_cliente",id.empresa) 
+      console.log("nombre_cliente",id.nombre) 
+      console.log("apellidos_cliente",id.apellido) 
+      console.log("correo1_cliente",id.correo1)
+      console.log("correo2_cliente",id.correo2)
+      console.log("telefono1_cliente",id.telefono1)
+      console.log("telefon2_cliente",id.telefono2)
       
 
-      // console.log("id_cliente",id.id_cliente) 
-      // console.log("rfc_cliente",id.rfc)
-      // console.log("empresa_cliente",id.empresa) 
-      // console.log("nombre_cliente",id.nombre) 
-      // console.log("apellidos_cliente",id.apellido) 
-      // console.log("correo1_cliente",id.correo1)
-      // console.log("correo2_cliente",id.correo2)
-      // console.log("telefono1_cliente",id.telefono1)
-      // console.log("telefon2_cliente",id.telefono2)
 
       
-        localStorage.setItem("id_cliente",id.id_cliente )     
+        localStorage.setItem("id_cliente1",id.id_cliente)     
         localStorage.setItem("rfc_cliente",id.rfc)               
         localStorage.setItem("razonSocial_cliente",id.empresa)   
         localStorage.setItem("nombre_cliente",id.nombre) 
@@ -145,7 +153,8 @@ class Tablas extends Component{
           this.setState({
             modal: !this.state.modal
           }); 
-          }
+
+          // }
         //  console.log("esto es response",response)          
         //  console.log("array de id",array[1].data.data.getTablaClientes)
         //  console.log("estado",this.state.detallesEditarCliente.id_cliente)   
@@ -162,7 +171,7 @@ class Tablas extends Component{
     }
 
     deleteCliente(id){
-      console.log("idRecibido delite", id)
+      // console.log("idRecibido delite", id)
       // console.log("id_cliente",id_cliente)
 
       axios({
@@ -199,7 +208,7 @@ class Tablas extends Component{
       e.preventDefault();
     
   
-      //  let id_cliente = localStorage.getItem("id_cliente" )     
+       let id_cliente = localStorage.getItem("id_cliente1" )     
        let rfc = localStorage.getItem("rfc_cliente")               
        let empresa_cliente = localStorage.getItem("razonSocial_cliente")   
        let nombre_cliente = localStorage.getItem("nombre_cliente") 
@@ -209,7 +218,7 @@ class Tablas extends Component{
        let telefono1_cliente = localStorage.getItem("telefono1_cliente")
        let telefono2_cliente = localStorage.getItem("telefono2_cliente")
 
-          console.log("data a enviar ",rfc,empresa_cliente)
+          console.log("data a enviar de id ",id_cliente)
   
          axios({
         url: API,
@@ -217,7 +226,7 @@ class Tablas extends Component{
         data: {
           query: `
                   mutation{
-                    updateCliente(data:"${[rfc.toUpperCase(),empresa_cliente.toUpperCase(),nombre_cliente.toUpperCase(),apellidos_cliente.toUpperCase(),corre1_cliente,corre2_cliente,telefono1_cliente,telefono2_cliente]}"){           
+                    updateCliente(data:"${[id_cliente]}"){           
                    
                       message
                        } 
@@ -238,7 +247,7 @@ class Tablas extends Component{
     };
 
     render(){ 
-      // let id_cliente = localStorage.getItem("id_cliente" )     
+      let id_cliente = localStorage.getItem("id_cliente")   
       let rfc = localStorage.getItem("rfc_cliente")               
       let empresa_cliente = localStorage.getItem("razonSocial_cliente")   
       let nombre_cliente = localStorage.getItem("nombre_cliente") 
@@ -257,18 +266,19 @@ class Tablas extends Component{
       // console.log("filtrar" , filtrar)
  let modal;
 
-     modal= <div>
+     modal=
+      <div>
           <MDBContainer>
           <MDBModal isOpen={this.state.modal} toggle={this.toggle} size="lg">
             <MDBModalHeader toggle={this.toggle}>Editar Datos del Cliente</MDBModalHeader>
             <MDBContainer>
             <MDBRow>
-              <MDBCol>
-                <MDBCard>
+              <MDBCol style={{marginTop:"5%", marginBotton:"5%"}}>
+                {/* <MDBCard > */}
               <form onSubmit={this.onSubmitBtn}>
                 
             <Row  >
-            <Col xs="4">        
+            <Col xs="6">        
             <label htmlFor="defaultFormLoginPasswordEx" > <strong>RFC: </strong></label>
                        <input                                              
                             id="rfc"
@@ -386,7 +396,7 @@ class Tablas extends Component{
              </Col>
           </Row>
 
-          <div className="text-center">
+          <div style={{marginTop:"3%"}} className="text-center">
               <MDBBtn color="info" type="submit">                   
                 Guardar
               </MDBBtn>
@@ -402,7 +412,7 @@ class Tablas extends Component{
               
           </form>
          
-          </MDBCard>
+          {/* </MDBCard> */}
         </MDBCol>
       </MDBRow>
     </MDBContainer>

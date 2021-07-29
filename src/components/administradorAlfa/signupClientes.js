@@ -5,12 +5,13 @@ import "bootstrap-css-only/css/bootstrap.min.css";
 import "mdbreact/dist/css/mdb.css";
 import { DialogUtility } from '@syncfusion/ej2-popups';
 import {  Form, Row } from "reactstrap";
-import { MDBContainer,MDBRow,MDBCol,MDBBtn,MDBInput,MDBCard,MDBAlert } from "mdbreact";
+import { MDBContainer,MDBRow,MDBCol,MDBBtn,MDBInput,MDBCard,MDBAlert,MDBIcon } from "mdbreact";
 import { MDBCardImage } from "mdbreact";
 import axios from "axios";
 import { API } from "../Graphql/Graphql";
-
-
+import { MDBTabPane, MDBTabContent, MDBNav, MDBNavItem, MDBLink } from 'mdbreact';
+import CargaMasiva from './registrarCliente'
+import RegistraClientes from './signupClientes'
 
 class Clientes extends Component {
   constructor(props) {
@@ -25,15 +26,10 @@ class Clientes extends Component {
       telefono1: "",
       telefono2: "",
       tablas:[],
-      viewSearch:true,
-      viewForm:false,
-      fk_empresa:[]
-     
-    };
-  
+      fk_empresa:[],
+      activeItem: "1"           
+    };  
   }
-
-
 
   onChangeInput = (e) => {
     console.log("eventoonChange", e);
@@ -43,11 +39,8 @@ class Clientes extends Component {
     });
   };
 
-
   onSubmitBtn = (e) => {
-    e.preventDefault();
-  
-
+    e.preventDefault(); 
      let empresa = this.state.empresa.toUpperCase();
      let rfc = this.state.rfc.toUpperCase();
      let nombre = this.state.nombre.toUpperCase();
@@ -91,32 +84,25 @@ class Clientes extends Component {
       correo1: "",
       correo2: "",
       telefono1: "",
-      telefono2: ""
-      
+      telefono2: ""      
     });
   }
 
-  regresar() {
-    this.setState({viewSearch:true})
-    this.setState({viewForm:false})
-  }
+  togglePills = tab => () => {
+    const { activePills } = this.state;
+    if (activePills !== tab) {
+      this.setState({
+        activeItemPills: tab
+      });
+    }
+  };
+
   render() {
+
+    const { activeItemPills } = this.state;
     let formulario;
-//     let search;
-//     let razonSocial=localStorage.getItem("razonSocial")
-//  if(this.state.viewSearch===true){
-//   search= <div>  
-//             <input  type="text" id="rfc" value={this.state.rfc} name="rfc"  onChange={this.onChangeInput}   placeholder="RFC de la Empresa" />
-//             <MDBBtn gradient="aqua" rounded size="sm" onClick={e=> this.consultarDatos()}  >                        
-//               <MDBIcon icon="search" />
-//             </MDBBtn>  
-//             <br></br> 
-//           </div>
-//   }
-    
-//   if(this.state.viewForm===true){
-    formulario= <div marginTop="5%">         
-                 
+
+    formulario= <div marginTop="5%">
       <Row> 
       <MDBCol md="6">
             <MDBInput
@@ -237,40 +223,60 @@ let id_empresa=localStorage.getItem("empresa")
 console.log("esto es el  id",id_empresa)
     return (
       <React.Fragment>
-      
-        <MDBContainer style={{ marginTop: "2%" }}>
-          <Paper>
-            <MDBRow>
-              <MDBCol size="5">
-                <MDBCard style={{ width: "100%" }}>
-                  <MDBCardImage
-                    className="img-fluid"
-                    src="https://images.pexels.com/photos/4065864/pexels-photo-4065864.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
-                    waves
-                  />
-                </MDBCard>
-              </MDBCol>
-              <MDBCol size="6" style={{ marginTop: "5%" }}>
-                <MDBAlert color="primary" className="text-center">
-                  <h4>Registrar Nuevo Cliente</h4>
-                </MDBAlert>
-                <Form onSubmit={this.onSubmitBtn}>
-                  <div>
-                    {/* <Row>
-                      <MDBCol md="5"></MDBCol>
-                      <MDBCol md="7">                        
-                      {search} 
-                      </MDBCol>
-                      </Row> */}
-                      <MDBCol>
-                     {formulario}
-                     </MDBCol>                    
-                  </div>                  
-                </Form>
-              </MDBCol>
-            </MDBRow>
-          </Paper>
+       <MDBContainer>
+        <MDBContainer>
+          <MDBRow>
+            <MDBCol md='12'>
+                <MDBNav className='nav-pills'>
+                  <MDBNavItem>
+                    <MDBLink to='#' active={activeItemPills === '1'} onClick={this.togglePills('1')} link>
+                     <MDBIcon far icon="address-card" size="2x" />&nbsp;Registra Nuevo Cliente
+                    </MDBLink>
+                  </MDBNavItem>
+                  <MDBNavItem>
+                    <MDBLink to='#' active={activeItemPills === '2'} onClick={this.togglePills('2')} link>
+                     <MDBIcon icon="cloud-upload-alt" size="2x" />&nbsp;Carga de Excel
+                    </MDBLink>
+                  </MDBNavItem>                  
+                </MDBNav>
+                <MDBTabContent activeItem={activeItemPills}>
+                  <MDBTabPane tabId='1'>
+                  <MDBContainer style={{ marginTop: "2%" }}>
+                    <Paper>
+                      <MDBRow>
+                        <MDBCol size="5">
+                          <MDBCard style={{ width: "100%" }}>
+                            <MDBCardImage
+                              className="img-fluid"
+                              src="https://images.pexels.com/photos/4065864/pexels-photo-4065864.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+                              waves
+                            />
+                          </MDBCard>
+                        </MDBCol>
+                        <MDBCol size="6" style={{ marginTop: "5%" }}>
+                          <MDBAlert color="primary" className="text-center">
+                            <h4>Registrar Nuevo Cliente</h4>
+                          </MDBAlert>
+                          <Form onSubmit={this.onSubmitBtn}>
+                            <div>                    
+                                <MDBCol>
+                              {formulario}
+                              </MDBCol>                    
+                            </div>                  
+                          </Form>
+                        </MDBCol>
+                      </MDBRow>
+                    </Paper>
+                  </MDBContainer>    
+                  </MDBTabPane>
+                  <MDBTabPane tabId='2'>                   
+                    <CargaMasiva/>
+                  </MDBTabPane>
+                </MDBTabContent>
+            </MDBCol>
+          </MDBRow>
         </MDBContainer>
+      </MDBContainer>      
       </React.Fragment>
     );
   }
