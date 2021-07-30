@@ -22,7 +22,7 @@ class signupAdminAlfa extends Component {
       contrasena: "",
       tablas:[],
       viewSearch:true,
-      viewForm:false,
+      viewForm:true,
       fk_empresa:[]     
     };  
   }

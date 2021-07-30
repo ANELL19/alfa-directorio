@@ -24,10 +24,10 @@ class Polizas extends Component {
     constructor(props) {
       super(props);
       this.state = {
-        inputFields: [{          
-          productos: '',
-          precio: '',         
-        }] ,    
+        // inputFields: [{          
+        //   productos: '',
+        //   precio: '',         
+        // }] ,    
         razonSocial:"" ,
             nombre:"", 
             apellidos:"", 
@@ -39,7 +39,7 @@ class Polizas extends Component {
             // telefono4:"" , 
             // telefono5:"",
             Servicio:"",
-            // precio:"", 
+            precio:"", 
             descuento:" " ,
             totalDescuento:"",
             iva:"",           
@@ -120,6 +120,7 @@ onSubmitBtn = (e)=>{
   let iva = ((precio * 16)/100).toFixed(2)
   let vendedor = localStorage.getItem("nombre").toUpperCase() + " "  + localStorage.getItem("apellido").toUpperCase()       
   var suma = (parseInt(precio) + parseFloat(iva))
+  console.log("suma",suma)
   let total = suma.toFixed(2)
       axios({
           url:API,
@@ -290,6 +291,10 @@ handleAddFields = () => {
 
       Subtotal=(this.state.precio-calDescuentoAplicado).toFixed(2)      
       IVA=((Subtotal*tasaIva)/100).toFixed(2)
+      total= (parseFloat(Subtotal) + parseFloat(IVA)).toFixed(2)  
+      console.log("esto es totaol",total)
+      console.log("subtotal",Subtotal)
+      console.log("IVA",IVA)
      let tablaDescuento =
       <div>
       <tr>
@@ -403,7 +408,7 @@ if (this.state.form == true) {
                 </label>
                 <input                            
                 id="telefono1"
-                type="number"
+                // type="t"
                 name="telefono1"
                 onChange={this.onChangeInput}
                 defaultValue={this.state.Datos.telefono1} 
@@ -411,11 +416,8 @@ if (this.state.form == true) {
                 className="form-control"/>
            </MDBCol>
 {/* ***************LOS BOTONES PARA AGREGAR***************** */}
-{/* <MDBCol md="3" className="mb-3 ">   */}
-{/* <MDBContainer> */}
-{/* <MDBRow> */}
-{/* <Row md={12}>                  */}
-{this.state.inputFields.map((inputField,index) => {  
+
+{/* {this.state.inputFields.map((inputField,index) => {  
   return(
     // <MDBCol md="3" className="mb-3 ">     
   
@@ -458,27 +460,11 @@ if (this.state.form == true) {
       +
     </button>
     </MDBRow>
-  </div>
+  </div> 
  
-  // </MDBCol>
-  
-  // <MDBCol>
-  //   {/* <MDBCol md="3" className="mb-3 ">  */}
-  //     <div className="form-group">
-  //   <label htmlFor="precio">precio</label>
-  //   <input
-  //     type="text" 
-  //     className="form-control" 
-  //     id="precio"
-  //     name="precio"
-  //     value={inputField.precio}
-  //     onChange={event => this.handleInputChange(index, event)}
-  //   />    
-  // </div>    
-    // </MDBCol>
   )
   
-})}       
+})}        */}
 {/* </MDBRow> */}
 
 
@@ -516,7 +502,7 @@ if (this.state.form == true) {
            </MDBCol>
            <MDBCol md="3" className="mb-4 mt-4">    
                 <label htmlFor="defaultFormLoginPasswordEx" >
-                <strong>Precio Normal: &nbsp;</strong>
+                <strong>Precio : &nbsp;</strong>
                 </label>
                 <label>$ {this.state.precio}</label>
                 </MDBCol>
@@ -537,33 +523,33 @@ if (this.state.form == true) {
                 </label>
                 <label>$ {calDescuentoAplicado}</label>
             </MDBCol> 
-           <MDBCol md="3" className="mb-4 mt-4">    
+           {/* <MDBCol md="3" className="mb-4 mt-4">    
                 <label htmlFor="defaultFormLoginPasswordEx" >
                 <strong> Subtotal: &nbsp;</strong>
                 </label>
                 <label>$ {Subtotal}</label>
-                </MDBCol>
-
+                </MDBCol> */}
+{/* 
                 <MDBCol md="3" className="mb-4 mt-4">    
                 <label htmlFor="defaultFormLoginPasswordEx" >
                 <strong>Tasa iva:</strong>
                 </label>
                 < label>{tasaIva}%</ label>
-                </MDBCol>
+                </MDBCol> */}
 
-               
+{/*                
                 <MDBCol md="3" className="mb-4 mt-4">    
                 <label htmlFor="defaultFormLoginPasswordEx" >
                 <strong>Iva: &nbsp;</strong> 
                 </label>
                 <label>$ {IVA}</label>
-                </MDBCol>
-              </MDBRow>
+                </MDBCol>*/}
+              </MDBRow> 
               <MDBCol md="3" className="mb-4 mt-4">    
                 <label htmlFor="defaultFormLoginPasswordEx" >
                 <strong> Total: &nbsp;</strong>
                 </label>
-                <label>$ {total}</label>
+                <label>$ {Subtotal}</label>
                 </MDBCol>
 
               <MDBRow>
@@ -593,53 +579,7 @@ if (this.state.form == true) {
                     {/* <label>"lizbeth cuevas"
                     </label> */}
 
-                    </MDBCol>
-                 {/* <MDBCol md="3" className="mb-3 mt-4">  
-
-                   
-                  {this.state.inputFields.map((inputField,index) => {  
-                    return(
-                      <div className="form-group">
-                      <label htmlFor="Productos">Producto</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="productos"
-                        name="productos"
-                        value={inputField.productos}
-                        onChange={event => this.handleInputChange(index, event)}
-                      />
-                        <div className="form-group">
-                      <label htmlFor="precio">precio</label>
-                      <input
-                        type="text" 
-                        className="form-control" 
-                        id="precio"
-                        name="precio"
-                        value={inputField.precio}
-                        onChange={event => this.handleInputChange(index, event)}
-                      />
-                    </div>
-                      <button
-                        className="btn btn-link"
-                        type="button"
-                        onClick={() => this.handleRemoveFields(index)}
-                      >
-                        -
-                      </button>
-                      <button
-                        className="btn btn-link"
-                        type="button"
-                        onClick={() => this.handleAddFields()}
-                      >
-                        +
-                      </button>
-                    </div>
-                    )
-                  })}       
-                 
-                  </MDBCol>
-                  */}
+                    </MDBCol>                 
 
                   </MDBRow>
                   </Form>
@@ -698,11 +638,18 @@ if (this.state.form == true) {
             <Table bordered>
                    <thead>
                        <tr>
-                       <td style={{padding:"5px"}} bgcolor="DeepSkyBlue" colspan="2" align="center">PRODUCTO O SERVICIO</td>          
-                       <td style={{padding:"5px"}} bgcolor="DeepSkyBlue" colspan="2" align="center">PRECIO MAS IVA</td>
+                       <td style={{padding:"5px"}} bgcolor="DeepSkyBlue" colspan="2" align="center">POLIZAS BASICAS DE SOPORTE TECNICO REMOTO ** LA POLIZA ES POR SISTEMA ** </td>          
+                       {/* <td style={{padding:"5px"}} bgcolor="DeepSkyBlue" colspan="2" align="center">PRECIO MAS IVA</td>
+                       <td style={{padding:"5px"}} bgcolor="DeepSkyBlue" colspan="2" align="center">PRECIO MAS IVA</td> */}
                        </tr>
                    </thead>
                    <tbody>
+                   <tr>
+                       <td style={{padding:"5px"}} bgcolor="DeepSkyBlue" colspan="2" align="center">SERVICIO </td>          
+                       <td style={{padding:"5px"}} bgcolor="DeepSkyBlue" colspan="2" align="center">PRECIO NORMAL</td>
+                       <td style={{padding:"5px"}} bgcolor="DeepSkyBlue" colspan="2" align="center">DESCUENTO</td>
+                       <td style={{padding:"5px"}} bgcolor="DeepSkyBlue" colspan="2" align="center">MESES ADICIONALES</td>
+                       </tr>
                    <tr>
                        <td style={{padding:"5px"}} colspan="2">{this.state.Servicio}</td>
                        <td style={{padding:"5px"}} colspan="2" align="center">$&nbsp;{this.state.precio}</td>
@@ -990,15 +937,18 @@ if (this.state.form == true) {
 <MDBTable bordered  >
 <MDBTableHead color="light-blue accent-1"  align="center" >
  <tr>
-   <th style={{padding:"3px"}}  colspan="3" ><p  style={{fontFamily:'arial', fontSize:'7px'}}>PRODUCTO O SERVICIO</p></th>
-   <th style={{padding:"3px"}} ><p  style={{fontFamily:'arial', fontSize:'7px'}}>PRECIO MAS IVA</p></th>
+ <td style={{padding:"5px"}} bgcolor="DeepSkyBlue" colspan="2" align="center">POLIZAS BASICAS DE SOPORTE TECNICO REMOTO ** LA POLIZA ES POR SISTEMA ** </td>          
+                       {/* <td style={{padding:"5px"}} bgcolor="DeepSkyBlue" colspan="2" align="center">PRECIO MAS IVA</td>
+                       <td style={{padding:"5px"}} bgcolor="DeepSkyBlue" colspan="2" align="center">PRECIO MAS IVA</td> */}
  </tr>
 </MDBTableHead>
 <MDBTableBody>
- <tr>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} colspan="3" >{this.state.Servicio}</td>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{this.state.precio}</td>         
- </tr>
+<tr>
+                       <td style={{padding:"5px"}} bgcolor="DeepSkyBlue" colspan="2" align="center">SERVICIO </td>          
+                       <td style={{padding:"5px"}} bgcolor="DeepSkyBlue" colspan="2" align="center">PRECIO NORMAL</td>
+                       <td style={{padding:"5px"}} bgcolor="DeepSkyBlue" colspan="2" align="center">DESCUENTO</td>
+                       <td style={{padding:"5px"}} bgcolor="DeepSkyBlue" colspan="2" align="center">MESES ADICIONALES</td>
+                       </tr>
  <tr>
    <td ROWSPAN="2" colspan="2"></td>
    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center"> Precio Normal</td>
