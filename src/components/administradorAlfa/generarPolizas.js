@@ -4,14 +4,12 @@ import "bootstrap/dist/css/bootstrap.css";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import'bootstrap-css-only/css/bootstrap.min.css'; 
 import'mdbreact/dist/css/mdb.css';
-import { MDBRow, MDBCol, MDBBtn,MDBAlert, MDBCard,MDBCardBody,MDBContainer} from 'mdbreact';
+import { MDBRow, MDBCol, MDBBtn,MDBAlert, MDBCard,MDBCardBody} from 'mdbreact';
 import { DialogUtility } from '@syncfusion/ej2-popups';
 import {Form} from 'reactstrap';
-// import Navbar from './navbar'
 import { PDFExport } from '@progress/kendo-react-pdf';
 import { Container, Paper } from '@material-ui/core';
 import { Row,Col } from 'reactstrap';
-// import {  MDBCard, MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText, MDBCol } from 'mdbreact';
 import { Table } from 'reactstrap';
 import imagen from '../imagen/encabezado.JPG'
 import titulo1 from  '../imagen/titulo1.png'
@@ -913,155 +911,141 @@ if (this.state.form == true) {
 
 {/* ************************************* */}
 
-<Container > 
-
-<Paper >            
-     <img src={imagen } alt="titulo1" style={{width:500,height:55}}/>  
-             
-         <p style={{fontFamily:'arial', fontSize:'10px', marginTop:-9 }}>               
-         <strong> {this.state.Datos.empresa} </strong> 
-           <br></br>
-          {this.state.Datos.nombre}&nbsp;{this.state.Datos.apellido}
-           <br></br>
-           {this.state.Datos.correo1}
-           <br></br>
-           {this.state.Datos.telefono1}
-           <br></br>
-           Buen día, me permito presentar nuestra propuesta referente a los producto (s) y servicio (s) de su interés. 
-          </p>
-          
-                
-     
-
-<div style= {{ marginTop:-2}}>    
-<MDBTable bordered  >
-<MDBTableHead color="light-blue accent-1"  align="center" >
- <tr>
- <td style={{padding:"5px"}} bgcolor="DeepSkyBlue" colspan="2" align="center">POLIZAS BASICAS DE SOPORTE TECNICO REMOTO ** LA POLIZA ES POR SISTEMA ** </td>          
+<div>
+        <Paper   style={{width:1200,height:1400, marginLeft:"6%",marginTop:"2%",marginBottom:"2%"}}>
+            <img src={titulo1} alt="imagen" alt="imagen"   style={{width:1210,height:150}}/>
+            <div style={{ marginBottom:"2%"}}>
+            <Row  xs="2">               
+                <Col>
+                     <p><strong>Razón social:</strong>&nbsp;{this.state.Datos.empresa} </p>                     
+                     <p ><strong>Nombre(s):</strong>&nbsp;{this.state.Datos.nombre}&nbsp;{this.state.Datos.apellido}</p>                    
+                     <p><strong>Correo:</strong>&nbsp;{this.state.Datos.correo1}</p>                     
+                     <p><strong>Télefono:</strong>&nbsp;{this.state.Datos.telefono1}</p>                     
+                </Col>   
+                <Col >
+                     <p><strong>Fecha:</strong>&nbsp;{fecha}</p>
+                </Col>                                  
+            </Row> 
+            <p  face="Verdana"> Buen día, me permito presentar  nuestra propuesta referente a los producto (s) y servicio (s) de su interés.</p>
+            <Table bordered>
+                   <thead>
+                       <tr>
+                       <td style={{padding:"5px"}} bgcolor="DeepSkyBlue" colspan="2" align="center">POLIZAS BASICAS DE SOPORTE TECNICO REMOTO ** LA POLIZA ES POR SISTEMA ** </td>          
                        {/* <td style={{padding:"5px"}} bgcolor="DeepSkyBlue" colspan="2" align="center">PRECIO MAS IVA</td>
                        <td style={{padding:"5px"}} bgcolor="DeepSkyBlue" colspan="2" align="center">PRECIO MAS IVA</td> */}
- </tr>
-</MDBTableHead>
-<MDBTableBody>
-<tr>
+                       </tr>
+                   </thead>
+                   <tbody>
+                   <tr>
                        <td style={{padding:"5px"}} bgcolor="DeepSkyBlue" colspan="2" align="center">SERVICIO </td>          
                        <td style={{padding:"5px"}} bgcolor="DeepSkyBlue" colspan="2" align="center">PRECIO NORMAL</td>
                        <td style={{padding:"5px"}} bgcolor="DeepSkyBlue" colspan="2" align="center">DESCUENTO</td>
                        <td style={{padding:"5px"}} bgcolor="DeepSkyBlue" colspan="2" align="center">MESES ADICIONALES</td>
                        </tr>
- <tr>
-   <td ROWSPAN="2" colspan="2"></td>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center"> Precio Normal</td>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{this.state.precio}</td>         
- </tr>
- {/* <tr>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center"> Descuento de {this.state.descuento}%:</td>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{calDescuentoAplicado}</td>
- </tr> */}
-{ tablaDescuento}
- <tr>
- <td ROWSPAN="2" colspan="2" ></td>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center">subtotal:</td>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{Subtotal}</td>
- </tr>
- <tr>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center">IVA 16%:</td>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{IVA}</td>
- </tr>
- <tr>
- <td ROWSPAN="2" colspan="2" ></td>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center">Total:</td>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{total}</td>
- </tr>
-</MDBTableBody>
-</MDBTable>     
-</div>
+                   <tr>
+                       <td style={{padding:"5px"}} colspan="2">{this.state.Servicio}</td>
+                       <td style={{padding:"5px"}} colspan="2" align="center">$&nbsp;{this.state.precio}</td>
+                       </tr>  
+                       <tr>
+                       <td style={{padding:"5px"}} ROWSPAN="2"></td>
+                       <td style={{padding:"5px"}} align="center">IVA:</td>
+                       <td style={{padding:"5px"}} align="center">$&nbsp;{tasaIva}</td>                       
+                       </tr>
 
-<p style={{color:"red",fontFamily:'arial', fontSize:'10px',marginTop:-10}} >Promoción {this.state.promocion.toLowerCase()}</p>          
-<div style= {{marginTop:-2}}>
-<MDBTable bordered>
-<MDBTableHead color="light-blue accent-1"  align="center">
- <tr>
-   <th style={{padding:"3px"}} align="center" colspan="3"><p  style={{fontFamily:'arial', fontSize:'7px'}}>PÓLIZA DE SOPORTE TECNICO REMOTO BASICAS ** LA POLIZA ES POR SISTEMA **</p></th>
- </tr>
-</MDBTableHead>
-<MDBTableBody>
- <tr>
-   <td style={{padding:"4px"}} align="center"><p style={{fontFamily:'arial', fontSize:'7px'}}>SERVICIO</p></td>
-   <td style={{padding:"4px"}} align="center"><p style={{fontFamily:'arial', fontSize:'7px'}}>PRECIO ESPECIAL</p></td>
-   <td style={{padding:"4px"}} align="center"><p style={{fontFamily:'arial', fontSize:'7px'}}>PRECIO NORMAL</p></td>         
- </tr>
- <tr>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">Póliza semestral - Por sistema</td>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$ 2,500.00</td>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$ 5,000.00</td>
- </tr>
- <tr>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">Póliza semestral - Por sistema</td>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$ 4,000.00</td>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$ 8,000.00</td>          
- </tr>
- <tr>
-   <td  style={{padding:"3px" }}colspan="2" align="center"></td>
-   <td style={{padding:"3px" ,color:"red"}} align="center"><p style={{fontFamily:'arial', fontSize:'7px'}}>PRECIO MAS IVA</p></td>                
- </tr>
-</MDBTableBody>
-</MDBTable>
-</div> 
+                       <tr>         
+                       <td style={{padding:"5px"}} align="center">TOTAL</td>
+                       <td style={{padding:"5px"}} align="center">$&nbsp;{total}</td>          
+                       </tr>
+                   </tbody>
+            </Table>        
+             
 
-      
-<div style={{marginTop:-12}}>
-<p style={{fontFamily:'arial', fontSize:'10px'}}>  Nota: El costo no incluye Interfaz, Formatos, Carga de Catálogos o alguna implementación adicional a la mencionada en su cotización.</p>   
- 
-          <p style={{fontFamily:'arial', fontSize:'10px'}}>No se aceptan devoluciones</p> 
-         
-       <fort style={{color:"#3371FF", fontFamily:'arial', fontSize:'10px'}}>Condiciones Comerciales y Formas de Pago</fort>
-{/* <div style={{fontFamily:'arial', fontSize:'9px',marginTop:-15}}> */}
-{/* <p  style={{ fontFamily:'arial', fontSize:'5px'}}>  */}
+   <p style={{color:"red"}} htmlFor="defaultFormLoginPasswordEx"><strong>Promoción &nbsp;{this.state.promocion.toLowerCase()}</strong></p>
+    
+              
+              <Table bordered>
+                   <thead>
+                       <tr>
+                       <td style={{padding:"5px"}} bgcolor="DeepSkyBlue" colspan="3" align="center"><strong>PÓLIZA DE SOPORTE TECNICO REMOTO BASICAS ** LA POLIZA ES POR SISTEMA **</strong></td>          
+                       </tr>
+                   </thead>
+                   <tbody>
+                   <tr>
+                       <td style={{padding:"5px"}} align="center">SERVICIO</td>
+                       <td style={{padding:"5px"}} align="center">PRECIO ESPECIAL</td>
+                       <td style={{padding:"5px"}} align="center">PRECIO NORMAL</td>
+                       </tr>    
+                       <tr>
+                       <td style={{padding:"5px"}} align="center"> Póliza semestral - por sistema </td>
+                       <td style={{padding:"5px"}} align="center"> $ 2,500.00 </td>
+                       <td style={{padding:"5px"}} align="center"> $ 5,000.00 </td>  
+                       </tr>
 
-<p style={{ fontFamily:'arial',  fontSize:'10px'}}>
- * Todos los costos anteriormente presentados son más IVA.
- <br></br>
- * Precios representados en M.N.
- <br></br>
- * Pago por anticipado.
- <br></br>
- * Pago por depósito bancario o transferencia electrónica.
- </p>   
-       <ul>
-       <p align="left" marginLeft="20%" style={{fontFamily:'arial', fontSize:'10px',marginTop:-5}}>
-         - Cuenta: 50020978434 
-     <br></br>
-     - Clabe: 036180500209784346
-     <br></br>
-     - Banco: Inbursa
-     <br></br>
-     - Beneficiario: ALFA DISEÑO DE SISTEMAS, S.A. de C.V.
-     <br></br>
-     - RFC: ADS020524CH1
-     </p>
-       </ul>  
-
-<p style={{fontFamily:'arial', fontSize:'10px',marginTop:-10}}>Sin más por el momento y agradeciéndole por su amable atención,
-Quedo a sus órdenes para cualquier duda al respecto.</p>
-     {/* </div > */}
-    <div  className="text-center mb-4" style={{fontFamily:'arial', fontSize:'10px',marginTop:-10}}>
+                       <tr>
+                       <td style={{padding:"5px"}} align="center"> Póliza semestral - por sistema</td>
+                       <td style={{padding:"5px"}} align="center"> $ 4,000.00 </td>
+                       <td style={{padding:"5px"}} align="center"> $ 8,000.00 </td>
+                       
+                       
+                       </tr>
+                       <tr>  
+                       <td style={{padding:"5px"}} colspan="2" align="center"></td>       
+                       <td style={{color:"red", padding:"5px" }} align="center"><strong>PRECIO MAS IVA</strong></td>           
+                       </tr>
+                   </tbody>
+            </Table>
    
-         <strong >{localStorage.getItem("nombre") + " " + localStorage.getItem("apellido")}</strong> 
-         <p>{localStorage.getItem("correo")}</p>   
-         <strong style={{color:"#3371FF"}}> ALFA DISEÑO DE SISTEMAS, S.A. DE C.V.</strong>
-        <br></br>
-         <fort style={{color:"#3371FF", fontSize:'10px', fontFamily:'arial' }}>www.ads.com.mx </fort> 
-  </div >  
-  <p className="text-center mb-4" style={{fontFamily:'arial', fontSize:'10px', marginTop:-10}}>Av. Chapultepec N° 473, Piso 3 Col. Juárez, Del. Cuauhtémoc C.P. 06600 Ciudad de México Información, soporte y ventas: Conmutador con 6 líneas   1209 0740 -  5553 2049</p> 
-   <br></br>
+        <p><strong> Nota:</strong> El costo no incluye Interfaz, Formatos, Carga de Catálogos o alguna implementación adicional a la mencionada en su cotización.</p>
+        <p><strong> No se aceptan devoluciones</strong></p>           
+        <p style={{color:"#3371FF"}}><strong>Condiciones Comerciales y Formas de Pago</strong></p>
+
+           <ul >
+               <li>Todos los costos anteriormente presentados son más IVA.</li>
+               <li>Precios representados en M.N.</li>
+               <li>Pago por anticipado</li>
+               <li>Pago por depósito bancario o transferencia electrónica.</li>	
+           </ul>
+           <fort  > 
+               <p align="left" marginLeft="20%">
+                   - Cuenta: 50020978434 
+               <br></br>
+               - Clabe: 036180500209784346
+               <br></br>
+               - Banco: Inbursa
+               <br></br>
+               - Beneficiario: ALFA DISEÑO DE SISTEMAS, S.A. de C.V.
+               <br></br>
+               - RFC: ADS020524CH1
+               </p>
+           </fort>
+
+       <p>Sin más por el momento y agradeciéndole por su amable atención,
+            Quedo a sus órdenes para cualquier duda al respecto. </p>
+
+         <fort> 
+              
+             <p className="text-center mb-4" >               
+               {localStorage.getItem("nombre") + " "  + localStorage.getItem("apellido")}
+                 {/* esto es nombre y Apellidos */}
+               <br></br>              
+               {localStorage.getItem("correo")}
+               {/* Esto es el correo */}
+               <br></br>
+               <br></br>
+               <strong> ALFA DISEÑO DE SISTEMAS, S.A. DE C.V.</strong>
+               <br></br>
+             <u  style={{color:"#3371FF"}}>www.ads.com.mx </u>
+             </p>
+              <p  className="text-center mb-4">Av. Chapultepec N° 473, Piso 3 Col. Juárez, Del. Cuauhtémoc C.P. 06600 Ciudad de México <br></br> Información, soporte y ventas:
+                 Conmutador con 6 líneas   1209 0740 -  5553 2049</p>
 
 
-</div>    
+             
+       </fort  > 
+       </div>
 
-</Paper>
-
-     </Container>
+              </Paper>
+              </div> 
 
 
         </React.Fragment>

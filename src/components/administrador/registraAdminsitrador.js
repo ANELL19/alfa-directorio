@@ -22,13 +22,13 @@ class signupAdminAlfa extends Component {
       contrasena: "",
       tablas:[],
       viewSearch:true,
-      viewForm:true,
+      viewForm:false,
       fk_empresa:[]     
     };  
   }
 
   onChangeInput = (e) => {
-    console.log("eventoonChange", e);
+    // console.log("eventoonChange", e);
     const { id, value } = e.target;
     this.setState({
       [id]: value
@@ -36,11 +36,14 @@ class signupAdminAlfa extends Component {
   };
 
  componentWillUnmount(){
-  localStorage.removeItem("id_empresa")
   localStorage.removeItem("rfc")
-  localStorage.removeItem("telefono")
+  localStorage.removeItem("nombre")
+  localStorage.removeItem("apellido")
   localStorage.removeItem("correo")
-  localStorage.removeItem("razonSocial")    
+  localStorage.removeItem("contrasena")    
+  // localStorage.removeItem("empresa")
+  // localStorage.removeItem("razonSocial")
+     
   }
 
   onSubmitBtn = (e) => {
@@ -65,12 +68,13 @@ class signupAdminAlfa extends Component {
     })
       .then((response) => {     
         DialogUtility.alert({
-          title: "Registro exitoso"
+          title: "Registro exitoso",
         });
-        window.location.reload();
+     
+        window.location.reload();        
       })
       .catch((err) => {
-        console.log("error", err.response);
+        // console.log("error", err.response);
       });    
   };
   
@@ -95,29 +99,28 @@ class signupAdminAlfa extends Component {
       }   
   
        }).then(response=>{
-       console.log( 'este es el response',response)  
+      //  console.log( 'este es el response',response)  
         if(response.data.data.getEmpresas[0]){
-          localStorage.setItem("empresa",response.data.data.getEmpresas[0].id_empresa)
-          localStorage.setItem("rfc",response.data.data.getEmpresas[0].rfc)
-          localStorage.setItem("razonSocial",response.data.data.getEmpresas[0].razonSocial)
-          localStorage.setItem("correo",response.data.data.getEmpresas[0].correo)
-          localStorage.setItem("telefono",response.data.data.getEmpresas[0].telefono)          
-          console.log("la razon social",localStorage.getItem("razonSocial"))       
-          this.setState({fk_empresa:response.data.data.getEmpresas[0].id_empresa})       
+          localStorage.setItem("empresa",response.data.data.getEmpresas[0].id_empresa)         
+          localStorage.setItem("razonSocial",response.data.data.getEmpresas[0].razonSocial)             
+          this.setState({fk_empresa:response.data.data.getEmpresas[0].id_empresa})      
+          // console.log("esto es algo",response.data.data.getEmpresas[0].id_empresa) 
+          // console.log("esto es algo2",this.state.fk_empresa) 
+          this.setState({viewForm:true})         
         }else{
            DialogUtility.alert({
                 
                   title:'AVISO!' ,
-                  content:'El RFC no fue encontrado'
-                  
+                  content:'El RFC no fue encontrado'                  
               });
+               
         }
         
    
        
        })
        .catch(err=>{
-           console.log('error',err)
+          //  console.log('error',err)
        })   
   }
 
@@ -145,7 +148,7 @@ class signupAdminAlfa extends Component {
                  
       <Row>        
       <MDBCol md="6"> <h6>Razón Social:</h6></MDBCol>
-      <Label>{localStorage.getItem("razonSocial")}</Label>
+      <Label>{razonSocial}</Label>
           <MDBCol md="6">
             <MDBInput
               label="Nombre (s)"

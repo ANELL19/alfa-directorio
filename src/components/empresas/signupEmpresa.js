@@ -23,7 +23,14 @@ class signupEmpresas extends Component{
         } 
         this.regresar = this.regresar.bind(this)     
     }   
+ componentWillUnmount(){
+  localStorage.removeItem("rfc")
+  localStorage.removeItem("razonSocial")
+  localStorage.removeItem("correo")
+  localStorage.removeItem("telefono")
+  localStorage.removeItem("contrasena") 
 
+ }
     regresar(){
         this.props.history.push("/Dashboard")
     } 
@@ -62,7 +69,11 @@ class signupEmpresas extends Component{
                   title:'Registro exitoso' ,
                   
               });
-              window.location.reload();
+              window.location.reload()
+                 
+              
+              
+              
                // this.props.history.push("/home_admin")
         })
          .catch(err=>{
