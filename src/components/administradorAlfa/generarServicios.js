@@ -1,6 +1,3 @@
-
-// ************************************ Servicios
-
 import React, { Component } from 'react'
 import axios from 'axios'
 import "bootstrap/dist/css/bootstrap.css";
@@ -22,7 +19,7 @@ import { MDBTable, MDBTableBody, MDBTableHead, MDBIcon} from 'mdbreact';
 import {API} from '../Graphql/Graphql'
 
 
-class Servicios extends Component {
+class Cotizaciones extends Component {
   pdfExportComponent
     constructor(props) {
       super(props);
@@ -55,15 +52,16 @@ class Servicios extends Component {
             pdfview:false,
             botonPdfExport:false,
             rfc:"",
-            Datos:[]
-            // renderTabla= true
+            Datos:[],    
+            id_productoServicio:" "       
+            
       }
       this.cancelar = this.cancelar.bind(this)
     }
 
     cancelar(){
        setTimeout(() => {
-    window.location.reload();
+    // window.location.reload();
   }); 
   }
 
@@ -91,7 +89,7 @@ handleInputChange = async (index, event) => {
   let array1=[];
   this.state.inputFields.map(rows =>{
     array1.push(rows)
-    console.log("esto es rows",array1)
+    // console.log("esto es rows",array1)
   })
 //  let var = this.state.inputFields.filter(firstName)
 //   console.log("esto es rows",var)
@@ -155,7 +153,10 @@ onSubmitBtn = (e)=>{
           .catch(err=>{
               console.log('error',err.response)
           })
+
+
 }
+
 
 cerrarCotizacion() {
   this.setState({form:true})
@@ -248,6 +249,34 @@ consultarDatos(){
 
 } 
 
+consultarProductoServicio(){
+ let producto=this.state.id_productoServicio
+
+  axios({
+    url:API,
+    method:'post',
+    data:{
+        query:`
+        query{
+          getProductoServicio(data:"${[this.state.id_productoServicio]}"){
+            id_productoServicio
+            tipo
+            concepto
+            precio
+                                    
+           } 
+        }
+        `
+    } 
+     }).then(response=>{
+     console.log( 'este es el response',response.data.data.getProductoServicio) 
+     })
+     .catch(err=>{
+         console.log('error',err)
+     })       
+     
+} 
+
 handleAddFields = () => {
   const values = [...this.state.inputFields];
   let valor1=[];
@@ -255,13 +284,13 @@ handleAddFields = () => {
   // values.push({ firstName: '', lastName: '' , precio:''});
   values.push({ productos: '', precio: '' });
   values.map(rows=>{
-    console.log("esto es rows",rows) 
+    // console.log("esto es rows",rows) 
     valor2.push(rows)
-    console.log("esto es val2",valor2)
+    // console.log("esto es val2",valor2)
     this.setState({Datos:valor2})
   } );
-  console.log("esto es estado",this.state.Datos)
-  console.log("esto es values",valor1)
+  // console.log("esto es estado",this.state.Datos)
+  // console.log("esto es values",valor1)
   this.setState({inputFields:values})  
 };
 
@@ -274,6 +303,7 @@ handleAddFields = () => {
     render() {
       let searchRFC;
       let form;
+      let consultarIdProducto;
       
         var f = new Date();     
        let fecha=f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
@@ -302,13 +332,13 @@ handleAddFields = () => {
       console.log("esto es totaol",total)
       console.log("subtotal",Subtotal)
       console.log("IVA",IVA)
-     let tablaDescuento =
-      <div>
-      <tr>
-      <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center"> Descuento de {this.state.descuento}%:</td>
-      <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{calDescuentoAplicado}</td>
-      </tr>
-      </div>
+    //  let tablaDescuento =
+    //   <div>
+    //   <tr>
+    //   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center"> Descuento de {this.state.descuento}%:</td>
+    //   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{calDescuentoAplicado}</td>
+    //   </tr>
+    //   </div>
       searchRFC= <div>
         <Row>
                      <MDBCol md="3" className="mb-3"></MDBCol>
@@ -329,7 +359,32 @@ handleAddFields = () => {
                 </Row>
       </div>
 let vendedor = localStorage.getItem("nombre") + " "  + localStorage.getItem("apellido");
-console.log("esto es vendedor", vendedor)
+// console.log("esto es vendedor", vendedor)
+
+ consultarIdProducto = 
+<div>
+{/* <Form onSubmit={this.onSubmitBtn}> */}
+<MDBCol md="3" className="mb-3">    
+                <label htmlFor="defaultFormLoginPasswordEx" >
+                <strong>id_producto o servicio:</strong>
+                </label>
+                <input                            
+                id="id_productoServicio"
+                // type="t"
+                name="id_productoServicio"
+                onChange={this.onChangeInput}
+                // defaultValue={this.state.idProductoServicio} 
+                value={this.state.id_productoServicio}
+                required
+                // className="form-control"
+                />
+           </MDBCol>
+           <MDBBtn gradient="aqua" rounded size="sm" type="submit" className="mr-auto"  onClick={e=> this.consultarProductoServicio() } >
+           buscar id
+                    </MDBBtn>
+                    {/* </Form> */}
+</div>
+
 if (this.state.form == true) {
   // console.log("esto es data de Datos:",this.state.Datos.empresa)
     
@@ -422,6 +477,8 @@ if (this.state.form == true) {
                 required
                 className="form-control"/>
            </MDBCol>
+
+           
 {/* ***************LOS BOTONES PARA AGREGAR***************** */}
 
 {this.state.inputFields.map((inputField,index) => {  
@@ -817,11 +874,11 @@ if (this.state.form == true) {
    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center"> Precio Normal</td>
    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{this.state.precio}</td>         
  </tr>
- {/* <tr>
+ <tr>
    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center"> Descuento de {this.state.descuento}%:</td>
    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{calDescuentoAplicado}</td>
- </tr> */}
-{ tablaDescuento}
+ </tr>
+
  <tr>
  <td ROWSPAN="2" colspan="2" ></td>
    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center">subtotal:</td>
@@ -933,8 +990,7 @@ Quedo a sus órdenes para cualquier duda al respecto.</p>
         <React.Fragment> 
         {form} 
         {pdf}
-
-{/* ************************************* */}
+        {consultarIdProducto}
 
 <div>
         <Paper   style={{width:1200,height:1400, marginLeft:"6%",marginTop:"2%",marginBottom:"2%"}}>
@@ -972,7 +1028,7 @@ Quedo a sus órdenes para cualquier duda al respecto.</p>
                     <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{this.state.precio}</td>         
                   </tr>
                   <tr>
-                  <td ROWSPAN="1" colspan="1"></td>
+                  
                     <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center"> Descuento de {this.state.descuento}%:</td>
                     <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{calDescuentoAplicado}</td>
                   </tr>
@@ -982,7 +1038,7 @@ Quedo a sus órdenes para cualquier duda al respecto.</p>
                     <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{Subtotal}</td>
                   </tr>
                   <tr>
-                  <td ROWSPAN="2" colspan="2"></td>
+                 
                     <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center">IVA 16%:</td>
                     <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{IVA}</td>
                   </tr>
@@ -1073,9 +1129,6 @@ Quedo a sus órdenes para cualquier duda al respecto.</p>
              </p>
               <p  className="text-center mb-4">Av. Chapultepec N° 473, Piso 3 Col. Juárez, Del. Cuauhtémoc C.P. 06600 Ciudad de México <br></br> Información, soporte y ventas:
                  Conmutador con 6 líneas   1209 0740 -  5553 2049</p>
-
-
-             
        </fort  > 
        </div>
 
@@ -1087,4 +1140,4 @@ Quedo a sus órdenes para cualquier duda al respecto.</p>
       );
     }
   }
-  export default Servicios
+  export default Cotizaciones

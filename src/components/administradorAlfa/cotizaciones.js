@@ -6,19 +6,74 @@ import'bootstrap-css-only/css/bootstrap.min.css';
 import'mdbreact/dist/css/mdb.css';
 import { MDBRow, MDBCol, MDBBtn,MDBAlert, MDBCard,MDBCardBody,MDBContainer} from 'mdbreact';
 import { DialogUtility } from '@syncfusion/ej2-popups';
-import {Form} from 'reactstrap';
 // import Navbar from './navbar'
 import { PDFExport } from '@progress/kendo-react-pdf';
-import { Container, Paper } from '@material-ui/core';
+import { Container} from '@material-ui/core';
 import { Row,Col } from 'reactstrap';
 // import {  MDBCard, MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText, MDBCol } from 'mdbreact';
 import { Table } from 'reactstrap';
 import imagen from '../imagen/encabezado.JPG'
 import titulo1 from  '../imagen/titulo1.png'
 import { MDBTable, MDBTableBody, MDBTableHead, MDBIcon} from 'mdbreact';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import {API} from '../Graphql/Graphql'
+import MUIDataTable from "mui-datatables";
+import {Alert } from 'reactstrap'
+import {Form} from 'reactstrap';
 
+import { Form as Forma, Field } from 'react-final-form';
+import { TextField, Select } from 'final-form-material-ui';
+import {
+	Paper,
+	Grid,
+	Button,
+	MenuItem,
+  } from '@material-ui/core';
 
+  function onSubmit (values) {
+	};
+
+	const validate = values => {
+        const errors = {};
+        if (!values.Nombre) {
+          errors.Nombre = 'Este campo es requerido';
+        }
+        if (!values.calle) {
+          errors.calle = 'Este campo es requerido';
+        }
+        if (!values.NumExt) {
+          errors.NumExt = 'Este campo es requerido';
+        }
+        if (!values.numInt) {
+          errors.numInt = 'Este campo es requerido';
+        }
+        if (!values.colonia) {
+          errors.colonia = 'Este campo es requerido';
+        }
+        if (!values.cp) {
+          errors.cp = 'Este campo es requerido';
+        }
+        if (!values.city) {
+          errors.city = 'Este campo es requerido';
+        }
+      
+        if (!values.estado) {
+          errors.estado = 'Required';
+        }
+        if (!values.RFC) {
+            errors.RFC = 'Required';
+          }
+          if (!values.telefono) {
+            errors.telefono = 'Required';
+          }
+
+        if (!values.actividades) {
+            errors.actividades = 'Required';
+          }
+       
+      
+        return errors;
+      };
 class Cotizaciones extends Component {
   pdfExportComponent
     constructor(props) {
@@ -34,10 +89,7 @@ class Cotizaciones extends Component {
             correo1:"" ,
             correo2:"", 
             telefono1:"" ,
-            telefono2:"",
-            // telefono3:"", 
-            // telefono4:"" , 
-            // telefono5:"",
+            telefono2:"",            
             Servicio:"",
             precio:"", 
             descuento:" " ,
@@ -52,11 +104,44 @@ class Cotizaciones extends Component {
             pdfview:false,
             botonPdfExport:false,
             rfc:"",
-            Datos:[]
-            // renderTabla= true
+            Datos:[],    
+            id_productoServicio:" ",
+            arrayProductoServicio:[],    
+            tablaProductoServicio:[],
+            array:[], 
+            unidad:""  
+            
       }
       this.cancelar = this.cancelar.bind(this)
     }
+    
+    getMuiTheme = () => createMuiTheme({
+      overrides: {
+        MUIDataTableBodyCell: {
+            root: {              
+            fontFamily : 'arial' ,
+            fontSize: '14px', 
+            // textAlign:"center"
+          },          
+        },
+        MUIDataTableHeadCell: {
+          root: {         
+            fontSize: '16px',
+            textAlign:"center"
+          }
+        },
+        paperResponsiveScrollFullHeightFullWidth: {
+          position: 'absolute',
+        },
+        responsiveBase: {
+          overflow: 'auto',
+          '@media print': {
+            height: 'auto !important',
+          },
+        },  
+        
+      }
+      })
 
     cancelar(){
        setTimeout(() => {
@@ -70,6 +155,37 @@ class Cotizaciones extends Component {
         [id]:value
     })
 } 
+ async componentWillMount(){
+   await axios({
+    url:API,
+    method:'post',
+    data:{
+        query:`
+        query{
+          getTablaProductoServicio(data:"${[""]}"){
+            id_productoServicio
+            tipo
+            concepto
+            precio
+                                    
+           } 
+        }
+        `
+    } 
+     }).then(response=>{
+     console.log( 'este es el response de tablaProductos',response.data.data.getTablaProductoServicio) 
+     this.setState({array:response.data.data.getTablaProductoServicio})
+     console.log("estado",this.state.array)
+     })
+     .catch(err=>{
+         console.log('error',err)
+     })   
+     
+     localStorage.removeItem("id")
+     localStorage.removeItem("tipo")
+     localStorage.removeItem("concepto")
+     localStorage.removeItem("precio") 
+}
 
 handleInputChange = async (index, event) => {
   const values = [...this.state.inputFields];
@@ -88,7 +204,7 @@ handleInputChange = async (index, event) => {
   let array1=[];
   this.state.inputFields.map(rows =>{
     array1.push(rows)
-    console.log("esto es rows",array1)
+    // console.log("esto es rows",array1)
   })
 //  let var = this.state.inputFields.filter(firstName)
 //   console.log("esto es rows",var)
@@ -152,8 +268,13 @@ onSubmitBtn = (e)=>{
           .catch(err=>{
               console.log('error',err.response)
           })
+
+
 }
 
+evaluar  = (values) =>{
+  console.log("values",values)
+}
 cerrarCotizacion() {
   this.setState({form:true})
   this.setState({pdfview:false})
@@ -245,6 +366,56 @@ consultarDatos(){
 
 } 
 
+consultarProductoServicio(){
+ let producto=this.state.id_productoServicio
+
+  axios({
+    url:API,
+    method:'post',
+    data:{
+        query:`
+        query{
+          getProductoServicio(data:"${[this.state.id_productoServicio]}"){
+            id_productoServicio
+            tipo
+            concepto
+            precio                                    
+           } 
+        }
+        `
+    } 
+     }).then(response=>{    
+     if(response.data.data.getProductoServicio[0]){
+      console.log( 'este es el response',response.data.data.getProductoServicio) 
+      this.setState({arrayProductoServicio:response.data.data.getProductoServicio})
+     console.log("id",this.state.arrayProductoServicio[0].id_productoServicio) 
+     console.log("tipo",this.state.arrayProductoServicio[0].tipo) 
+     console.log("concepto",this.state.arrayProductoServicio[0].concepto) 
+     console.log("precio",this.state.arrayProductoServicio[0].precio) 
+     localStorage.setItem("id",this.state.arrayProductoServicio[0].id_productoServicio)
+     localStorage.setItem("tipo",this.state.arrayProductoServicio[0].tipo)
+     localStorage.setItem("concepto",this.state.arrayProductoServicio[0].concepto)
+     localStorage.setItem("precio",this.state.arrayProductoServicio[0].precio) 
+  //    DialogUtility.alert({
+  //     title:'Aviso!' ,
+  //     content: "El concepto del producto no fue encontrado",
+  // });         
+
+     } else{
+      DialogUtility.alert({
+        title:'Aviso!' ,
+        content: "El concepto del producto no fue encontrado",
+    });         
+
+       
+     }
+    })
+     .catch(err=>{
+         console.log('error',err)
+     })       
+     
+} 
+
 handleAddFields = () => {
   const values = [...this.state.inputFields];
   let valor1=[];
@@ -252,13 +423,13 @@ handleAddFields = () => {
   // values.push({ firstName: '', lastName: '' , precio:''});
   values.push({ productos: '', precio: '' });
   values.map(rows=>{
-    console.log("esto es rows",rows) 
+    // console.log("esto es rows",rows) 
     valor2.push(rows)
-    console.log("esto es val2",valor2)
+    // console.log("esto es val2",valor2)
     this.setState({Datos:valor2})
   } );
-  console.log("esto es estado",this.state.Datos)
-  console.log("esto es values",valor1)
+  // console.log("esto es estado",this.state.Datos)
+  // console.log("esto es values",valor1)
   this.setState({inputFields:values})  
 };
 
@@ -268,9 +439,86 @@ handleAddFields = () => {
   this.setState({inputFields:values});
 };
 
+      
+
     render() {
+
       let searchRFC;
       let form;
+      let consultarIdProducto;
+      let data;
+      let tabla;
+      const columns = ["id_productoServicio", "tipo", "concepto", "precio"];
+
+      data= this.state.array.map((rows,i)=>{
+        console.log("rows",rows)
+        return([rows.id_productoServicio,rows.tipo,rows.concepto,rows.precio])
+      })
+
+       let Datos= this.state.arrayProductoServicio.map((rows,i)=>{
+
+       })
+
+      
+      const options={ 
+        filterType:"drowpdawn",
+        responsive: "stacked",
+        responsive:"standard",
+        print:false,
+        download:false,
+        filter:false,
+        caseSensitive:false,
+        selectableRows:"none",
+        viewColumns:false,      
+        textLabels:{
+        body: {
+          noMatch: "Lo sentimos, no se encontraron registros coincidentes",
+          toolTip: " Ordenar",
+          columnHeaderTooltip: column => `Sort for ${column.label}`
+        },
+        pagination: {
+          next: "Página siguiente",
+          previous: "Página anterior",
+          rowsPerPage: "Filas por página:",
+          displayRows: "de",
+        },
+        toolbar: {
+          search: "Buscar",
+          downloadCsv: " Descargar CSV",
+          print: "Imprimir ",
+          viewColumns: "Ver columnas",
+          filterTable: "Tabla de filtros",
+        },
+        filter: {
+          all: "Todos",
+          title: "FILTROS",
+          reset: "RESET",
+        },
+        viewColumns: {
+          title: "Mostrar columnas",
+          titleAria: "Mostrar / Ocultar columnas de tabla",
+        },
+        selectedRows: {
+          text: "fila (s) seleccionadas",
+          delete: "Eliminar",
+          deleteAria: "Eliminar filas seleccionadas",
+        },
+      
+      }        
+      } 
+   tabla= 
+      <div >          
+      <MuiThemeProvider  theme={this.getMuiTheme()}>  
+         <MUIDataTable  
+           title={"catalogo de Productos y Servicios"} 
+             data={data}
+           columns={columns} 
+           options={options}                     
+         /> 
+     </MuiThemeProvider>  
+    </div> 
+
+
       
         var f = new Date();     
        let fecha=f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
@@ -299,13 +547,7 @@ handleAddFields = () => {
       console.log("esto es totaol",total)
       console.log("subtotal",Subtotal)
       console.log("IVA",IVA)
-     let tablaDescuento =
-      <div>
-      <tr>
-      <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center"> Descuento de {this.state.descuento}%:</td>
-      <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{calDescuentoAplicado}</td>
-      </tr>
-      </div>
+
       searchRFC= <div>
         <Row>
                      <MDBCol md="3" className="mb-3"></MDBCol>
@@ -326,7 +568,13 @@ handleAddFields = () => {
                 </Row>
       </div>
 let vendedor = localStorage.getItem("nombre") + " "  + localStorage.getItem("apellido");
-console.log("esto es vendedor", vendedor)
+// console.log("esto es vendedor", vendedor)
+
+ let id_productoServicio= localStorage.getItem("id");
+ let tipo= localStorage.getItem("tipo");
+ let concepto= localStorage.getItem("concepto");
+ let precio= localStorage.getItem("precio")
+
 if (this.state.form == true) {
   // console.log("esto es data de Datos:",this.state.Datos.empresa)
     
@@ -419,64 +667,79 @@ if (this.state.form == true) {
                 required
                 className="form-control"/>
            </MDBCol>
-{/* ***************LOS BOTONES PARA AGREGAR***************** */}
-
-{this.state.inputFields.map((inputField,index) => {  
-  return(
-    // <MDBCol md="3" className="mb-3 ">     
-  
-    <div className="form-group">
-<MDBRow>
-      <MDBCol md="12" className="mb-3 "> 
-    <label htmlFor="Productos">Producto</label>
-    <input
-      type="text"
-      className="form-control"
-      id="productos"
-      name="productos"
-      value={inputField.productos}
-      onChange={event => this.handleInputChange(index, event)}
-    />   
-     </MDBCol>
-     <MDBCol md="12" className="mb-3 "> 
-     <label htmlFor="Productos">Precio</label>
-    <input
-      type="text"
-      className="form-control"
-      id="productos"
-      name="productos"
-      value={inputField.productos}
-      onChange={event => this.handleInputChange(index, event)}
-    />  
-    </MDBCol>     
-    <button
-      className="btn btn-link"
-      type="button"
-      onClick={() => this.handleRemoveFields(index)}
-    >
-      -
-    </button>
-    <button
-      className="btn btn-link"
-      type="button"
-      onClick={() => this.handleAddFields()}
-    >
-      +
-    </button>
-    </MDBRow>
-  </div> 
- 
-  )
-  
-})}        
-{/* </MDBRow>
-
-
-{/* </MDBCol> */}
-{/* </Row> */}
-
-{/* </MDBContainer> */}
-{/* ******************************** */}
+           {/* consultarIdProducto =  */}
+<div>
+{/* <Form onSubmit={this.onSubmitBtn}> */}
+<MDBCol md="3" className="mb-3">    
+                <label htmlFor="defaultFormLoginPasswordEx" >
+                <strong>id_producto o servicio:</strong>
+                </label>
+                <input                            
+                id="id_productoServicio"
+                // type="t"
+                name="id_productoServicio"
+                onChange={this.onChangeInput}
+                // defaultValue={this.state.idProductoServicio} 
+                value={this.state.id_productoServicio}
+                required
+                // className="form-control"
+                />
+           </MDBCol>
+           <MDBBtn gradient="aqua" rounded size="sm" type="submit" className="mr-auto"  onClick={e=> this.consultarProductoServicio() } >
+           buscar id
+                    </MDBBtn>
+                    <MDBCol md="6" className="mb-3">    
+                <label htmlFor="defaultFormLoginPasswordEx" >
+                <strong>tipo</strong>
+                </label>
+                <input                            
+                id="tipo"
+                // type="t"
+                name="tipo"
+                onChange={this.onChangeInput}
+                defaultValue={tipo}
+                className="form-control"/>
+           </MDBCol>
+           <MDBCol md="6" className="mb-3">    
+                <label htmlFor="defaultFormLoginPasswordEx" >
+                <strong>concepto</strong>
+                </label>
+                <input                            
+                id="concepto"
+                // type="t"
+                name="concepto"
+                onChange={this.onChangeInput}
+                defaultValue={concepto} 
+                className="form-control"/>
+           </MDBCol>
+           <MDBCol md="6" className="mb-3">    
+                <label htmlFor="defaultFormLoginPasswordEx" >
+                <strong>unidad</strong>
+                </label>
+                <input                            
+                id="unidad"
+                // type="t"
+                name="unidad"
+                onChange={this.onChangeInput}
+                value={this.state.unidad}                 
+                required
+                className="form-control"/>
+           </MDBCol>
+           <MDBCol md="6" className="mb-3">    
+                <label htmlFor="defaultFormLoginPasswordEx" >
+                <strong>precio</strong>
+                </label>
+                <input                            
+                id="precioBase"
+                // type="t"
+                name="precioBase"
+                onChange={this.onChangeInput}
+                defaultValue={precio}
+                className="form-control"/>
+           </MDBCol>
+                    {/* </Form> */}
+</div>
+           
 
 
             <MDBCol md="3" className="mb-3">   
@@ -578,16 +841,53 @@ if (this.state.form == true) {
                     <strong> Vendedor : &nbsp;</strong>
                     </label>
                     <label>{vendedor}</label>
-                    {/* <label>{"vendedor desconocido" || vendedor}</label> */}
-                    {/* <label>{ vendedor||"vendedor desconocido" }</label> */}
-                    {/* <label>"lizbeth cuevas"
-                    </label> */}
 
                     </MDBCol>                 
 
                   </MDBRow>
                   </Form>
-            
+                  <div style={{ padding: 16, margin: 'auto', maxWidth: 600 }}>
+                  <Forma
+                    onSubmit={onSubmit}
+                    validate={validate}
+                    render={({ handleSubmit, submitting,values }) => (
+                      <form onSubmit={handleSubmit}>
+                          <Grid container alignItems="flex-start" spacing={2} >
+                              <Grid item xs={4}>
+                              <Field
+                                required
+                                fullWidth
+                                name="estado"
+                                component={Select}
+                                label="Estado"
+                                formControlProps={{ fullWidth: true }}
+                              >
+                              {this.state.array.map(rows=>{
+                                return(
+                                  <MenuItem value={rows.id_productoServicio}><strong>{rows.id_productoServicio}</strong> {rows.concepto}</MenuItem>
+                                )
+                              })}
+                              
+                                </Field>
+                                </Grid>
+                            <Grid item style={{ marginTop: 16 ,marginLeft:150 }}>
+                              <MDBBtn
+                              color="primary"
+                               size="md"
+                                type="submit"
+                                disabled={submitting}
+                                onClick={(e) =>this.evaluar(values)}
+                                className="text-white"
+                              >
+                                Aceptar
+                              </MDBBtn>
+                            </Grid>
+                          </Grid>
+                      
+                      </form>
+                    )}
+                  />
+                </div>
                   <MDBRow style={{marginTop:"10%"}}> 
                       <MDBCol md="3" className="mb-3"/>
                       
@@ -595,7 +895,7 @@ if (this.state.form == true) {
                               <MDBBtn   color="info"  onClick = {e=> this.pdfView()}> Generar Cotización</MDBBtn>
                       </MDBCol>
                       <MDBCol md="3" className="mb-3"> 
-                              <MDBBtn  color="secondary"   onClick={this.cancelar} type="submit">Cancelar</MDBBtn>
+                              <MDBBtn  color="secondary"   onClick={e=>this.cancelar} type="submit">Cancelar</MDBBtn>
                       </MDBCol>
               
                   </MDBRow>
@@ -679,39 +979,7 @@ if (this.state.form == true) {
              
 
    <p style={{color:"red"}} htmlFor="defaultFormLoginPasswordEx"><strong>Promoción &nbsp;{this.state.promocion.toLowerCase()}</strong></p>
-    
-              
-              {/* <Table bordered>
-                   <thead>
-                       <tr>
-                       <td style={{padding:"5px"}} bgcolor="DeepSkyBlue" colspan="3" align="center"><strong>PÓLIZA DE SOPORTE TECNICO REMOTO BASICAS ** LA POLIZA ES POR SISTEMA **</strong></td>          
-                       </tr>
-                   </thead>
-                   <tbody>
-                   <tr>
-                       <td style={{padding:"5px"}} align="center">SERVICIO</td>
-                       <td style={{padding:"5px"}} align="center">PRECIO ESPECIAL</td>
-                       <td style={{padding:"5px"}} align="center">PRECIO NORMAL</td>
-                       </tr>    
-                       <tr>
-                       <td style={{padding:"5px"}} align="center"> Póliza semestral - por sistema </td>
-                       <td style={{padding:"5px"}} align="center"> $ 2,500.00 </td>
-                       <td style={{padding:"5px"}} align="center"> $ 5,000.00 </td>  
-                       </tr>
 
-                       <tr>
-                       <td style={{padding:"5px"}} align="center"> Póliza semestral - por sistema</td>
-                       <td style={{padding:"5px"}} align="center"> $ 4,000.00 </td>
-                       <td style={{padding:"5px"}} align="center"> $ 8,000.00 </td>
-                       
-                       
-                       </tr>
-                       <tr>  
-                       <td style={{padding:"5px"}} colspan="2" align="center"></td>       
-                       <td style={{color:"red", padding:"5px" }} align="center"><strong>PRECIO MAS IVA</strong></td>           
-                       </tr>
-                   </tbody>
-            </Table> */}
    
         <p><strong> Nota:</strong> El costo no incluye Interfaz, Formatos, Carga de Catálogos o alguna implementación adicional a la mencionada en su cotización.</p>
         <p><strong> No se aceptan devoluciones</strong></p>           
@@ -791,10 +1059,7 @@ if (this.state.form == true) {
            {this.state.Datos.telefono1}
            <br></br>
            Buen día, me permito presentar nuestra propuesta referente a los producto (s) y servicio (s) de su interés. 
-          </p>
-          
-                
-     
+          </p>   
 
 <div style= {{ marginTop:-2}}>    
 <MDBTable bordered  >
@@ -814,11 +1079,11 @@ if (this.state.form == true) {
    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center"> Precio Normal</td>
    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{this.state.precio}</td>         
  </tr>
- {/* <tr>
+ <tr>
    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center"> Descuento de {this.state.descuento}%:</td>
    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{calDescuentoAplicado}</td>
- </tr> */}
-{ tablaDescuento}
+ </tr>
+
  <tr>
  <td ROWSPAN="2" colspan="2" ></td>
    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center">subtotal:</td>
@@ -927,11 +1192,15 @@ Quedo a sus órdenes para cualquier duda al respecto.</p>
         </div>
                 }
       return (
-        <React.Fragment> 
+        <React.Fragment>             
         {form} 
         {pdf}
+        {consultarIdProducto}
 
-{/* ************************************* */}
+
+
+        {tabla}
+      
 
 <div>
         <Paper   style={{width:1200,height:1400, marginLeft:"6%",marginTop:"2%",marginBottom:"2%"}}>
@@ -993,39 +1262,7 @@ Quedo a sus órdenes para cualquier duda al respecto.</p>
              
 
    <p style={{color:"red"}} htmlFor="defaultFormLoginPasswordEx"><strong>Promoción &nbsp;{this.state.promocion.toLowerCase()}</strong></p>
-    
-              
-              {/* <Table bordered>
-                   <thead>
-                       <tr>
-                       <td style={{padding:"5px"}} bgcolor="DeepSkyBlue" colspan="3" align="center"><strong>PÓLIZA DE SOPORTE TECNICO REMOTO BASICAS ** LA POLIZA ES POR SISTEMA **</strong></td>          
-                       </tr>
-                   </thead>
-                   <tbody>
-                   <tr>
-                       <td style={{padding:"5px"}} align="center">SERVICIO</td>
-                       <td style={{padding:"5px"}} align="center">PRECIO ESPECIAL</td>
-                       <td style={{padding:"5px"}} align="center">PRECIO NORMAL</td>
-                       </tr>    
-                       <tr>
-                       <td style={{padding:"5px"}} align="center"> Póliza semestral - por sistema </td>
-                       <td style={{padding:"5px"}} align="center"> $ 2,500.00 </td>
-                       <td style={{padding:"5px"}} align="center"> $ 5,000.00 </td>  
-                       </tr>
 
-                       <tr>
-                       <td style={{padding:"5px"}} align="center"> Póliza semestral - por sistema</td>
-                       <td style={{padding:"5px"}} align="center"> $ 4,000.00 </td>
-                       <td style={{padding:"5px"}} align="center"> $ 8,000.00 </td>
-                       
-                       
-                       </tr>
-                       <tr>  
-                       <td style={{padding:"5px"}} colspan="2" align="center"></td>       
-                       <td style={{color:"red", padding:"5px" }} align="center"><strong>PRECIO MAS IVA</strong></td>           
-                       </tr>
-                   </tbody>
-            </Table> */}
    
         <p><strong> Nota:</strong> El costo no incluye Interfaz, Formatos, Carga de Catálogos o alguna implementación adicional a la mencionada en su cotización.</p>
         <p><strong> No se aceptan devoluciones</strong></p>           
@@ -1070,17 +1307,15 @@ Quedo a sus órdenes para cualquier duda al respecto.</p>
              </p>
               <p  className="text-center mb-4">Av. Chapultepec N° 473, Piso 3 Col. Juárez, Del. Cuauhtémoc C.P. 06600 Ciudad de México <br></br> Información, soporte y ventas:
                  Conmutador con 6 líneas   1209 0740 -  5553 2049</p>
-
-
-             
        </fort  > 
        </div>
 
               </Paper>
               </div> 
-
+              {/* {tablaProductosYServicios} */}
 
         </React.Fragment>
+         
       );
     }
   }
