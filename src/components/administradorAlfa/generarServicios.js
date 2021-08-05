@@ -167,30 +167,30 @@ cerrarCotizacion() {
 pdfView (){
   let array=[];
   let array1=[];
-  // console.log("inputFields",this.state.inputFields);
-  // this.state.inputFields.map(rows=>{
-  //   array.push(rows)
-  //   array1.push(array)
-  //   console.log("que es rows", rows)
-  //   console.log("que es", array)
-  //   console.log("que es array1", array1)
+  console.log("inputFields",this.state.inputFields);
+  this.state.inputFields.map(rows=>{
+    array.push(rows)
+    array1.push(array)
+    console.log("que es rows", rows)
+    console.log("que es", array)
+    console.log("que es array1", array1)
 
-  // })
+  })
 
-//   array.push(this.state.inputFields)
-//   console.log("que es", array[0])
+  array.push(this.state.inputFields)
+  console.log("que es", array[0])
 
-// array.map(rows=>{
+array.map(rows=>{
     
-//     array1.push(array)
-//     console.log("que es rows", rows)
-//     // console.log("que es", array)
-//     console.log("que es array1", array1)
+    array1.push(array)
+    console.log("que es rows", rows)
+    // console.log("que es", array)
+    console.log("que es array1", array1)
 
-//   })
+  })
 
-  // const result = this.state.inputFields.filter(array1);
-  // console.log("esto es resultados",result)
+  const result = this.state.inputFields.filter(array1);
+  console.log("esto es resultados",result)
 
   let servicio  = this.state.Servicio.toUpperCase();
   let precio = this.state.precio;
@@ -281,7 +281,7 @@ handleAddFields = () => {
   const values = [...this.state.inputFields];
   let valor1=[];
   let valor2=[];
-  // values.push({ firstName: '', lastName: '' , precio:''});
+  values.push({ firstName: '', lastName: '' , precio:''});
   values.push({ productos: '', precio: '' });
   values.map(rows=>{
     // console.log("esto es rows",rows) 

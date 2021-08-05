@@ -20,7 +20,6 @@ import {API} from '../Graphql/Graphql'
 import MUIDataTable from "mui-datatables";
 import {Alert } from 'reactstrap'
 import {Form} from 'reactstrap';
-
 import { Form as Forma, Field } from 'react-final-form';
 import { TextField, Select } from 'final-form-material-ui';
 import {
@@ -82,8 +81,9 @@ class Cotizaciones extends Component {
         inputFields: [{          
           productos: '',
           precio: '',         
-        }] ,    
-        razonSocial:"" ,
+        }] ,   
+            rfc:"", 
+            razonSocial:"" ,
             nombre:"", 
             apellidos:"", 
             correo1:"" ,
@@ -91,26 +91,30 @@ class Cotizaciones extends Component {
             telefono1:"" ,
             telefono2:"",            
             Servicio:"",
-            precio:"", 
-            descuento:" " ,
-            totalDescuento:"",
-            iva:"",           
-            totalFloat:"",
             promocion:"", 
             vendedor:"",
             fecha:"" ,   
             fk_adminAlfa:"",
             form :true,
             pdfview:false,
-            botonPdfExport:false,
-            rfc:"",
+            botonPdfExport:false,           
             Datos:[],    
             id_productoServicio:" ",
             arrayProductoServicio:[],    
             tablaProductoServicio:[],
             array:[], 
-            unidad:""  
-            
+            unidad:"",
+            arrayFilter:[],
+            id:'',
+            tipo:'',
+            concepto:'',
+            precioProducto:'',  
+            cantidad:'',
+            descuentoProducto:'',
+            subtotal:'',
+            arrayInputFields:[],
+            cantidadMasiva:[],
+            descuentoMasivo:[]
       }
       this.cancelar = this.cancelar.bind(this)
     }
@@ -155,6 +159,29 @@ class Cotizaciones extends Component {
         [id]:value
     })
 } 
+onChangeInput1 =(e)=>{
+  let array = []
+  const {id,value} = e.target;
+  array.push(id,value)
+  this.setState({
+    cantidad:value
+ })
+  this.setState({
+     cantidadMasiva:array
+  })
+
+} 
+onChangeInput2 =(e)=>{
+  let array = []
+  const {id,value} = e.target;
+  array.push(id,value)
+ this.setState({
+  descuentoProducto:value
+})
+  this.setState({
+    descuentoMasivo:array
+ })
+} 
  async componentWillMount(){
    await axios({
     url:API,
@@ -173,12 +200,9 @@ class Cotizaciones extends Component {
         `
     } 
      }).then(response=>{
-     console.log( 'este es el response de tablaProductos',response.data.data.getTablaProductoServicio) 
      this.setState({array:response.data.data.getTablaProductoServicio})
-     console.log("estado",this.state.array)
      })
      .catch(err=>{
-         console.log('error',err)
      })   
      
      localStorage.removeItem("id")
@@ -200,22 +224,53 @@ handleInputChange = async (index, event) => {
 
  handleSubmit = e => {
   e.preventDefault();
-  console.log("inputFields",this.state.inputFields);
   let array1=[];
   this.state.inputFields.map(rows =>{
     array1.push(rows)
-    // console.log("esto es rows",array1)
   })
-//  let var = this.state.inputFields.filter(firstName)
-//   console.log("esto es rows",var)
-//   let filter= this.state.inputFields.filter(firstName)
-//   console.log("esto es filter",filter)
+  
 
 };
+
+capturar(){
+  let filter;
+  let arrayFilter=[]
+  this.setState({arrayFilter:''})
+  this.setState({cantidad:''})
+  let id = this.state.inputFields[0].precio;
+  if(this.state.inputFields[0].precio){
+    this.state.inputFields.map(rows=>{
+      filter  = this.state.array.filter(function(hero){
+        return hero.id_productoServicio == rows.precio
+      })
+      arrayFilter.push(filter[0])
+    })
+    this.setState({arrayFilter:filter[0]})
+    this.setState({arrayInputFields:arrayFilter})
+  }else{
+    DialogUtility.alert({
+      title:'AVISO !' ,
+      content: "Seleccione un producto o servicio",
+  });        
+  }
+}
 
 renderTabla(){
   this.setState({renderTabla:true}); 
 }
+
+Guardar(){ 
+   let id1 = this.state.id
+  let tipo1 = this.state.tipo
+  let concepto1 = this.state.concepto
+  let precio1 = this.state.precioProducto
+  let cantidad1 = this.state.cantidadMasiva
+  let descuento1 = this.state.descuentoMasivo
+   console.log("capturar datos",id1,tipo1,concepto1,precio1,cantidad1,descuento1)
+
+}
+
+
 
 onSubmitBtn = (e)=>{   
   // e.preventDefault();
@@ -230,20 +285,29 @@ onSubmitBtn = (e)=>{
   let correo2 = this.state.Datos.correo2;
   let tel1 = this.state.Datos.telefono1;
   let tel2 = this.state.Datos.telefono2;
-  let servicio  = this.state.Servicio.toUpperCase();
-  let precio = this.state.precio;              
+
+  let id1 = this.state.id
+  let tipo1 = this.state.tipo
+  let concepto1 = this.state.concepto
+  let precio1 = this.state.precioProducto
+  let cantidad1 = this.state.cantidadMasiva
+  let descuento1 = this.state.descuentoMasivo
+   console.log("capturar datos",id1,tipo1,concepto1,precio1,cantidad1,descuento1)
+  
+  // let servicio  = this.state.Servicio.toUpperCase();
+  // let precio = this.state.precio;              
   let promocion = this.state.promocion.toUpperCase();
-  let iva = ((precio * 16)/100).toFixed(2)
+  // let iva = ((precio * 16)/100).toFixed(2)
   let vendedor = localStorage.getItem("nombre").toUpperCase() + " "  + localStorage.getItem("apellido").toUpperCase()       
-  var suma = (parseInt(precio) + parseFloat(iva))
-  let total = suma.toFixed(2)
+  // var suma = (parseInt(precio) + parseFloat(iva))
+  // let total = suma.toFixed(2)
       axios({
           url:API,
           method:'post',
           data:{
               query:`
               mutation{
-              insertCotizaciones(data:"${[rfc,rs,nombre,apellidos,correo1,correo2,tel1,tel2,servicio,precio,iva,total,promocion,vendedor,id_adminAlfa]}"){
+              insertCotizaciones(data:"${[rfc,rs,nombre,apellidos,correo1,correo2,tel1,tel2,,promocion,vendedor,id_adminAlfa]}"){
                    message
                   } 
               }
@@ -256,8 +320,7 @@ onSubmitBtn = (e)=>{
                   DialogUtility.alert({
                       title:'registro exitoso' ,
                       content: "Cotizacion generada!",
-                  });                   
-               
+                  });  
               }
              else {
                   DialogUtility.alert({
@@ -272,9 +335,7 @@ onSubmitBtn = (e)=>{
 
 }
 
-evaluar  = (values) =>{
-  console.log("values",values)
-}
+
 cerrarCotizacion() {
   this.setState({form:true})
   this.setState({pdfview:false})
@@ -282,46 +343,39 @@ cerrarCotizacion() {
 
 
 pdfView (){
-  let array=[];
-  let array1=[];
+
+  // let array=[];
+  // let array1=[];
   // console.log("inputFields",this.state.inputFields);
   // this.state.inputFields.map(rows=>{
   //   array.push(rows)
   //   array1.push(array)
-  //   console.log("que es rows", rows)
-  //   console.log("que es", array)
-  //   console.log("que es array1", array1)
-
+   
   // })
-
 //   array.push(this.state.inputFields)
-//   console.log("que es", array[0])
+ 
 
-// array.map(rows=>{
-    
-//     array1.push(array)
-//     console.log("que es rows", rows)
-//     // console.log("que es", array)
-//     console.log("que es array1", array1)
-
+// array.map(rows=>{    
+//     array1.push(array) 
+//     console.log(w)
 //   })
 
-  // const result = this.state.inputFields.filter(array1);
-  // console.log("esto es resultados",result)
+  // ****validacion de promocion***
 
-  let servicio  = this.state.Servicio.toUpperCase();
-  let precio = this.state.precio;
-  let promocion = this.state.promocion.toUpperCase();
-  if(  servicio && precio && promocion){     
-      this.setState({form:false})
-      this.setState({pdfview:true})
-  }else {
-      DialogUtility.alert({
-          title:'AVISO !' ,
-          content: "Estimado usuario, por favor complete todos los campos obligatorios",
-      });          
-  }
+//   let servicio  = this.state.Servicio.toUpperCase();
+//   let precio = this.state.precio;
+//   let promocion = this.state.promocion.toUpperCase();
+//   if(  servicio && precio && promocion){     
+//       this.setState({form:false})
+//       this.setState({pdfview:true})
+//   }else {
+//       DialogUtility.alert({
+//           title:'AVISO !' ,
+//           content: "Estimado usuario, por favor complete todos los campos obligatorios",
+//       });          
+//   }
 }
+// +++++++++++++++++++++++
 
 consultarDatos(){
   let rfc=this.state.rfc
@@ -341,18 +395,14 @@ consultarDatos(){
             correo2
             telefono1
             telefono2   
-            message
-                             
+            message                             
            } 
         }
         `
     }   
-
      }).then(response=>{
-     console.log( 'este es el response',response)
    if(response.data.data.getClienteRFC[0]){               
     this.setState({ Datos:response.data.data.getClienteRFC[0]})
-    console.log("esto es Data",this.state.Datos)
    } else{
     DialogUtility.alert({            
       title:'AVISO!' ,
@@ -366,55 +416,6 @@ consultarDatos(){
 
 } 
 
-consultarProductoServicio(){
- let producto=this.state.id_productoServicio
-
-  axios({
-    url:API,
-    method:'post',
-    data:{
-        query:`
-        query{
-          getProductoServicio(data:"${[this.state.id_productoServicio]}"){
-            id_productoServicio
-            tipo
-            concepto
-            precio                                    
-           } 
-        }
-        `
-    } 
-     }).then(response=>{    
-     if(response.data.data.getProductoServicio[0]){
-      console.log( 'este es el response',response.data.data.getProductoServicio) 
-      this.setState({arrayProductoServicio:response.data.data.getProductoServicio})
-     console.log("id",this.state.arrayProductoServicio[0].id_productoServicio) 
-     console.log("tipo",this.state.arrayProductoServicio[0].tipo) 
-     console.log("concepto",this.state.arrayProductoServicio[0].concepto) 
-     console.log("precio",this.state.arrayProductoServicio[0].precio) 
-     localStorage.setItem("id",this.state.arrayProductoServicio[0].id_productoServicio)
-     localStorage.setItem("tipo",this.state.arrayProductoServicio[0].tipo)
-     localStorage.setItem("concepto",this.state.arrayProductoServicio[0].concepto)
-     localStorage.setItem("precio",this.state.arrayProductoServicio[0].precio) 
-  //    DialogUtility.alert({
-  //     title:'Aviso!' ,
-  //     content: "El concepto del producto no fue encontrado",
-  // });         
-
-     } else{
-      DialogUtility.alert({
-        title:'Aviso!' ,
-        content: "El concepto del producto no fue encontrado",
-    });         
-
-       
-     }
-    })
-     .catch(err=>{
-         console.log('error',err)
-     })       
-     
-} 
 
 handleAddFields = () => {
   const values = [...this.state.inputFields];
@@ -423,13 +424,9 @@ handleAddFields = () => {
   // values.push({ firstName: '', lastName: '' , precio:''});
   values.push({ productos: '', precio: '' });
   values.map(rows=>{
-    // console.log("esto es rows",rows) 
     valor2.push(rows)
-    // console.log("esto es val2",valor2)
     this.setState({Datos:valor2})
   } );
-  // console.log("esto es estado",this.state.Datos)
-  // console.log("esto es values",valor1)
   this.setState({inputFields:values})  
 };
 
@@ -437,12 +434,393 @@ handleAddFields = () => {
   const values = [...this.state.inputFields];
   values.splice(index, 1);
   this.setState({inputFields:values});
-};
-
-      
+};      
 
     render() {
+      let formas2;
+      let forma3;
+      let subtotal;
+      let iva;
+      let total;
+      if(this.state.arrayInputFields[0]){
+        formas2 = this.state.arrayInputFields.map(rows=>{
+          let id = rows.id_productoServicio
+          let tipo = rows.tipo
+          let concepto =  rows.concepto
+          let precioUnitario = rows.precio
+          let precio;          
+          let arrayDatos = []; 
+          let filter;
+          let cantidadDatos;
+          let arrayDescuento = [];
+          let descuentoProducto;
+          let filterDescuento;
+          arrayDatos.push(this.state.cantidadMasiva)
+          arrayDescuento.push(this.state.descuentoMasivo)
+          if(this.state.cantidadMasiva[0]){
+             filter = arrayDatos.filter(function(hero){
+              return hero[0] == id
+            })
+            if(filter[0]){
+              cantidadDatos = filter[0][1]
+              precio =  parseInt(rows.precio) *  parseInt(cantidadDatos)
 
+            }
+          }
+
+          if(this.state.descuentoMasivo[0]){
+            filterDescuento = arrayDescuento.filter(function(hero){
+             return hero[0] == id
+           })
+           console.log("filterDescuento",filterDescuento)
+           if(filterDescuento[0]){
+             descuentoProducto = filterDescuento[0][1]
+           }
+
+         }          
+        //  subtotal = precio - (precio * parseInt(descuentoProducto)/100)
+
+
+        
+        //   if(rows.tipo == "SERVICIO"){
+        //     iva  = 0
+        //   }else if(rows.tipo == "PRODUCTO SERVICIO"){
+        //     iva = subtotal * 0.16;
+        //   }
+        //   let total = subtotal + iva;
+        
+          // console.log("values",tipo)
+          // console.log("values",concepto)
+          // console.log("values",precioUnitario)
+          // console.log("values",precio)
+          // console.log("values",cantidad)
+          // console.log("values",subtotal)
+          // console.log("values",iva)
+          return(
+            <div>
+
+            <Form onSubmit={this.onSubmitBtn}>                      
+              <MDBRow>   
+              <MDBCol md="3" className="mb-3"> 
+                        <label htmlFor="defaultFormLoginPasswordEx" ><strong>ID</strong> </label>
+                        <input                                      			
+                          id="id"
+                          type="text"
+                          name="ID"			
+                          onChange={this.onChangeInput}
+                          value={id}
+                          required
+                          className="form-control"
+                          disabled
+                          />                                    
+              </MDBCol>
+              <MDBCol md="3" className="mb-3"> 
+                        <label htmlFor="defaultFormLoginPasswordEx" ><strong>Tipo</strong> </label>
+                        <input   
+                        // style={{texttransform:uppercase}}                                      			
+                          id="tipo"
+                          type="text"
+                          name="Tipo"			
+                          onChange={this.onChangeInput}
+                          // value={this.state.pass} 
+                          value={tipo}
+                          required
+                          className="form-control"
+                          disabled
+                          />                                    
+              </MDBCol>
+              <MDBCol md="6" className="mb-3"> 
+                        <label htmlFor="defaultFormLoginPasswordEx" ><strong>Concepto</strong> </label>
+                        <input   
+                        // style={{texttransform:uppercase}}                                      			
+                          id="concepto"
+                          type="text"
+                          name="Concepto"			
+                          onChange={this.onChangeInput}
+                          // value={this.state.pass} 
+                          value={concepto}
+                          required
+                          className="form-control"
+                          disabled
+                          />                                    
+              </MDBCol>
+              <MDBCol md="3" className="mb-3"> 
+                        <label htmlFor="defaultFormLoginPasswordEx" ><strong>PrecioUnitario</strong> </label>
+                        <input   
+                        // style={{texttransform:uppercase}}                                      			
+                          id="precioUnitario"
+                          type="number"
+                          name="PrecioUnitario"			
+                          onChange={this.onChangeInput}
+                          value={precioUnitario} 
+                          required
+                          className="form-control"
+                          disabled
+                          />                                    
+              </MDBCol>
+              <MDBCol md="3" className="mb-3"> 
+                        <label htmlFor="defaultFormLoginPasswordEx" ><strong>Cantidad</strong> </label>
+                        <input                                        			
+                          id={id}
+                          type="number"
+                          name="Cantidad"			
+                          onChange={this.onChangeInput1}
+                          value={cantidadDatos} 
+                          required
+                          className="form-control"
+                          />                                    
+              </MDBCol>
+              <MDBCol md="3" className="mb-3"> 
+                        <label htmlFor="defaultFormLoginPasswordEx" ><strong>Precio global</strong> </label>
+                        <input                                     			
+                          id="precioProducto"
+                          type="text"
+                          name="PrecioProducto"			
+                          onChange={this.onChangeInput}
+                          value={precio}
+                          required
+                          className="form-control"
+                          disabled
+                          />                                    
+              </MDBCol>
+              <MDBCol md="3" className="mb-3"> 
+                        <label htmlFor="defaultFormLoginPasswordEx" ><strong>Descuento %</strong> </label>
+                          <input                                      			
+                          id={id}
+                          type="number"
+                          name="DescuentoProducto"			
+                          onChange={this.onChangeInput2}
+                          value={descuentoProducto} 
+                          required
+                          className="form-control"
+                          />              
+              </MDBCol>
+            
+              </MDBRow>
+              <MDBBtn  color="secondary"   onClick={e=>this.Guardar} type="submit">Cancelar</MDBBtn>
+              </Form>
+            </div>
+          )
+
+         }) 
+
+        forma3 =  <Form onSubmit={this.onSubmitBtn}>
+        <MDBRow>  
+         <MDBCol md="3" className="mb-3"> 
+        <label htmlFor="defaultFormLoginPasswordEx" ><strong>Subtotal</strong> </label>
+          <input
+          id="subtotal"
+          type="text"
+          name="Subtotal"			
+          onChange={this.onChangeInput}
+          value={subtotal} 
+          required
+          className="form-control"
+          disabled
+          />              
+        </MDBCol>
+        <MDBCol md="3" className="mb-3"> 
+                <label htmlFor="defaultFormLoginPasswordEx" ><strong>Iva</strong> </label>
+                  <input                                     			
+                  id="iva"
+                  type="text"
+                  name="Iva"			
+                  onChange={this.onChangeInput}
+                  value={iva} 
+                  required
+                  className="form-control"
+                  disabled
+                  />              
+        </MDBCol>
+        <MDBCol md="3" className="mb-3"> 
+                <label htmlFor="defaultFormLoginPasswordEx" ><strong>Total</strong> </label>
+                  <input   
+                // style={{texttransform:uppercase}}                                      			
+                  id="total"
+                  type="text"
+                  name="Total"			
+                  onChange={this.onChangeInput}
+                  value={total} 
+                  required
+                  className="form-control"
+                  disabled
+                  />              
+        </MDBCol>
+        </MDBRow>  
+        </Form>
+        
+       
+      }
+      // let forms;
+      // if(this.state.arrayFilter.id_productoServicio){
+      //   let id = this.state.arrayFilter.id_productoServicio
+      //   let tipo =  this.state.arrayFilter.tipo
+      //   let concepto =  this.state.arrayFilter.concepto
+      //   let precioUnitario = this.state.arrayFilter.precio
+      //   let precio;
+      //   let cantidad;
+      //   let subtotal;
+      //   let iva;
+      //   if(this.state.cantidad){
+      //     cantidad = this.state.cantidad
+      //     precio =  parseInt(this.state.arrayFilter.precio) *  parseInt(this.state.cantidad)
+      //   }else{
+      //     cantidad = 1;
+      //     precio =  parseInt(this.state.arrayFilter.precio) *  1
+      //   }
+      //   if(this.state.descuentoProducto){
+      //     subtotal = precio - (precio * parseInt(this.state.descuentoProducto)/100)
+      //   }else{
+      //     subtotal = precio 
+      //   }
+      //   if(this.state.arrayFilter.tipo == "SERVICIO"){
+      //      iva  = 0
+      //   }else if(this.state.arrayFilter.tipo == "PRODUCTO SERVICIO"){
+      //      iva = subtotal * 0.16;
+      //   }
+      //   let total = subtotal + iva;
+
+      //   forms  = <div>
+      //     <Form onSubmit={this.onSubmitBtn}>                      
+      //       <MDBRow>   
+      //       <MDBCol md="3" className="mb-3"> 
+      //                 <label htmlFor="defaultFormLoginPasswordEx" ><strong>ID</strong> </label>
+      //                 <input                                      			
+      //                   id="id"
+      //                   type="text"
+      //                   name="ID"			
+      //                   onChange={this.onChangeInput}
+      //                   value={id}
+      //                   required
+      //                   className="form-control"
+      //                   disabled
+      //                   />                                    
+      //       </MDBCol>
+      //       <MDBCol md="3" className="mb-3"> 
+      //                 <label htmlFor="defaultFormLoginPasswordEx" ><strong>Tipo</strong> </label>
+      //                 <input   
+      //                 // style={{texttransform:uppercase}}                                      			
+      //                   id="tipo"
+      //                   type="text"
+      //                   name="Tipo"			
+      //                   onChange={this.onChangeInput}
+      //                   // value={this.state.pass} 
+      //                   value={tipo}
+      //                   required
+      //                   className="form-control"
+      //                   disabled
+      //                   />                                    
+      //       </MDBCol>
+      //       <MDBCol md="6" className="mb-3"> 
+      //                 <label htmlFor="defaultFormLoginPasswordEx" ><strong>Concepto</strong> </label>
+      //                 <input   
+      //                 // style={{texttransform:uppercase}}                                      			
+      //                   id="concepto"
+      //                   type="text"
+      //                   name="Concepto"			
+      //                   onChange={this.onChangeInput}
+      //                   // value={this.state.pass} 
+      //                   value={concepto}
+      //                   required
+      //                   className="form-control"
+      //                   disabled
+      //                   />                                    
+      //       </MDBCol>
+      //       <MDBCol md="3" className="mb-3"> 
+      //                 <label htmlFor="defaultFormLoginPasswordEx" ><strong>PrecioUnitario</strong> </label>
+      //                 <input   
+      //                 // style={{texttransform:uppercase}}                                      			
+      //                   id="precioUnitario"
+      //                   type="number"
+      //                   name="PrecioUnitario"			
+      //                   onChange={this.onChangeInput}
+      //                   value={precioUnitario} 
+      //                   required
+      //                   className="form-control"
+      //                   disabled
+      //                   />                                    
+      //       </MDBCol>
+      //       <MDBCol md="3" className="mb-3"> 
+      //                 <label htmlFor="defaultFormLoginPasswordEx" ><strong>Cantidad</strong> </label>
+      //                 <input                                        			
+      //                   id="cantidad"
+      //                   type="number"
+      //                   name="Cantidad"			
+      //                   onChange={this.onChangeInput}
+      //                   value={cantidad} 
+      //                   required
+      //                   className="form-control"
+      //                   />                                    
+      //       </MDBCol>
+      //       <MDBCol md="3" className="mb-3"> 
+      //                 <label htmlFor="defaultFormLoginPasswordEx" ><strong>Precio global</strong> </label>
+      //                 <input                                     			
+      //                   id="precioProducto"
+      //                   type="text"
+      //                   name="PrecioProducto"			
+      //                   onChange={this.onChangeInput}
+      //                   value={precio}
+      //                   required
+      //                   className="form-control"
+      //                   disabled
+      //                   />                                    
+      //       </MDBCol>
+      //       <MDBCol md="3" className="mb-3"> 
+      //                 <label htmlFor="defaultFormLoginPasswordEx" ><strong>Descuento %</strong> </label>
+      //                   <input                                      			
+      //                   id="descuentoProducto"
+      //                   type="number"
+      //                   name="DescuentoProducto"			
+      //                   onChange={this.onChangeInput}
+      //                   value={this.state.descuentoProducto} 
+      //                   required
+      //                   className="form-control"
+      //                   />              
+      //       </MDBCol>
+      //       <MDBCol md="3" className="mb-3"> 
+      //                 <label htmlFor="defaultFormLoginPasswordEx" ><strong>Subtotal</strong> </label>
+      //                   <input
+      //                   id="subtotal"
+      //                   type="text"
+      //                   name="Subtotal"			
+      //                   onChange={this.onChangeInput}
+      //                   value={subtotal} 
+      //                   required
+      //                   className="form-control"
+      //                   disabled
+      //                   />              
+      //       </MDBCol>
+      //       <MDBCol md="3" className="mb-3"> 
+      //                 <label htmlFor="defaultFormLoginPasswordEx" ><strong>Iva</strong> </label>
+      //                   <input                                     			
+      //                   id="iva"
+      //                   type="text"
+      //                   name="Iva"			
+      //                   onChange={this.onChangeInput}
+      //                   value={iva} 
+      //                   required
+      //                   className="form-control"
+      //                   disabled
+      //                   />              
+      //       </MDBCol>
+      //       <MDBCol md="3" className="mb-3"> 
+      //                 <label htmlFor="defaultFormLoginPasswordEx" ><strong>Total</strong> </label>
+      //                   <input   
+      //                 // style={{texttransform:uppercase}}                                      			
+      //                   id="total"
+      //                   type="text"
+      //                   name="Total"			
+      //                   onChange={this.onChangeInput}
+      //                   value={total} 
+      //                   required
+      //                   className="form-control"
+      //                   disabled
+      //                   />              
+      //       </MDBCol>
+      //       </MDBRow>
+      //       </Form>
+      //   </div>
+      // }
       let searchRFC;
       let form;
       let consultarIdProducto;
@@ -451,15 +829,12 @@ handleAddFields = () => {
       const columns = ["id_productoServicio", "tipo", "concepto", "precio"];
 
       data= this.state.array.map((rows,i)=>{
-        console.log("rows",rows)
         return([rows.id_productoServicio,rows.tipo,rows.concepto,rows.precio])
       })
 
        let Datos= this.state.arrayProductoServicio.map((rows,i)=>{
 
        })
-
-      
       const options={ 
         filterType:"drowpdawn",
         responsive: "stacked",
@@ -517,37 +892,8 @@ handleAddFields = () => {
          /> 
      </MuiThemeProvider>  
     </div> 
-
-
-      
         var f = new Date();     
        let fecha=f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
-   
-        let tasaIva = 16;
-        let total
-        let IVA
-        let totalFloat;
-         let calDescuentoAplicado;
-         let Subtotal
-      if(this.state.descuento>0){
-        calDescuentoAplicado=((this.state.precio * this.state.descuento)/100).toFixed(2)
-        //  console.log("taza del descuento",calDescuentoAplicado)  
-      }else{
-        calDescuentoAplicado=0
-      }
-
-      Subtotal=(this.state.precio-calDescuentoAplicado).toFixed(2)      
-      IVA=((Subtotal*tasaIva)/100).toFixed(2)
-
-      
-      total= (parseInt(this.state.precio) + parseFloat(tasaIva)).toFixed(2)        
-        totalFloat=total
-        console.log("esto es totalFloat",totalFloat)
-      total= (parseFloat(Subtotal) + parseFloat(IVA)).toFixed(2)  
-      console.log("esto es totaol",total)
-      console.log("subtotal",Subtotal)
-      console.log("IVA",IVA)
-
       searchRFC= <div>
         <Row>
                      <MDBCol md="3" className="mb-3"></MDBCol>
@@ -559,25 +905,15 @@ handleAddFields = () => {
                     <MDBBtn gradient="aqua" rounded size="sm" type="submit" className="mr-auto" onClick={e=> this.consultarDatos()}  >                        
                       <MDBIcon icon="search" />
                     </MDBBtn>  
-                    </div>
-
-       
-
-                    <br></br><br></br>        
+                    </div> 
+                      <br></br><br></br>        
                 </MDBCol>
                 </Row>
       </div>
 let vendedor = localStorage.getItem("nombre") + " "  + localStorage.getItem("apellido");
-// console.log("esto es vendedor", vendedor)
 
- let id_productoServicio= localStorage.getItem("id");
- let tipo= localStorage.getItem("tipo");
- let concepto= localStorage.getItem("concepto");
- let precio= localStorage.getItem("precio")
 
-if (this.state.form == true) {
-  // console.log("esto es data de Datos:",this.state.Datos.empresa)
-    
+if (this.state.form == true) {  
   form = 
   <div style={{marginTop:"2%"}}>
   <center>    
@@ -591,13 +927,11 @@ if (this.state.form == true) {
             <MDBRow>   
             <MDBCol md="3" className="mb-3"> 
                       <label htmlFor="defaultFormLoginPasswordEx" ><strong> Razón social:</strong> </label>
-                      <input   
-                      // style={{texttransform:uppercase}}                                      			
+                      <input                                    			
                           id="razonSocial"
                           type="text"
                           name="razonSocial"			
                           onChange={this.onChangeInput}
-                          // value={this.state.pass} 
                           defaultValue={this.state.Datos.empresa}
                           required
                           className="form-control"
@@ -610,7 +944,6 @@ if (this.state.form == true) {
                           type="text"
                           name="nombres"
                           onChange={this.onChangeInput}
-                          // value={this.state.pass}
                           defaultValue={this.state.Datos.nombre}
                           required
                           className="form-control"/>
@@ -622,7 +955,6 @@ if (this.state.form == true) {
                           type="text"
                           name="apellidos"
                           onChange={this.onChangeInput}
-                          // value={this.state.pass}
                           defaultValue={this.state.Datos.apellido}
                           required
                           className="form-control"/>
@@ -631,12 +963,8 @@ if (this.state.form == true) {
                   <label htmlFor="defaultFormLoginEmailEx"><strong>Correo:</strong></label><input 
                       id="correo1"
                       type="email"
-                     
-                      // id="correo1"
-                      // type="email"
                       name="correo1"
                       onChange={this.onChangeInput}
-                      // value={this.state.pass}
                       defaultValue={this.state.Datos.correo1}
                       required
                       className="form-control"/>
@@ -648,8 +976,7 @@ if (this.state.form == true) {
                     id="correo2"
                     type="email"
                     name="correo2"
-                    onChange={this.onChangeInput}
-                    // value={this.state.pass}
+                    onChange={this.onChangeInput}                    
                     defaultValue={this.state.Datos.correo2}                     
                     className="form-control" />
            </MDBCol>
@@ -666,160 +993,7 @@ if (this.state.form == true) {
                 defaultValue={this.state.Datos.telefono1} 
                 required
                 className="form-control"/>
-           </MDBCol>
-           {/* consultarIdProducto =  */}
-<div>
-{/* <Form onSubmit={this.onSubmitBtn}> */}
-<MDBCol md="3" className="mb-3">    
-                <label htmlFor="defaultFormLoginPasswordEx" >
-                <strong>id_producto o servicio:</strong>
-                </label>
-                <input                            
-                id="id_productoServicio"
-                // type="t"
-                name="id_productoServicio"
-                onChange={this.onChangeInput}
-                // defaultValue={this.state.idProductoServicio} 
-                value={this.state.id_productoServicio}
-                required
-                // className="form-control"
-                />
-           </MDBCol>
-           <MDBBtn gradient="aqua" rounded size="sm" type="submit" className="mr-auto"  onClick={e=> this.consultarProductoServicio() } >
-           buscar id
-                    </MDBBtn>
-                    <MDBCol md="6" className="mb-3">    
-                <label htmlFor="defaultFormLoginPasswordEx" >
-                <strong>tipo</strong>
-                </label>
-                <input                            
-                id="tipo"
-                // type="t"
-                name="tipo"
-                onChange={this.onChangeInput}
-                defaultValue={tipo}
-                className="form-control"/>
-           </MDBCol>
-           <MDBCol md="6" className="mb-3">    
-                <label htmlFor="defaultFormLoginPasswordEx" >
-                <strong>concepto</strong>
-                </label>
-                <input                            
-                id="concepto"
-                // type="t"
-                name="concepto"
-                onChange={this.onChangeInput}
-                defaultValue={concepto} 
-                className="form-control"/>
-           </MDBCol>
-           <MDBCol md="6" className="mb-3">    
-                <label htmlFor="defaultFormLoginPasswordEx" >
-                <strong>unidad</strong>
-                </label>
-                <input                            
-                id="unidad"
-                // type="t"
-                name="unidad"
-                onChange={this.onChangeInput}
-                value={this.state.unidad}                 
-                required
-                className="form-control"/>
-           </MDBCol>
-           <MDBCol md="6" className="mb-3">    
-                <label htmlFor="defaultFormLoginPasswordEx" >
-                <strong>precio</strong>
-                </label>
-                <input                            
-                id="precioBase"
-                // type="t"
-                name="precioBase"
-                onChange={this.onChangeInput}
-                defaultValue={precio}
-                className="form-control"/>
-           </MDBCol>
-                    {/* </Form> */}
-</div>
-           
-
-
-            <MDBCol md="3" className="mb-3">   
-                <label htmlFor="defaultFormLoginPasswordEx" >
-                <strong>Producto :</strong>
-                </label>
-                <input 
-                id="Servicio"
-                type="text"
-                name="Servicio"
-                onChange={this.onChangeInput}
-                value={this.state.pass}
-                required
-                className="form-control"/>
-           </MDBCol>
-
-            <MDBCol md="3" className="mb-3">    
-                <label htmlFor="defaultFormLoginPasswordEx"><strong>Precio Producto:</strong></label>
-                <input 
-                required		 
-                id="precio"
-                type="number"
-                name="precio"
-                onChange={this.onChangeInput}
-                value={this.state.pass}	                  
-                className="form-control"/>
-           </MDBCol>
-           <MDBCol md="3" className="mb-4 mt-4">    
-                <label htmlFor="defaultFormLoginPasswordEx" >
-                <strong>Precio Normal: &nbsp;</strong>
-                </label>
-                <label>$ {this.state.precio}</label>
-                </MDBCol>
-                <MDBCol md="3" className="mb-3">    
-                <label htmlFor="defaultFormLoginPasswordEx"><strong>Descuento:</strong></label>
-                <input 
-                required		 
-                id="descuento"
-                type="number"
-                name="precio"
-                onChange={this.onChangeInput}
-                value={this.state.pass}	                  
-                className="form-control"/>
-           </MDBCol>
-           <MDBCol md="3" className="mb-4 mt-4">    
-                <label htmlFor="defaultFormLoginPasswordEx" >
-                <strong>descuento aplicado: &nbsp;</strong>
-                </label>
-                <label>$ {calDescuentoAplicado}</label>
-            </MDBCol> 
-           <MDBCol md="3" className="mb-4 mt-4">    
-                <label htmlFor="defaultFormLoginPasswordEx" >
-                <strong> Subtotal: &nbsp;</strong>
-                </label>
-                <label>$ {Subtotal}</label>
-                </MDBCol>
-
-                <MDBCol md="3" className="mb-4 mt-4">    
-                <label htmlFor="defaultFormLoginPasswordEx" >
-                <strong>Tasa iva:</strong>
-                </label>
-                < label>{tasaIva}%</ label>
-                </MDBCol>
-
-               
-                <MDBCol md="3" className="mb-4 mt-4">    
-                <label htmlFor="defaultFormLoginPasswordEx" >
-                <strong>Iva: &nbsp;</strong> 
-                </label>
-                <label>$ {IVA}</label>
-                </MDBCol>
-              </MDBRow>
-              <MDBCol md="3" className="mb-4 mt-4">    
-                <label htmlFor="defaultFormLoginPasswordEx" >
-                <strong> Total: &nbsp;</strong>
-                </label>
-                <label>$ {total}</label>
-                </MDBCol>
-
-              <MDBRow>
+           </MDBCol>  
               <MDBCol md="3" className="mb-3">   
                 <label htmlFor="defaultFormLoginPasswordEx" >
                 <strong>Promocion:</strong>
@@ -842,10 +1016,62 @@ if (this.state.form == true) {
                     </label>
                     <label>{vendedor}</label>
 
-                    </MDBCol>                 
+                    </MDBCol> 
+                    {/* ***************LOS BOTONES PARA AGREGAR***************** */}
+
+                    {this.state.inputFields.map((inputField,index) => {  
+                    return(
+                      // <MDBCol md="3" className="mb-3 ">     
+                    
+                      <div className="form-group">
+                  <MDBRow>
+                    
+                      <MDBCol md="6" className="mb-3 "> 
+                      <select onChange={event => this.handleInputChange(index, event)} name="select">
+                        {this.state.array.map(rows=>{
+                          return(
+                            <option value={rows.id_productoServicio}>{rows.id_productoServicio + " - "}{rows.concepto}</option>
+                          )
+                        })}
+                      </select>
+                      <MDBBtn
+                        color="primary"
+                          size="md"
+                          type="submit"
+                          onClick={(e) =>this.capturar()}
+                          className="text-white"
+                        >
+                          Consultar
+                      </MDBBtn>
+                      </MDBCol>
+                      <button
+                        className="btn btn-link"
+                        type="button"
+                        onClick={() => this.handleRemoveFields(index)}
+                      >
+                        -
+                      </button>
+                      <button
+                        className="btn btn-link"
+                        type="button"
+                        onClick={() => this.handleAddFields()}
+                      >
+                        +
+                      </button>
+                      </MDBRow>
+                    </div> 
+                  
+                    )
+                    
+                  })}        
+
+
+               
 
                   </MDBRow>
                   </Form>
+{/*                
+
                   <div style={{ padding: 16, margin: 'auto', maxWidth: 600 }}>
                   <Forma
                     onSubmit={onSubmit}
@@ -853,7 +1079,7 @@ if (this.state.form == true) {
                     render={({ handleSubmit, submitting,values }) => (
                       <form onSubmit={handleSubmit}>
                           <Grid container alignItems="flex-start" spacing={2} >
-                              <Grid item xs={4}>
+                              <Grid item xs={6}>
                               <Field
                                 required
                                 fullWidth
@@ -864,13 +1090,12 @@ if (this.state.form == true) {
                               >
                               {this.state.array.map(rows=>{
                                 return(
-                                  <MenuItem value={rows.id_productoServicio}><strong>{rows.id_productoServicio}</strong> {rows.concepto}</MenuItem>
+                                  <MenuItem value={rows.id_productoServicio}><strong>{rows.id_productoServicio + " - "}</strong>{rows.concepto}</MenuItem>
                                 )
                               })}
-                              
                                 </Field>
                                 </Grid>
-                            <Grid item style={{ marginTop: 16 ,marginLeft:150 }}>
+                            <Grid item style={{ marginTop: 16 ,marginLeft:100 }}>
                               <MDBBtn
                               color="primary"
                                size="md"
@@ -886,8 +1111,10 @@ if (this.state.form == true) {
                       
                       </form>
                     )}
-                  />
-                </div>
+                  /> */}
+                  {formas2}
+                  {forma3}
+                {/* </div> */}
                   <MDBRow style={{marginTop:"10%"}}> 
                       <MDBCol md="3" className="mb-3"/>
                       
@@ -911,7 +1138,7 @@ if (this.state.form == true) {
 
             if(this.state.botonPdfExport == true) {
                 boton =    <div className="example-config">
-                            <MDBBtn size="md"color = "success" onClick={() => { this.pdfExportComponent.save(); }}>
+                            <MDBBtn size="md"color = "success" onClick={e=> () => { this.pdfExportComponent.save(); }}>
                                 Descargar Cotización
                             </MDBBtn>
                             </div>
@@ -949,30 +1176,30 @@ if (this.state.form == true) {
                    <tbody>
                    <tr>
                        <td style={{padding:"5px"}} colspan="2">{this.state.Servicio}</td>
-                       <td style={{padding:"5px"}} colspan="2" align="center">$&nbsp;{this.state.precio}</td>
+                       <td style={{padding:"5px"}} colspan="2" align="center">$&nbsp;{"this.state.precio"}</td>
                        </tr>  
                        <tr>
                     <td ROWSPAN="2" colspan="2"></td>
                     <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center"> Precio Normal</td>
-                    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{this.state.precio}</td>         
+                    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{"this.state.precio"}</td>         
                   </tr>
                   <tr>
-                    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center"> Descuento de {this.state.descuento}%:</td>
-                    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{calDescuentoAplicado}</td>
+                    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center"> Descuento de {"this.state.descuento"}%:</td>
+                    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{"calDescuentoAplicado"}</td>
                   </tr>
                   <tr>
                   <td ROWSPAN="2" colspan="2" ></td>
                     <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center">subtotal:</td>
-                    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{Subtotal}</td>
+                    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{"Subtotal"}</td>
                   </tr>
                   <tr>
                     <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center">IVA 16%:</td>
-                    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{IVA}</td>
+                    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{"IVA"}</td>
                   </tr>
                   <tr>
                   <td ROWSPAN="2" colspan="2" ></td>
                     <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center">Total:</td>
-                    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{total}</td>
+                    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{"total"}</td>
                   </tr>
                    </tbody>
             </Table>        
@@ -1023,18 +1250,12 @@ if (this.state.form == true) {
              <u  style={{color:"#3371FF"}}>www.ads.com.mx </u>
              </p>
               <p  className="text-center mb-4">Av. Chapultepec N° 473, Piso 3 Col. Juárez, Del. Cuauhtémoc C.P. 06600 Ciudad de México <br></br> Información, soporte y ventas:
-                 Conmutador con 6 líneas   1209 0740 -  5553 2049</p>
-
-
-             
+                 Conmutador con 6 líneas   1209 0740 -  5553 2049</p>             
        </fort  > 
        </div>
-
               </Paper>
-              </div> 
-           
+              </div>            
             <div style={{ position: "absolute", left: "-2000px", top: 0 }}>
-
                 
             <PDFExport
                 paperSize="letter"
@@ -1071,32 +1292,32 @@ if (this.state.form == true) {
 </MDBTableHead>
 <MDBTableBody>
  <tr>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} colspan="3" >{this.state.Servicio}</td>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{this.state.precio}</td>         
+   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} colspan="3" >{"this.state.Servicio"}</td>
+   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{"this.state.precio"}</td>         
  </tr>
  <tr>
    <td ROWSPAN="2" colspan="2"></td>
    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center"> Precio Normal</td>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{this.state.precio}</td>         
+   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{"this.state.precio"}</td>         
  </tr>
  <tr>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center"> Descuento de {this.state.descuento}%:</td>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{calDescuentoAplicado}</td>
+   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center"> Descuento de {"this.state.descuento"}%:</td>
+   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{"calDescuentoAplicado"}</td>
  </tr>
 
  <tr>
  <td ROWSPAN="2" colspan="2" ></td>
    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center">subtotal:</td>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{Subtotal}</td>
+   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{"Subtotal"}</td>
  </tr>
  <tr>
    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center">IVA 16%:</td>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{IVA}</td>
+   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{"IVA"}</td>
  </tr>
  <tr>
  <td ROWSPAN="2" colspan="2" ></td>
    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center">Total:</td>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{total}</td>
+   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{"total"}</td>
  </tr>
 </MDBTableBody>
 </MDBTable>     
@@ -1196,124 +1417,8 @@ Quedo a sus órdenes para cualquier duda al respecto.</p>
         {form} 
         {pdf}
         {consultarIdProducto}
-
-
-
-        {tabla}
-      
-
-<div>
-        <Paper   style={{width:1200,height:1400, marginLeft:"6%",marginTop:"2%",marginBottom:"2%"}}>
-            <img src={titulo1} alt="imagen" alt="imagen"   style={{width:1210,height:150}}/>
-            <div style={{ marginBottom:"2%"}}>
-            <Row  xs="2">               
-                <Col>
-                     <p><strong>Razón social:</strong>&nbsp;{this.state.Datos.empresa} </p>                     
-                     <p ><strong>Nombre(s):</strong>&nbsp;{this.state.Datos.nombre}&nbsp;{this.state.Datos.apellido}</p>                    
-                     <p><strong>Correo:</strong>&nbsp;{this.state.Datos.correo1}</p>                     
-                     <p><strong>Télefono:</strong>&nbsp;{this.state.Datos.telefono1}</p>                     
-                </Col>   
-                <Col >
-                     <p><strong>Fecha:</strong>&nbsp;{fecha}</p>
-                </Col>                                  
-            </Row> 
-            <p  face="Verdana"> Buen día, me permito presentar  nuestra propuesta referente a los producto (s) y servicio (s) de su interés.</p>
-            <Table bordered>
-                   <thead>
-                       <tr>
-                       <td style={{padding:"5px"}} bgcolor="DeepSkyBlue" colspan="2" align="center">PRODUCTO O SERVICIO</td>          
-                       <td style={{padding:"5px"}} bgcolor="DeepSkyBlue" colspan="2" align="center">PRECIO MAS IVA</td>
-                       </tr>
-                   </thead>
-                   <tbody>
-                   <tr>
-                       <td style={{padding:"5px"}} colspan="2">{this.state.Servicio}</td>
-                       <td style={{padding:"5px"}} colspan="2" align="center">$&nbsp;{this.state.precio}</td>
-                       </tr>  
-                       <tr>
-                    {/* <td ROWSPAN="2" colspan="1"></td> */}
-                    <td ROWSPAN="2" colspan="2"></td>
-                    {/* <td></td> */}
-                    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center"> Precio Normal</td>
-                    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{this.state.precio}</td>         
-                  </tr>
-                  <tr>
-                  
-                    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center"> Descuento de {this.state.descuento}%:</td>
-                    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{calDescuentoAplicado}</td>
-                  </tr>
-                  <tr>
-                  <td ROWSPAN="2" colspan="2"></td>
-                    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center">subtotal:</td>
-                    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{Subtotal}</td>
-                  </tr>
-                  <tr>
-                 
-                    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center">IVA 16%:</td>
-                    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{IVA}</td>
-                  </tr>
-                  <tr>
-                  <td ROWSPAN="2" colspan="2"></td>
-                    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center">Total:</td>
-                    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{total}</td>
-                  </tr>
-                   </tbody>
-            </Table>        
-             
-
-   <p style={{color:"red"}} htmlFor="defaultFormLoginPasswordEx"><strong>Promoción &nbsp;{this.state.promocion.toLowerCase()}</strong></p>
-
-   
-        <p><strong> Nota:</strong> El costo no incluye Interfaz, Formatos, Carga de Catálogos o alguna implementación adicional a la mencionada en su cotización.</p>
-        <p><strong> No se aceptan devoluciones</strong></p>           
-        <p style={{color:"#3371FF"}}><strong>Condiciones Comerciales y Formas de Pago</strong></p>
-
-           <ul >
-               <li>Todos los costos anteriormente presentados son más IVA.</li>
-               <li>Precios representados en M.N.</li>
-               <li>Pago por anticipado</li>
-               <li>Pago por depósito bancario o transferencia electrónica.</li>	
-           </ul>
-           <fort  > 
-               <p align="left" marginLeft="20%">
-                   - Cuenta: 50020978434 
-               <br></br>
-               - Clabe: 036180500209784346
-               <br></br>
-               - Banco: Inbursa
-               <br></br>
-               - Beneficiario: ALFA DISEÑO DE SISTEMAS, S.A. de C.V.
-               <br></br>
-               - RFC: ADS020524CH1
-               </p>
-           </fort>
-
-       <p>Sin más por el momento y agradeciéndole por su amable atención,
-            Quedo a sus órdenes para cualquier duda al respecto. </p>
-
-         <fort> 
-              
-             <p className="text-center mb-4" >               
-               {localStorage.getItem("nombre") + " "  + localStorage.getItem("apellido")}
-                 {/* esto es nombre y Apellidos */}
-               <br></br>              
-               {localStorage.getItem("correo")}
-               {/* Esto es el correo */}
-               <br></br>
-               <br></br>
-               <strong> ALFA DISEÑO DE SISTEMAS, S.A. DE C.V.</strong>
-               <br></br>
-             <u  style={{color:"#3371FF"}}>www.ads.com.mx </u>
-             </p>
-              <p  className="text-center mb-4">Av. Chapultepec N° 473, Piso 3 Col. Juárez, Del. Cuauhtémoc C.P. 06600 Ciudad de México <br></br> Información, soporte y ventas:
-                 Conmutador con 6 líneas   1209 0740 -  5553 2049</p>
-       </fort  > 
-       </div>
-
-              </Paper>
-              </div> 
-              {/* {tablaProductosYServicios} */}
-
+        {/* {formas2} */}
+        {/* {tabla}  */}
         </React.Fragment>
          
       );
