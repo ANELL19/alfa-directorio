@@ -251,7 +251,7 @@ if(mm<10) {
               className: 'trigger',
               onClick: this.toggle,              
             })} 
-           <font color="#fff" size="4">{empresa}&nbsp;&nbsp;&nbsp;&nbsp;DIRECTORIO DE CLIENTES &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {nombre}&nbsp;{apellidos} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<CalendarTodayIcon style={{ fontSize: '25px', color: '#fff' }}/>}&nbsp;{this.state.time}  </font>           
+           <font color="#fff" size="4">{empresa}&nbsp;&nbsp;&nbsp;&nbsp;DIRECTORIO DE CLIENTES &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {nombre}&nbsp;{apellidos} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<CalendarTodayIcon style={{ fontSize: '25px', color: '#fff' }}/>}&nbsp;  </font>           
           </Header>
           {/* <Content
             // className="site-layout-background"

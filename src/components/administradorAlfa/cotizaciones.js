@@ -78,10 +78,7 @@ class Cotizaciones extends Component {
     constructor(props) {
       super(props);
       this.state = {
-        inputFields: [{          
-          productos: '',
-          precio: '',         
-        }] ,   
+        inputFields: [] ,   
             rfc:"", 
             razonSocial:"" ,
             nombre:"", 
@@ -93,7 +90,9 @@ class Cotizaciones extends Component {
             Servicio:"",
             promocion:"", 
             vendedor:"",
-            fecha:"" ,   
+            fecha:"" ,
+            servicio:"", 
+            // precio:"",
             fk_adminAlfa:"",
             form :true,
             pdfview:false,
@@ -114,11 +113,16 @@ class Cotizaciones extends Component {
             subtotal:'',
             arrayInputFields:[],
             cantidadMasiva:[],
-            descuentoMasivo:[]
+            descuentoMasivo:[],
+            busqueda:'',
+            tablaBusqueda:[]
       }
       this.cancelar = this.cancelar.bind(this)
     }
-    
+
+    componentDidMount(){
+      this.setState({tablaBusqueda:this.state.tablaProductoServicio})
+    }
     getMuiTheme = () => createMuiTheme({
       overrides: {
         MUIDataTableBodyCell: {
@@ -159,6 +163,14 @@ class Cotizaciones extends Component {
         [id]:value
     })
 } 
+filtrarElementos  = () => {
+  var search = this.state.array.filter((item)=>{
+    if(item.concecutivo.toString().includes(this.state.busqueda)){
+      return item
+    }
+  })
+  this.setState({tablaBusqueda: search})
+}
 onChangeInput1 =(e)=>{
   let array = []
   const {id,value} = e.target;
@@ -194,6 +206,7 @@ onChangeInput2 =(e)=>{
             tipo
             concepto
             precio
+            concecutivo
                                     
            } 
         }
@@ -203,12 +216,14 @@ onChangeInput2 =(e)=>{
      this.setState({array:response.data.data.getTablaProductoServicio})
      })
      .catch(err=>{
+       console.log("err",err.response)
      })   
      
      localStorage.removeItem("id")
      localStorage.removeItem("tipo")
      localStorage.removeItem("concepto")
      localStorage.removeItem("precio") 
+     localStorage.removeItem("concecutivo") 
 }
 
 handleInputChange = async (index, event) => {
@@ -220,6 +235,7 @@ handleInputChange = async (index, event) => {
         values[index].precio = event.target.value;
       }  
       this.setState({inputFields:values});
+
 }
 
  handleSubmit = e => {
@@ -231,20 +247,38 @@ handleInputChange = async (index, event) => {
   
 
 };
+handleAddFields = async (id) => {
+  this.setState({busqueda:''})
+  const values = [...this.state.inputFields];
+  let valor1=[];
+  let valor2=[];
+  // values.push({ firstName: '', lastName: '' , precio:''});
+  values.push({ id });
+  values.map(rows=>{
+    valor2.push(rows)
+    this.setState({Datos:valor2})
+  } );
+   await this.setState({inputFields:values})  
+  
+  this.capturar()  
+};
+
 
 capturar(){
   let filter;
   let arrayFilter=[]
   this.setState({arrayFilter:''})
   this.setState({cantidad:''})
-  let id = this.state.inputFields[0].precio;
-  if(this.state.inputFields[0].precio){
+  let idProd = this.state.inputFields;
+  if(idProd){
+    console.log( this.state.inputFields)
     this.state.inputFields.map(rows=>{
       filter  = this.state.array.filter(function(hero){
-        return hero.id_productoServicio == rows.precio
+        return hero.id_productoServicio == rows.id
       })
       arrayFilter.push(filter[0])
     })
+
     this.setState({arrayFilter:filter[0]})
     this.setState({arrayInputFields:arrayFilter})
   }else{
@@ -285,29 +319,20 @@ onSubmitBtn = (e)=>{
   let correo2 = this.state.Datos.correo2;
   let tel1 = this.state.Datos.telefono1;
   let tel2 = this.state.Datos.telefono2;
-
-  // let id1 = this.state.id
-  // let tipo1 = this.state.tipo
-  // let concepto1 = this.state.concepto
-  // let precio1 = this.state.precioProducto
-  // let cantidad1 = this.state.cantidadMasiva
-  // let descuento1 = this.state.descuentoMasivo
-  //  console.log("capturar datos",id1,tipo1,concepto1,precio1,cantidad1,descuento1)
-  
-  // let servicio  = this.state.Servicio.toUpperCase();
-  // let precio = this.state.precio;              
+  let servicio  = this.state.Servicio.toUpperCase();
+  let precio = this.state.precio;              
   let promocion = this.state.promocion.toUpperCase();
-  // let iva = ((precio * 16)/100).toFixed(2)
+  let iva = ((precio * 16)/100).toFixed(2)
   let vendedor = localStorage.getItem("nombre").toUpperCase() + " "  + localStorage.getItem("apellido").toUpperCase()       
-  // var suma = (parseInt(precio) + parseFloat(iva))
-  // let total = suma.toFixed(2)
+  var suma = (parseInt(precio) + parseFloat(iva))
+  let total = suma.toFixed(2)
       axios({
           url:API,
           method:'post',
           data:{
               query:`
               mutation{
-              insertCotizaciones(data:"${[rfc,rs,nombre,apellidos,correo1,correo2,tel1,tel2,,promocion,vendedor,id_adminAlfa]}"){
+              insertCotizaciones(data:"${[rfc,rs,nombre,apellidos,correo1,correo2,tel1,tel2,promocion,servicio,promocion,precio,vendedor,id_adminAlfa]}"){
                    message
                   } 
               }
@@ -344,38 +369,34 @@ cerrarCotizacion() {
 
 pdfView (){
 
-  // let array=[];
-  // let array1=[];
-  // console.log("inputFields",this.state.inputFields);
-  // this.state.inputFields.map(rows=>{
-  //   array.push(rows)
-  //   array1.push(array)
+  let array=[];
+  let array1=[];
+  console.log("inputFields",this.state.inputFields);
+  this.state.inputFields.map(rows=>{
+    array.push(rows)
+    array1.push(array)
    
-  // })
-//   array.push(this.state.inputFields)
+  })
+  array.push(this.state.inputFields)
  
 
-// array.map(rows=>{    
-//     array1.push(array) 
-//     console.log(w)
-//   })
+array.map(rows=>{    
+    array1.push(array) 
+  })
 
-  // ****validacion de promocion***
-
-//   let servicio  = this.state.Servicio.toUpperCase();
-//   let precio = this.state.precio;
-//   let promocion = this.state.promocion.toUpperCase();
-//   if(  servicio && precio && promocion){     
-//       this.setState({form:false})
-//       this.setState({pdfview:true})
-//   }else {
-//       DialogUtility.alert({
-//           title:'AVISO !' ,
-//           content: "Estimado usuario, por favor complete todos los campos obligatorios",
-//       });          
-//   }
+  let servicio  = this.state.Servicio.toUpperCase();
+  let precio = this.state.precio;
+  let promocion = this.state.promocion.toUpperCase();
+  if(  servicio && precio && promocion){     
+      this.setState({form:false})
+      this.setState({pdfview:true})
+  }else {
+      DialogUtility.alert({
+          title:'AVISO !' ,
+          content: "Estimado usuario, por favor complete todos los campos obligatorios",
+      });          
+  }
 }
-// +++++++++++++++++++++++
 
 consultarDatos(){
   let rfc=this.state.rfc
@@ -417,26 +438,70 @@ consultarDatos(){
 } 
 
 
-handleAddFields = () => {
-  const values = [...this.state.inputFields];
-  let valor1=[];
-  let valor2=[];
-  // values.push({ firstName: '', lastName: '' , precio:''});
-  values.push({ productos: '', precio: '' });
-  values.map(rows=>{
-    valor2.push(rows)
-    this.setState({Datos:valor2})
-  } );
-  this.setState({inputFields:values})  
-};
 
- handleRemoveFields = index => {
-  const values = [...this.state.inputFields];
-  values.splice(index, 1);
-  this.setState({inputFields:values});
-};      
+//  handleRemoveFields = index => {
+//   const values = [...this.state.inputFields];
+//   values.splice(index, 1);
+//   this.setState({inputFields:values});
+// };      
+
+onChange = async (e) => {
+  e.persist();
+  await this.setState({busqueda:e.target.value})
+  this.filtrarElementos()
+}
 
     render() {
+      const options={ 
+        filterType:"drowpdawn",
+        responsive: "stacked",
+        responsive:"standard",
+        pagination:false,
+        search:false,
+        print:false,
+        download:false,
+        filter:false,
+        caseSensitive:false,
+        selectableRows:"none",
+        viewColumns:false,      
+        textLabels:{
+        body: {
+          noMatch: "Lo sentimos, no se encontraron registros coincidentes",
+          toolTip: " Ordenar",
+          columnHeaderTooltip: column => `Sort for ${column.label}`
+        },
+        pagination: {
+          next: "Página siguiente",
+          previous: "Página anterior",
+          rowsPerPage: "Filas por página:",
+          displayRows: "de",
+        },
+        toolbar: {
+          search: "Buscar",
+          downloadCsv: " Descargar CSV",
+          print: "Imprimir ",
+          viewColumns: "Ver columnas",
+          filterTable: "Tabla de filtros",
+        },
+        filter: {
+          all: "Todos",
+          title: "FILTROS",
+          reset: "RESET",
+        },
+        viewColumns: {
+          title: "Mostrar columnas",
+          titleAria: "Mostrar / Ocultar columnas de tabla",
+        },
+        selectedRows: {
+          text: "fila (s) seleccionadas",
+          delete: "Eliminar",
+          deleteAria: "Eliminar filas seleccionadas",
+        },
+      
+      }        
+      } 
+   
+ 
       let formas2;
       let forma3;
       let subtotal;
@@ -489,21 +554,25 @@ handleAddFields = () => {
         //   }
         //   let total = subtotal + iva;
         
-          // console.log("values",tipo)
-          // console.log("values",concepto)
-          // console.log("values",precioUnitario)
-          // console.log("values",precio)
-          // console.log("values",cantidad)
+          // console.log("id",id)
+          // console.log("tipo",tipo)
+          // console.log("concepto",concepto)
+          // console.log("precioUnitario",precioUnitario)
+          // console.log("cantidadDatos",cantidadDatos)
+          // console.log("Precio Global",precio)
+          // console.log("descuento",descuentoProducto)
+          
           // console.log("values",subtotal)
           // console.log("values",iva)
           return(
-            <div>
+            <div style={{marginTop:"2%"}}>
 
             <Form onSubmit={this.onSubmitBtn}>                      
               <MDBRow>   
-              <MDBCol md="3" className="mb-3"> 
+              <MDBCol md="1" className="mb-1"> 
                         <label htmlFor="defaultFormLoginPasswordEx" ><strong>ID</strong> </label>
-                        <input                                      			
+                        <input  
+                        style={{color:"#3352FF"}}                                    			
                           id="id"
                           type="text"
                           name="ID"			
@@ -514,7 +583,7 @@ handleAddFields = () => {
                           disabled
                           />                                    
               </MDBCol>
-              <MDBCol md="3" className="mb-3"> 
+              <MDBCol md="2" className="mb-2"> 
                         <label htmlFor="defaultFormLoginPasswordEx" ><strong>Tipo</strong> </label>
                         <input   
                         // style={{texttransform:uppercase}}                                      			
@@ -529,7 +598,7 @@ handleAddFields = () => {
                           disabled
                           />                                    
               </MDBCol>
-              <MDBCol md="6" className="mb-3"> 
+              <MDBCol md="4" > 
                         <label htmlFor="defaultFormLoginPasswordEx" ><strong>Concepto</strong> </label>
                         <input   
                         // style={{texttransform:uppercase}}                                      			
@@ -541,10 +610,10 @@ handleAddFields = () => {
                           value={concepto}
                           required
                           className="form-control"
-                          disabled
+                          disabled                          
                           />                                    
               </MDBCol>
-              <MDBCol md="3" className="mb-3"> 
+              <MDBCol md="1" className="mb-1"> 
                         <label htmlFor="defaultFormLoginPasswordEx" ><strong>PrecioUnitario</strong> </label>
                         <input   
                         // style={{texttransform:uppercase}}                                      			
@@ -558,7 +627,7 @@ handleAddFields = () => {
                           disabled
                           />                                    
               </MDBCol>
-              <MDBCol md="3" className="mb-3"> 
+              <MDBCol md="1" className="mb-1"> 
                         <label htmlFor="defaultFormLoginPasswordEx" ><strong>Cantidad</strong> </label>
                         <input                                        			
                           id={id}
@@ -570,7 +639,7 @@ handleAddFields = () => {
                           className="form-control"
                           />                                    
               </MDBCol>
-              <MDBCol md="3" className="mb-3"> 
+              <MDBCol md="1" className="mb-1"> 
                         <label htmlFor="defaultFormLoginPasswordEx" ><strong>Precio global</strong> </label>
                         <input                                     			
                           id="precioProducto"
@@ -583,7 +652,7 @@ handleAddFields = () => {
                           disabled
                           />                                    
               </MDBCol>
-              <MDBCol md="3" className="mb-3"> 
+              <MDBCol md="1" className="mb-1"> 
                         <label htmlFor="defaultFormLoginPasswordEx" ><strong>Descuento %</strong> </label>
                           <input                                      			
                           id={id}
@@ -596,8 +665,7 @@ handleAddFields = () => {
                           />              
               </MDBCol>
             
-              </MDBRow>
-              {/* <MDBBtn  color="secondary"   onClick={e=>this.Guardar} type="submit">Cancelar</MDBBtn> */}
+              </MDBRow>            
               </Form>
             </div>
           )
@@ -821,77 +889,13 @@ handleAddFields = () => {
       //       </Form>
       //   </div>
       // }
+
       let searchRFC;
       let form;
       let consultarIdProducto;
       let data;
       let tabla;
-      const columns = ["id_productoServicio", "tipo", "concepto", "precio"];
 
-      data= this.state.array.map((rows,i)=>{
-        return([rows.id_productoServicio,rows.tipo,rows.concepto,rows.precio])
-      })
-
-       let Datos= this.state.arrayProductoServicio.map((rows,i)=>{
-
-       })
-      const options={ 
-        filterType:"drowpdawn",
-        responsive: "stacked",
-        responsive:"standard",
-        print:false,
-        download:false,
-        filter:false,
-        caseSensitive:false,
-        selectableRows:"none",
-        viewColumns:false,      
-        textLabels:{
-        body: {
-          noMatch: "Lo sentimos, no se encontraron registros coincidentes",
-          toolTip: " Ordenar",
-          columnHeaderTooltip: column => `Sort for ${column.label}`
-        },
-        pagination: {
-          next: "Página siguiente",
-          previous: "Página anterior",
-          rowsPerPage: "Filas por página:",
-          displayRows: "de",
-        },
-        toolbar: {
-          search: "Buscar",
-          downloadCsv: " Descargar CSV",
-          print: "Imprimir ",
-          viewColumns: "Ver columnas",
-          filterTable: "Tabla de filtros",
-        },
-        filter: {
-          all: "Todos",
-          title: "FILTROS",
-          reset: "RESET",
-        },
-        viewColumns: {
-          title: "Mostrar columnas",
-          titleAria: "Mostrar / Ocultar columnas de tabla",
-        },
-        selectedRows: {
-          text: "fila (s) seleccionadas",
-          delete: "Eliminar",
-          deleteAria: "Eliminar filas seleccionadas",
-        },
-      
-      }        
-      } 
-   tabla= 
-      <div >          
-      <MuiThemeProvider  theme={this.getMuiTheme()}>  
-         <MUIDataTable  
-           title={"catalogo de Productos y Servicios"} 
-             data={data}
-           columns={columns} 
-           options={options}                     
-         /> 
-     </MuiThemeProvider>  
-    </div> 
         var f = new Date();     
        let fecha=f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
       searchRFC= <div>
@@ -911,13 +915,33 @@ handleAddFields = () => {
                 </Row>
       </div>
 let vendedor = localStorage.getItem("nombre") + " "  + localStorage.getItem("apellido");
+if(this.state.busqueda){
+  const columns = ["id_productoServicio", "tipo", "concepto", "precio", "concecutivo","Agregar"];
+  data= this.state.tablaBusqueda.map((rows,i)=>{
+    let boton = <MDBBtn  onClick={(e) => this.handleAddFields(rows.id_productoServicio)} size = "md" color ="danger">Agregar</MDBBtn>
+
+    return([rows.id_productoServicio,rows.tipo,rows.concepto,rows.precio,rows.concecutivo,boton])
+  })
+  tabla= 
+  <div >          
+  <MuiThemeProvider  theme={this.getMuiTheme()}>  
+    <MUIDataTable  
+      title={"catalogo de Productos y Servicios"} 
+      data={data}
+      columns={columns} 
+      options={options}                     
+    /> 
+        </MuiThemeProvider>  
+      </div> 
+}
 
 
 if (this.state.form == true) {  
+  
   form = 
   <div style={{marginTop:"2%"}}>
   <center>    
-  <MDBCard narrow style={{width:"80%",heigth:"60%"}}>                          
+  <MDBCard narrow style={{width:"95%",heigth:"60%"}}>                          
         <MDBAlert color="primary"  className="h5 text-center mb-4" > <strong>Generar Cotización de Servicio </strong> </MDBAlert>
                     <MDBCardBody>
                     <MDBCol md="3" className="mb-3"></MDBCol>
@@ -1019,59 +1043,77 @@ if (this.state.form == true) {
                     </MDBCol> 
                     {/* ***************LOS BOTONES PARA AGREGAR***************** */}
 
-                    {this.state.inputFields.map((inputField,index) => {  
-                    return(
-                      // <MDBCol md="3" className="mb-3 ">     
-                    
-                      <div className="form-group">
-                  <MDBRow>
-                    
-                      <MDBCol md="6" className="mb-3 "> 
-                      <select onChange={event => this.handleInputChange(index, event)} name="select">
-                        {this.state.array.map(rows=>{
-                          return(
-                            <option value={rows.id_productoServicio}>{rows.id_productoServicio + " - "}{rows.concepto}</option>
-                          )
-                        })}
-                      </select>
-                      <MDBBtn
-                        color="primary"
-                          size="md"
-                          type="submit"
-                          onClick={(e) =>this.capturar()}
-                          className="text-white"
-                        >
-                          Consultar
-                      </MDBBtn>
-                      </MDBCol>
-                      <button
-                        className="btn btn-link"
-                        type="button"
-                        onClick={() => this.handleRemoveFields(index)}
-                      >
-                        -
-                      </button>
-                      <button
-                        className="btn btn-link"
-                        type="button"
-                        onClick={() => this.handleAddFields()}
-                      >
-                        +
-                      </button>
-                      </MDBRow>
-                    </div> 
-                  
-                    )
-                    
-                  })}        
-
+     
 
                
 
                   </MDBRow>
                   </Form>
-{/*                
+                  <MDBCol md="3" className="mb-3"> 
+                      <label htmlFor="defaultFormLoginPasswordEx" ><strong>Búsqueda</strong> </label>
+                      <input                                    			
+                          type="text"
+                          name = "busqueda"
+                          placeholder = "Buscar"
+                          required
+                          className="textField"
+                          value = {this.state.busqueda}
+                          onChange ={this.onChange}
+                          />                                    
+                  </MDBCol>
+              
+                  {/* {this.state.inputFields.map((inputField,index) => {  
 
+                     
+                      return(
+                        // <MDBCol md="3" className="mb-3 ">     
+                      
+                        <div className="form-group">
+                    <MDBRow>
+                      
+                        <MDBCol md="6" className="mb-3 "> 
+                        <select onChange={event => this.handleInputChange(index, event)} name="select">
+                          {this.state.array.map(rows=>{
+                            return(
+                              <option value={rows.id_productoServicio}>{rows.id_productoServicio + " - "}{rows.concepto}</option>
+                            )
+                          })}
+                        </select>
+                        <MDBBtn
+                          color="primary"
+                            size="md"
+                            type="submit"
+                            onClick={(e) =>this.capturar()}
+                            className="text-white"
+                          >
+                            Consultar
+                        </MDBBtn>
+                        </MDBCol>
+                        <button
+                          className="btn btn-link"
+                          type="button"
+                          onClick={(e) => this.handleRemoveFields(index)}
+                        >
+                          -
+                        </button>
+                         <button
+                          className="btn btn-link"
+                          type="button"
+                          onClick={(e) => this.handleAddFields()}
+                        >
+                          +
+                        </button> 
+                      </MDBRow>
+                      </div> 
+                    
+                      )
+                      
+                    })}           */}
+                    
+                    {tabla}
+       
+ 
+{/* 
                   <div style={{ padding: 16, margin: 'auto', maxWidth: 600 }}>
                   <Forma
                     onSubmit={onSubmit}
@@ -1111,10 +1153,11 @@ if (this.state.form == true) {
                       
                       </form>
                     )}
-                  /> */}
-                  {formas2}
+                  /> 
+                 
+                </div> */}
+                 {formas2}
                   {forma3}
-                {/* </div> */}
                   <MDBRow style={{marginTop:"10%"}}> 
                       <MDBCol md="3" className="mb-3"/>
                       
@@ -1122,7 +1165,7 @@ if (this.state.form == true) {
                               <MDBBtn   color="info"  onClick = {e=> this.pdfView()}> Generar Cotización</MDBBtn>
                       </MDBCol>
                       <MDBCol md="3" className="mb-3"> 
-                              <MDBBtn  color="secondary"   onClick={e=>this.cancelar} type="submit">Cancelar</MDBBtn>
+                              <MDBBtn  color="secondary"   onClick={e=>this.cancelar()} type="submit">Cancelar</MDBBtn>
                       </MDBCol>
               
                   </MDBRow>
@@ -1417,8 +1460,9 @@ Quedo a sus órdenes para cualquier duda al respecto.</p>
         {form} 
         {pdf}
         {consultarIdProducto}
+        
         {/* {formas2} */}
-        {/* {tabla}  */}
+        
         </React.Fragment>
          
       );
