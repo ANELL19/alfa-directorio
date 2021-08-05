@@ -9,7 +9,7 @@ import { DialogUtility } from '@syncfusion/ej2-popups';
 import axios from 'axios';
 import {API} from '../Graphql/Graphql'
 import Navbar from '../paneldeConection/navbar'
-
+import {Card} from 'antd';
 class signupEmpresas extends Component{
     constructor(props){
         super(props)
@@ -23,16 +23,9 @@ class signupEmpresas extends Component{
         } 
         this.regresar = this.regresar.bind(this)     
     }   
- componentWillUnmount(){
-  localStorage.removeItem("rfc")
-  localStorage.removeItem("razonSocial")
-  localStorage.removeItem("correo")
-  localStorage.removeItem("telefono")
-  localStorage.removeItem("contrasena") 
 
- }
     regresar(){
-        this.props.history.push("/Dashboard")
+        this.props.history.push("/")
     } 
 
     onChangeInput =(e)=>{
@@ -69,11 +62,7 @@ class signupEmpresas extends Component{
                   title:'Registro exitoso' ,
                   
               });
-              window.location.reload()
-                 
-              
-              
-              
+              window.location.reload();
                // this.props.history.push("/home_admin")
         })
          .catch(err=>{
@@ -81,23 +70,21 @@ class signupEmpresas extends Component{
               })   
     }
 render(){
+  let titulo = <strong><h5>Registrar Empresa</h5></strong>
     return(
         <React.Fragment>
           <Navbar/>
-           <MDBContainer style={{ marginTop:"5%"}}>
-            <Paper>
+           <div style={{width:"70%",marginTop:"1%",marginLeft:"15%"}}>
+            <Card title={titulo}>
             <MDBRow>
               <MDBCol size="5">
-              <MDBCard style={{ width: "25rem" }}>
+              <MDBCard style={{ width: "20rem"}}>
                 <MDBCardImage className="img-fluid" src="https://images.pexels.com/photos/8062272/pexels-photo-8062272.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" waves />
               </MDBCard>
               </MDBCol>
               <MDBCol size="6" style ={{marginTop:"8%"}}>
-              <MDBAlert color="primary" className="text-center" >
-                  <h5>Registrar Empresa</h5>
-              </MDBAlert>
+
               <Form  onSubmit={this.onSubmitBtn}>                
-              <div >
               <Row > 
               <MDBCol md="6">   
                 <MDBInput 
@@ -161,7 +148,6 @@ render(){
                 />
                 </MDBCol>
                 </Row >
-                </div>
                     <div className="text-center">
                       <MDBBtn   color="info"   type="submit"> Guardar</MDBBtn>
                       <MDBBtn  color="danger"   onClick={this.regresar} type="submit">Cancelar</MDBBtn>
@@ -169,8 +155,8 @@ render(){
             </Form>
               </MDBCol>
             </MDBRow>
-            </Paper>
-          </MDBContainer>
+            </Card> 
+            </div>
           </React.Fragment>
     )
 }

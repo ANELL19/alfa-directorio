@@ -10,7 +10,8 @@ import { MDBCardImage } from "mdbreact";
 import axios from "axios";
 import { API } from "../Graphql/Graphql";
 import Navbar from "../paneldeConection/navbar";
-
+import {Card} from 'antd'
+import { Divider } from "@material-ui/core";
 class signupAdminAlfa extends Component {
   constructor(props) {
     super(props);
@@ -23,12 +24,12 @@ class signupAdminAlfa extends Component {
       tablas:[],
       viewSearch:true,
       viewForm:false,
-      fk_empresa:[]     
+      fk_empresa:[],
+      rs:''     
     };  
   }
 
   onChangeInput = (e) => {
-    // console.log("eventoonChange", e);
     const { id, value } = e.target;
     this.setState({
       [id]: value
@@ -36,14 +37,11 @@ class signupAdminAlfa extends Component {
   };
 
  componentWillUnmount(){
+  localStorage.removeItem("id_empresa")
   localStorage.removeItem("rfc")
-  localStorage.removeItem("nombre")
-  localStorage.removeItem("apellido")
+  localStorage.removeItem("telefono")
   localStorage.removeItem("correo")
-  localStorage.removeItem("contrasena")    
-  // localStorage.removeItem("empresa")
-  // localStorage.removeItem("razonSocial")
-     
+  localStorage.removeItem("razonSocial")    
   }
 
   onSubmitBtn = (e) => {
@@ -52,30 +50,38 @@ class signupAdminAlfa extends Component {
     let apellido = this.state.apellido.toUpperCase();
     let correo = this.state.correo;
     let contrasena = this.state.contrasena;
-
-       axios({
-      url: API,
-      method: "post",
-      data: {
-        query: `
-                mutation{
-                    signupAlfa(data:"${[nombre,apellido,correo,contrasena,this.state.fk_empresa]}"){  
-                    message
-                     } 
-                }
-                `
-      }
-    })
-      .then((response) => {     
+    if(nombre && apellido && correo && contrasena){
+      if(this.state.fk_empresa[0]){
+        axios({
+          url: API,
+          method: "post",
+          data: {
+            query: `
+                    mutation{
+                        signupAlfa(data:"${[nombre,apellido,correo,contrasena,this.state.fk_empresa]}"){  
+                        message
+                         } 
+                    }
+                    `
+          }
+        })
+          .then((response) => {     
+            DialogUtility.alert({
+              title: "Registro exitoso"
+            });
+            window.location.reload();
+          })
+          .catch((err) => {
+            console.log("error", err.response);
+          });    
+      }else{
         DialogUtility.alert({
-          title: "Registro exitoso",
+          title: "Aviso!",
+          content: "Por favor Asigne una Razón Social"
         });
-     
-        window.location.reload();        
-      })
-      .catch((err) => {
-        // console.log("error", err.response);
-      });    
+      }
+    }
+      
   };
   
   consultarDatos(){    
@@ -99,131 +105,55 @@ class signupAdminAlfa extends Component {
       }   
   
        }).then(response=>{
-      //  console.log( 'este es el response',response)  
+       console.log( 'este es el response',response)  
         if(response.data.data.getEmpresas[0]){
-          localStorage.setItem("empresa",response.data.data.getEmpresas[0].id_empresa)         
-          localStorage.setItem("razonSocial",response.data.data.getEmpresas[0].razonSocial)             
-          this.setState({fk_empresa:response.data.data.getEmpresas[0].id_empresa})      
-          // console.log("esto es algo",response.data.data.getEmpresas[0].id_empresa) 
-          // console.log("esto es algo2",this.state.fk_empresa) 
-          this.setState({viewForm:true})         
+          localStorage.setItem("empresa",response.data.data.getEmpresas[0].id_empresa)
+          localStorage.setItem("razonSocial",response.data.data.getEmpresas[0].razonSocial)
+          this.setState({rs:response.data.data.getEmpresas[0].razonSocial})
+          this.setState({fk_empresa:response.data.data.getEmpresas[0].id_empresa})   
         }else{
            DialogUtility.alert({
                 
                   title:'AVISO!' ,
-                  content:'El RFC no fue encontrado'                  
+                  content:'El RFC no fue encontrado'
+                  
               });
-               
-        }
-        
-   
-       
+        }       
        })
        .catch(err=>{
-          //  console.log('error',err)
+           console.log('error',err)
        })   
   }
 
   regresar() {
-    this.setState({viewSearch:true})
-    this.setState({viewForm:false})
+    this.props.history.push("/")
   }
 
   render() {
     let formulario;
     let search;
-    let razonSocial=localStorage.getItem("razonSocial")
  if(this.state.viewSearch===true){
-  search= <div>  
+  search=   
+            <div style={{width:"100%",marginLeft:"40%"}}>   
             <input  type="text" id="rfc" value={this.state.rfc} name="rfc"  onChange={this.onChangeInput}   placeholder="RFC de la Empresa" />
             <MDBBtn gradient="aqua" rounded size="sm" onClick={e=> this.consultarDatos()}  >                        
               <MDBIcon icon="search" />
             </MDBBtn>  
-            <br></br> 
-          </div>
+            </div>
+        
   }
-    
-  if(this.state.viewForm===true){
-    formulario= <div marginTop="5%">         
-                 
-      <Row>        
-      <MDBCol md="6"> <h6>Razón Social:</h6></MDBCol>
-      <Label>{razonSocial}</Label>
-          <MDBCol md="6">
-            <MDBInput
-              label="Nombre (s)"
-              icon="user"
-              id="nombre"
-              type="text"
-              name="nombres"
-              onChange={this.onChangeInput}
-              value={this.state.nombre}
-              required
-            />
-          </MDBCol>
-          <MDBCol md="6">
-            <MDBInput
-              label="apellido"
-              id="apellido"
-              type="text"
-              name="apellido"
-              onChange={this.onChangeInput}
-              value={this.state.apellido}
-              required
-            />
-          </MDBCol>
-        </Row> 
-        <Row>
-          <MDBCol md="6">
-            <MDBInput
-              label="Correo"
-              icon="envelope"
-              id="correo"
-              type="email"
-              name="correo"
-              onChange={this.onChangeInput}
-              value={this.state.correo}
-              required
-            />
-          </MDBCol>
-          <MDBCol md="6">
-            <MDBInput
-              label="Contraseña"
-              icon="lock"
-              id="contrasena"
-              type="password"
-              name="contrasena"
-              onChange={this.onChangeInput}
-              value={this.state.contrasena}
-              validate
-              required
-            />
-          </MDBCol>                      
-      </Row> 
-    <div className="text-center">
-          <MDBBtn color="info" type="submit">                   
-            Guardar
-          </MDBBtn>
-          <MDBBtn
-            color="danger"
-            onClick={e=>this.regresar()}
-            type="submit"
-          >
-            Cancelar
-          </MDBBtn>                   
-      </div>                      
-    </div>
 
- }
+ let titulo = <strong><h5>Registrar Administrador</h5></strong>
 
     return (
       <React.Fragment>
         <Navbar />
-        <MDBContainer style={{ marginTop: "5%" }}>
+        <div style={{width:"70%",marginTop:"1%",marginLeft:"15%"}}>
+          <Card title ={titulo}>
           <Paper>
             <MDBRow>
               <MDBCol size="5">
-                <MDBCard style={{ width: "25rem" }}>
+                <MDBCard style={{ width: "20rem"}}>
                   <MDBCardImage
                     className="img-fluid"
                     src="https://images.pexels.com/photos/3178818/pexels-photo-3178818.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
@@ -231,27 +161,88 @@ class signupAdminAlfa extends Component {
                   />
                 </MDBCard>
               </MDBCol>
-              <MDBCol size="6" style={{ marginTop: "5%" }}>
-                <MDBAlert color="primary" className="text-center">
-                  <h4>Registrar Administrador</h4>
-                </MDBAlert>
+              <MDBCol size="6" style={{ marginTop: "2%"}}>
                 <Form onSubmit={this.onSubmitBtn}>
                   <div>
                     <Row>
                       <MDBCol md="5"></MDBCol>
-                      <MDBCol md="7">                        
                       {search}
-                      </MDBCol>
-                      </Row>
-                      <MDBCol>
-                     {formulario}
+                    </Row>
+                    <MDBCol style={{marginTop:"6%"}}>
+                    <Row>        
+                    <MDBCol md="6"> <h6><strong>Razón Social:</strong></h6></MDBCol>
+                    <strong><Label>{this.state.rs || "Razon social no ingresada"}</Label></strong>
+                        <MDBCol md="6">
+                          <MDBInput
+                            label="Nombre (s)"
+                            icon="user"
+                            id="nombre"
+                            type="text"
+                            name="nombres"
+                            onChange={this.onChangeInput}
+                            value={this.state.nombre}
+                            required
+                          />
+                        </MDBCol>
+                        <MDBCol md="6">
+                          <MDBInput
+                            label="apellido"
+                            id="apellido"
+                            type="text"
+                            name="apellido"
+                            onChange={this.onChangeInput}
+                            value={this.state.apellido}
+                            required
+                          />
+                        </MDBCol>
+                      </Row> 
+                      <Row>
+                        <MDBCol md="6">
+                          <MDBInput
+                            label="Correo"
+                            icon="envelope"
+                            id="correo"
+                            type="email"
+                            name="correo"
+                            onChange={this.onChangeInput}
+                            value={this.state.correo}
+                            required
+                          />
+                        </MDBCol>
+                        <MDBCol md="6">
+                          <MDBInput
+                            label="Contraseña"
+                            icon="lock"
+                            id="contrasena"
+                            type="password"
+                            name="contrasena"
+                            onChange={this.onChangeInput}
+                            value={this.state.contrasena}
+                            validate
+                            required
+                          />
+                        </MDBCol>                      
+                    </Row> 
+                  <div className="text-center">
+                        <MDBBtn color="info" type="submit">                   
+                          Guardar
+                        </MDBBtn>
+                        <MDBBtn
+                          color="danger"
+                          onClick={e=>this.regresar()}
+                          type="submit"
+                        >
+                          Cancelar
+                        </MDBBtn>                   
+                    </div> 
                      </MDBCol>                    
                   </div>                  
                 </Form>
               </MDBCol>
             </MDBRow>
           </Paper>
-        </MDBContainer>
+          </Card>
+          </div>
       </React.Fragment>
     );
   }

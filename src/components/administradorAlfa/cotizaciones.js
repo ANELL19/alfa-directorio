@@ -259,16 +259,16 @@ renderTabla(){
   this.setState({renderTabla:true}); 
 }
 
-Guardar(){ 
-   let id1 = this.state.id
-  let tipo1 = this.state.tipo
-  let concepto1 = this.state.concepto
-  let precio1 = this.state.precioProducto
-  let cantidad1 = this.state.cantidadMasiva
-  let descuento1 = this.state.descuentoMasivo
-   console.log("capturar datos",id1,tipo1,concepto1,precio1,cantidad1,descuento1)
+// Guardar(){ 
+//    let id1 = this.state.id
+//   let tipo1 = this.state.tipo
+//   let concepto1 = this.state.concepto
+//   let precio1 = this.state.precioProducto
+//   let cantidad1 = this.state.cantidadMasiva
+//   let descuento1 = this.state.descuentoMasivo
+//    console.log("capturar datos",id1,tipo1,concepto1,precio1,cantidad1,descuento1)
 
-}
+// }
 
 
 
@@ -286,13 +286,13 @@ onSubmitBtn = (e)=>{
   let tel1 = this.state.Datos.telefono1;
   let tel2 = this.state.Datos.telefono2;
 
-  let id1 = this.state.id
-  let tipo1 = this.state.tipo
-  let concepto1 = this.state.concepto
-  let precio1 = this.state.precioProducto
-  let cantidad1 = this.state.cantidadMasiva
-  let descuento1 = this.state.descuentoMasivo
-   console.log("capturar datos",id1,tipo1,concepto1,precio1,cantidad1,descuento1)
+  // let id1 = this.state.id
+  // let tipo1 = this.state.tipo
+  // let concepto1 = this.state.concepto
+  // let precio1 = this.state.precioProducto
+  // let cantidad1 = this.state.cantidadMasiva
+  // let descuento1 = this.state.descuentoMasivo
+  //  console.log("capturar datos",id1,tipo1,concepto1,precio1,cantidad1,descuento1)
   
   // let servicio  = this.state.Servicio.toUpperCase();
   // let precio = this.state.precio;              
@@ -597,7 +597,7 @@ handleAddFields = () => {
               </MDBCol>
             
               </MDBRow>
-              <MDBBtn  color="secondary"   onClick={e=>this.Guardar} type="submit">Cancelar</MDBBtn>
+              {/* <MDBBtn  color="secondary"   onClick={e=>this.Guardar} type="submit">Cancelar</MDBBtn> */}
               </Form>
             </div>
           )

@@ -8,7 +8,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import'mdbreact/dist/css/mdb.css';
 import { DialogUtility } from '@syncfusion/ej2-popups';
 import Paper from '@material-ui/core/Paper';
-import style from './style.css'
+import './style.css'
 import { Button } from 'reactstrap';
 import Navbar from '../paneldeConection/navbar'
 
@@ -24,7 +24,7 @@ import Navbar from '../paneldeConection/navbar'
         }
         
         cerrar(){
-          this.props.history.push("/Dashboard")
+          this.props.history.push("/")
         }
 
 
@@ -76,6 +76,7 @@ import Navbar from '../paneldeConection/navbar'
                                 /> 
                                 </Grid>                               
                                 <MDBBtn 
+                                style={{marginTop:"5%"}}
                                 color="info"
                                 size="md"
                                 type="submit"

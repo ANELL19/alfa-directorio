@@ -17,29 +17,6 @@ class NavbarAdmin extends Component {
           }
           
  render(){ 
- 
-
-
-    // var date= new Date()
-    // var fecha = date.toLocaleString('es')     
-
-    // var  h = new Date()
-    // // let horas= h.getHours()+ ":" + h.getMinutes()+ ":"+ h.getSeconds()
-    // var horas = h.getHours();
-    // var minutos = h.getMinutes();
-    // var segundos = h.getSeconds()
-    // if(horas<10) {
-    //   horas='0'+horas;
-    // } 
-    // if(minutos<10) {
-    //   minutos='0'+minutos;
-    // }
-    // if(segundos<10) {
-    //   segundos='0'+segundos;
-    // }
-    //   console.log("esto es la hora", horas,minutos,segundos)
-
-      // **************horas*************
   var d = new Date();
   var hh = d.getHours();
   var m = d.getMinutes();
@@ -50,13 +27,7 @@ class NavbarAdmin extends Component {
   if (hh == 0) {
     hh = 12;
   }
-
-  let horas= hh + ":" + m + ":" + s
-
- 
-  console.log("esto es la hora de hora", horas)
-  
-   
+  let horas= hh + ":" + m + ":" + s   
 
     var f = new Date();
     // let fecha=f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()   
@@ -70,13 +41,11 @@ class NavbarAdmin extends Component {
       mm='0'+mm;
     }    
     let fecha =  dd+"/"+mm+"/"+yyyy
-    console.log("esto es la fecha", fecha)
-
         return(
           <Router>
           <MDBNavbar color="#b3e5fc light-blue lighten-4" expand="md">
             <MDBNavbarBrand>
-              <img  src={ADS} style={{width:"60%", marginTop:"2%", marginLeft:"15%"}}/> 
+              <a href="/"><img  src={ADS} style={{width:"60%", marginTop:"2%", marginLeft:"15%"}}/></a>
             </MDBNavbarBrand>            
             <MDBNavbarToggler onClick={this.toggleCollapse} />
             <MDBCollapse id="navbarCollapse3" isOpen={this.state.isOpen} navbar>
@@ -86,11 +55,11 @@ class NavbarAdmin extends Component {
                 </MDBNavItem>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <MDBNavItem>
-                <MDBBtn href="/loginAdministrador" gradient="blue"><MDBIcon icon="address-card"/>&nbsp;Registrar Adminsitrador</MDBBtn>
+                <MDBBtn href="/loginAdministrador" gradient="blue"><MDBIcon icon="address-card"/>&nbsp;Registrar Administrador</MDBBtn>
                 </MDBNavItem>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <MDBNavItem>
-                <MDBBtn  href="/" gradient="blue"><MDBIcon icon="laptop"/>&nbsp;Iniciar Sesión</MDBBtn>
+                <MDBBtn  href="/loginAdmin" gradient="blue"><MDBIcon icon="laptop"/>&nbsp;Iniciar Sesión</MDBBtn>
                 </MDBNavItem>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <MDBNavItem >

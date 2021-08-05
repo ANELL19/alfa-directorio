@@ -2,6 +2,7 @@ import React from 'react'
 import '@fortawesome/fontawesome-free/css/all.min.css';
  import'bootstrap-css-only/css/bootstrap.min.css'; 
 import'mdbreact/dist/css/mdb.css';
+import './style.css'
 import { MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem } from "mdbreact";
 import { MDBCarousel, MDBCarouselCaption, MDBCarouselInner, MDBCarouselItem, MDBView, MDBMask, MDBContainer } from "mdbreact";
 
@@ -25,7 +26,7 @@ import { MDBCarousel, MDBCarouselCaption, MDBCarouselInner, MDBCarouselItem, MDB
       showIndicators={true}
       className="z-depth-1"
     >
-      <MDBCarouselInner style= {{ marginTop:"10%"}}>
+      <MDBCarouselInner style= {{ marginTop:"2%"}}>
         <MDBCarouselItem itemId="1">
           <MDBView>
             <img
@@ -88,7 +89,7 @@ import { MDBCarousel, MDBCarouselCaption, MDBCarouselInner, MDBCarouselItem, MDB
                   <MDBDropdownItem divider />
                   <MDBDropdownItem href="/loginAdministrador">Registar Administrador</MDBDropdownItem>
                   <MDBDropdownItem divider />
-                  <MDBDropdownItem href="/">Iniciar sesión</MDBDropdownItem>                                
+                  <MDBDropdownItem href="/loginAdmin">Iniciar sesión</MDBDropdownItem>                                
                 </MDBDropdownMenu>
               </MDBDropdown>  
             </MDBContainer> 

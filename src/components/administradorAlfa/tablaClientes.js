@@ -90,9 +90,6 @@ class Tablas extends Component{
     }
 // let valorCliente=[];
     datosIndividialesClientes(id){
-      console.log("idRecibido1", id)
-      console.log("idRecibido2",id.id_cliente) 
-      console.log("idRecibido3",id.empresa) 
       axios({
         url:API,
         method:'post',
@@ -115,10 +112,8 @@ class Tablas extends Component{
         }   
          })
        .then(response=>{
-         console.log("este es el response",response)
-         console.log("este es el response de :",response) 
+
          this.setState({DatosClientes:response})
-         console.log("estos son los datos que se mandaron a el estado",this.state.DatosClientes)
         //  console.log("el array",id.id_cliente) 
           // if("esto es response de tabla",response){
       // <MDBAlert color="primary">
@@ -128,19 +123,6 @@ class Tablas extends Component{
         //  array.push("response de array",response)        
         //   this.setState({detallesEditarCliente:array})   
                  
-      console.log("id_cliente",id.id_cliente) 
-      console.log("rfc_cliente",id.rfc)
-      console.log("empresa_cliente",id.empresa) 
-      console.log("nombre_cliente",id.nombre) 
-      console.log("apellidos_cliente",id.apellido) 
-      console.log("correo1_cliente",id.correo1)
-      console.log("correo2_cliente",id.correo2)
-      console.log("telefono1_cliente",id.telefono1)
-      console.log("telefon2_cliente",id.telefono2)
-      
-
-
-      
         localStorage.setItem("id_cliente1",id.id_cliente)     
         localStorage.setItem("rfc_cliente",id.rfc)               
         localStorage.setItem("razonSocial_cliente",id.empresa)   
@@ -152,17 +134,7 @@ class Tablas extends Component{
         localStorage.setItem("telefono2_cliente",id.telefono2)
           this.setState({
             modal: !this.state.modal
-          }); 
-
-          // }
-        //  console.log("esto es response",response)          
-        //  console.log("array de id",array[1].data.data.getTablaClientes)
-        //  console.log("estado",this.state.detallesEditarCliente.id_cliente)   
-       
-          //  if(this.state.detallesIdCotizaciones[0]){
-          //    this.setState({tablaInicial:false})
-          //    this.setState({renderPDF:true})
-          //  }       
+          });     
         
     })
      .catch(err=>{
@@ -171,9 +143,6 @@ class Tablas extends Component{
     }
 
     deleteCliente(id){
-      // console.log("idRecibido delite", id)
-      // console.log("id_cliente",id_cliente)
-
       axios({
         url:API,
         method:'post',
@@ -217,8 +186,6 @@ class Tablas extends Component{
        let corre2_cliente = localStorage.getItem("correo2_cliente")                                
        let telefono1_cliente = localStorage.getItem("telefono1_cliente")
        let telefono2_cliente = localStorage.getItem("telefono2_cliente")
-
-          console.log("data a enviar de id ",id_cliente)
   
          axios({
         url: API,
@@ -257,13 +224,6 @@ class Tablas extends Component{
       let telefono1_cliente = localStorage.getItem("telefono1_cliente")
       let telefono2_cliente = localStorage.getItem("telefono2_cliente")
         
-
-      // console.log("arrayApi" ,this.state.peticionApi)
-      // let filtrar;
-      // filtrar = this.state.peticionApi.filter(function(hero){
-      //   return hero[1] == "BAD email"
-      // })
-      // console.log("filtrar" , filtrar)
  let modal;
 
      modal=
@@ -425,7 +385,7 @@ class Tablas extends Component{
       let eliminar;
       let data;
 
-    const columns = ["Id_Cliente","RFC","Empresa","Nombre","Apellidos","Correo1","Correo2","Teléfono1","Teléfono2","Editar","Eliminar"];
+    const columns = ["Id_Cliente","RFC","Empresa","Cliente","Correo1","Teléfono1","Editar","Eliminar"];
     
      data = this.state.tablas.map((rows,i)=>{    
       
@@ -442,15 +402,15 @@ class Tablas extends Component{
           <i class="far fa-trash-alt"></i>
         </Button>
       </div>
-
-
-         return([rows.id_cliente,rows.rfc,rows.empresa,rows.nombre,rows.apellido, rows.correo1, rows.correo2, rows.telefono1, rows.telefono2,botonesEditar,eliminar])
+         return([rows.id_cliente,rows.empresa,rows.rfc,rows.nombre + " " +rows.apellido, rows.correo1, rows.telefono1,botonesEditar,eliminar])
         })  
 
       
       const options={ 
         filterType:"drowpdawn",
         responsive: "stacked",
+        elevation:0,
+        selectableRows:"none",
         textLabels:{
         body: {
           noMatch: "Lo sentimos, no se encontraron registros coincidentes",
@@ -490,7 +450,7 @@ class Tablas extends Component{
       } 
         return(
             <React.Fragment>
-          <div  style={{width:"100%",marginTop:"1%",marginBottom:"2%"}} >               
+          <div  style={{width:"95%",marginLeft:"3%"}} >               
               <MUIDataTable  
                 title={"tabla clientes"} 
                 data={data} 

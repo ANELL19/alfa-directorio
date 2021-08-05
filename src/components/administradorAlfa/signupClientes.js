@@ -11,7 +11,8 @@ import axios from "axios";
 import { API } from "../Graphql/Graphql";
 import { MDBTabPane, MDBTabContent, MDBNav, MDBNavItem, MDBLink } from 'mdbreact';
 import CargaMasiva from './registrarCliente'
-import RegistraClientes from './signupClientes'
+// import RegistraClientes from './signupClientes'
+import {Card} from 'antd'
 
 class Clientes extends Component {
   constructor(props) {
@@ -98,11 +99,13 @@ class Clientes extends Component {
   };
 
   render() {
+    let titulo =  <strong><h4>Registrar Nuevo Cliente</h4></strong>
 
     const { activeItemPills } = this.state;
     let formulario;
 
-    formulario= <div marginTop="5%">
+    formulario =
+      <Card title ={titulo}>
       <Row> 
       <MDBCol md="6">
             <MDBInput
@@ -215,18 +218,16 @@ class Clientes extends Component {
           >
            Borrar
           </MDBBtn>                   
-      </div>                      
-    </div>
+      </div>   
+      </Card>                   
 
 //  }
-let id_empresa=localStorage.getItem("empresa")
-console.log("esto es el  id",id_empresa)
     return (
       <React.Fragment>
-       <MDBContainer>
-        <MDBContainer>
+       <div  style={{width:"100%"}} >
           <MDBRow>
             <MDBCol md='12'>
+                <div style={{marginTop:"1%",marginLeft:"1%"}}>
                 <MDBNav className='nav-pills'>
                   <MDBNavItem>
                     <MDBLink to='#' active={activeItemPills === '1'} onClick={this.togglePills('1')} link>
@@ -239,13 +240,14 @@ console.log("esto es el  id",id_empresa)
                     </MDBLink>
                   </MDBNavItem>                  
                 </MDBNav>
+                </div>
+                <div style={{marginLeft:"9%",marginTop:"1%"}}>
                 <MDBTabContent activeItem={activeItemPills}>
                   <MDBTabPane tabId='1'>
-                  <MDBContainer style={{ marginTop: "2%" }}>
-                    <Paper>
+                  <MDBContainer>
                       <MDBRow>
-                        <MDBCol size="5">
-                          <MDBCard style={{ width: "100%" }}>
+                        <MDBCol size="4">
+                          <MDBCard style={{ width: "22rem",heigth:"25rem"}}>
                             <MDBCardImage
                               className="img-fluid"
                               src="https://images.pexels.com/photos/4065864/pexels-photo-4065864.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
@@ -253,10 +255,7 @@ console.log("esto es el  id",id_empresa)
                             />
                           </MDBCard>
                         </MDBCol>
-                        <MDBCol size="6" style={{ marginTop: "5%" }}>
-                          <MDBAlert color="primary" className="text-center">
-                            <h4>Registrar Nuevo Cliente</h4>
-                          </MDBAlert>
+                        <MDBCol size="7">
                           <Form onSubmit={this.onSubmitBtn}>
                             <div>                    
                                 <MDBCol>
@@ -266,17 +265,17 @@ console.log("esto es el  id",id_empresa)
                           </Form>
                         </MDBCol>
                       </MDBRow>
-                    </Paper>
                   </MDBContainer>    
                   </MDBTabPane>
                   <MDBTabPane tabId='2'>                   
                     <CargaMasiva/>
                   </MDBTabPane>
                 </MDBTabContent>
+                </div>
+
             </MDBCol>
           </MDBRow>
-        </MDBContainer>
-      </MDBContainer>      
+      </div>      
       </React.Fragment>
     );
   }

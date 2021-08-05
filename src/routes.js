@@ -35,7 +35,6 @@ import Agregar from './components/paneldeConection/botonAgregar'
 import cliente from './components/administradorAlfa/signupClientes'
 import checkbox from './components/paneldeConection/check'
 import Cotizaciones from './components/administradorAlfa/cotizaciones';
-import  servicios from './components/administradorAlfa/generarServicios'
 
 
 class App extends Component{
@@ -59,7 +58,7 @@ render(){
       
 
 
-        <Route  exact path = "/" component={loginAdmin}/>
+        <Route  exact path = "/loginAdmin" component={loginAdmin}/>
         {/* <PrivateRouteAdminAlfa exact path = "/dashboardAlfa" component={dashboardAlfa}/> */}
         <PrivateRouteAdminAlfa exact path = "/tablaClientes" component={tablaClientes}/>
         <PrivateRouteAdminAlfa  exact path = "/sidenavbar" component={sidenavbar}/>
@@ -67,7 +66,7 @@ render(){
         <PrivateRouteAdminAlfa exact path = "/TablaCotizaciones" component={tablaCotizaciones}/>
         <PrivateRouteAdminAlfa exact path = "/Cotizaciones" component={Cotizaciones}/>
         
-        <Route  exact path = "/Dashboard" component={Dashboard}/>
+        <Route  exact path = "/" component={Dashboard}/>
         
          <Route exact path = "/loginEmpresa" component={LoginEmpresa}/>
       
@@ -82,7 +81,7 @@ render(){
 
          <Route exact path = "/cliente" component={cliente}/>
          {/* <PrivateRoute  exact path = "/Dashboard" component={Dashboard}/> */}
-         <Route exact path = "/servicios" component={servicios}/>
+
          
 
 

@@ -157,6 +157,8 @@ class TablaCotizaciones extends Component{
         const options={ 
           filterType:"drowpdawn",
           responsive: "stacked",
+          elevation:0,
+          selectableRows:"none",
           textLabels:{
           body: {
             noMatch: "Lo sentimos, no se encontraron registros coincidentes",

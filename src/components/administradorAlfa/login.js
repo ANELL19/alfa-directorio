@@ -6,9 +6,10 @@ import'mdbreact/dist/css/mdb.css';
 import {  MDBRow, MDBCol, MDBInput, MDBBtn, MDBCard,MDBCardBody, MDBView} from 'mdbreact';
 import { DialogUtility } from '@syncfusion/ej2-popups';
 import { Form } from 'reactstrap';
-import index from "./index.css"
+import './index.css'
 import {API} from '../Graphql/Graphql'
-import { Avatar } from 'antd';
+import { Avatar,Card } from 'antd';
+
 
 class loginAdminAlfa extends Component{
     constructor(props){
@@ -57,7 +58,6 @@ class loginAdminAlfa extends Component{
                 `
             }   
              }).then(response=>{
-             console.log( 'este es el response',response)
                 if(response.data.data.loginAdminAlfa.message=="login exitoso"){                    
                     localStorage.setItem("id_admin",response.data.data.loginAdminAlfa.id_admin)                    
                     localStorage.setItem("nombre",response.data.data.loginAdminAlfa.nombre)   
@@ -91,25 +91,24 @@ class loginAdminAlfa extends Component{
     }
 
      render(){
+         let titulo = <center><strong><h3>iniciar sesión</h3></strong></center>
          return(
             <React.Fragment>
                 <div id="apppages">
                     <MDBView>
-                <div style={{marginTop:"8%", marginLeft:"15%"}} >
+                <div style={{marginTop:"5%", marginLeft:"8%"}} >
                 <MDBCol md="5">
-                <MDBCard  style={{width:"62%",heigth:"50%"}}>       
+                <Card title = {titulo} style={{width:"80%"}}>       
                           
                 <MDBCardBody >
-                <div className="h5 text-center mb-4">
-                <h3>iniciar sesión</h3>
-                <br></br>
-                    <Avatar size={84} style={{ backgroundColor: '#69c0ff' }} ><font size="20" >ADS</font></Avatar>     
+                <div className="h5 text-center mb-2">
+                    <Avatar size={80} style={{ backgroundColor: '#69c0ff' }} ><font size="20" >ADS</font></Avatar>     
                 </div>
                                 
                 <Form onSubmit={this.onSubmitBtn}> 
 
-                <MDBRow style={{ marginLeft:"18%"}}>
-                    <MDBCol md="9">
+                <MDBRow style={{ marginLeft:"5%"}}>
+                    <MDBCol md="11">
                         <MDBInput                          
                         icon="user"
                         id="user"
@@ -132,7 +131,7 @@ class loginAdminAlfa extends Component{
                         />
                         
                         <div className="text-center">
-                        <MDBBtn color='info' type="submit" size="sm">
+                        <MDBBtn style= {{marginTop:"2%"}} color='info' type="submit" size="sm">
                         iniciar sesión                            
                         </MDBBtn>
                         </div>                    
@@ -141,7 +140,7 @@ class loginAdminAlfa extends Component{
                 </MDBRow>                             
                 </Form> 
                 </MDBCardBody>
-            </MDBCard>
+            </Card>
             </MDBCol>        
             </div>
             </MDBView>

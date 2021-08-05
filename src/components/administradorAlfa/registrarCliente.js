@@ -8,11 +8,11 @@ import {MDBRow, MDBContainer, MDBBtn,MDBCard, MDBCardImage, MDBAlert } from 'mdb
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'mdbreact/dist/css/mdb.css';
-import Paper from '@material-ui/core/Paper';
-import registrarCliente from './registrarCliente.css'
 import { Avatar, Image } from 'antd';
 import BackupIcon from '@material-ui/icons/Backup';
-
+import './registrarCliente.css'
+import {API} from  '../Graphql/Graphql'
+import {Card} from 'antd'
 //modal
   const ModalPrueba = (props) => {
 	const {
@@ -25,15 +25,16 @@ import BackupIcon from '@material-ui/icons/Backup';
 	// const toggle = () => setModal(modal);
 
 	// const handleToggle = () => setModal(!modal);
-
+	let titulo = <trong><h4>Registrar Masivo de Cliente</h4></trong>
+	let extra = <p style={{color:"red"}}>Por favor seleccione su base de datos, Puede cargar archivos ("xlsx","csv")</p>
 	return (
-	<React.Fragment>
+	<div>
 
-<MDBContainer style={{ marginTop: "2%" }}>
-          <Paper>
+		<div style={{marginTop:"1%",marginRight:"9%",marginLeft:"1%"}}>
+          <Card title = {titulo}>
             <MDBRow>
-              <MDBCol size="5">
-                <MDBCard style={{ width: "100%" }}>
+              <MDBCol size="4">
+                <MDBCard style={{ width: "22rem",heigth:"25rem"}}>
                   <MDBCardImage
                     className="img-fluid"
                     src="https://images.pexels.com/photos/4065864/pexels-photo-4065864.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
@@ -41,23 +42,20 @@ import BackupIcon from '@material-ui/icons/Backup';
                   />
                 </MDBCard>
               </MDBCol>
-              <MDBCol size="6" style={{ marginTop: "5%" }}>
-			  <MDBAlert color="primary" className="text-center">
-                  <h4>Registrar Masivo de Cliente</h4>
-              </MDBAlert>
-			 
-			  <Alert  style={{marginTop:"10%"}}severity="warning">Por favor seleccione su base de datos, Puede cargar archivos ("xlsx","csv")</Alert>
-				  <div>                   
+              <MDBCol size="7" style={{ marginLeft:"8%" }}>
+				  <div>     
+					  <Card title={extra}>           
                       <MDBCol>
 					  <SheetJSApp /> 
-                     </MDBCol>                    
+                     </MDBCol> 
+					 </Card>                      
                   </div>                  
                
               </MDBCol>
             </MDBRow>
-          </Paper>
-        </MDBContainer>		
-	  </React.Fragment>	
+          </Card>
+        </div>		
+	  </div>	
 	);
   }
 class SheetJSApp extends React.Component {
@@ -76,7 +74,7 @@ class SheetJSApp extends React.Component {
 
 	onSubmitBtn = async (e)=>{
          e.preventDefault();  
-		const API='http://localhost:4000/graphql' 
+		// const API='http://localhost:4000/graphql' 
 		// const fk_empresa= localStorage.getItem("fk_empresa") 
 		// console.log("fk_empresa",fk_empresa)
 		 console.log(" datos ",this.state.data)
@@ -169,7 +167,7 @@ class SheetJSApp extends React.Component {
 				<React.Fragment>					
 			 	<DragDropFile handleFile={this.handleFile}>	
 				{/* <div className="row"> */}
-					<div className="col-xs-12">
+					<div >
 					<DataInput handleFile={this.handleFile} />
                     <MDBCol className="text-center mt-2 pt-2">
                     <MDBBtn className="boton" disabled={!this.state.data.length}  color="info" type="submit" onClick={this.onSubmitBtn} >Cargar </MDBBtn>					

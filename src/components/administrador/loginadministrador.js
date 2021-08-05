@@ -11,6 +11,7 @@ import { MDBCol } from 'mdbreact';
 import Paper from '@material-ui/core/Paper';
 import { Button } from 'reactstrap';
 import Navbar from '../paneldeConection/navbar'
+import './style.css'
 
   function onSubmit (values) {
   };
@@ -23,7 +24,7 @@ import Navbar from '../paneldeConection/navbar'
           this.cerrar = this.cerrar.bind(this) 
         }
         cerrar(){
-          this.props.history.push("/Dashboard")
+          this.props.history.push("/")
       } 
 
 
@@ -60,7 +61,7 @@ import Navbar from '../paneldeConection/navbar'
                               <MDBCol md="6">
                             <Paper >  
                               <Button  onClick={this.cerrar} close />
-                                <MDBModalHeader  >Ingrese la Contraseña </MDBModalHeader>
+                                <MDBModalHeader >Ingrese la Contraseña </MDBModalHeader>
                                 <MDBCardBody> 
                                  <center>  
                                   <MDBAlert color="primary"  >
@@ -77,6 +78,7 @@ import Navbar from '../paneldeConection/navbar'
                                 /> 
                                 </Grid>                               
                                 <MDBBtn 
+                                style={{marginTop:"5%"}}
                                 color="info"
                                 size="md"
                                 type="submit"

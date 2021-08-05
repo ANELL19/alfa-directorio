@@ -1,9 +1,9 @@
 #apppages1 .view{
-    min-height: 100vh;
-    background-image: url("https://images.pexels.com/photos/7567556/pexels-photo-7567556.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
-    background-repeat: no-repeat;   
-    background-size:cover;
-    background-position: center center;
-  }
+  min-height: 100vh;
+  background-image: url("https://images.pexels.com/photos/7567556/pexels-photo-7567556.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+  background-repeat: no-repeat;   
+  background-size:cover;
+  background-position: center center;
+}
 
-  
+

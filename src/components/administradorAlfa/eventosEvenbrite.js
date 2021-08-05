@@ -3,8 +3,7 @@ import MUIDataTable from "mui-datatables";
 import { MDBIcon } from 'mdbreact';
 import axios from 'axios'
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { Button } from 'antd';
-import {API} from '../Graphql/Graphql'
+import { Button, Card } from 'antd';
 
 
 class Eventos extends Component{
@@ -48,7 +47,6 @@ class Eventos extends Component{
      async componentWillMount(){
       const fk_paquetes  = localStorage.getItem("fk_paquetes");
       const API='http://localhost:4000/graphql';       
-     
     
 
     //  await axios({
@@ -123,7 +121,9 @@ class Eventos extends Component{
         filter:false,
         caseSensitive:false,
         selectableRows:"none",
-        viewColumns:false,      
+        elevation:0,
+        viewColumns:false,  
+        search:false,    
         textLabels:{
         body: {
           noMatch: "Lo sentimos, no se encontraron registros coincidentes",
@@ -160,18 +160,23 @@ class Eventos extends Component{
       
       }        
       } 
+      let titulo  = <strong><h5>Tabla de Eventos de Eventbrite</h5></strong>
       //  const rs = localStorage.getItem("razonSocial");     
         return(
-        <React.Fragment>          
-           <div  style={{width:"90%",marginLeft:"5%",marginTop:"1%",marginBottom:"2%"}}>          
+        <React.Fragment>
+          {/* <Navbar/> */}
+             {/* <NavbarDashboard data={rs}/> */}
+           <div  style={{width:"95%",marginLeft:"3%",marginTop:"2%"}} >  
+             <Card title = {titulo}>        
              <MuiThemeProvider  theme={this.getMuiTheme()}>  
                 <MUIDataTable  
-                  title={"Tabla de Eventos de Eventbrite"} 
-                    data={data}
+                  data={data}
                   columns={columns} 
-                  options={options}                     
+                  options={options} 
+                    
                 /> 
             </MuiThemeProvider>  
+            </Card> 
            </div> 
         </React.Fragment>
         )

@@ -1,25 +1,25 @@
 .trigger {
-    padding: 0 24px;
-    font-size: 18px;
-    line-height: 64px;  
-    cursor: pointer;
-    transition: color 0.3s;
-  }
-  
-  .trigger:hover {
-    color: #1890ff;
-  }
-  
-  .logo {
-    height: 36px;
-    margin: 16px;
-    background: #fff;
-  }
-  
-  .site-layout {
-    background: #fff;
-    min-height: 100vh;
-  }
-  .site-layout-background {
-    background: #06202c;
-  } 
+  padding: 0 24px;
+  font-size: 18px;
+  line-height: 64px;  
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.trigger:hover {
+  color: #1890ff;
+}
+
+.logo {
+  height: 36px;
+  margin: 16px;
+  background: #fff;
+}
+
+.site-layout {
+  background: #fff;
+  min-height: 100vh;
+}
+.site-layout-background {
+  background: #06202c;
+} 
