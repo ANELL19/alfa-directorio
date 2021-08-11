@@ -813,18 +813,14 @@ if(this.state.busqueda){
 if (this.state.form == true) {  
   let titulo =  <h5><strong>Generar cotización </strong></h5>
   form = 
-  <div style={{marginTop:"2%"}}>
+  <div >
   <center>    
-  <label htmlFor="defaultFormLoginPasswordEx" >
-                    
-                    </label>
-                    
   <Card title = {titulo} style={{width:"95%"}} extra = {<div><h6><strong> Vendedor</strong></h6> <label>{vendedor}</label></div>}>                          
       <MDBCardBody>
-      <MDBCol md="3" className="mb-3"></MDBCol>
-      <MDBCol md="3" className="mb-3"></MDBCol>                      
+      <MDBCol md="3"></MDBCol>
+      <MDBCol md="3"></MDBCol>                      
       <MDBCol> {searchRFC} </MDBCol>
-      <div style={{width:"80%"}}>
+      <div style= {{width: "90%"}}>
         <Form onSubmit={this.onSubmitBtn}>                      
             <MDBRow>   
             <MDBCol md="3" className="mb-3"> 
