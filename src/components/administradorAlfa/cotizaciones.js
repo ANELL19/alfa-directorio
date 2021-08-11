@@ -39,6 +39,7 @@ class Cotizaciones extends Component {
             form :true,
             pdfview:false,
             botonPdfExport:false,           
+            datos:[], 
             Datos:[],    
             id_productoServicio:" ",
             arrayProductoServicio:[],    
@@ -57,7 +58,7 @@ class Cotizaciones extends Component {
             descuentos:[],
             subtotalGlobal:'',
             ivaGlobal:'',
-            totalGlobal:'' 
+            totalGlobal:'',
       }
       
       this.cancelar = this.cancelar.bind(this)
@@ -253,35 +254,63 @@ cerrarCotizacion() {
 
 
 pdfView (){
-  let rs = this.state.razonSocial;
-  let nombre = this.state.nombre
-  let apellido = this.state.apellidos
-  let correo  = this.state.correo1
-  let correo2 = this.state.correo2
-  let telefono1 = this.state.telefono1
-  let telefono2 = this.state.telefono2
-  let promocion = this.state.promocion
+  let rs,nombre,apellido,correo1,correo2,telefono1;
+
+  if(this.state.razonSocial){
+     rs = this.state.razonSocial;
+  }else{
+     rs = this.state.datos.empresa
+  }if(this.state.nombre){
+    nombre = this.state.nombre;
+  }else{
+    nombre = this.state.datos.nombre
+  }if(this.state.apellidos){
+    apellido = this.state.apellidos;
+  }else{
+    apellido = this.state.datos.apellido
+  }if(this.state.correo1){
+    correo1 = this.state.correo1;
+  }else{
+    correo1 = this.state.datos.correo1
+  }if(this.state.correo2){
+    correo2 = this.state.correo2;
+  }else{
+    correo2 = this.state.datos.correo2
+  }if(this.state.telefono1){
+    telefono1 = this.state.telefono1;
+  }else{
+    telefono1 = this.state.datos.telefono1
+  }
+   
+   let promocion = this.state.promocion;
 
   console.log(rs)
   console.log(nombre)
   console.log(apellido)
-  console.log(correo)
+  console.log(correo1)
   console.log(correo2)
   console.log(telefono1)
-  console.log(telefono2)
   console.log(promocion)
+  console.log("estado de los datos", this.state.Datos)
+  console.log("arrayInputFields", this.state.arrayInputFields)
+  console.log("inputFields", this.state.inputFields)  
+  console.log("subtotal", this.state.subtotal)
+  console.log("subtotalGlobal", this.state.subtotalGlobal)
+  console.log("ivaGlobal", this.state.ivaGlobal)
+  console.log("totalGlobal", this.state.totalGlobal)
+  console.log("descuentos", this.state.descuentos)
+  console.log("multArray", this.state.multArray)
+  console.log("idGlobal", this.state.idGlobal)
 
-
-
-  if( promocion){     
-      this.setState({form:false})
-      this.setState({pdfview:true})
-  }else {
-      DialogUtility.alert({
-          title:'AVISO !' ,
-          content: "Estimado usuario, por favor complete todos los campos obligatorios",
-      });          
-  }
+  // if( promocion){     
+  //     this.setState({form:false});
+  //     this.setState({pdfview:true});
+  // }else {
+  //     DialogUtility.alert({
+  //         title:'AVISO !' ,
+  //         content: "Estimado usuario, por favor complete todos los campos obligatorios",
+  //     });          
+  // }
 }
 
 consultarDatos(){
@@ -309,7 +338,8 @@ consultarDatos(){
     }   
      }).then(response=>{
    if(response.data.data.getClienteRFC[0]){               
-    this.setState({ Datos:response.data.data.getClienteRFC[0]})  
+    this.setState({ datos:response.data.data.getClienteRFC[0]})  
+    console.log("dato",this.state.Datos)
    } else{
     DialogUtility.alert({            
       title:'AVISO!' ,
@@ -339,9 +369,18 @@ calcular(datosTabla){
     array.push(rows.data[3])
     idGlobal.push(rows.data[0]) 
   })
+
   inputFields.map(row=>{
-    array2.push(row.cantidad)
-    array3.push(row.descuento)
+    if(row.cantidad){
+      array2.push(row.cantidad)
+    }else{
+      array2.push(1)
+    }
+    if(row.descuento){
+      array3.push(row.descuento)
+    }else{
+      array3.push(0)
+    }
   })
   array.push(datosTabla)
   let multArray = []
@@ -772,38 +811,44 @@ if(this.state.busqueda){
 
 
 if (this.state.form == true) {  
-  
+  let titulo =  <h5><strong>Generar cotización </strong></h5>
   form = 
   <div style={{marginTop:"2%"}}>
   <center>    
-  <MDBCard narrow style={{width:"95%",heigth:"60%"}}>                          
-        <MDBAlert color="primary"  className="h5 text-center mb-4" > <strong>Generar cotización </strong> </MDBAlert>
-                    <MDBCardBody>
-                    <MDBCol md="3" className="mb-3"></MDBCol>
-                    <MDBCol md="3" className="mb-3"></MDBCol>                      
-                    <MDBCol> {searchRFC} </MDBCol>
+  <label htmlFor="defaultFormLoginPasswordEx" >
+                    
+                    </label>
+                    
+  <Card title = {titulo} style={{width:"95%"}} extra = {<div><h6><strong> Vendedor</strong></h6> <label>{vendedor}</label></div>}>                          
+      <MDBCardBody>
+      <MDBCol md="3" className="mb-3"></MDBCol>
+      <MDBCol md="3" className="mb-3"></MDBCol>                      
+      <MDBCol> {searchRFC} </MDBCol>
+      <div style={{width:"80%"}}>
         <Form onSubmit={this.onSubmitBtn}>                      
             <MDBRow>   
             <MDBCol md="3" className="mb-3"> 
                       <label htmlFor="defaultFormLoginPasswordEx" ><strong> Razón social:</strong> </label>
-                      <input                                    			
+                      <input  
+                          size="12"                                  			
                           id="razonSocial"
                           type="text"
                           name="razonSocial"			
                           onChange={this.onChangeInput}
-                          value={this.state.Datos.empresa}
+                          value={this.state.datos.empresa}
                           required
                           className="form-control"
                           />                                    
             </MDBCol>
             <MDBCol md="3" className="mb-3"> 
                       <label htmlFor="nombre" ><strong> Nombre (s) del cliente:</strong> </label>
-                      <input                                     
+                      <input    
+                          size="12"                                 
                           id="nombre"
                           type="text"
                           name="nombres"
                           onChange={this.onChangeInput}
-                          value={this.state.Datos.nombre}
+                          value={this.state.datos.nombre}
                           required
                           className="form-control"/>
            </MDBCol>
@@ -814,17 +859,19 @@ if (this.state.form == true) {
                           type="text"
                           name="apellidos"
                           onChange={this.onChangeInput}
-                          value={this.state.Datos.apellido}
+                          value={this.state.datos.apellido}
                           required
                           className="form-control"/>
            </MDBCol>
            <MDBCol md="3" className="mb-3">   
-                  <label htmlFor="defaultFormLoginEmailEx"><strong>Correo:</strong></label><input 
+                  <label htmlFor="defaultFormLoginEmailEx"><strong>Correo:</strong></label>
+                  <input 
                       id="correo1"
+                      size="12"
                       type="email"
                       name="correo1"
                       onChange={this.onChangeInput}
-                      value={this.state.Datos.correo1}
+                      value={this.state.datos.correo1}
                       required
                       className="form-control"/>
            </MDBCol>
@@ -832,11 +879,12 @@ if (this.state.form == true) {
                 <label htmlFor="defaultFormLoginEmailEx"><strong>Correo alterno:</strong></label>
                 <input   
                     icon="envelope"
+                    size="12"
                     id="correo2"
                     type="email"
                     name="correo2"
                     onChange={this.onChangeInput}                    
-                    value={this.state.Datos.correo2}                     
+                    value={this.state.datos.correo2}                     
                     className="form-control" />
            </MDBCol>
 
@@ -846,10 +894,11 @@ if (this.state.form == true) {
                 </label>
                 <input                            
                 id="telefono1"
-                // type="t"
+                size="12"
+                type="text"
                 name="telefono1"
                 onChange={this.onChangeInput}
-                value={this.state.Datos.telefono1} 
+                value={this.state.datos.telefono1} 
                 required
                 className="form-control"/>
            </MDBCol>  
@@ -858,8 +907,8 @@ if (this.state.form == true) {
                 <strong>Promocion:</strong>
                 </label>
                 <input
-                            
                     id="promocion"
+                    size="12"
                     type="text"
                     name="promocion"
                     onChange={this.onChangeInput}
@@ -868,24 +917,17 @@ if (this.state.form == true) {
                    
                     className="form-control"/>
                     </MDBCol>
-
-                    <MDBCol md="3" className="mb-3 mt-4">   
-                    <label htmlFor="defaultFormLoginPasswordEx" >
-                    <strong> Vendedor : &nbsp;</strong>
-                    </label>
-                    <label>{vendedor}</label>
-
-                    </MDBCol> 
                   </MDBRow>
                   </Form>
-                  <MDBCol md="3" className="mb-3"> 
+                  <MDBCol md="6" className="mb-3"> 
 
                       <div className="md-form mr-auto mb-6">   
                         <MDBIcon icon="search"  size="2x"/>                           
                         <input
                         type="text"
+                        size="20"
                         name = "busqueda"
-                        placeholder = "Buscar Núm. Consecutivo"
+                        placeholder = "Buscar clave del producto"
                         required
                         className="textField"
                         value = {this.state.busqueda}
@@ -894,7 +936,7 @@ if (this.state.form == true) {
                       </div> 
 
                   </MDBCol>
-
+                  </div>
                     {tabla}
                  {tablaProductos} {botonProductoServicio}
                   <MDBRow style={{marginTop:"10%"}}> 
@@ -909,7 +951,7 @@ if (this.state.form == true) {
               
                   </MDBRow>
                </MDBCardBody>
-            </MDBCard>
+            </Card>
             </center>
           </div>
           }
