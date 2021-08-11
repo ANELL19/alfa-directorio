@@ -35,6 +35,7 @@ import Agregar from './components/paneldeConection/botonAgregar'
 import cliente from './components/administradorAlfa/signupClientes'
 import checkbox from './components/paneldeConection/check'
 import Cotizaciones from './components/administradorAlfa/cotizaciones';
+import Generar from './components/administradorAlfa/generarServicios';
 
 
 class App extends Component{
@@ -80,7 +81,7 @@ render(){
          <Route exact path = "/index" component={index}/>
 
          <Route exact path = "/cliente" component={cliente}/>
-         {/* <PrivateRoute  exact path = "/Dashboard" component={Dashboard}/> */}
+         <Route  exact path = "/generar" component={Generar}/>
 
          
 
