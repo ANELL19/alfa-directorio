@@ -18,7 +18,7 @@ import {API} from '../Graphql/Graphql'
 import MUIDataTable from "mui-datatables";
 import {Form} from 'reactstrap';
 import { Paper } from '@material-ui/core';
-  import {Card} from 'antd'
+  import {Card, Modal} from 'antd'
 
 class Cotizaciones extends Component {
   pdfExportComponent
@@ -59,6 +59,8 @@ class Cotizaciones extends Component {
             subtotalGlobal:'',
             ivaGlobal:'',
             totalGlobal:'',
+            isModalVisible:false,
+            camposObligatorios:[]
       }
       
       this.cancelar = this.cancelar.bind(this)
@@ -94,7 +96,17 @@ class Cotizaciones extends Component {
         
       }
       })
-
+      showModal = () => {
+        this.setState({isModalVisible:true})
+      };
+    
+      handleOk = () => {
+        this.setState({isModalVisible:false})
+      };
+    
+      handleCancel = () => {
+        this.setState({isModalVisible:false})
+      };
     cancelar(){
        setTimeout(() => {
     window.location.reload();
@@ -255,6 +267,7 @@ cerrarCotizacion() {
 
 pdfView (){
   let rs,nombre,apellido,correo1,correo2,telefono1;
+  let promocion = this.state.promocion;
 
   if(this.state.razonSocial){
      rs = this.state.razonSocial;
@@ -281,36 +294,58 @@ pdfView (){
   }else{
     telefono1 = this.state.datos.telefono1
   }
-   
-   let promocion = this.state.promocion;
-
-  console.log(rs)
-  console.log(nombre)
-  console.log(apellido)
-  console.log(correo1)
-  console.log(correo2)
-  console.log(telefono1)
-  console.log(promocion)
-  console.log("estado de los datos", this.state.Datos)
+  let array = []
+  let texto,texto2,texto3,texto4,texto5,texto6;
+  let objeto;
+  if(rs === undefined){
+    texto = "Razon Social"
+    array.push(texto)
+  } if(nombre === undefined){
+    texto2 = "Nombre"
+    array.push(texto2)
+  } if(apellido === undefined){
+    texto3 = "Apellidos"
+    array.push(texto3)
+  } if(correo1 === undefined){
+    texto4 = "Correo1"
+    array.push(texto4)
+  } if(correo2 === undefined){
+    texto5 = "Correo2"
+    array.push(texto5)
+  } if(telefono1 === undefined){
+    texto6 = "Telefono1"
+    array.push(texto6)
+  }
+  if(this.state.totalGlobal){
+    console.log("totalGlobal",this.state.totalGlobal)
+  }else{
+    objeto = "Además debe tener al menos 1 producto seleccionado y calculado"
+    array.push(objeto)
+  }
+  this.setState({camposObligatorios:array})
+  // console.log(nombre)
+  // console.log(apellido)
+  // console.log(correo1)
+  // console.log(correo2)
+  // console.log(telefono1)
+  // console.log(promocion)
+  // console.log("estado de los datos", this.state.Datos)
   console.log("arrayInputFields", this.state.arrayInputFields)
-  console.log("inputFields", this.state.inputFields)  
-  console.log("subtotal", this.state.subtotal)
-  console.log("subtotalGlobal", this.state.subtotalGlobal)
-  console.log("ivaGlobal", this.state.ivaGlobal)
-  console.log("totalGlobal", this.state.totalGlobal)
-  console.log("descuentos", this.state.descuentos)
-  console.log("multArray", this.state.multArray)
-  console.log("idGlobal", this.state.idGlobal)
+  // console.log("inputFields", this.state.inputFields)  
+  // console.log("subtotal", this.state.subtotal)
+  // console.log("subtotalGlobal", this.state.subtotalGlobal)
+  // console.log("ivaGlobal", this.state.ivaGlobal)
+  // console.log("totalGlobal", this.state.totalGlobal)
+  // console.log("descuentos", this.state.descuentos)
+  // console.log("multArray", this.state.multArray)
+  // console.log("idGlobal", this.state.idGlobal)
 
-  // if( promocion){     
-  //     this.setState({form:false});
-  //     this.setState({pdfview:true});
-  // }else {
-  //     DialogUtility.alert({
-  //         title:'AVISO !' ,
-  //         content: "Estimado usuario, por favor complete todos los campos obligatorios",
-  //     });          
-  // }
+  if(rs && nombre && apellido && correo1 && correo2 && telefono1 && promocion && this.state.totalGlobal){     
+      this.setState({form:false});
+      this.setState({pdfview:true});
+  }else {
+    this.showModal()         
+  }
 }
 
 consultarDatos(){
@@ -365,6 +400,15 @@ calcular(datosTabla){
   let inputFields = this.state.inputFields;
 
   let idGlobal = [];
+  let servicio = datosTabla.filter(function(hero){
+    return hero.data[1] === "SERVICIO"
+  })
+  let producto = datosTabla.filter(function(hero){
+    return hero.data[1] === "PRODUCTO SERVICIO"
+  })
+  console.log("productos", producto)
+  console.log("servicios", servicio)
+
   datosTabla.map(rows=>{
     array.push(rows.data[3])
     idGlobal.push(rows.data[0]) 
@@ -387,7 +431,6 @@ calcular(datosTabla){
   for (let i = 0; i < array.length; i++) {
     multArray[i] = parseInt(array[i]) * parseInt(array2[i]);
  }
-
  let subtotal= []
  if(multArray[0]){
   for (let i = 0; i < multArray.length; i++) {
@@ -395,13 +438,17 @@ calcular(datosTabla){
   } 
  }
 
- let descuentos= []
+ let arrayDescuentos = []
  if(multArray[0]){
   for (let i = 0; i < multArray.length; i++) {
-    descuentos[i] =  parseInt(multArray[i]) * parseInt(array3[i]) / 100;
+    arrayDescuentos[i] =  parseInt(multArray[i]) * parseInt(array3[i]) / 100;
   } 
  }
  const nuevoSubtotal = subtotal.filter(function (value) {
+  return !Number.isNaN(value);
+});
+
+ const descuentos = arrayDescuentos.filter(function (value) {
   return !Number.isNaN(value);
 });
 
@@ -528,43 +575,53 @@ handleInputChange = async (index, event) => {
           datosTabla=tableState.displayData
         },
         // onFilterChange: (action, filtroTable) => {
-        //   filtro=filtroTable
+        //   filtro=filtroTables
         //   }          
       } 
+      let modal;
+      if(this.state.camposObligatorios[0]) {
+        modal= <Modal title="Aviso!" visible={this.state.isModalVisible} onOk={this.handleOk} onCancel={this.handleCancel}>
+        <p>Estimado usuario por favor complete los siguientes campos obligatorios ...</p>
+        {this.state.camposObligatorios.map(rows=>{
+          return <table>
+            <tr>
+              <td><strong>{rows}</strong></td>
+            </tr>
+          </table>
+        })}
+     
+       </Modal>
+      }
+    
       let tdIdGlobal;
       if(this.state.idGlobal[0]){
-         tdIdGlobal =  <td> IdProducto </td>
+         tdIdGlobal =  <td> <center>IdProducto</center> </td>
       }
       let tdTotalProducto;
       if(this.state.multArray[0]){
-        tdTotalProducto =<td>Precio global</td>
+        tdTotalProducto =<td><center>Precio global</center></td>
       }
       let tdSubtotal;
       if(this.state.multArray[0]){
-        tdSubtotal = <td>Total por producto</td>
+        tdSubtotal = <td><center>Total</center></td>
       }
       let tdDescuentos;
-      if(this.state.descuentos[0]){
-        tdDescuentos = <td>Descuento aplicado</td>
-      }
+      this.state.descuentos.map(rows=>{
+        if(rows !== 0){
+          tdDescuentos = <td><center>Descuento aplicado</center></td>
+        }else{
+          tdDescuentos = <td><center>Descuento no aplicado</center></td>
+
+        }
+      })
+     
       let tablaTotal;
       if(this.state.totalGlobal){
-        tablaTotal = <table>
+        tablaTotal = <table style={{marginLeft:"86%"}}>
         <tr>
-          <td>Subtotal</td>
-          <td>Iva</td>
-          <td>Total</td>
+          <td><center>Subtotal</center></td>     
         </tr>
         <tr>
-          <td>
-          <input
-            type="text"
-            value={this.state.subtotalGlobal.toFixed(2)} 
-            required
-            className="form-control"
-            disabled
-            />       
-          </td>
           <td>
           <input
             type="text"
@@ -574,7 +631,26 @@ handleInputChange = async (index, event) => {
             disabled
             />     
           </td>
-          <td>
+        </tr>
+        <tr>
+        <td><center>Iva</center></td>
+        </tr>
+        <tr>
+        <td>
+          <input
+            type="text"
+            value={this.state.subtotalGlobal.toFixed(2)} 
+            required
+            className="form-control"
+            disabled
+            />       
+          </td>
+        </tr>
+        <tr>
+        <td><center>Totales</center></td>
+        </tr>
+        <tr>
+        <td>
           <input
             type="text"
             value={this.state.totalGlobal.toFixed(2)} 
@@ -679,13 +755,13 @@ handleInputChange = async (index, event) => {
           <Card  style={{marginTop:"2%",width:"80%"}}>
           <table>
             <tr>
-              {tdIdGlobal} 
-              <td> Cantidad </td>
+              {tdIdGlobal}
+              <td><center> Cantidad</center></td>
               {tdTotalProducto}
-              <td>% Descuento </td>
-              {tdDescuentos}
+              <td><center>% Descuento</center></td>
+               {tdDescuentos}
               <td></td>
-              {tdSubtotal}
+              {tdSubtotal} 
             </tr>
             <tr>        
             {this.state.idGlobal.map(rows=>{
@@ -723,7 +799,7 @@ handleInputChange = async (index, event) => {
               })}
              <td>{input2}</td>
              {this.state.descuentos.map(rows=>{
-                if(rows){
+                if(rows !== 0 ){
                   return(
                     <tr>
                     <td>
@@ -736,7 +812,21 @@ handleInputChange = async (index, event) => {
                     </td>
                     </tr>
                   )
-                }               
+                }   
+                if(rows === 0 ){
+                  return(
+                    <tr>
+                    <td>
+                       <input size="12" style={{marginTop:"3%",marginLeft:"1%",color:"#F45602"}}
+                        type="text"
+                        className="form-control"
+                        value = "No aplica"
+                        disabled
+                      /> 
+                    </td>
+                    </tr>
+                  )
+                }                 
               })} 
              <td></td>
              {this.state.subtotal.map(rows=>{
@@ -1237,6 +1327,7 @@ Quedo a sus órdenes para cualquier duda al respecto.</p>
         {form} 
         {pdf}
         {consultarIdProducto}
+        {modal}
         </React.Fragment>
          
       );

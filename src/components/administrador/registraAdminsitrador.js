@@ -1,3 +1,4 @@
+
 import React, { Component } from "react";
 import Paper from "@material-ui/core/Paper";
 import "@fortawesome/fontawesome-free/css/all.min.css";
@@ -20,6 +21,9 @@ class signupAdminAlfa extends Component {
       nombre: "",
       apellido: "",
       correo: "",
+      telefono: "",
+      ext:"",
+      puesto:"",
       contrasena: "",
       tablas:[],
       viewSearch:true,
@@ -42,6 +46,9 @@ class signupAdminAlfa extends Component {
   localStorage.removeItem("telefono")
   localStorage.removeItem("correo")
   localStorage.removeItem("razonSocial")    
+  localStorage.removeItem("telefono") 
+  localStorage.removeItem("ext") 
+  localStorage.removeItem("puesto") 
   }
 
   onSubmitBtn = (e) => {
@@ -49,6 +56,9 @@ class signupAdminAlfa extends Component {
     let nombre = this.state.nombre.toUpperCase();
     let apellido = this.state.apellido.toUpperCase();
     let correo = this.state.correo;
+    let telefono = this.state.telefono;
+    let ext = this.state.ext;
+    let puesto = this.state.puestos.toUpperCase();
     let contrasena = this.state.contrasena;
     if(nombre && apellido && correo && contrasena){
       if(this.state.fk_empresa[0]){
@@ -58,7 +68,7 @@ class signupAdminAlfa extends Component {
           data: {
             query: `
                     mutation{
-                        signupAlfa(data:"${[nombre,apellido,correo,contrasena,this.state.fk_empresa]}"){  
+                        signupAlfa(data:"${[nombre,apellido,correo,telefono,ext,puesto,contrasena,this.state.fk_empresa]}"){  
                         message
                          } 
                     }
@@ -208,6 +218,42 @@ class signupAdminAlfa extends Component {
                             value={this.state.correo}
                             required
                           />
+                        </MDBCol>
+                        <MDBCol md="6">
+                          <MDBInput
+                            label="Telefono"
+                            icon="phone"
+                            id="telefono"
+                            type="number"
+                            name="telefono"
+                            onChange={this.onChangeInput}
+                            value={this.state.telefono}
+                            required
+                          />                          
+                        </MDBCol>
+                        <MDBCol md="6">
+                          <MDBInput
+                            label="Ext."
+                            icon="phone"
+                            id="ext"
+                            type="number"
+                            name="ext"
+                            onChange={this.onChangeInput}
+                            value={this.state.ext}
+                            required
+                          />                          
+                        </MDBCol>
+                        <MDBCol md="6">
+                          <MDBInput
+                            label="Puesto"
+                            icon="phone"
+                            id="puesto"
+                            type="text"
+                            name="puesto"
+                            onChange={this.onChangeInput}
+                            value={this.state.puesto}
+                            required
+                          />                          
                         </MDBCol>
                         <MDBCol md="6">
                           <MDBInput

@@ -18,6 +18,8 @@ class signupEmpresas extends Component{
             razonSocial:"",      
             correo:"",
             telefono:"",
+            paginaWeb:"",
+            domicilioFiscal:"",
             contrasena:"",  
                 
         } 
@@ -41,15 +43,17 @@ class signupEmpresas extends Component{
         let razonSocial = this.state.razonSocial.toUpperCase().replace(/,/g, "");
         let correo = this.state.correo;
         let telefono = this.state.telefono;
+        let paginaWeb = this.state.paginaWeb;
+        let domicilioFiscal = this.state.domicilioFiscal.toUpperCase();
         let contrasena = this.state.contrasena;
-
+        // if(rfc && razonSocial && correo && telefono && paginaWeb && domicilioFiscal && contrasena){
         axios({
             url:API,
             method:'post',
             data:{
                 query:`
                 mutation{
-                    signupEmpresas(data:"${[rfc,razonSocial,correo,telefono,contrasena]}"){
+                    signupEmpresas(data:"${[rfc,razonSocial,correo,telefono,paginaWeb,domicilioFiscal,contrasena]}"){
                     message
                      } 
                 }
@@ -59,16 +63,24 @@ class signupEmpresas extends Component{
            .then(response=>{
               //  if(response.data.data.signup.message==="registro exitoso"){
               DialogUtility.alert({
-                  title:'Registro exitoso' ,
-                  
+                  title:'Registro exitoso' ,                  
               });
-              window.location.reload();
+              // window.location.reload();
                // this.props.history.push("/home_admin")
         })
          .catch(err=>{
                   console.log('error',err.response)
               })   
-    }
+    // }
+    // else{
+    //   DialogUtility.alert({                
+    //     title:'AVISO!' ,
+    //     content:'Favor de completar los campos'
+        
+    // });
+      
+    // }
+  }
 render(){
   let titulo = <strong><h5>Registrar Empresa</h5></strong>
     return(
@@ -76,7 +88,7 @@ render(){
           <Navbar/>
            <div style={{width:"70%",marginTop:"1%",marginLeft:"15%"}}>
             <Card title={titulo}>
-            <MDBRow>
+            <MDBRow >           
               <MDBCol size="5">
               <MDBCard style={{ width: "20rem"}}>
                 <MDBCardImage className="img-fluid" src="https://images.pexels.com/photos/8062272/pexels-photo-8062272.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" waves />
@@ -136,6 +148,32 @@ render(){
                 </MDBCol> 
                 <MDBCol md="6">
                 <MDBInput 
+                  label="Domicilio Fiscal"
+                  icon="building" 	
+                  id="domicilioFiscal"
+                  type="text"
+                  name="domicilioFiscal"
+                  onChange={this.onChangeInput}
+                  value={this.state.domicilioFiscal}
+                  validate 
+                  required
+                />
+                </MDBCol>
+                <MDBCol md="6">
+                <MDBInput 
+                  label="Pagina Web"
+                  icon="globe" 		
+                  id="paginaWeb"
+                  type="text"
+                  name="paginaWeb"
+                  onChange={this.onChangeInput}
+                  value={this.state.paginaWeb}
+                  validate 
+                  required
+                />
+                </MDBCol>
+                <MDBCol md="6">
+                <MDBInput 
                   label="Contraseña"
                   icon="lock" 		
                   id="contrasena"
@@ -146,14 +184,14 @@ render(){
                   validate 
                   required
                 />
-                </MDBCol>
+                </MDBCol>  
                 </Row >
                     <div className="text-center">
                       <MDBBtn   color="info"   type="submit"> Guardar</MDBBtn>
                       <MDBBtn  color="danger"   onClick={this.regresar} type="submit">Cancelar</MDBBtn>
                     </div>    
             </Form>
-              </MDBCol>
+              </MDBCol>           
             </MDBRow>
             </Card> 
             </div>

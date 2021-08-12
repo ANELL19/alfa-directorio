@@ -9,17 +9,21 @@ import { MDBCardImage } from "mdbreact";
 import axios from "axios";
 import { API } from "../Graphql/Graphql";
 import { MDBTabPane, MDBTabContent, MDBNav, MDBNavItem, MDBLink } from 'mdbreact';
-import { MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem } from "mdbreact";
 import {Card} from 'antd'
 
-class RegistrarProductoServicio extends Component {
+class RegistrarContacto extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tipo: "",
-      concepto: "",
-      precioUnitario: "",
-      claveProducto: "",           
+      nombre: "",
+      apellido: "",
+      correo1: "",
+      correo2: "",
+      telefono1: "",
+      ext: "",
+      telefono2: "",
+      puesto:"", 
+      activeItem: "1"        
     };  
   }
 
@@ -31,12 +35,18 @@ class RegistrarProductoServicio extends Component {
   };
 
   onSubmitBtn = (e) => {
-    e.preventDefault();      
+    e.preventDefault(); 
+    
+     let nombre = this.state.nombre.toUpperCase();
+     let apellido = this.state.apellido.toUpperCase();
+     let correo1 = this.state.correo1
+     let correo2 = this.state.correo2
+     let telefono1 = this.state.telefono1
+     let ext = this.state.ext
+     let telefono2 = this.state.telefono2
+     let puesto = this.state.puesto.toUpperCase();
+     //agregar id_cliente  
 
-    let tipo= this.state.tipo;
-    let concepto= this.setState.toUpperCase();
-    let precioUnitario = this.state.precioUnitario;
-    // let claveProducto = this.state.claveProducto  se inserta  o desde la base de datos
 
        axios({
       url: API,
@@ -44,7 +54,7 @@ class RegistrarProductoServicio extends Component {
       data: {
         query: `
          mutation{
-          insertProductoServicio(data:"${[tipo,concepto,precioUnitario]}"){           
+          insertContacto(data:"${[nombre,apellido,correo1,correo2,telefono1,telefono2,ext,puesto]}"){           
                  
         message
         } 
@@ -65,38 +75,47 @@ class RegistrarProductoServicio extends Component {
   
   onClear = () => {
     this.setState({
-        tipo: "",
-        concepto: "",
-        precioUnitario: "",
-        claveProducto: "",    
+      nombre: "",
+      apellido: "",
+      correo1: "",
+      correo2: "",
+      telefono1: "",
+      ext: "",
+      telefono2: "",     
+      puesto: " "     
     });
   }
 
-  render() {
-    let titulo =  <strong><h4>Registrar Productos y Servicios</h4></strong>
-    
-    let formulario =
-      <Card title ={titulo}>
-   
-      <MDBBtn color="danger">
-        DANGER
-      </MDBBtn>
-      <MDBDropdown>
-        <MDBDropdownToggle caret color="danger" />
-        <MDBDropdownMenu color="danger">
-          <MDBDropdownItem>Action</MDBDropdownItem>
-          <MDBDropdownItem>Another Action</MDBDropdownItem>
-          <MDBDropdownItem>Something else here</MDBDropdownItem>
-          <MDBDropdownItem>Something else here</MDBDropdownItem>
-        </MDBDropdownMenu>
-      </MDBDropdown>
-   
+  togglePills = tab => () => {
+    const { activePills } = this.state;
+    if (activePills !== tab) {
+      this.setState({
+        activeItemPills: tab
+      });
+    }
+  };
+ 
 
-      <Row>   
-          
-             
+  render() {
+    let titulo =  <strong><h4>Registrar Nuevo Contacto</h4></strong>
+
+    const { activeItemPills } = this.state;
+    let formulario;
+
+    formulario =
+      <Card title ={titulo}>
+      <Row>      
           <MDBCol md="6">
-         
+            <MDBInput
+              label="Nombre (s)"
+              icon="user"
+              id="nombre"
+              type="text"
+              name="nombres"
+              onChange={this.onChangeInput}
+              value={this.state.nombre}
+              required
+            />
           </MDBCol>
           <MDBCol md="6">
             <MDBInput
@@ -254,4 +273,4 @@ class RegistrarProductoServicio extends Component {
     );
   }
 }
-export default RegistrarProductoServicio;
+export default RegistrarContacto;
