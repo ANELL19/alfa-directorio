@@ -37,6 +37,8 @@ import checkbox from './components/paneldeConection/check'
 import Cotizaciones from './components/administradorAlfa/cotizaciones';
 import Generar from './components/administradorAlfa/generarServicios';
 
+import Contacto from './components/administradorAlfa/registrarContacto'
+
 
 class App extends Component{
 
@@ -82,6 +84,7 @@ render(){
 
          <Route exact path = "/cliente" component={cliente}/>
          <Route  exact path = "/generar" component={Generar}/>
+         <Route  exact path = "/Contacto" component={Contacto}/>
 
          
 

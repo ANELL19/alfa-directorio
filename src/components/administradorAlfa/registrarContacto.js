@@ -16,7 +16,7 @@ class RegistrarContacto extends Component {
     super(props);
     this.state = {
       nombre: "",
-      apellido: "",
+      apellidos: "",
       correo1: "",
       correo2: "",
       telefono1: "",
@@ -38,13 +38,15 @@ class RegistrarContacto extends Component {
     e.preventDefault(); 
     
      let nombre = this.state.nombre.toUpperCase();
-     let apellido = this.state.apellido.toUpperCase();
+     let apellidos = this.state.apellido.toUpperCase();
      let correo1 = this.state.correo1
      let correo2 = this.state.correo2
      let telefono1 = this.state.telefono1
      let ext = this.state.ext
      let telefono2 = this.state.telefono2
      let puesto = this.state.puesto.toUpperCase();
+     console.log("la data",this.state.nombre.toUpperCase(), this.state.apellido.toUpperCase(), this.state.correo1,
+      this.state.correo2, this.state.telefono1,this.state.ext,this.state.telefono2,this.state.puesto.toUpperCase())
      //agregar id_cliente  
 
 
@@ -54,7 +56,7 @@ class RegistrarContacto extends Component {
       data: {
         query: `
          mutation{
-          insertContacto(data:"${[nombre,apellido,correo1,correo2,telefono1,telefono2,ext,puesto]}"){           
+            insertContacto(data:"${[nombre,apellidos,correo1,correo2,telefono1,ext,telefono2,puesto]}"){         
                  
         message
         } 
@@ -76,7 +78,7 @@ class RegistrarContacto extends Component {
   onClear = () => {
     this.setState({
       nombre: "",
-      apellido: "",
+      apellidos: "",
       correo1: "",
       correo2: "",
       telefono1: "",
@@ -103,7 +105,7 @@ class RegistrarContacto extends Component {
     let formulario;
 
     formulario =
-      <Card title ={titulo}>
+      <Card title ={titulo}>        
       <Row>      
           <MDBCol md="6">
             <MDBInput
@@ -199,10 +201,8 @@ class RegistrarContacto extends Component {
               value={this.state.puesto}              
             />
           </MDBCol>
-           
-          
-
-      </Row> 
+      </Row>
+      
     <div className="text-center">
           <MDBBtn color="info" type="submit">                   
             Guardar
@@ -214,7 +214,7 @@ class RegistrarContacto extends Component {
           >
            Borrar
           </MDBBtn>                   
-      </div>   
+      </div>      
       </Card>                   
 
 //  }

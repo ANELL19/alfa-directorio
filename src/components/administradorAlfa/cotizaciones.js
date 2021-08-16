@@ -60,7 +60,8 @@ class Cotizaciones extends Component {
             ivaGlobal:'',
             totalGlobal:'',
             isModalVisible:false,
-            camposObligatorios:[]
+            camposObligatorios:[],
+            nameCotizacion:''
       }
       
       this.cancelar = this.cancelar.bind(this)
@@ -210,51 +211,55 @@ renderTabla(){
   this.setState({renderTabla:true}); 
 }
 
+saveNameCotizacion(e){
+  console.log(e.target.value)
+this.setState({nameCotizacion:e.target.value})
+}
 
 onSubmitBtn = (e)=>{   
   // e.preventDefault();   
-  this.setState({botonPdfExport:true})  
-  var id_adminAlfa = localStorage.getItem("id_admin")  
-  let rfc= this.state.Datos.rfc
-  let rs = this.state.Datos.empresa.replace(/,/g, "");
-  let nombre  = this.state.Datos.nombre;
-  let apellidos = this.state.Datos.apellido;
-  let correo1 =  this.state.Datos.correo1;
-  let correo2 = this.state.Datos.correo2;
-  let tel1 = this.state.Datos.telefono1;
-  let tel2 = this.state.Datos.telefono2;           
-  let promocion = this.state.promocion.toUpperCase();
-  let vendedor = localStorage.getItem("nombre").toUpperCase() + " "  + localStorage.getItem("apellido").toUpperCase()       
+  // this.setState({botonPdfExport:true})  
+  // var id_adminAlfa = localStorage.getItem("id_admin")  
+  // let rfc= this.state.Datos.rfc
+  // let rs = this.state.Datos.empresa.replace(/,/g, "");
+  // let nombre  = this.state.Datos.nombre;
+  // let apellidos = this.state.Datos.apellido;
+  // let correo1 =  this.state.Datos.correo1;
+  // let correo2 = this.state.Datos.correo2;
+  // let tel1 = this.state.Datos.telefono1;
+  // let tel2 = this.state.Datos.telefono2;           
+  // let promocion = this.state.promocion.toUpperCase();
+  // let vendedor = localStorage.getItem("nombre").toUpperCase() + " "  + localStorage.getItem("apellido").toUpperCase()       
  
-      axios({
-          url:API,
-          method:'post',
-          data:{
-              query:`
-              mutation{
-              insertCotizaciones(data:"${[rfc,rs,nombre,apellidos,correo1,correo2,tel1,tel2,promocion,vendedor,id_adminAlfa]}"){
-                   message
-                  } 
-              }
-              `
-          }   
-          }).then(response=>{
-              if(response.data.data. insertCotizaciones.message=="registro exitoso"){                    
+  //     axios({
+  //         url:API,
+  //         method:'post',
+  //         data:{
+  //             query:`
+  //             mutation{
+  //             insertCotizaciones(data:"${[rfc,rs,nombre,apellidos,correo1,correo2,tel1,tel2,promocion,vendedor,id_adminAlfa]}"){
+  //                  message
+  //                 } 
+  //             }
+  //             `
+  //         }   
+  //         }).then(response=>{
+  //             if(response.data.data. insertCotizaciones.message=="registro exitoso"){                    
             
-                  DialogUtility.alert({
-                      title:'registro exitoso' ,
-                      content: "Cotizacion generada!",
-                  });  
-              }
-             else {
-                  DialogUtility.alert({
-                      title: 'Algo salio mal, por favor vuelva a intentarlo'                       
-                  });                
-              }
-          })
-          .catch(err=>{
-              console.log('error',err.response)
-          })
+  //                 DialogUtility.alert({
+  //                     title:'registro exitoso' ,
+  //                     content: "Cotizacion generada!",
+  //                 });  
+  //             }
+  //            else {
+  //                 DialogUtility.alert({
+  //                     title: 'Algo salio mal, por favor vuelva a intentarlo'                       
+  //                 });                
+  //             }
+  //         })
+  //         .catch(err=>{
+  //             console.log('error',err.response)
+  //         })
 
 
 }
@@ -330,7 +335,6 @@ pdfView (){
   // console.log(telefono1)
   // console.log(promocion)
   // console.log("estado de los datos", this.state.Datos)
-  console.log("arrayInputFields", this.state.arrayInputFields)
   // console.log("inputFields", this.state.inputFields)  
   // console.log("subtotal", this.state.subtotal)
   // console.log("subtotalGlobal", this.state.subtotalGlobal)
@@ -340,7 +344,9 @@ pdfView (){
   // console.log("multArray", this.state.multArray)
   // console.log("idGlobal", this.state.idGlobal)
 
-  if(rs && nombre && apellido && correo1 && correo2 && telefono1 && promocion && this.state.totalGlobal){     
+  if(rs && nombre && apellido && correo1 && correo2 && telefono1 && promocion && this.state.totalGlobal){ 
+    console.log("arrayInputFields", this.state.nameCotizacion)
+    
       this.setState({form:false});
       this.setState({pdfview:true});
   }else {
@@ -400,20 +406,6 @@ calcular(datosTabla){
   let inputFields = this.state.inputFields;
 
   let idGlobal = [];
-  let servicio = datosTabla.filter(function(hero){
-    return hero.data[1] === "SERVICIO"
-  })
-  let producto = datosTabla.filter(function(hero){
-    return hero.data[1] === "PRODUCTO SERVICIO"
-  })
-  console.log("productos", producto)
-  console.log("servicios", servicio)
-
-  datosTabla.map(rows=>{
-    array.push(rows.data[3])
-    idGlobal.push(rows.data[0]) 
-  })
-
   inputFields.map(row=>{
     if(row.cantidad){
       array2.push(row.cantidad)
@@ -426,8 +418,53 @@ calcular(datosTabla){
       array3.push(0)
     }
   })
-  array.push(datosTabla)
+
+//   /////////////////////////////////////////////
+//   let filter;
+//   let filtrado = []
+//     filterProducto.map(rows=>{
+//       filter = inputFields.filter(function(param){
+//       return param.id == rows.data[0]
+//     })
+//     filtrado.push(filter)
+
+//   })
+//   let variableCantidadProducto = [];
+//   let variableDescuentoProducto = []
+//   filtrado.map(rows=>{
+//     if(rows[0].cantidad){
+//       variableCantidadProducto.push(rows[0].cantidad)
+//     }else {
+//       variableCantidadProducto.push(1)
+//     } if(rows[0].descuento){
+//       variableDescuentoProducto.push(rows[0].descuento)
+//     }else{
+//       variableDescuentoProducto.push(0)
+//     }
+//     })
+//     let precioTotalProductos = [];
+  
+//     // console.log("variableCantidadProducto", variableCantidadProducto)
+//     // console.log("variableDescuentoProducto", variableDescuentoProducto)
+//     // console.log("cantidadProductos",cantidadProductos)
+//     for (let i = 0; i < cantidadProductos.length; i++) {
+//     precioTotalProductos[i] = parseInt(cantidadProductos[i]) * parseInt(variableCantidadProducto[i]);
+//     }
+
+//     let totalConDscuento = [];
+//     if(precioTotalProductos[0]){
+//       for (let i = 0; i < precioTotalProductos.length; i++) {
+//         totalConDscuento[i] =  precioTotalProductos[i] - parseInt(precioTotalProductos[i]) * parseInt(variableDescuentoProducto[i]) / 100;
+//       } 
+//     }
+//     var subtotalProductos = totalConDscuento.reduce((x, y) => x + y);
+//     console.log("totalProductos",subtotalProductos)
+
+
+// ///////////////////////////////////////////////////////////////////////////
+
   let multArray = []
+
   for (let i = 0; i < array.length; i++) {
     multArray[i] = parseInt(array[i]) * parseInt(array2[i]);
  }
@@ -437,7 +474,6 @@ calcular(datosTabla){
     subtotal[i] =  multArray[i] - parseInt(multArray[i]) * parseInt(array3[i]) / 100;
   } 
  }
-
  let arrayDescuentos = []
  if(multArray[0]){
   for (let i = 0; i < multArray.length; i++) {
@@ -619,21 +655,7 @@ handleInputChange = async (index, event) => {
       if(this.state.totalGlobal){
         tablaTotal = <table style={{marginLeft:"86%"}}>
         <tr>
-          <td><center>Subtotal</center></td>     
-        </tr>
-        <tr>
-          <td>
-          <input
-            type="text"
-            value={this.state.ivaGlobal.toFixed(2)} 
-            required
-            className="form-control"
-            disabled
-            />     
-          </td>
-        </tr>
-        <tr>
-        <td><center>Iva</center></td>
+        <td><center>Subtotal</center></td>
         </tr>
         <tr>
         <td>
@@ -644,6 +666,21 @@ handleInputChange = async (index, event) => {
             className="form-control"
             disabled
             />       
+          </td>
+        </tr>
+        
+        <tr>
+          <td><center>IVA</center></td>     
+        </tr>
+        <tr>
+          <td>
+          <input
+            type="text"
+            value={this.state.ivaGlobal.toFixed(2)} 
+            required
+            className="form-control"
+            disabled
+            />     
           </td>
         </tr>
         <tr>
@@ -1022,9 +1059,21 @@ if (this.state.form == true) {
                       </div> 
 
                   </MDBCol>
+                  <input
+                    id="name"
+                    size="12"
+                    type="text"
+                    name="name"
+                    placeholder = "Ingrese el nombre para su cotizacion"
+                    onChange={this.saveNameCotizacion}
+                    validate 
+                   
+                    className="form-control"/>
                   </div>
+                  
                     {tabla}
                  {tablaProductos} {botonProductoServicio}
+                 
                   <MDBRow style={{marginTop:"10%"}}> 
                       <MDBCol md="3" className="mb-3"/>
                       
@@ -1048,7 +1097,7 @@ if (this.state.form == true) {
 
             if(this.state.botonPdfExport == true) {
                 boton =    <div className="example-config">
-                            <MDBBtn size="md"color = "success" onClick={e=> () => { this.pdfExportComponent.save(); }}>
+                            <MDBBtn size="md"color = "success" onClick={e=> () => { this.pdfExportComponent.save(); this.hola();}}>
                                 Descargar Cotización
                             </MDBBtn>
                             </div>
