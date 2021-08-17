@@ -44,7 +44,7 @@ class signupEmpresas extends Component{
         let correo = this.state.correo;
         let telefono = this.state.telefono;
         let paginaWeb = this.state.paginaWeb;
-        let domicilioFiscal = this.state.domicilioFiscal.toUpperCase();
+        let domicilioFiscal = this.state.domicilioFiscal.toUpperCase().replace(/,/g, "");;
         let contrasena = this.state.contrasena;
         // if(rfc && razonSocial && correo && telefono && paginaWeb && domicilioFiscal && contrasena){
         axios({
@@ -65,8 +65,7 @@ class signupEmpresas extends Component{
               DialogUtility.alert({
                   title:'Registro exitoso' ,                  
               });
-              // window.location.reload();
-               // this.props.history.push("/home_admin")
+              window.location.reload();              
         })
          .catch(err=>{
                   console.log('error',err.response)

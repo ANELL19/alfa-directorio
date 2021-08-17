@@ -14,6 +14,7 @@ import CargarClientes from './registrarCliente'
 import Cotizaciones from './cotizaciones'
 import TablaCotizacion from './TablaCotizaciones'
 import Cliente from './signupClientes'
+import SignupProductoServicio from './productoServicio'
 import ADS from '../imagen/ADS.png'
 import PanelAlfa from '../paneldeConection/dashboard'
 import HomeWorkIcon from '@material-ui/icons/HomeWork';
@@ -32,6 +33,7 @@ class SiderDemo extends Component {
       tablaCotizaciones:false,
       nuevoCliente:false,
       panelAlfa:false,
+      registraProductoServicio:false,
       time: new Date().toLocaleString()
     };
 
@@ -71,6 +73,7 @@ class SiderDemo extends Component {
     this.setState({tablaCotizaciones:false});
     this.setState({nuevoCliente:false});
     this.setState({panelAlfa:false});
+    this.setState({registraProductoServicio:false});
   }
 
   generarCotizaciones(){
@@ -81,6 +84,7 @@ class SiderDemo extends Component {
     this.setState({tablaCotizaciones:false});
     this.setState({nuevoCliente:false});
     this.setState({panelAlfa:false});
+    this.setState({registraProductoServicio:false});
   }
 
    tablaEventos(){
@@ -91,6 +95,7 @@ class SiderDemo extends Component {
     this.setState({tablaCotizaciones:false});
     this.setState({nuevoCliente:false});
     this.setState({panelAlfa:false});
+    this.setState({registraProductoServicio:false});
   }
 
   cargarClientes(){
@@ -101,6 +106,7 @@ class SiderDemo extends Component {
     this.setState({tablaCotizaciones:false});
     this.setState({nuevoCliente:false});
     this.setState({panelAlfa:false});
+    this.setState({registraProductoServicio:false});
   }
 
   consultarCotizaciones(){
@@ -111,6 +117,7 @@ class SiderDemo extends Component {
     this.setState({tablaCotizaciones:true});
     this.setState({nuevoCliente:false});
     this.setState({panelAlfa:false});
+    this.setState({registraProductoServicio:false});
   }
 
   registrarCliente(){
@@ -121,6 +128,7 @@ class SiderDemo extends Component {
     this.setState({tablaCotizaciones:false});
     this.setState({nuevoCliente:true});
     this.setState({panelAlfa:false});
+    this.setState({registraProductoServicio:false});
   }
 
   panelAlfa(){
@@ -131,7 +139,19 @@ class SiderDemo extends Component {
     this.setState({tablaCotizaciones:false});
     this.setState({nuevoCliente:false});
     this.setState({panelAlfa:true});
+    this.setState({registraProductoServicio:false});
   }
+  registraProductoServicio(){
+    this.setState({tablaInicio:false});
+    this.setState({cotizaciones:false});
+    this.setState({tablaEventos:false});
+    this.setState({registrarClientes:false});
+    this.setState({tablaCotizaciones:false});
+    this.setState({nuevoCliente:false});
+    this.setState({panelAlfa:false});
+    this.setState({registraProductoServicio:true});
+  }
+
   
 
   
@@ -156,6 +176,7 @@ if(mm<10) {
     let tablaCotizaciones;
     let signupCliente;
     let panelConexionAlfa;
+    let signupProductoServicio;
 
     if(this.state.tablaInicio === true) {  
       tabla=
@@ -206,6 +227,13 @@ if(mm<10) {
        </div>
      }
 
+     if(this.state.registraProductoServicio ===true){
+      signupProductoServicio= 
+      <div>
+        <SignupProductoServicio/>
+      </div>
+     }
+
     let nombre = localStorage.getItem("nombre")
     let apellidos = localStorage.getItem("apellido")
     let empresa = localStorage.getItem("nombre_empresa")
@@ -236,9 +264,9 @@ if(mm<10) {
             <Menu.Item key="5" onClick={e=>this.tablaEventos()} icon={<DesktopOutlined style={{ fontSize: '25px', color: '#fff' }} />}>           
               Eventos Evenbrite              
             </Menu.Item>   
-            {/* <Menu.Item key="6" onClick={e=>this.panelAlfa()} icon={<HomeWorkIcon  style={{ fontSize: '25px', color: '#fff' }} />}>           
-              Registrar Empresa             
-            </Menu.Item> */}
+            <Menu.Item key="6" onClick={e=>this.registraProductoServicio()} icon={<HomeWorkIcon  style={{ fontSize: '25px', color: '#fff' }} />}>           
+              Registrar Productos y Servicios            
+            </Menu.Item>
             <Menu.Item key="7" onClick={this.cerrar} icon={<CloseOutlined  style={{ fontSize: '25px', color: '#fff' }} />}>
               cerrar sesión
             </Menu.Item>
@@ -268,6 +296,7 @@ if(mm<10) {
             {tablaCotizaciones}
             {signupCliente}
             {panelConexionAlfa}
+            {signupProductoServicio}
           {/* </Content> */}
         </Layout>
       </Layout>

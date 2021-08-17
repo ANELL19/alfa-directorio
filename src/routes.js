@@ -40,6 +40,8 @@ import Generar from './components/administradorAlfa/generarServicios';
 import Contacto from './components/administradorAlfa/registrarContacto'
 
 
+
+
 class App extends Component{
 
 render(){

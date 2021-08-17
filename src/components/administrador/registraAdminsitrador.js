@@ -51,15 +51,56 @@ class signupAdminAlfa extends Component {
   localStorage.removeItem("puesto") 
   }
 
+ 
+  consultarDatos(){    
+    let rfc=this.state.rfc
+    axios({
+      url:API,
+      method:'post',
+      data:{
+          query:`
+          query{
+              getEmpresas(data:"${[rfc]}"){
+                id_empresa
+                rfc
+                razonSocial
+                correo
+                telefono 
+                message        
+             } 
+          }
+          `
+      }   
+  
+       }).then(response=>{      
+        if(response.data.data.getEmpresas[0]){
+          localStorage.setItem("empresa",response.data.data.getEmpresas[0].id_empresa)
+          localStorage.setItem("razonSocial",response.data.data.getEmpresas[0].razonSocial)
+          this.setState({rs:response.data.data.getEmpresas[0].razonSocial})
+          this.setState({fk_empresa:response.data.data.getEmpresas[0].id_empresa})   
+        }else{
+           DialogUtility.alert({
+                
+                  title:'AVISO!' ,
+                  content:'El RFC no fue encontrado'
+                  
+              });
+        }       
+       })
+       .catch(err=>{
+           console.log('error',err)
+       })   
+  }
+
   onSubmitBtn = (e) => {
     e.preventDefault();
     let nombre = this.state.nombre.toUpperCase();
     let apellido = this.state.apellido.toUpperCase();
-    let correo = this.state.correo;
-    let telefono = this.state.telefono;
-    let ext = this.state.ext;
-    let puesto = this.state.puestos.toUpperCase();
-    let contrasena = this.state.contrasena;
+    let puestoAdmin = this.state.puesto.toUpperCase();
+    let correo = this.state.correo
+    let telefono = this.state.telefono
+    let ext = this.state.ext    
+    let contrasena = this.state.contrasena
     if(nombre && apellido && correo && contrasena){
       if(this.state.fk_empresa[0]){
         axios({
@@ -68,7 +109,7 @@ class signupAdminAlfa extends Component {
           data: {
             query: `
                     mutation{
-                        signupAlfa(data:"${[nombre,apellido,correo,telefono,ext,puesto,contrasena,this.state.fk_empresa]}"){  
+                        signupAlfa(data:"${[nombre,apellido,correo,telefono,ext,puestoAdmin,contrasena,this.state.fk_empresa]}"){  
                         message
                          } 
                     }
@@ -94,47 +135,6 @@ class signupAdminAlfa extends Component {
       
   };
   
-  consultarDatos(){    
-    let rfc=this.state.rfc
-    axios({
-      url:API,
-      method:'post',
-      data:{
-          query:`
-          query{
-              getEmpresas(data:"${[rfc]}"){
-                id_empresa
-                rfc
-                razonSocial
-                correo
-                telefono 
-                message        
-             } 
-          }
-          `
-      }   
-  
-       }).then(response=>{
-       console.log( 'este es el response',response)  
-        if(response.data.data.getEmpresas[0]){
-          localStorage.setItem("empresa",response.data.data.getEmpresas[0].id_empresa)
-          localStorage.setItem("razonSocial",response.data.data.getEmpresas[0].razonSocial)
-          this.setState({rs:response.data.data.getEmpresas[0].razonSocial})
-          this.setState({fk_empresa:response.data.data.getEmpresas[0].id_empresa})   
-        }else{
-           DialogUtility.alert({
-                
-                  title:'AVISO!' ,
-                  content:'El RFC no fue encontrado'
-                  
-              });
-        }       
-       })
-       .catch(err=>{
-           console.log('error',err)
-       })   
-  }
-
   regresar() {
     this.props.history.push("/")
   }
@@ -196,7 +196,7 @@ class signupAdminAlfa extends Component {
                         </MDBCol>
                         <MDBCol md="6">
                           <MDBInput
-                            label="apellido"
+                            label="Apellidos"
                             id="apellido"
                             type="text"
                             name="apellido"
@@ -233,8 +233,7 @@ class signupAdminAlfa extends Component {
                         </MDBCol>
                         <MDBCol md="6">
                           <MDBInput
-                            label="Ext."
-                            icon="phone"
+                            label="Ext."                           
                             id="ext"
                             type="number"
                             name="ext"
@@ -246,7 +245,7 @@ class signupAdminAlfa extends Component {
                         <MDBCol md="6">
                           <MDBInput
                             label="Puesto"
-                            icon="phone"
+                            icon="users"
                             id="puesto"
                             type="text"
                             name="puesto"
