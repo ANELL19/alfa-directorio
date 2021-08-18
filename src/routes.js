@@ -40,6 +40,10 @@ import Generar from './components/administradorAlfa/generarServicios';
 import Contacto from './components/administradorAlfa/registrarContacto'
 
 
+// ***************** carpeta clientes *********************
+import clientesADS from './components/clientesADS/pruebasClientes'
+
+
 
 
 class App extends Component{
@@ -88,6 +92,9 @@ render(){
          <Route  exact path = "/generar" component={Generar}/>
          <Route  exact path = "/Contacto" component={Contacto}/>
 
+{/* 
+******************** */}
+<Route  exact path = "/clientesADS" component={clientesADS}/>
          
 
 

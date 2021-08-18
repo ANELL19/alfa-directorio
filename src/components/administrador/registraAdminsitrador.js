@@ -245,7 +245,7 @@ class signupAdminAlfa extends Component {
                         <MDBCol md="6">
                           <MDBInput
                             label="Puesto"
-                            icon="users"
+                            icon="id-card-alt"
                             id="puesto"
                             type="text"
                             name="puesto"

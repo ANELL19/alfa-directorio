@@ -8,7 +8,7 @@ import { MDBContainer,MDBRow,MDBCol,MDBBtn,MDBInput,MDBCard,MDBIcon } from "mdbr
 import { MDBCardImage } from "mdbreact";
 import axios from "axios";
 import { API } from "../Graphql/Graphql";
-import { MDBTabPane, MDBTabContent, MDBNav, MDBNavItem, MDBLink } from 'mdbreact';
+
 import {Card} from 'antd'
 
 class RegistrarContacto extends Component {
@@ -193,7 +193,7 @@ class RegistrarContacto extends Component {
           <MDBCol md="6">
             <MDBInput
               label="Puesto"
-              icon="user"
+              icon="id-card-alt"
               id="puesto"
               type="text"
               name="puesto"

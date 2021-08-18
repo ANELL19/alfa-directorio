@@ -3,7 +3,7 @@ import 'antd/dist/antd.css';
 import  './sidenavbar.css';
 import { Layout, Menu } from 'antd';
 import { MenuUnfoldOutlined,MenuFoldOutlined,CloudUploadOutlined,DesktopOutlined,DollarOutlined,OrderedListOutlined,
-  CloseOutlined,FilePdfOutlined,SolutionOutlined } from '@ant-design/icons';
+  CloseOutlined,FilePdfOutlined,SolutionOutlined,ReconciliationOutlined } from '@ant-design/icons';
   import AccessTimeIcon from '@material-ui/icons/AccessTime';
   import FolderOpenIcon from '@material-ui/icons/FolderOpen';
   import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
@@ -264,7 +264,7 @@ if(mm<10) {
             <Menu.Item key="5" onClick={e=>this.tablaEventos()} icon={<DesktopOutlined style={{ fontSize: '25px', color: '#fff' }} />}>           
               Eventos Evenbrite              
             </Menu.Item>   
-            <Menu.Item key="6" onClick={e=>this.registraProductoServicio()} icon={<HomeWorkIcon  style={{ fontSize: '25px', color: '#fff' }} />}>           
+            <Menu.Item key="6" onClick={e=>this.registraProductoServicio()} icon={<ReconciliationOutlined   style={{ fontSize: '25px', color: '#fff' }} />}>           
               Registrar Productos y Servicios            
             </Menu.Item>
             <Menu.Item key="7" onClick={this.cerrar} icon={<CloseOutlined  style={{ fontSize: '25px', color: '#fff' }} />}>

@@ -1,13 +1,13 @@
 import React,{Component} from 'react'
 import MUIDataTable from "mui-datatables";
 import { DialogUtility } from '@syncfusion/ej2-popups';
-import {MDBBtn, MDBModal, MDBModalHeader,MDBCard,MDBCol,MDBContainer,MDBRow,MDBIcon} from 'mdbreact'
+import {MDBBtn, MDBModal, MDBModalHeader,MDBCard,MDBCol,MDBInput,MDBContainer,MDBRow,MDBIcon} from 'mdbreact'
 import { Button } from 'antd';
-import { Alert } from 'antd';
 import {Row,Col} from 'reactstrap';
 import {API} from '../Graphql/Graphql'
 import axios from 'axios'
-// import { MDBAlert } from 'mdbreact';
+import {Card} from 'antd'
+
 
 class Tablas extends Component{
   constructor(props){
@@ -17,6 +17,7 @@ class Tablas extends Component{
       peticionApi:[],
       detallesEditarCliente:[],
       modal: false,
+      modal2:false,
       id_cliente:" ",
       rfc:" ",
       empresa:" ",
@@ -36,6 +37,25 @@ class Tablas extends Component{
     });
   }
 
+  toggle2 = () => {
+    this.setState({
+      modal2: !this.state.modal2
+    });
+  }
+
+  onClear = () => {
+    this.setState({
+      nombre: "",
+      apellidos: "",
+      correo1: "",
+      correo2: "",
+      telefono1: "",
+      ext: "",
+      telefono2: "",     
+      puesto: " "     
+    });
+  }
+
   onChangeInput = (e) => {
     console.log("eventoonChange", e);
     const { id, value } = e.target;
@@ -46,14 +66,14 @@ class Tablas extends Component{
   
   async componentWillMount(){
     let array =  []    
-     let fk_empresa =  localStorage.getItem("fk_empresa")
+
      await axios({
             url:API,
             method:'post',
             data:{
               query:`
                 query{   
-                  getTablaClientes(data:"${[fk_empresa]}"){
+                  getTablaClientes(data:"${[""]}"){
                     id_cliente
                     rfc
                     empresa
@@ -67,22 +87,11 @@ class Tablas extends Component{
                 }
                 `            }           
              })
-           .then(datos => { 
-            //  if(datos.data.data.getTablaClientes[0]){
+           .then(datos => {
              console.log("LA DATA de clientes",datos)
              array.push(datos.data.data.getTablaClientes)
              console.log("email",datos.data.data.getTablaClientes)
               this.setState({tablas:datos.data.data.getTablaClientes}) 
-             
-            //  }else{
-            //   //  DialogUtility.alert({
-            //   //   title:'AVISO!' ,
-            //   //     content:'nose han encontrado registros'
-            //   // });
-
-            //   <Alert message="Informational Notes" type="info" showIcon />
-
-            //  }
             })
             .catch(err=>{
                console.log('error' ,err.response)
@@ -101,7 +110,8 @@ class Tablas extends Component{
     
     }
 // let valorCliente=[];
-    datosIndividialesClientes(id){
+   idCliente(id){
+      console.log("id",id)
       axios({
         url:API,
         method:'post',
@@ -123,10 +133,16 @@ class Tablas extends Component{
             `
         }   
          })
-       .then(response=>{
-
+       .then(response=>{         
          this.setState({DatosClientes:response})
-          
+        //  console.log("el array",id.id_cliente) 
+          // if("esto es response de tabla",response){
+      // <MDBAlert color="primary">
+      //  agregar Datos
+      // </MDBAlert>
+        //     let array = [];
+        //  array.push("response de array",response)        
+        //   this.setState({detallesEditarCliente:array})   
                  
         localStorage.setItem("id_cliente1",id.id_cliente)     
         localStorage.setItem("rfc_cliente",id.rfc)               
@@ -137,9 +153,12 @@ class Tablas extends Component{
         localStorage.setItem("correo2_cliente",id.correo2)                                
         localStorage.setItem("telefono1_cliente",id.telefono1)
         localStorage.setItem("telefono2_cliente",id.telefono2)
+          // this.setState({
+          //   modal: !this.state.modal
+          // });   
           this.setState({
-            modal: !this.state.modal
-          });     
+            modal2: !this.state.modal2
+          });    
         
     })
      .catch(err=>{
@@ -178,8 +197,66 @@ class Tablas extends Component{
       })
     }
 
+    datosIndividialesClientes(id){
+      console.log("id",id)
+      axios({
+        url:API,
+        method:'post',
+        data:{
+            query:`
+            query{
+              getTablaClientes(data:"${[id]}"){
+                id_cliente
+                rfc
+                empresa
+                nombre
+                apellido
+                correo1
+                correo2
+                telefono1 
+                telefono2 
+                 } 
+            }
+            `
+        }   
+         })
+       .then(response=>{         
+         this.setState({DatosClientes:response})
+        //  console.log("el array",id.id_cliente) 
+          // if("esto es response de tabla",response){
+      // <MDBAlert color="primary">
+      //  agregar Datos
+      // </MDBAlert>
+        //     let array = [];
+        //  array.push("response de array",response)        
+        //   this.setState({detallesEditarCliente:array})   
+                 
+        localStorage.setItem("id_cliente1",id.id_cliente)     
+        localStorage.setItem("rfc_cliente",id.rfc)               
+        localStorage.setItem("razonSocial_cliente",id.empresa)   
+        localStorage.setItem("nombre_cliente",id.nombre) 
+        localStorage.setItem("apellidos_cliente",id.apellido)
+        localStorage.setItem("correo1_cliente",id.correo1)      
+        localStorage.setItem("correo2_cliente",id.correo2)                                
+        localStorage.setItem("telefono1_cliente",id.telefono1)
+        localStorage.setItem("telefono2_cliente",id.telefono2)
+          this.setState({
+            modal: !this.state.modal
+          });   
+          // this.setState({
+          //   modal2: !this.state.modal2
+          // });    
+        
+    })
+     .catch(err=>{
+              console.log('error',err.response)
+      }) 
+    }
+
+
     onSubmitBtn = (e) => {
-      e.preventDefault();   
+      e.preventDefault();
+    
   
        let id_cliente = localStorage.getItem("id_cliente1" )     
        let rfc = localStorage.getItem("rfc_cliente")               
@@ -229,6 +306,7 @@ class Tablas extends Component{
       let telefono2_cliente = localStorage.getItem("telefono2_cliente")
         
  let modal;
+ let modal2;
 
      modal=
       <div>
@@ -384,13 +462,168 @@ class Tablas extends Component{
           </MDBModal>
           </MDBContainer>
           </div> 
+  let titulo =  <strong><h4>Registrar Nuevo Contacto</h4></strong>
+modal2=
+<div>
+    <MDBContainer>
+    <MDBModal isOpen={this.state.modal2} toggle={this.toggle2} size="lg">
+      <MDBModalHeader toggle={this.toggle2}></MDBModalHeader>
+      <MDBContainer>
+      <MDBRow>
+        <MDBCol style={{marginTop:"5%", marginBotton:"5%"}}>         
+        <form onSubmit={this.onSubmitBtn}>
+          
+        <Card title ={titulo}>        
+      <Row>      
+          <MDBCol md="6">
+            <MDBInput
+              label="Nombre (s)"
+              icon="user"
+              id="nombre"
+              type="text"
+              name="nombres"
+              onChange={this.onChangeInput}
+              value={this.state.nombre}
+              required
+            />
+          </MDBCol>
+          <MDBCol md="6">
+            <MDBInput
+              label="apellidos"
+              // icon="user"
+              id="apellido"
+              type="text"
+              name="apellido"
+              onChange={this.onChangeInput}
+              value={this.state.apellido}
+              required
+            />
+          </MDBCol>
+        </Row> 
+        <Row>
+          <MDBCol md="6">
+            <MDBInput
+              label="Correo1"
+              icon="envelope"
+              id="correo1"
+              type="email"
+              name="correo1"
+              onChange={this.onChangeInput}
+              value={this.state.correo1}
+              required
+            />
+          </MDBCol>
+          <MDBCol md="6">
+            <MDBInput
+              label="Correo2"
+              icon="envelope"
+              id="correo2"
+              type="email"
+              name="correo2"
+              onChange={this.onChangeInput}
+              value={this.state.correo2}
+              
+            />
+          </MDBCol>
+          <MDBCol md="6">
+            <MDBInput
+              label="telefono1"
+              icon="phone"
+              id="telefono1"
+              type="number"
+              name="telefono1"
+              onChange={this.onChangeInput}
+              value={this.state.telefono1}
+              required
+            />
+          </MDBCol> 
+          <MDBCol md="6">
+            <MDBInput
+              label="Ext."              
+              id="ext"
+              type="number"
+              name="ext"
+              onChange={this.onChangeInput}
+              value={this.state.ext}              
+            />
+          </MDBCol>
+          <MDBCol md="6">
+            <MDBInput
+              label="telefono2"
+              icon="phone"
+              id="telefono2"
+              type="number"
+              name="telefono2"
+              onChange={this.onChangeInput}
+              value={this.state.telefono2}              
+            />
+          </MDBCol>
+          <MDBCol md="6">
+            <MDBInput
+              label="Puesto"
+              icon="id-card-alt"
+              id="puesto"
+              type="text"
+              name="puesto"
+              onChange={this.onChangeInput}
+              value={this.state.puesto}              
+            />
+          </MDBCol>
+      </Row>
+      
+    {/* <div className="text-center">
+          <MDBBtn color="info" type="submit">                   
+            Guardar
+          </MDBBtn>
+          <MDBBtn
+            color="danger"
+            onClick={this.onClear}
+            type="submit"
+          >
+           Borrar
+          </MDBBtn>                   
+      </div>       */}
+      </Card>      
+
+    <div style={{marginTop:"3%"}} className="text-center">
+        <MDBBtn color="info" type="submit">                   
+          Guardar
+        </MDBBtn>
+        <MDBBtn
+            color="success"
+            onClick={this.onClear}
+            type="submit"
+          >
+           Borrar
+          </MDBBtn>  
+        <MDBBtn
+          color="danger"
+          onClick={this.toggle2}
+          type="submit"
+        >
+        Cancelar
+        </MDBBtn>                   
+    </div> 
+
+        
+    </form>
+   
+    {/* </MDBCard> */}
+  </MDBCol>
+</MDBRow>
+</MDBContainer>
+
+    </MDBModal>
+    </MDBContainer>
+    </div>
     
       let botonesEditar;
       let eliminar;
+      let NuevoContacto;
       let data;
 
-    const columns = ["Id_Cliente","Empresa","RFC","Cliente","Correo1","Teléfono1","Editar","Eliminar"];
-    // if(this.state.tablas){
+    const columns = ["Id_Cliente","RFC","Empresa","Cliente","Correo1","Teléfono1","Editar","Eliminar","Agregar Contacto"];
+    
      data = this.state.tablas.map((rows,i)=>{    
       
       botonesEditar=        
@@ -406,11 +639,16 @@ class Tablas extends Component{
           <i class="far fa-trash-alt"></i>
         </Button>
       </div>
-         return([rows.id_cliente,rows.empresa,rows.rfc,rows.nombre + " " +rows.apellido, rows.correo1, rows.telefono1,botonesEditar,eliminar])
+        NuevoContacto=        
+        <div >
+          <Button type="dashed"  style={{color:"orange"}} shape="circle" size="large" onClick={e=>this.idCliente(rows)}>
+            <MDBIcon icon="user-plus" />
+          </Button>
+        </div>
+
+         return([rows.id_cliente,rows.empresa,rows.rfc,rows.nombre + " " +rows.apellido, rows.correo1, rows.telefono1,botonesEditar,eliminar,NuevoContacto])
         })  
-      // }else{
-      //   <Alert message="no existen datos" type="info" showIcon />
-      // }
+
       
       const options={ 
         filterType:"drowpdawn",
@@ -454,6 +692,7 @@ class Tablas extends Component{
       }
         
       } 
+     
         return(
             <React.Fragment>
           <div  style={{width:"95%",marginLeft:"3%"}} >               
@@ -464,9 +703,8 @@ class Tablas extends Component{
                 options={options}          
               /> 
             </div>  
-            {modal} 
-
-             {/* <Alert message="Informational Notes" type="info" showIcon />      */}
+            {modal}   
+            {modal2}   
             </React.Fragment>
         )
     }
