@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import'bootstrap-css-only/css/bootstrap.min.css'; 
 import'mdbreact/dist/css/mdb.css';
-import { MDBRow, MDBCol, MDBBtn,MDBAlert, MDBCard,MDBCardBody } from 'mdbreact';
+import { MDBRow, MDBCol, MDBBtn,MDBAlert, MDBCard, MDBCardBody } from 'mdbreact';
 import { DialogUtility } from '@syncfusion/ej2-popups';
 import { PDFExport } from '@progress/kendo-react-pdf';
 import { Container} from '@material-ui/core';
@@ -18,7 +18,7 @@ import {API} from '../Graphql/Graphql'
 import MUIDataTable from "mui-datatables";
 import {Form} from 'reactstrap';
 import { Paper } from '@material-ui/core';
-  import {Card, Modal} from 'antd'
+import {Card, Modal} from 'antd'
 
 class Cotizaciones extends Component {
   pdfExportComponent
@@ -60,12 +60,14 @@ class Cotizaciones extends Component {
             ivaGlobal:'',
             totalGlobal:'',
             isModalVisible:false,
+            isModalVisible2:false,
             camposObligatorios:[],
-            nameCotizacion:''
+            enviarEmail:false,
+            rowsProductoServicio:[]
       }
       
-      this.cancelar = this.cancelar.bind(this)
       this.onChange = this.onChange.bind(this)
+      this.cerrarCotizacion = this.cerrarCotizacion.bind(this)
     }
 
     componentDidMount(){
@@ -108,12 +110,17 @@ class Cotizaciones extends Component {
       handleCancel = () => {
         this.setState({isModalVisible:false})
       };
-    cancelar(){
-       setTimeout(() => {
-    window.location.reload();
-  }); 
-  }
 
+      showModal2 = () => {
+        this.setState({isModalVisible2:true})
+      };
+      handleOk2 = () => {
+        this.setState({isModalVisible2:false})
+      };
+    
+      handleCancel2 = () => {
+        this.setState({isModalVisible2:false})
+      };
   onChangeInput =(e)=>{
     const {id,value} = e.target;
     this.setState({
@@ -149,7 +156,7 @@ filtrarElementos  = () => {
     } 
      }).then(response=>{
      this.setState({array:response.data.data.getTablaProductoServicio})
-    //  console.log("estado de array",this.state.array)
+     console.log("estado de array",this.state.array)
      })
      .catch(err=>{
        console.log("err",err.response)
@@ -198,6 +205,7 @@ capturar(){
 
     this.setState({arrayFilter:filter[0]})
     this.setState({arrayInputFields:arrayFilter})
+    console.log("estado arrayFilter",this.state.arrayFilter)
    
   }else{
     DialogUtility.alert({
@@ -211,68 +219,100 @@ renderTabla(){
   this.setState({renderTabla:true}); 
 }
 
-saveNameCotizacion(e){
-  console.log(e.target.value)
-this.setState({nameCotizacion:e.target.value})
-}
 
-onSubmitBtn = (e)=>{   
-  // e.preventDefault();   
-  // this.setState({botonPdfExport:true})  
-  // var id_adminAlfa = localStorage.getItem("id_admin")  
-  // let rfc= this.state.Datos.rfc
-  // let rs = this.state.Datos.empresa.replace(/,/g, "");
-  // let nombre  = this.state.Datos.nombre;
-  // let apellidos = this.state.Datos.apellido;
-  // let correo1 =  this.state.Datos.correo1;
-  // let correo2 = this.state.Datos.correo2;
-  // let tel1 = this.state.Datos.telefono1;
-  // let tel2 = this.state.Datos.telefono2;           
-  // let promocion = this.state.promocion.toUpperCase();
-  // let vendedor = localStorage.getItem("nombre").toUpperCase() + " "  + localStorage.getItem("apellido").toUpperCase()       
+// onSubmitBtn = (e)=>{   
+//   // e.preventDefault();   
+//   this.setState({botonPdfExport:true})  
+//   var id_adminAlfa = localStorage.getItem("id_admin")  
+//   let rfc= this.state.Datos.rfc
+//   let rs = this.state.razonSocial || this.state.Datos.empresa
+//   // .replace(/,/g, "");
+//   let nombre  = this.state.nombre || this.state.Datos.nombre;
+//   let apellidos = this.state.apellidos || this.state.Datos.apellido;
+//   let correo1 =  this.state.correo1 || this.state.Datos.correo1;
+//   let correo2 = this.state.correo2 || this.state.Datos.correo2;
+//   let tel1 = this.state.telefono1 || this.state.Datos.telefono1;
+//   // let tel2 = this.state.telefono2 || this.state.Datos.telefono2;           
+//   let promocion = this.state.promocion.toUpperCase();
+//   let campos = this.state.camposObligatorios
+  
+//   // let vendedor = localStorage.getItem("nombre").toUpperCase() + " "  + localStorage.getItem("apellido").toUpperCase()       
  
-  //     axios({
-  //         url:API,
-  //         method:'post',
-  //         data:{
-  //             query:`
-  //             mutation{
-  //             insertCotizaciones(data:"${[rfc,rs,nombre,apellidos,correo1,correo2,tel1,tel2,promocion,vendedor,id_adminAlfa]}"){
-  //                  message
-  //                 } 
-  //             }
-  //             `
-  //         }   
-  //         }).then(response=>{
-  //             if(response.data.data. insertCotizaciones.message=="registro exitoso"){                    
+//   // console.log("estado de los datos", this.state.Datos)
+//     // let input =  this.state.arrayInputFields
+//     // let inputFields =  this.state.inputFields    
+//     // let descuento =  this.state.descuentos
+//     // let multArray = this.state.multArray
+//     // let idGlobal = this.state.idGlobal
+//      // let subtotal = this.state.subtotal
+//       let subtotalGlobal =  this.state.subtotalGlobal
+//       let ivaGlobal = this.state.ivaGlobal
+//       let totalGlobal = this.state.totalGlobal
+//       console.log("data enviada campos", campos )
+      // axios({
+      //     url:API,
+      //     method:'post',
+      //     data:{
+      //         query:`
+      //         mutation{
+      //         insertCotizaciones(data:"${[rfc,rs,nombre,apellidos,correo1,correo2,tel1,promocion]}"){
+      //              message
+      //             } 
+      //         }
+      //         `
+      //     }   
+      //     }).then(response=>{
+      //         if(response.data.data.insertCotizaciones.message=="registro exitoso"){                    
             
-  //                 DialogUtility.alert({
-  //                     title:'registro exitoso' ,
-  //                     content: "Cotizacion generada!",
-  //                 });  
-  //             }
-  //            else {
-  //                 DialogUtility.alert({
-  //                     title: 'Algo salio mal, por favor vuelva a intentarlo'                       
-  //                 });                
-  //             }
-  //         })
-  //         .catch(err=>{
-  //             console.log('error',err.response)
-  //         })
+      //             DialogUtility.alert({
+      //                 title:'registro exitoso' ,
+      //                 content: "Cotizacion registrada",
+      //             });  
+      //         }
+      //        else {
+      //             DialogUtility.alert({
+      //                 title: 'Algo salio mal, por favor vuelva a intentarlo'                       
+      //             });                
+      //         }
+      //     })
+      //     .catch(err=>{
+      //         console.log('error',err.response)
+      //     })
 
-
-}
+          // axios({
+          //   url:API,
+          //   method:'post',
+          //   data:{
+          //       query:`
+          //       mutation{
+          //       insertTotales(data:"${[subtotalGlobal,ivaGlobal,totalGlobal]}"){
+          //            message
+          //           } 
+          //       }
+          //       `
+          //   }   
+          //   }).then(response=>{
+          //     console.log("response",response)                
+          //   })
+          //   .catch(err=>{
+          //       console.log('error',err.response)
+          //   }) 
+// }
 
 cerrarCotizacion() {
-  this.setState({form:true})
-  this.setState({pdfview:false})
+  window.location.reload();
 }
 
 
 pdfView (){
+  
+  let rfc= this.state.datos.rfc;  
   let rs,nombre,apellido,correo1,correo2,telefono1;
   let promocion = this.state.promocion;
+
+  let subtotalGlobal =  this.state.subtotalGlobal
+  let ivaGlobal = this.state.ivaGlobal
+  let totalGlobal = this.state.totalGlobal
 
   if(this.state.razonSocial){
      rs = this.state.razonSocial;
@@ -301,6 +341,7 @@ pdfView (){
   }
   let array = []
   let texto,texto2,texto3,texto4,texto5,texto6;
+
   let objeto;
   if(rs === undefined){
     texto = "Razon Social"
@@ -328,30 +369,89 @@ pdfView (){
     array.push(objeto)
   }
   this.setState({camposObligatorios:array})
-  // console.log(nombre)
-  // console.log(apellido)
-  // console.log(correo1)
-  // console.log(correo2)
-  // console.log(telefono1)
-  // console.log(promocion)
-  // console.log("estado de los datos", this.state.Datos)
-  // console.log("inputFields", this.state.inputFields)  
-  // console.log("subtotal", this.state.subtotal)
-  // console.log("subtotalGlobal", this.state.subtotalGlobal)
-  // console.log("ivaGlobal", this.state.ivaGlobal)
-  // console.log("totalGlobal", this.state.totalGlobal)
-  // console.log("descuentos", this.state.descuentos)
-  // console.log("multArray", this.state.multArray)
-  // console.log("idGlobal", this.state.idGlobal)
+  console.log(nombre)
+  console.log(apellido)
+  console.log(correo1)
+  console.log(correo2)
+  console.log(telefono1)
+  console.log(promocion)
+  console.log("estado de los datos", this.state.Datos)
+  console.log("arrayInputFields[0]", this.state.arrayInputFields) 
+  console.log("inputFields", this.state.inputFields)  
+  console.log("subtotal", this.state.subtotal)
+  console.log("subtotalGlobal", this.state.subtotalGlobal)
+  console.log("ivaGlobal", this.state.ivaGlobal)
+  console.log("totalGlobal", this.state.totalGlobal)
+  console.log("descuentos", this.state.descuentos)
+  console.log("multArray", this.state.multArray)
+  console.log("idGlobal", this.state.idGlobal)
+  let fk_productoServicio=this.state.idGlobal
 
-  if(rs && nombre && apellido && correo1 && correo2 && telefono1 && promocion && this.state.totalGlobal){ 
-    console.log("arrayInputFields", this.state.nameCotizacion)
-    
+
+  if(rs && nombre && apellido && correo1 && correo2 && telefono1 && promocion && this.state.totalGlobal){     
       this.setState({form:false});
       this.setState({pdfview:true});
   }else {
     this.showModal()         
   }
+  let arrayI = this.state.arrayInputFields;
+  let arrayinputFields = this.state.inputFields
+  console.log("array",arrayinputFields)
+  let arrayRows=[]
+  arrayI.map(rows=>{
+    arrayRows.push(rows.id_productoServicio)
+console.log("rows",rows.id_productoServicio,rows.tipo,rows.concepto,rows.precio)
+  })
+  console.log("rowsProductoServicio",arrayRows)
+
+  //  axios({
+  //         url:API,
+  //         method:'post',
+  //         data:{
+  //             query:`
+  //             mutation{
+  //             insertCotizaciones(data:"${[rfc,rs,nombre,apellido,correo1,correo2,telefono1,promocion,fk_productoServicio]}"){
+  //                  message
+  //                 } 
+  //             }
+  //             `
+  //         }   
+  //         }).then(response=>{
+  //             if(response.data.data.insertCotizaciones.message=="registro exitoso"){                    
+            
+  //                 DialogUtility.alert({
+  //                     title:'registro exitoso' ,
+  //                     content: "Cotizacion registrada",
+  //                 });  
+  //             }
+  //            else {
+  //                 DialogUtility.alert({
+  //                     title: 'Algo salio mal, por favor vuelva a intentarlo'                       
+  //                 });                
+  //             }
+  //         })
+  //         .catch(err=>{
+  //             console.log('error',err.response)
+  //         })
+          axios({
+            url:API,
+            method:'post',
+            data:{
+                query:`
+                mutation{
+                insertTotales(data:"${[subtotalGlobal,ivaGlobal,totalGlobal]}"){
+                     message
+                    } 
+                }
+                `
+            }   
+            }).then(response=>{
+              console.log("response",response)                
+            })
+            .catch(err=>{
+                console.log('error',err.response)
+            }) 
+
 }
 
 consultarDatos(){
@@ -380,7 +480,8 @@ consultarDatos(){
      }).then(response=>{
    if(response.data.data.getClienteRFC[0]){               
     this.setState({ datos:response.data.data.getClienteRFC[0]})  
-    console.log("dato",this.state.Datos)
+
+    console.log("dato",this.state.datos)
    } else{
     DialogUtility.alert({            
       title:'AVISO!' ,
@@ -406,7 +507,21 @@ calcular(datosTabla){
   let inputFields = this.state.inputFields;
 
   let idGlobal = [];
+  // let servicio = datosTabla.filter(function(hero){
+  //   return hero.data[1] === "SERVICIO"
+  // })
+  // let producto = datosTabla.filter(function(hero){
+  //   return hero.data[1] === "PRODUCTO SERVICIO"
+  // })
+
+
+  datosTabla.map(rows=>{
+    array.push(rows.data[3])
+    idGlobal.push(rows.data[0]) 
+  })
+
   inputFields.map(row=>{
+    console.log("rows de inputField",row)
     if(row.cantidad){
       array2.push(row.cantidad)
     }else{
@@ -418,53 +533,8 @@ calcular(datosTabla){
       array3.push(0)
     }
   })
-
-//   /////////////////////////////////////////////
-//   let filter;
-//   let filtrado = []
-//     filterProducto.map(rows=>{
-//       filter = inputFields.filter(function(param){
-//       return param.id == rows.data[0]
-//     })
-//     filtrado.push(filter)
-
-//   })
-//   let variableCantidadProducto = [];
-//   let variableDescuentoProducto = []
-//   filtrado.map(rows=>{
-//     if(rows[0].cantidad){
-//       variableCantidadProducto.push(rows[0].cantidad)
-//     }else {
-//       variableCantidadProducto.push(1)
-//     } if(rows[0].descuento){
-//       variableDescuentoProducto.push(rows[0].descuento)
-//     }else{
-//       variableDescuentoProducto.push(0)
-//     }
-//     })
-//     let precioTotalProductos = [];
-  
-//     // console.log("variableCantidadProducto", variableCantidadProducto)
-//     // console.log("variableDescuentoProducto", variableDescuentoProducto)
-//     // console.log("cantidadProductos",cantidadProductos)
-//     for (let i = 0; i < cantidadProductos.length; i++) {
-//     precioTotalProductos[i] = parseInt(cantidadProductos[i]) * parseInt(variableCantidadProducto[i]);
-//     }
-
-//     let totalConDscuento = [];
-//     if(precioTotalProductos[0]){
-//       for (let i = 0; i < precioTotalProductos.length; i++) {
-//         totalConDscuento[i] =  precioTotalProductos[i] - parseInt(precioTotalProductos[i]) * parseInt(variableDescuentoProducto[i]) / 100;
-//       } 
-//     }
-//     var subtotalProductos = totalConDscuento.reduce((x, y) => x + y);
-//     console.log("totalProductos",subtotalProductos)
-
-
-// ///////////////////////////////////////////////////////////////////////////
-
+  array.push(datosTabla)
   let multArray = []
-
   for (let i = 0; i < array.length; i++) {
     multArray[i] = parseInt(array[i]) * parseInt(array2[i]);
  }
@@ -474,6 +544,7 @@ calcular(datosTabla){
     subtotal[i] =  multArray[i] - parseInt(multArray[i]) * parseInt(array3[i]) / 100;
   } 
  }
+
  let arrayDescuentos = []
  if(multArray[0]){
   for (let i = 0; i < multArray.length; i++) {
@@ -487,16 +558,25 @@ calcular(datosTabla){
  const descuentos = arrayDescuentos.filter(function (value) {
   return !Number.isNaN(value);
 });
+const precioTotal = multArray.filter(function (value) {
+  return !Number.isNaN(value);
+});
 
 var subtotalGlobal = nuevoSubtotal.reduce((x, y) => x + y);
+
+const totalProducto = subtotal.filter(function (value) {
+
+  return !Number.isNaN(value);
+});
+
 var ivaGlobal = subtotalGlobal * 0.16
 var totalGlobal = subtotalGlobal + ivaGlobal
-this.setState({subtotal:subtotal})
+this.setState({subtotal:totalProducto})
 this.setState({subtotalGlobal:subtotalGlobal})
 this.setState({ivaGlobal:ivaGlobal})
 this.setState({totalGlobal:totalGlobal})
 this.setState({descuentos:descuentos})
-this.setState({multArray:multArray})
+this.setState({multArray:precioTotal})
 this.setState({idGlobal:idGlobal})
 }
 
@@ -509,6 +589,42 @@ handleInputChange = async (index, event) => {
         values[index].descuento = event.target.value;
       }
       this.setState({inputFields:values});
+}
+
+enviarEmail(){
+  const nombreAdmin = localStorage.getItem("nombre");
+  const apellidoAdmin = localStorage.getItem("apellido")
+  const correoAdmin = localStorage.getItem("correo")
+  axios({
+    url:API,
+    method:'post',
+    data:{
+        query:`
+        mutation{
+          sendEmailCotizacion(data:"${[this.state.datos.rfc + new Date().getFullYear()+".pdf", nombreAdmin + " " + apellidoAdmin,correoAdmin]}"){   
+            message                             
+           } 
+        }
+        `
+    }   
+     }).then(response=>{
+      if(response.data.data.sendEmailCotizacion.message === "Correo Enviado") {
+        this.showModal2();         
+      }
+      console.log("reponse",response)
+    }).catch(err=>{
+      console.log(err.response)
+    })
+}
+ejecutarEnvio(){
+  DialogUtility.alert({
+    title:'AVISO !' ,
+    content: "La opcion de enviar su cotización por email se activará en unos segundos. Nota: Si desea volver a generar la misma cotización con valores diferentes, elimine la cotización anterior y descarguela nuevamente ya que el sistema envía la cotización con el rfc del cliente. ",
+  });    
+
+  setTimeout(()=>{
+    this.setState({enviarEmail:true})
+  },5000)
 }
     render() {
       const options={ 
@@ -614,6 +730,7 @@ handleInputChange = async (index, event) => {
         //   filtro=filtroTables
         //   }          
       } 
+
       let modal;
       if(this.state.camposObligatorios[0]) {
         modal= <Modal title="Aviso!" visible={this.state.isModalVisible} onOk={this.handleOk} onCancel={this.handleCancel}>
@@ -629,6 +746,10 @@ handleInputChange = async (index, event) => {
        </Modal>
       }
     
+      let modalEmail= <Modal title="Aviso!" visible={this.state.isModalVisible2} onOk={this.handleOk2} onCancel={this.handleCancel2}>
+        <p>Su cotización ha sido enviada.</p>    
+        <p>Por favor verifique su copia en su bandeja de correo y en caso de no recibir el adjunto inténtelo nuevamente</p>     
+       </Modal>
       let tdIdGlobal;
       if(this.state.idGlobal[0]){
          tdIdGlobal =  <td> <center>IdProducto</center> </td>
@@ -655,22 +776,7 @@ handleInputChange = async (index, event) => {
       if(this.state.totalGlobal){
         tablaTotal = <table style={{marginLeft:"86%"}}>
         <tr>
-        <td><center>Subtotal</center></td>
-        </tr>
-        <tr>
-        <td>
-          <input
-            type="text"
-            value={this.state.subtotalGlobal.toFixed(2)} 
-            required
-            className="form-control"
-            disabled
-            />       
-          </td>
-        </tr>
-        
-        <tr>
-          <td><center>IVA</center></td>     
+          <td><center>Subtotal</center></td>     
         </tr>
         <tr>
           <td>
@@ -681,6 +787,20 @@ handleInputChange = async (index, event) => {
             className="form-control"
             disabled
             />     
+          </td>
+        </tr>
+        <tr>
+        <td><center>Iva</center></td>
+        </tr>
+        <tr>
+        <td>
+          <input
+            type="text"
+            value={this.state.subtotalGlobal.toFixed(2)} 
+            required
+            className="form-control"
+            disabled
+            />       
           </td>
         </tr>
         <tr>
@@ -779,7 +899,7 @@ handleInputChange = async (index, event) => {
          }) 
 
          tablaProductos= <div style={{marginTop:"2%"}} >    
-         <div style={{width:"80%"}}>
+         <div style={{width:"95%"}}>
          <MuiThemeProvider  theme={this.getMuiTheme()}>  
           <MUIDataTable  
             title={"Productos y servicios seleccionados"} 
@@ -789,7 +909,7 @@ handleInputChange = async (index, event) => {
           /> 
               </MuiThemeProvider> 
           </div>   
-          <Card  style={{marginTop:"2%",width:"80%"}}>
+          <Card  style={{marginTop:"2%",width:"95%"}}>
           <table>
             <tr>
               {tdIdGlobal}
@@ -898,22 +1018,19 @@ handleInputChange = async (index, event) => {
 
         var f = new Date();     
        let fecha=f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
-      searchRFC= <div>
-        <Row>
+      searchRFC= 
+               <Row>
                      <MDBCol md="3" className="mb-3"></MDBCol>
                       <MDBCol md="3" className="mb-3"></MDBCol>        
-                                      
                       <MDBCol>
-                        <div className="md-form mr-auto mb-4">
-                <input  type="text" id="rfc" value={this.state.rfc} name="rfc"  onChange={this.onChangeInput}   placeholder="RFC de la Empresa"  aria-label="Search"/>
+                     <div className="md-form mr-auto">
+                     <input  type="text" id="rfc" value={this.state.rfc} name="rfc"  onChange={this.onChangeInput}   placeholder="RFC de la Empresa"  aria-label="Search"/>
                     <MDBBtn gradient="aqua" rounded size="sm" type="submit" className="mr-auto" onClick={e=> this.consultarDatos()}  >                        
                       <MDBIcon icon="search" />
                     </MDBBtn>  
                     </div> 
-                      <br></br><br></br>        
                 </MDBCol>
                 </Row>
-      </div>
 let vendedor = localStorage.getItem("nombre") + " "  + localStorage.getItem("apellido");
 if(this.state.busqueda){
   const columns = ["id_productoServicio", "tipo", "concepto", "precio", "consecutivo","Agregar"];
@@ -923,7 +1040,7 @@ if(this.state.busqueda){
     return([rows.id_productoServicio,rows.tipo,rows.concepto,rows.precio,rows.consecutivo,boton])
   })
   tabla= 
-  <div style={{width:"80%"}}>          
+  <div style={{width:"95%"}}>          
   <MuiThemeProvider  theme={this.getMuiTheme()}>  
     <MUIDataTable  
       title={"Catálogo de productos y servicios"} 
@@ -942,11 +1059,8 @@ if (this.state.form == true) {
   form = 
   <div >
   <center>    
-  <Card title = {titulo} style={{width:"95%"}} extra = {<div><h6><strong> Vendedor</strong></h6> <label>{vendedor}</label></div>}>                          
-      <MDBCardBody>
-      <MDBCol md="3"></MDBCol>
-      <MDBCol md="3"></MDBCol>                      
-      <MDBCol> {searchRFC} </MDBCol>
+  <Card title = {titulo} style={{width:"95%"}} extra = {<div><h6><strong> Vendedor</strong></h6> <label>{vendedor}</label></div>}>                                          
+      {searchRFC}
       <div style= {{width: "90%"}}>
         <Form onSubmit={this.onSubmitBtn}>                      
             <MDBRow>   
@@ -958,7 +1072,7 @@ if (this.state.form == true) {
                           type="text"
                           name="razonSocial"			
                           onChange={this.onChangeInput}
-                          value={this.state.datos.empresa}
+                          value={this.state.razonSocial || this.state.datos.empresa}
                           required
                           className="form-control"
                           />                                    
@@ -971,7 +1085,7 @@ if (this.state.form == true) {
                           type="text"
                           name="nombres"
                           onChange={this.onChangeInput}
-                          value={this.state.datos.nombre}
+                          value={this.state.nombre || this.state.datos.nombre}
                           required
                           className="form-control"/>
            </MDBCol>
@@ -982,7 +1096,7 @@ if (this.state.form == true) {
                           type="text"
                           name="apellidos"
                           onChange={this.onChangeInput}
-                          value={this.state.datos.apellido}
+                          value={this.state.apellidos || this.state.datos.apellido}
                           required
                           className="form-control"/>
            </MDBCol>
@@ -994,7 +1108,7 @@ if (this.state.form == true) {
                       type="email"
                       name="correo1"
                       onChange={this.onChangeInput}
-                      value={this.state.datos.correo1}
+                      value={this.state.correo1 || this.state.datos.correo1}
                       required
                       className="form-control"/>
            </MDBCol>
@@ -1007,7 +1121,7 @@ if (this.state.form == true) {
                     type="email"
                     name="correo2"
                     onChange={this.onChangeInput}                    
-                    value={this.state.datos.correo2}                     
+                    value={this.state.correo2 || this.state.datos.correo2}                     
                     className="form-control" />
            </MDBCol>
 
@@ -1021,7 +1135,7 @@ if (this.state.form == true) {
                 type="text"
                 name="telefono1"
                 onChange={this.onChangeInput}
-                value={this.state.datos.telefono1} 
+                value={this.state.telefono1 || this.state.datos.telefono1} 
                 required
                 className="form-control"/>
            </MDBCol>  
@@ -1040,11 +1154,8 @@ if (this.state.form == true) {
                    
                     className="form-control"/>
                     </MDBCol>
-                  </MDBRow>
-                  </Form>
-                  <MDBCol md="6" className="mb-3"> 
-
-                      <div className="md-form mr-auto mb-6">   
+                    <MDBCol md="3" className="mb-3">   
+                    <div className="md-form mr-auto mb-6">   
                         <MDBIcon icon="search"  size="2x"/>                           
                         <input
                         type="text"
@@ -1057,112 +1168,169 @@ if (this.state.form == true) {
                         onChange ={this.onChange}
                         />
                       </div> 
-
-                  </MDBCol>
-                  <input
-                    id="name"
-                    size="12"
-                    type="text"
-                    name="name"
-                    placeholder = "Ingrese el nombre para su cotizacion"
-                    onChange={this.saveNameCotizacion}
-                    validate 
-                   
-                    className="form-control"/>
-                  </div>
-                  
-                    {tabla}
-                 {tablaProductos} {botonProductoServicio}
-                 
-                  <MDBRow style={{marginTop:"10%"}}> 
-                      <MDBCol md="3" className="mb-3"/>
-                      
-                      <MDBCol md="3" className="mb-3">      
-                              <MDBBtn   color="info"  onClick = {e=> this.pdfView()}> Generar Cotización</MDBBtn>
-                      </MDBCol>
-                      <MDBCol md="3" className="mb-3"> 
-                              <MDBBtn  color="secondary"   onClick={e=>this.cancelar()} type="submit">Cancelar</MDBBtn>
-                      </MDBCol>
-              
+                    </MDBCol>
                   </MDBRow>
-               </MDBCardBody>
+                  </Form>
+                  </div>
+                 {tabla}
+                 {tablaProductos} {botonProductoServicio}
+                     
+                  <center><MDBBtn   color="info"  onClick = {e=> this.pdfView()}> Generar Cotización</MDBBtn></center>
             </Card>
             </center>
           </div>
           }
-
+        let botonEnvio;  
+        if(this.state.enviarEmail === true) {
+          botonEnvio = <MDBBtn size = "md" color = "success" outline onClick = {e=>this.enviarEmail()}>Enviar por correo</MDBBtn>
+        }  
           let pdf;
-        if(this.state.pdfview == true) {
+        if(this.state.pdfview === true) {
             let boton;
-
-            if(this.state.botonPdfExport == true) {
+            // if(this.state.botonPdfExport == true) {
                 boton =    <div className="example-config">
-                            <MDBBtn size="md"color = "success" onClick={e=> () => { this.pdfExportComponent.save(); this.hola();}}>
+                            <MDBBtn size="md"color = "success" onClick={() => { this.pdfExportComponent.save(); this.ejecutarEnvio()}}>
                                 Descargar Cotización
                             </MDBBtn>
+                            {botonEnvio}
                             </div>
-            }
+            // }
 
         pdf =   <div>
          <MDBRow style = {{marginLeft:"10%"}}>
-            <MDBBtn size="md" disabled = {this.state.botonPdfExport} color = "primary" onClick = {e=> this.onSubmitBtn()}> Enviar cotización </MDBBtn>
+            {/* <MDBBtn size="md" disabled = {this.state.botonPdfExport} color = "primary" onClick = {e=> this.onSubmitBtn()}> Registrar cotización </MDBBtn> */}
             {boton}
             <MDBBtn size="md" color = "secondary" onClick = {e=> this.cerrarCotizacion()}> Cerrar </MDBBtn>
           </MDBRow>
          <div>
-        <Paper   style={{width:1200,height:1400, marginLeft:"6%",marginTop:"2%",marginBottom:"2%"}}>
-            <img src={titulo1} alt="imagen" alt="imagen"   style={{width:1210,height:150}}/>
-            <div style={{ marginBottom:"2%"}}>
-            <Row  xs="2">               
+        <Paper   style={{padding:"1%", width:1000,height:1100, marginLeft:"7%",marginTop:"2%",marginBottom:"2%"}}>
+            <img src={titulo1} alt="imagen" style={{width:1000,height:150}}/>
+            <div style={{ marginBottom:"2%", width:"95%"}}>
+            <Row  xs="3">               
                 <Col>
-                     <p><strong>Razón social:</strong>&nbsp;{this.state.Datos.empresa} </p>                     
-                     <p ><strong>Nombre(s):</strong>&nbsp;{this.state.Datos.nombre}&nbsp;{this.state.Datos.apellido}</p>                    
-                     <p><strong>Correo:</strong>&nbsp;{this.state.Datos.correo1}</p>                     
-                     <p><strong>Télefono:</strong>&nbsp;{this.state.Datos.telefono1}</p>                     
+                     <p><strong>Razón social:</strong>&nbsp;{this.state.razonSocial || this.state.datos.empresa} </p>                     
+                     <p ><strong>Nombre(s):</strong>&nbsp;{this.state.nombre || this.state.datos.nombre}&nbsp;{this.state.apellidos || this.state.datos.apellido}</p>                    
+                     <p><strong>Correo:</strong>&nbsp;{this.state.correo1 || this.state.datos.correo1}</p>                     
+                     <p><strong>Télefono:</strong>&nbsp;{this.state.telefono1 || this.state.datos.telefono1}</p>                     
                 </Col>   
                 <Col >
-                     <p><strong>Fecha:</strong>&nbsp;{fecha}</p>
+                     <p><strong>Fecha de emisión: </strong>&nbsp;{fecha}</p>
                 </Col>                                  
             </Row> 
-            <p  face="Verdana"> Buen día, me permito presentar  nuestra propuesta referente a los producto (s) y servicio (s) de su interés.</p>
-            <Table bordered>
+            <p  face="Verdana"><strong> Buen día, me permito presentar  nuestra propuesta referente a los producto (s) y servicio (s) de su interés.</strong></p>
+            <center>
+            <Table style={{width:980}} bordered>
                    <thead>
                        <tr>
-                       <td style={{padding:"5px"}} bgcolor="DeepSkyBlue" colspan="2" align="center">PRODUCTO O SERVICIO</td>          
-                       <td style={{padding:"5px"}} bgcolor="DeepSkyBlue" colspan="2" align="center">PRECIO MAS IVA</td>
+                       <td style={{padding:"5px"}} bgcolor="DeepSkyBlue"  align="center">Producto o servicio</td>          
+                       <td style={{padding:"5px"}} bgcolor="DeepSkyBlue"  align="center">Precio Unitario</td>
+                       <td style={{padding:"5px"}} bgcolor="DeepSkyBlue"  align="center">Tipo</td>
+                       <td style={{padding:"5px"}} bgcolor="DeepSkyBlue"  align="center">Cantidad</td>
+                       <td style={{padding:"5px"}} bgcolor="DeepSkyBlue"  align="center">Desc. %</td>
+                       <td style={{padding:"5px"}} bgcolor="DeepSkyBlue"  align="center">Desc. $</td>
+                       <td style={{padding:"5px"}} bgcolor="DeepSkyBlue"  align="center">Total P/prod.</td>
                        </tr>
                    </thead>
                    <tbody>
-                   <tr>
-                       <td style={{padding:"5px"}} colspan="2">{this.state.Servicio}</td>
-                       <td style={{padding:"5px"}} colspan="2" align="center">$&nbsp;{"this.state.precio"}</td>
-                       </tr>  
                        <tr>
-                    <td ROWSPAN="2" colspan="2"></td>
-                    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center"> Precio Normal</td>
-                    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{"this.state.precio"}</td>         
+                       <td>
+                       {this.state.arrayInputFields.map(rows=>{
+                         return(
+                            <tr style={{padding:"5px"}} align="center">{rows.concepto}</tr>
+                         )
+                       })} 
+                       </td> 
+                       <td>
+                        {this.state.arrayInputFields.map(rows=>{
+                         return(
+                            <tr style={{padding:"5px"}} align="center">${rows.precio}</tr>
+                         )
+                       })}
+                       </td>
+                       <td>
+                        {this.state.arrayInputFields.map(rows=>{
+                         return(
+                            <tr style={{padding:"5px"}} align="center">{rows.tipo}</tr>
+                         )
+                       })} 
+                       </td> 
+                       <td>
+                      {this.state.inputFields.map(param =>{
+                        let cantidad;
+                        if(param.cantidad){
+                          cantidad = param.cantidad
+                        }else{
+                          cantidad = 1;
+                        }
+                        
+                        return(
+                          <tr style={{padding:"5px"}} align="center">{cantidad} Unidad(es)</tr>
+                        )
+                       })}
+                       </td> 
+                       <td>
+                       {this.state.inputFields.map(param =>{
+                        let descuento;
+                        if(param.descuento){
+                          descuento = param.descuento
+                        }else{
+                          descuento = 0;
+                        }
+                        
+                        return(
+                          <tr style={{padding:"5px"}} align="center">{descuento} %</tr>
+                        )
+                      })}
+                      </td>
+                      <td>
+                      {this.state.descuentos.map(rows=>{
+                        return(
+                          <tr style={{padding:"5px"}} align="center">${rows} </tr>
+                        )
+                      })}
+                      </td>
+                      <td>
+                      {this.state.subtotal.map(row=>{
+                      return(
+                        <tr style={{padding:"5px"}} align="center">${row}</tr>
+                      )
+                      })}
+                      </td>
                   </tr>
                   <tr>
-                    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center"> Descuento de {"this.state.descuento"}%:</td>
-                    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{"calDescuentoAplicado"}</td>
+              
                   </tr>
                   <tr>
-                  <td ROWSPAN="2" colspan="2" ></td>
-                    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center">subtotal:</td>
-                    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{"Subtotal"}</td>
+                    <td  style={{padding:"5px"}} align="center"></td>
+                    <td  style={{padding:"5px"}} align="center"></td>
+                    <td  style={{padding:"5px"}} align="center"></td>
+                    <td  style={{padding:"5px"}} align="center"></td>
+                    <td  style={{padding:"5px"}} align="center"></td>
+                    <td  style={{padding:"5px"}} bgcolor="#D6DBDF"><strong>SUBTOTAL</strong></td>
+                    <td  style={{padding:"5px"}} align="left"  bgcolor="#D6DBDF">${this.state.subtotalGlobal.toFixed(2)}</td>
                   </tr>
                   <tr>
-                    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center">IVA 16%:</td>
-                    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{"IVA"}</td>
+                    <td  style={{padding:"5px"}} align="center"></td>
+                    <td  style={{padding:"5px"}} align="center"></td>
+                    <td  style={{padding:"5px"}} align="center"></td>
+                    <td  style={{padding:"5px"}} align="center" ></td>
+                    <td  style={{padding:"5px"}} align="center"></td>
+                    <td  style={{padding:"5px"}} bgcolor="#D6DBDF"><strong>IVA</strong></td>
+                    <td  style={{padding:"5px"}} align="left"  bgcolor="#D6DBDF">${this.state.ivaGlobal.toFixed(2)}</td>
                   </tr>
                   <tr>
-                  <td ROWSPAN="2" colspan="2" ></td>
-                    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center">Total:</td>
-                    <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{"total"}</td>
+                    <td  style={{padding:"5px"}} align="center"></td>
+                    <td style={{padding:"5px"}} align="center"></td>
+                    <td  style={{padding:"5px"}} align="center"></td>
+                    <td  style={{padding:"5px"}} align="center"></td>
+                    <td  style={{padding:"5px"}} align="center"></td>
+                    <td  style={{padding:"5px"}} bgcolor="#D6DBDF"><strong>TOTAL</strong></td>
+                    <td  style={{padding:"5px"}} align="left"  bgcolor="#D6DBDF">${this.state.totalGlobal.toFixed(2)}</td>
                   </tr>
                    </tbody>
-            </Table>        
-             
+            </Table>      
+          </center>
+
 
    <p style={{color:"red"}} htmlFor="defaultFormLoginPasswordEx"><strong>Promoción &nbsp;{this.state.promocion.toLowerCase()}</strong></p>
 
@@ -1218,113 +1386,148 @@ if (this.state.form == true) {
                 
             <PDFExport
                 paperSize="letter"
-                margin="0.5cm"
+                margin="1cm"
                 forcePageBreak=".page-break"
-                fileName={`${"Cotización"} ${this.state.Datos.empresa} PDF ${new Date().getFullYear()}`}
+                fileName={this.state.datos.rfc + new Date().getFullYear()+".pdf"}
                 ref={(component) => this.pdfExportComponent = component}
                 >
-       
-       <Container  style={{width:550,height:2000}}>   
+       <div>   
+     <img src={imagen } alt="titulo1" style={{width:550,height:55}}/> 
+               <table style = {{marginLeft:"2%",marginTop:"1%"}} > 
+                 <td>
+                     <tr style={{fontFamily:'Verdana', fontSize:'9px'}}>{this.state.razonSocial || this.state.datos.empresa}</tr>                    
+                     <tr style={{fontFamily:'Verdana', fontSize:'9px'}}>{this.state.nombre || this.state.datos.nombre}&nbsp;{this.state.apellidos || this.state.datos.apellido}</tr>                    
+                     <tr style={{fontFamily:'Verdana', fontSize:'9px'}}>{this.state.correo1 || this.state.datos.correo1}</tr>                  
+                     <tr style={{fontFamily:'Verdana', fontSize:'9px'}}>{this.state.telefono1 || this.state.datos.telefono1}</tr>                     
+                     <tr style={{fontFamily:'Verdana', fontSize:'9px'}}>{fecha}</tr>
+                 </td>    
+               </table>             
+            <p  style={{fontFamily:'Verdana', fontSize:'9px',marginTop:"1%",marginLeft:"2%"}}><strong> Buen día, me permito presentar  nuestra propuesta referente a los producto (s) y servicio (s) de su interés.</strong></p>
+            <center>
+            <MDBTable component={Paper}  small  style={{width:560}} bordered>
+                   <thead>
+                       <tr>
+                       <td width="27%" style={{padding:"5px",fontFamily:'Verdana', fontSize:'9px'}} bgcolor="DeepSkyBlue"  align="center">Producto o servicio</td>          
+                       <td width="9%" style={{padding:"5px",fontFamily:'Verdana', fontSize:'9px'}} bgcolor="DeepSkyBlue"  align="center">Precio U.</td>
+                       <td width="18%" style={{padding:"5px",fontFamily:'Verdana', fontSize:'9px'}} bgcolor="DeepSkyBlue"  align="center">Tipo</td>
+                       <td width="13%" style={{padding:"5px",fontFamily:'Verdana', fontSize:'9px'}} bgcolor="DeepSkyBlue"  align="center">Cantidad</td>
+                       <td width="9%" style={{padding:"5px",fontFamily:'Verdana', fontSize:'9px'}} bgcolor="DeepSkyBlue"  align="center">Desc. %</td>
+                       <td width="9%" style={{padding:"5px",fontFamily:'Verdana', fontSize:'9px'}} bgcolor="DeepSkyBlue"  align="center">Desc. $</td>
+                       <td width="15%" style={{padding:"5px",fontFamily:'Verdana', fontSize:'9px'}} bgcolor="DeepSkyBlue"  align="center">Total P/prod.</td>
+                       </tr>
+                   </thead>
+                   <tbody>
+                       <tr>
+                       <td>
+                       {this.state.arrayInputFields.map(rows=>{
+                         return(
+                            <tr style={{fontFamily:'Verdana', fontSize:'9px'}} align="center">{rows.concepto}</tr>
+                         )
+                       })} 
+                       </td> 
+                       <td>
+                        {this.state.arrayInputFields.map(rows=>{
+                         return(
+                            <tr style={{fontFamily:'Verdana', fontSize:'9px'}} align="center">$ {rows.precio}</tr>
+                         )
+                       })}
+                       </td>
+                       <td>
+                        {this.state.arrayInputFields.map(rows=>{
+                         return(
+                            <tr style={{fontFamily:'Verdana', fontSize:'7px'}} align="center">{rows.tipo}</tr>
+                         )
+                       })} 
+                       </td> 
+                       <td>
+                      {this.state.inputFields.map(param =>{
+                        let cantidad;
+                        if(param.cantidad){
+                          cantidad = param.cantidad
+                        }else{
+                          cantidad = 1;
+                        }
+                        
+                        return(
+                          <tr style={{fontFamily:'Verdana', fontSize:'9px'}} align="center">{cantidad} Unidad(es)</tr>
+                        )
+                       })}
+                       </td> 
+                       <td>
+                       {this.state.inputFields.map(param =>{
+                        let descuento;
+                        if(param.descuento){
+                          descuento = param.descuento
+                        }else{
+                          descuento = 0;
+                        }
+                        
+                        return(
+                          <tr style={{fontFamily:'Verdana', fontSize:'9px'}} align="center">{descuento} %</tr>
+                        )
+                      })}
+                      </td>
+                      <td>
+                      {this.state.descuentos.map(rows=>{
+                        return(
+                          <tr style={{fontFamily:'Verdana', fontSize:'9px'}} align="center">$ {rows} </tr>
+                        )
+                      })}
+                      </td>
+                      <td>
+                      {this.state.subtotal.map(row=>{
+                      return(
+                        <tr style={{fontFamily:'Verdana', fontSize:'9px'}} align="center">$ {row}</tr>
+                      )
+                      })}
+                      </td>
+                  </tr>
+                  <tr>
+              
+                  </tr>
+                  <tr>
+                    <td align="center"></td>
+                    <td align="center"></td>
+                    <td align="center"></td>
+                    <td align="center"></td>
+                    <td align="center"></td>
+                    <td  style={{fontFamily:'Verdana', fontSize:'9px'}} bgcolor="#D6DBDF"><strong>SUBTOTAL</strong></td>
+                    <td  style={{fontFamily:'Verdana', fontSize:'9px'}} align="left"  bgcolor="#D6DBDF">$ {this.state.subtotalGlobal.toFixed(2)}</td>
+                  </tr>
+                  <tr>
+                    <td  align="center"></td>
+                    <td  align="center"></td>
+                    <td  align="center"></td>
+                    <td  align="center" ></td>
+                    <td  align="center"></td>
+                    <td  style={{fontFamily:'Verdana', fontSize:'9px'}} bgcolor="#D6DBDF"><strong>IVA</strong></td>
+                    <td  style={{fontFamily:'Verdana', fontSize:'9px'}} align="left"  bgcolor="#D6DBDF">$ {this.state.ivaGlobal.toFixed(2)}</td>
+                  </tr>
+                  <tr>
+                    <td align="center"></td>
+                    <td align="center"></td>
+                    <td align="center"></td>
+                    <td align="center"></td>
+                    <td align="center"></td>
+                    <td  style={{fontFamily:'Verdana', fontSize:'9px'}} bgcolor="#D6DBDF"><strong>TOTAL</strong></td>
+                    <td  style={{fontFamily:'Verdana', fontSize:'9px'}} align="left"  bgcolor="#D6DBDF">$ {this.state.totalGlobal.toFixed(2)}</td>
+                  </tr>
+                   </tbody>
+            </MDBTable>      
+          </center>
 
-       <Paper >            
-     <img src={imagen } alt="titulo1" style={{width:500,height:55}}/>  
-             
-         <p style={{fontFamily:'arial', fontSize:'10px', marginTop:-9 }}>               
-         <strong> {this.state.Datos.empresa} </strong> 
-           <br></br>
-          {this.state.Datos.nombre}&nbsp;{this.state.Datos.apellido}
-           <br></br>
-           {this.state.Datos.correo1}
-           <br></br>
-           {this.state.Datos.telefono1}
-           <br></br>
-           Buen día, me permito presentar nuestra propuesta referente a los producto (s) y servicio (s) de su interés. 
-          </p>   
-
-<div style= {{ marginTop:-2}}>    
-<MDBTable bordered  >
-<MDBTableHead color="light-blue accent-1"  align="center" >
- <tr>
-   <th style={{padding:"3px"}}  colspan="3" ><p  style={{fontFamily:'arial', fontSize:'7px'}}>PRODUCTO O SERVICIO</p></th>
-   <th style={{padding:"3px"}} ><p  style={{fontFamily:'arial', fontSize:'7px'}}>PRECIO MAS IVA</p></th>
- </tr>
-</MDBTableHead>
-<MDBTableBody>
- <tr>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} colspan="3" >{"this.state.Servicio"}</td>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{"this.state.precio"}</td>         
- </tr>
- <tr>
-   <td ROWSPAN="2" colspan="2"></td>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center"> Precio Normal</td>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{"this.state.precio"}</td>         
- </tr>
- <tr>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center"> Descuento de {"this.state.descuento"}%:</td>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{"calDescuentoAplicado"}</td>
- </tr>
-
- <tr>
- <td ROWSPAN="2" colspan="2" ></td>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center">subtotal:</td>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{"Subtotal"}</td>
- </tr>
- <tr>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center">IVA 16%:</td>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{"IVA"}</td>
- </tr>
- <tr>
- <td ROWSPAN="2" colspan="2" ></td>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'9px'}} align="center">Total:</td>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$&nbsp;{"total"}</td>
- </tr>
-</MDBTableBody>
-</MDBTable>     
-</div>
-
-<p style={{color:"red",fontFamily:'arial', fontSize:'10px',marginTop:-10}} >Promoción {this.state.promocion.toLowerCase()}</p>          
-<div style= {{marginTop:-2}}>
-<MDBTable bordered>
-<MDBTableHead color="light-blue accent-1"  align="center">
- <tr>
-   <th style={{padding:"3px"}} align="center" colspan="3"><p  style={{fontFamily:'arial', fontSize:'7px'}}>PÓLIZA DE SOPORTE TECNICO REMOTO BASICAS ** LA POLIZA ES POR SISTEMA **</p></th>
- </tr>
-</MDBTableHead>
-<MDBTableBody>
- <tr>
-   <td style={{padding:"4px"}} align="center"><p style={{fontFamily:'arial', fontSize:'7px'}}>SERVICIO</p></td>
-   <td style={{padding:"4px"}} align="center"><p style={{fontFamily:'arial', fontSize:'7px'}}>PRECIO ESPECIAL</p></td>
-   <td style={{padding:"4px"}} align="center"><p style={{fontFamily:'arial', fontSize:'7px'}}>PRECIO NORMAL</p></td>         
- </tr>
- <tr>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">Póliza semestral - Por sistema</td>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$ 2,500.00</td>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$ 5,000.00</td>
- </tr>
- <tr>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">Póliza semestral - Por sistema</td>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$ 4,000.00</td>
-   <td style={{padding:"4px" ,fontFamily:'arial', fontSize:'10px'}} align="center">$ 8,000.00</td>          
- </tr>
- <tr>
-   <td  style={{padding:"3px" }}colspan="2" align="center"></td>
-   <td style={{padding:"3px" ,color:"red"}} align="center"><p style={{fontFamily:'arial', fontSize:'7px'}}>PRECIO MAS IVA</p></td>                
- </tr>
-</MDBTableBody>
-</MDBTable>
-</div> 
 
       
-<div style={{marginTop:-12}}>
-<p style={{fontFamily:'arial', fontSize:'10px'}}>  Nota: El costo no incluye Interfaz, Formatos, Carga de Catálogos o alguna implementación adicional a la mencionada en su cotización.</p>   
+<div style={{marginTop:12}}>
+<p style={{fontFamily:'arial', fontSize:'9px'}}>  Nota: El costo no incluye Interfaz, Formatos, Carga de Catálogos o alguna implementación adicional a la mencionada en su cotización.</p>   
  
-          <p style={{fontFamily:'arial', fontSize:'10px'}}>No se aceptan devoluciones</p> 
+          <p style={{fontFamily:'arial', fontSize:'9px'}}>No se aceptan devoluciones</p> 
          
        <fort style={{color:"#3371FF", fontFamily:'arial', fontSize:'10px'}}>Condiciones Comerciales y Formas de Pago</fort>
 {/* <div style={{fontFamily:'arial', fontSize:'9px',marginTop:-15}}> */}
 {/* <p  style={{ fontFamily:'arial', fontSize:'5px'}}>  */}
 
-<p style={{ fontFamily:'arial',  fontSize:'10px'}}>
+<p style={{ fontFamily:'arial',  fontSize:'9px'}}>
  * Todos los costos anteriormente presentados son más IVA.
  <br></br>
  * Precios representados en M.N.
@@ -1334,7 +1537,7 @@ if (this.state.form == true) {
  * Pago por depósito bancario o transferencia electrónica.
  </p>   
        <ul>
-       <p align="left" marginLeft="20%" style={{fontFamily:'arial', fontSize:'10px',marginTop:-5}}>
+       <p align="left" marginLeft="20%" style={{fontFamily:'arial', fontSize:'9px',marginTop:-5}}>
          - Cuenta: 50020978434 
      <br></br>
      - Clabe: 036180500209784346
@@ -1347,26 +1550,25 @@ if (this.state.form == true) {
      </p>
        </ul>  
 
-<p style={{fontFamily:'arial', fontSize:'10px',marginTop:-10}}>Sin más por el momento y agradeciéndole por su amable atención,
+<p style={{fontFamily:'arial', fontSize:'9px',marginTop:-10}}>Sin más por el momento y agradeciéndole por su amable atención,
 Quedo a sus órdenes para cualquier duda al respecto.</p>
      {/* </div > */}
-    <div  className="text-center mb-4" style={{fontFamily:'arial', fontSize:'10px',marginTop:-10}}>
+    <div  className="text-center mb-4" style={{fontFamily:'arial', fontSize:'9px',marginTop:-10}}>
    
          <strong >{localStorage.getItem("nombre") + " " + localStorage.getItem("apellido")}</strong> 
          <p>{localStorage.getItem("correo")}</p>   
          <strong style={{color:"#3371FF"}}> ALFA DISEÑO DE SISTEMAS, S.A. DE C.V.</strong>
         <br></br>
-         <fort style={{color:"#3371FF", fontSize:'10px', fontFamily:'arial' }}>www.ads.com.mx </fort> 
+         <fort style={{color:"#3371FF", fontSize:'9px', fontFamily:'arial' }}>www.ads.com.mx </fort> 
   </div >  
-  <p className="text-center mb-4" style={{fontFamily:'arial', fontSize:'10px', marginTop:-10}}>Av. Chapultepec N° 473, Piso 3 Col. Juárez, Del. Cuauhtémoc C.P. 06600 Ciudad de México Información, soporte y ventas: Conmutador con 6 líneas   1209 0740 -  5553 2049</p> 
+  <p className="text-center mb-4" style={{fontFamily:'arial', fontSize:'9px', marginTop:-10}}>Av. Chapultepec N° 473, Piso 3 Col. Juárez, Del. Cuauhtémoc C.P. 06600 Ciudad de México Información, soporte y ventas: Conmutador con 6 líneas   1209 0740 -  5553 2049</p> 
    <br></br>
 
 
 </div>    
 
-</Paper>
 
-     </Container>
+</div>
                 </PDFExport>
             </div>
         </div>
@@ -1377,9 +1579,11 @@ Quedo a sus órdenes para cualquier duda al respecto.</p>
         {pdf}
         {consultarIdProducto}
         {modal}
+        {modalEmail}
         </React.Fragment>
          
       );
     }
   }
   export default Cotizaciones
+

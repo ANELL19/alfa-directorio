@@ -18,6 +18,7 @@ import SignupProductoServicio from './productoServicio'
 import ADS from '../imagen/ADS.png'
 import PanelAlfa from '../paneldeConection/dashboard'
 import HomeWorkIcon from '@material-ui/icons/HomeWork';
+import PanelPruebaCliente from '../clientesADS/pruebasClientes'
 
 const { Header, Sider, Content } = Layout;
 
@@ -223,7 +224,7 @@ if(mm<10) {
      if(this.state.panelAlfa === true){
       panelConexionAlfa=
        <div>
-         <PanelAlfa/>
+         <PanelPruebaCliente/>
        </div>
      }
 
@@ -269,6 +270,9 @@ if(mm<10) {
             </Menu.Item>
             <Menu.Item key="7" onClick={this.cerrar} icon={<CloseOutlined  style={{ fontSize: '25px', color: '#fff' }} />}>
               cerrar sesión
+            </Menu.Item>
+            <Menu.Item key="8" onClick={e=>this.panelAlfa()} icon={<ReconciliationOutlined   style={{ fontSize: '25px', color: '#fff' }} />}>           
+              Prueba panel cliente            
             </Menu.Item>
           </Menu>
         </Sider>
